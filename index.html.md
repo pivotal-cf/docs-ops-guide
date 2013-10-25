@@ -1,1 +1,0 @@
-Operator's Guide
