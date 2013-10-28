@@ -1,4 +1,4 @@
-ops-guide-docs
+docs-ops-guide
 ==============
 
 Documentation for Cloud Foundry operators
