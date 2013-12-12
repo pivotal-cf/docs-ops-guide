@@ -10,8 +10,9 @@ Complete the following steps to set up a CentOS NAT box and isolate an Ops Manag
 
 Connect to vCenter using the vSphere client. You will assign two network adapters to the VM. This results in the VM having two IP addresses:
 
-	- A public-facing IP address: This IP address connects to the public network VLAN (WAN) through `<GATEWAY_EXTERNAL_IP>`.
-	- An internal VLAN IP address to communicate with other BOSH/Cloud Foundry components: This IP address connects to the private network (LAN) for the Ops Manager deployment using `<GATEWAY_INTERNAL_IP>`.
+- A public-facing IP address: This IP address connects to the public network VLAN (WAN) through `<GATEWAY_EXTERNAL_IP>`.
+
+- An internal VLAN IP address to communicate with other BOSH/Cloud Foundry components: This IP address connects to the private network (LAN) for the Ops Manager deployment using `<GATEWAY_INTERNAL_IP>`.
 
 1. Download the latest CentOS image from [http://wiki.centos.org/Download](http://wiki.centos.org/Download).
 
@@ -106,4 +107,4 @@ Connect to vCenter using the vSphere client. You will assign two network adapter
 
 2. Unzip the downloaded file.
 
-3. Deploy the Ops Manager Installation VM according to the instructions in the [Getting Started Guide](../getstarted/index.html). Access the deployment VM at port 8443 using `https://<GATEWAY_EXTERNAL_IP>:8443`.
+3. Deploy the Ops Manager installation VM according to the instructions in the [Getting Started Guide](../getstarted/index.html). Access the deployment VM at port 8443 using `https://<GATEWAY_EXTERNAL_IP>:8443`.
