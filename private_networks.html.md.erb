@@ -1,10 +1,10 @@
 ---
-title: Isolating a Pivotal CF Deployment in a Private Network Using a CentOS NAT Box
+title: Isolating an Ops Manager Deployment in a Private Network Using a CentOS NAT Box
 ---
 
-During setup, you may want to place your router or a load balancer on a public network, then route requests to the Pivotal CF deployment on a private network. Isolating your Pivotal CF deployment provides extra security and makes it possible for you to use as many IP addresses as you need via a subnet for the private network.
+During setup, you may want to place your router or a load balancer on a public network, then route requests to the Operations Manager deployment on a private network. Isolating your Operations Manager deployment provides extra security and makes it possible for you to use as many IP addresses as you need via a subnet for the private network.
 
-Complete the following steps to set up a CentOS NAT box to isolate a Pivotal CF deployment:
+Complete the following steps to set up a CentOS NAT box to isolate an Ops Manager deployment:
 
 ## <a id='deploy_centos'></a>Step 1: Deploy a CentOS image to vSphere ##
 
@@ -16,7 +16,7 @@ Connect to vCenter using the vSphere client.
 
  Assign two network adapters to the VM. This results in the VM having two IP addresses:
 	- A public-facing IP address: This IP address connects to the public network VLAN (WAN) through `<GATEWAY_EXTERNAL_IP>`.
-	- An internal VLAN IP address to communicate with other BOSH/Cloud Foundry components: This IP address connects to the private network (LAN) we will use for the Pivotal CF deployment using `<GATEWAY_INTERNAL_IP>`.
+	- An internal VLAN IP address to communicate with other BOSH/Cloud Foundry components: This IP address connects to the private network (LAN) we will use for the Ops Manager deployment using `<GATEWAY_INTERNAL_IP>`.
 
 ## <a id='iptables'></a>Step 2: Set up iptables ##
 
@@ -25,6 +25,9 @@ Connect to vCenter using the vSphere client.
 1. Run the following script to set up iptables:
 
 <pre>
+	sudo vi /etc/sysctl.conf
+	 set  net.ipv4.ip_forward=1
+
 	# reset
 	iptables --flush
 	service iptables save
@@ -60,6 +63,9 @@ Connect to vCenter using the vSphere client.
 		iptables -A OUTPUT -p udp --dport 53 -j ACCEPT
 		iptables -A INPUT -p udp -j DROP
 		iptables -A OUTPUT -p udp -j DROP
+
+	service iptables save
+	shutdown -r now
 
 </pre>
 ## <a id='deploy_cf'></a> Step 3: Deploy the Pivotal CF Installation VM in the private network using the internal IP address ##
