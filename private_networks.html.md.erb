@@ -56,7 +56,7 @@ Connect to vCenter using the vSphere client. You will assign two network adapter
 
 1. Log in to the CentOS VM as root.
 
-1. Run the following script to set up iptables:
+1. Run the following script to set up iptables, replacing the example IPs as appropriate.
 
 <pre>
 	sudo vi /etc/sysctl.conf
@@ -64,30 +64,35 @@ Connect to vCenter using the vSphere client. You will assign two network adapter
 
 	# reset
 	iptables --flush
+	export INTERNAL_NETWORK_RANGE=10.0.0.0/8
+	export GATEWAY_INTERNAL_IP=10.0.0.1
+	export GATEWAY_EXTERNAL_IP=88.198.185.190
+	export PIVOTALCF_IP=10.0.0.10
+	export HA_PROXY_IP=10.0.0.13
 
 	# iptables forwarding rules including loopback
 	iptables -A FORWARD -i eth1 -j ACCEPT
 	iptables -A FORWARD -o eth1 -j ACCEPT
 	iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-	iptables -t nat -A POSTROUTING -d <ROUTER_IP> -s <INTERNAL_NETWORK_RANGE> \
-		-p tcp --dport 80 -j SNAT --to <GATEWAY_INTERNAL_IP>
+	iptables -t nat -A POSTROUTING -d $HA_PROXY_IP -s $INTERNAL_NETWORK_RANGE \
+		-p tcp --dport 80 -j SNAT --to $GATEWAY_INTERNAL_IP
 
-		iptables -t nat -A POSTROUTING -d <ROUTER_IP> -s <INTERNAL_NETWORK_RANGE> \
-		        -p tcp --dport 443 -j SNAT --to <GATEWAY_INTERNAL_IP>
+		iptables -t nat -A POSTROUTING -d $HA_PROXY_IP -s $INTERNAL_NETWORK_RANGE \
+		        -p tcp --dport 443 -j SNAT --to $GATEWAY_INTERNAL_IP
 
-		iptables -t nat -A PREROUTING -d <GATEWAY_EXTERNAL_IP> -p tcp --dport 443 -j DNAT \
-		         --to <ROUTER_IP>
-		iptables -t nat -A PREROUTING -d <GATEWAY_EXTERNAL_IP> -p tcp --dport 80 -j DNAT \
-		         --to <ROUTER_IP>
+		iptables -t nat -A PREROUTING -d $GATEWAY_EXTERNAL_IP -p tcp --dport 443 -j DNAT \
+		         --to $HA_PROXY_IP
+		iptables -t nat -A PREROUTING -d $GATEWAY_EXTERNAL_IP -p tcp --dport 80 -j DNAT \
+		         --to $HA_PROXY_IP
 
 		iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 8443 -j DNAT \
-		      --to <DEPLOYER_IP>:443
+		      --to $PIVOTALCF_IP:443
 		iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT \
-		      --to <ROUTER_IP>:80
+		      --to $HA_PROXY_IP:80
 		iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 22 -j DNAT \
-		      --to <DEPLOYER_IP>:22
+		      --to $PIVOTALCF_IP:22
 		iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 8080 -j DNAT \
-		      --to <DEPLOYER_IP>:80
+		      --to $PIVOTALCF_IP:80
 
 		# DNS iptables rules
 		iptables -A INPUT -p udp --sport 53 -j ACCEPT
