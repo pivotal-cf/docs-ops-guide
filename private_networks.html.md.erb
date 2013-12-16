@@ -59,11 +59,14 @@ Connect to vCenter using the vSphere client. You will assign two network adapter
 1. Run the following script to set up iptables, replacing the example IPs as appropriate.
 
 <pre>
+	# the following is an example proxy configuration
 	sudo vi /etc/sysctl.conf
 	set net.ipv4.ip_forward=1
 
 	# reset
 	iptables --flush
+
+	# example IPs--replace as appropriate
 	export INTERNAL_NETWORK_RANGE=10.0.0.0/8
 	export GATEWAY_INTERNAL_IP=10.0.0.1
 	export GATEWAY_EXTERNAL_IP=88.198.185.190
