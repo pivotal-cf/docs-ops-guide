@@ -17,6 +17,11 @@ This section provides help for Pivotal CF operators.
 	        Isolating a Pivotal CF Deployment in a Private Network
 	        </a>
 	     </li>
+		<li>
+	        <a href="ssl-term.html">
+	        Understanding the Pivotal CF SSL Termination Options
+	        </a>
+	     </li>
 	  </ol>
 	  </li>
 </ol>
