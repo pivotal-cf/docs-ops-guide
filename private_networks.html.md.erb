@@ -1,10 +1,10 @@
 ---
-title: Isolating an Ops Manager Deployment in a Private Network Using a CentOS NAT Box
+title: Isolating Ops Manager with a Private Network
 ---
 
-During setup, you may want to place your router or a load balancer on a public network, then route requests to the Operations Manager deployment on a private network. Isolating your Operations Manager deployment provides extra security and makes it possible for you to use as many IP addresses as you need via a subnet for the private network.
+You may want to place your Operations Manager deployment on a private network, then route requests to Operations Manager from a router or a load balancer on a public network. Isolating Operations Manager in this way increases security and allows you to use as many IP addresses as you need by subnetting the private network.
 
-Complete the following steps to set up a CentOS NAT box and isolate an Ops Manager deployment:
+One way to accomplish this is to configure Network Address Translation (NAT) on a VM. The following steps explain how to set up a virtual CentOS NAT box in vSphere, and use that to isolate an Ops Manager deployment.
 
 ## <a id='deploy_centos'></a>Step 1: Deploy a CentOS image to vSphere ##
 
