@@ -14,7 +14,7 @@ This section provides help for Pivotal CF operators.
 		<ol class="lesson-list">
 	     <li>
 	        <a href="private_networks.html">
-	        Isolating a Pivotal CF Deployment in a Private Network
+	        Isolating a Pivotal CF Deployment with a Private Network
 	        </a>
 	     </li>
 		<li>
