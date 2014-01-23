@@ -22,6 +22,11 @@ This section provides help for Pivotal CF operators.
 	        Understanding the Pivotal CF SSL Termination Options
 	        </a>
 	     </li>
+		<li>
+	        <a href="cli-user-management.html">
+	        Creating and Managing Users using the cf CLI Tool
+	        </a>
+	     </li>
 	  </ol>
 	  </li>
 </ol>
