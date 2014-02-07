@@ -6,50 +6,86 @@ _This page assumes you are using cf v6._
 This page has information about domains and shared domains.
 For more information, see [Domains, Subdomains, and Routes](../devguide/deploy-apps/domains-routes.html).
 
+A domain is an IP resource represented by a domain name like "sample.com" or
+"foo.net".
+A domain is not directly bound to an application, but acts as part of the route
+to an application.
+
+When you deploy an application, you supply a hostname.
+This hostname is prepended to the domain to create the full URL, or route, to
+the application.
+
+Example: If I use the hostname "demo-time" for my application, and my domain is
+"sample.com", the route to the application is the full URL
+"demo-time.sample.com".
+
+A Cloud Foundry instance defines a default shared domain.
+Unless you specify a different domain, routes to your application are created
+using this shared domain.
+
+Cloud Foundry also supports custom domains.
+
 ## <a id='create-domains'></a>Create a Custom Domain ##
 
-If you want to use a registered domain of your own, you must define it and
-associate it with an organization.
+If you want to use a registered domain of your own, you can:
 
-The command below defines the custom domain `example.org` in the "test"
-organization:
+- Create and associate it with a single organization in your account.
+
+- Create and associate it with _all_ organizations in your account. Note: This can only be done by an **account** administrator.
+
+### Associate a Custom Domain with a Single Organization ###
+
+Use the `create-domain` command to create the custom domain `sample.com` in the
+"test" organization:
 
 <pre class="terminal">
-$ cf create-domain test example.org
+$ cf create-domain test sample.com
 </pre>
 
-To create a shared domain that is available to all organizations in your
-account, use the `cf create-shared-domain` command:
+### Associate a Custom Domain with All Organizations in an Account ###
+
+Use the `create-shared-domain` command to create a shared custom domain
+available to all organizations in your account:
 
 <pre class="terminal">
-$ cf create-shared-domain example.org
+$ cf create-shared-domain sample.com
 </pre>
 
 ## <a id='view-domains'></a>View Domains ##
 
-You can see available domains for the targeted organization using the `cf domains` command.
+You can see available domains for the targeted organization using the `cf
+domains` command.
 In this example, there are two available domains: a system-wide default
-`<%=vars.app_domain%>` domain and the custom `example.org` domain.
+`<%=vars.app_domain%>` domain and the custom `sample.com` domain.
 
 <pre class="terminal">
 $ cf domains
-Getting domains in org console as user@example.org... OK
+Getting domains in org console as a.user@<%=vars.app_domain%>... OK
 
 name           status
 <%=vars.app_domain%>    shared
-example.org    owned
+sample.com     owned
 </pre>
 
 ## <a id='delete-domains'></a>Delete a Domain ##
 
+### Delete a Custom Domain ###
+
 Use the `cf delete-domain` command to delete a domain:
 
 <pre class="terminal">
-$ cf delete-domain example.org
+$ cf delete-domain sample.com
 </pre>
+
+### Delete a Custom Shared Domain ###
+
+Deleting a shared domain can only be done by an **account** administrator.
+
+**Caution**: Deleting a shared domain will remove all associated routes, and
+will make any application with this domain unreachable.
 
 To delete a shared domain:
 
 <pre class="terminal">
-$ cf delete-shared-domain example.org
+$ cf delete-shared-domain sample.com
 </pre>
