@@ -9,7 +9,7 @@ form. See the [Getting Started Guide](../getstarted/index.html).
 
 If you do not configure the SMTP settings in the Elastic Runtime **Web Console**
 form, the administrator account must create users using the cf Command Line Interface (CLI).
-You can also manage organization and space roles using cf.
+You can also manage organization and space roles using the cf CLI.
 
 If you have not already installed the cf CLI, browse to the Developer
 Console at `console.<your-app-domain>` and navigate to the **Tools** page.

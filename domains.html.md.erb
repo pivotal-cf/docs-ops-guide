@@ -39,7 +39,7 @@ Use the `create-domain` command to create the custom domain `sample.com` in the
 "test" organization:
 
 <pre class="terminal">
-$ cf create-domain test sample.com
+cf create-domain test sample.com
 </pre>
 
 ### Associate a Custom Domain with All Organizations in an Account ###
@@ -48,7 +48,7 @@ Use the `create-shared-domain` command to create a shared custom domain
 available to all organizations in your account:
 
 <pre class="terminal">
-$ cf create-shared-domain sample.com
+cf create-shared-domain sample.com
 </pre>
 
 ## <a id='view-domains'></a>View Domains ##
@@ -74,7 +74,7 @@ sample.com     owned
 Use the `cf delete-domain` command to delete a domain:
 
 <pre class="terminal">
-$ cf delete-domain sample.com
+cf delete-domain sample.com
 </pre>
 
 ### Delete a Custom Shared Domain ###
@@ -87,5 +87,5 @@ will make any application with this domain unreachable.
 To delete a shared domain:
 
 <pre class="terminal">
-$ cf delete-shared-domain sample.com
+cf delete-shared-domain sample.com
 </pre>
