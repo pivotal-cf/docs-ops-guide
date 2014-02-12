@@ -9,4 +9,4 @@ This guide covers networking and user management for Pivotal CF operators.
 * [Creating and Deleting Shared Domains](./domains.html)
 * [Isolating a Pivotal CF Deployment with a Private Network](./private_networks.html)
 * [Understanding the Pivotal CF SSL Termination Options](./ssl-term.html)
-* [Creating and Managing Users using the cf CLI Tool](./cli-user-management.html)
+* [Creating and Managing Users with the cf Command Line Interface (CLI)](./cli-user-management.html)
