@@ -1,10 +1,10 @@
 ---
-title: Isolating Ops Manager with a Private Network
+title: Isolating Pivotal CF with a Private Network
 ---
 
-You may want to place your Operations Manager deployment on a private network, then route requests to Operations Manager from a router or a load balancer on a public network. Isolating Operations Manager in this way increases security and allows you to use as many IP addresses as you need by subnetting the private network.
+You may want to place your Pivotal CF deployment on a private network, then route requests to Pivotal CF from a router or a load balancer on a public network. Isolating Pivotal CF in this way increases security and allows you to use as many IP addresses as you need by subnetting the private network.
 
-One way to accomplish this is to configure Network Address Translation (NAT) on a VM. The following steps explain how to set up a virtual CentOS NAT box in vSphere, and use that to isolate an Ops Manager deployment.
+One way to accomplish this is to configure Network Address Translation (NAT) on a VM. The following steps explain how to set up a virtual CentOS NAT box in vSphere, and use that to isolate a Pivotal CF deployment.
 
 ## <a id='deploy_centos'></a>Step 1: Deploy a CentOS image to vSphere ##
 
@@ -115,4 +115,4 @@ Connect to vCenter using the vSphere client. You will assign two network adapter
 
 2. Unzip the downloaded file.
 
-3. Deploy the Ops Manager installation VM according to the instructions in the [Getting Started Guide](../getstarted/index.html). Access the deployment VM at port 8443 using `https://<GATEWAY_EXTERNAL_IP>:8443`.
+3. Deploy the Ops Manager VM template according to the instructions in the [Getting Started Guide](../getstarted/index.html). Access the deployed VM at port 8443 using `https://<GATEWAY_EXTERNAL_IP>:8443`.
