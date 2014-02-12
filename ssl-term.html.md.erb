@@ -2,7 +2,14 @@
 title: Understanding the Pivotal CF SSL Termination Options
 ---
 
-SSL termination is turned on by default. You can use the Pivotal-deployed HAProxy load balancer for SSL termination, or you can use a load balancer that you provide. The SSL termination method you select determines whether certain fields in the Elastic Runtime configuration are required. The table below helps you understand which steps are required for your SSL termination method. The Getting Started Guide walks you through configuring these fields.
+SSL termination is turned on by default.
+You can use the Pivotal-deployed HAProxy load balancer for SSL termination, or
+you can use a load balancer that you provide.
+The SSL termination method you select determines whether certain fields in the
+Elastic Runtime configuration are required.
+The table below helps you understand which steps are required for your SSL
+termination method.
+The Getting Started Guide walks you through configuring these fields.
 
 <style type="text/css">
 .table {font-size:12px;color:#333333; width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;}
@@ -14,17 +21,33 @@ SSL termination is turned on by default. You can use the Pivotal-deployed HAProx
 </style>
 
 
-  <table border="1" class="table" >
-  <tr><th></th><th><strong>Pivotal-Deployed HAProxy Load Balancer (Default)</strong></th><th><strong>Other Load Balancer</strong></th></tr>
-  <tr><td class="left"><strong>HAProxy IPs field</strong> <br>(HAProxy page)</td><td><strong>REQUIRED</strong>. Enter the IP address(es) for HAProxy. You must point your DNS to this IP. HAProxy's IP must be in your subnet.</td><td>Unnecessary; leave blank.</td></tr>
-  <tr><td class="left"><strong>SSL Certificate field</strong> <br>(HAProxy page)</td><td><strong>REQUIRED</strong>. If you are using a signed certificate from a well-known certificate authority (CA), you can import it. Alternatively, click <strong>Generate Self-Signed RSA Certificate</strong> and follow the instructions in the next step.</td><td><strong>REQUIRED</strong>. If you are using a signed certificate from a well-known certificate authority (CA), you can import it. Alternatively, click <strong>Generate Self-Signed RSA Certificate</strong> and follow the instructions in the next step.</td></tr>
-  <tr><td class="left"><strong>Router IPs field</strong> <br>(Router page)</td><td>Leave this field blank. HAProxy assigns the router IPs internally.</td><td><strong>REQUIRED</strong>. Enter the static IP(s) for Pivotal CF that you have registered previously with your load balancer.</td></tr>
-  </table>
+<table border="1" class="table" >
+  <tr>
+    <th></th>
+    <th><strong>Pivotal-Deployed HAProxy Load Balancer (Default)</strong></th>
+    <th><strong>Other Load Balancer</strong></th>
+  </tr>
+  <tr>
+    <td class="left"><strong>HAProxy IPs field</strong><br />(HAProxy page)</td>
+    <td><strong>REQUIRED</strong>. Enter the IP address(es) for HAProxy. You must point your DNS to this IP. The HAProxy IP address(es) must be in your subnet.</td>
+    <td>Unnecessary. Leave blank.</td>
+  </tr>
+  <tr>
+    <td class="left"><strong>SSL Certificate field</strong><br />(HAProxy page)</td>
+    <td><strong>REQUIRED</strong>. If you are using a signed certificate from a well-known certificate authority (CA), you can import it. Alternatively, click <strong>Generate Self-Signed RSA Certificate</strong> and follow the instructions in the next step.</td>
+    <td><strong>REQUIRED</strong>. If you are using a signed certificate from a well-known certificate authority (CA), you can import it. Alternatively, click <strong>Generate Self-Signed RSA Certificate</strong> and follow the instructions in the next step.</td>
+  </tr>
+  <tr>
+    <td class="left"><strong>Router IPs field</strong><br />(Router page)</td>
+    <td>Leave this field blank. HAProxy assigns the router IPs internally.</td>
+    <td><strong>REQUIRED</strong>. Enter the static IP(s) for Pivotal CF that you have registered previously with your load balancer.</td>
+  </tr>
+</table>
 
  **Note:** Verify that your DNS resolves to the HAproxy IP address, as in the following example:
 
 <pre>
-# in this example, 88.198.254.170 is the HAproxy IP and example.com is both the system and app domain
+# In this example, 88.198.254.170 is the HAproxy IP and example.com is both the system and app domain
 $ host example.com
 
 example.com has address 88.198.254.170
