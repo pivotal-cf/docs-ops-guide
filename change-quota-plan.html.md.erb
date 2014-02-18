@@ -1,0 +1,184 @@
+---
+title: Changing the Quota Plan of an Organization with cf CLI
+---
+
+_This page assumes you are using cf v6._
+
+Quota plans are named sets of memory, service, and instance usage quotas.
+For example, one quota plan might allow up to 10 services, 10 routes, and 2 GB
+of RAM, while another might offer 100 services, 100 routes, and 10 GB of
+RAM.
+Quota plans have user-friendly names, but are identified by unique GUIDs.
+
+Quota plans are not directly associated with user accounts.
+Instead, every organization has a list of available quota plans, and the account
+admin assigns a specific quota plan from the list to the organization.
+Everyone in the organization shares the quotas described by the plan.
+
+Depending on the usage needs of an organization, you may need to change the
+quota plan.
+Follow the steps below to change the quota plan of your organization using `cf curl`.
+
+Note: `cf curl` can only be run by an **account** administrator.
+
+## <a id='find-org-guid'></a>1. Find the GUID of your organization ##
+
+To find the GUID of your organization, replace MY_ORGANIZATION with the name of
+your organization and run this command:
+
+`CF_TRACE=true cf org MY_ORGANIZATION`
+
+This command returns a filtered JSON response listing information about your
+organization.
+
+Data about your organization shows in two sections: “metadata” and “entity.”
+The “metadata” section shows the organization GUID, while the “entity” section
+lists the name of the organization.
+
+Note: Because “metadata” is listed before “entity” in the response, the GUID of
+the organization is shown six lines _above_ the name.
+
+Example:
+
+<pre class="terminal">
+
+  $ CF_TRACE=true cf org example_org_name | grep -B7 example_org_name
+
+    REQUEST:
+    GET /v2/organizations?q=name%3Aexample_org_name&inline-relations-depth=1 HTTP/1.1
+    --
+    "metadata": {
+      "guid": "aaaa1234-1111-2222-aaaa-2aaf232aad13",
+      "url": "/v2/organizations/aaaa1234-1111-2222-aaaa-2aaf232aad13",
+      "created_at": "2014-02-06T02:09:09+00:00",
+      "updated_at": null
+    },
+    "entity": {
+      "name": "example_org_name",
+</pre>
+
+The GUID of "example\_org\_name" is _aaaa1234-1111-2222-aaaa-2aaf232aad13_.
+
+## <a id='find-current-guid'></a>2. Find the GUID of your current quota plan ##
+
+To find the current quota plan for your organization, replace MY\_ORGANIZATION\_GUID with the GUID found in Step 1 and run:
+
+`cf curl /v2/organizations/MY_ORGANIZATION_GUID -X ‘GET’ | grep quota_definition_guid`
+
+This command returns a filtered JSON response showing the
+quota\_definition\_guid of your organization.
+
+Example:
+
+<pre class="terminal">
+
+  $ cf curl /v2/organizations/aaaa1234-1111-2222-aaaa-2aaf232aad13 -X 'GET' | grep quota_definition_guid
+
+    "quota_definition_guid": "bbbb-0000-faaf-1234-aa12-98765bababab",
+</pre>
+
+The GUID of the current quota plan is _bbbb-0000-faaf-1234-aa12-98765bababab_.
+
+## <a id='find-new-guid'></a>3. View available quota plans and select the quota plan GUID you want ##
+
+To view all quota plans available to your organization, run:
+
+`cf curl /v2/quota_definitions -X 'GET'`
+
+This command returns a JSON response listing every quota plan available to your
+organization.
+Data about each plan shows in two sections: “metadata” and “entity.”
+The “metadata” section shows the quota plan GUID, while the “entity” section
+lists the name of the plan and the actual usage quotas.
+
+Note: Because “metadata” is listed before “entity” for each quota plan, the GUID
+of a plan is shown six lines _above_ the name.
+
+Example:
+
+<pre class="terminal">
+
+  $ cf curl /v2/quota_definitions -X 'GET'
+
+    {
+      "total_results": 2,
+      "total_pages": 1,
+      "prev_url": null,
+      "next_url": null,
+      "resources": [
+      {
+        "metadata": {
+          "guid": "bbbb-0000-faaf-1234-aa12-98765bababab",
+          "url": "/v2/quota_definitions/bbbb-0000-faaf-1234-aa12-98765bababab",
+          "created_at": "2013-11-19T18:53:48+00:00",
+          "updated_at": "2013-11-19T19:34:57+00:00"
+        },
+        "entity": {
+          "name": "small",
+          "non_basic_services_allowed": false,
+          "total_services": 10,
+          "total_routes": 10,
+          "memory_limit": 2048,
+          "trial_db_allowed": false
+        }
+      },
+      {
+      "metadata": {
+        "guid": "cccc-4567-b4b4-5432-33412ad1123e",
+        "url": "/v2/quota_definitions/cccc-4567-b4b4-5432-33412ad1123e",
+        "created_at": "2013-11-19T18:53:48+00:00",
+        "updated_at": "2013-11-19T19:34:57+00:00"
+      },
+      "entity": {
+        "name": "bigger",
+        "non_basic_services_allowed": true,
+        "total_services": 100,
+        "total_routes": 100,
+        "memory_limit": 10240,
+        "trial_db_allowed": true
+      }
+    }
+  ]}
+</pre>
+
+In this example, the GUID of the "small" plan is
+_bbbb-0000-faaf-1234-aa12-98765bababab_ and the GUID of the "bigger" plan is
+_cccc-4567-b4b4-5432-33412ad1123e_.
+
+Select the quota plans you want to assign to your organization.
+
+In our example, we want to change from the current plan to the “bigger” plan, GUID _cccc-4567-b4b4-5432-33412ad1123e_.
+
+## <a id='change-guid'></a>4. Change the Quota Plan ##
+
+Changing the quota plan GUID changes the quota plan used by the organization.
+
+To change the quota plan for your organization, run:
+
+`cf curl /v2/organizations/MY_ORGANIZATION_GUID -X 'PUT' -d "{\"quota_definition_guid\":\"NEW_QUOTA_PLAN_GUID\"}"`
+
+Example:
+
+<pre class="terminal">
+  $ cf curl /v2/organizations/aaaa1234-1111-2222-aaaa-2aaf232aad13 -X 'PUT' -d "{\"quota_definition_guid\":\"cccc-4567-b4b4-5432-33412ad1123e\"}"
+</pre>
+
+This command changes the quota plan assigned to the organization to the “bigger” plan, GUID _cccc-4567-b4b4-5432-33412ad1123e_.
+
+## <a id='verify'></a>5. Verify the change ##
+
+To verify the change to your quota plan, run the command from Step 2:
+
+`cf curl /v2/organizations/MY_ORGANIZATION_GUID -X ‘GET’ | grep quota_definition_guid`.
+
+This command should return a filtered JSON response showing the new
+quota\_definition\_guid" of your organization.
+
+Example:
+
+<pre class="terminal">
+
+  $ cf curl /v2/organizations/aaaa1234-1111-2222-aaaa-2aaf232aad13 -X 'GET' | grep quota_definition_guid
+
+  "quota_definition_guid": "cccc-4567-b4b4-5432-33412ad1123e",
+</pre>
