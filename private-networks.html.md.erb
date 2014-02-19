@@ -20,7 +20,7 @@ Connect to vCenter using the vSphere client. You will assign two network adapter
 
 1. On the **Configuration** page, select the **Typical** configuration and click **Next**.
 
- <%= image_tag("typ-config.png") %>
+    <%= image_tag("typ-config.png") %>
 
 1. On the **Name and Location** page, name the virtual machine and click **Next**.
 
@@ -30,11 +30,11 @@ Connect to vCenter using the vSphere client. You will assign two network adapter
 
 1. On the **Guest Operating System** page, select **Linux** as the Guest Operating System and **CentOS 4/5/6 (64-bit)** as the version, then click **Next**.
 
- <%= image_tag("guestos.png") %>
+    <%= image_tag("guestos.png") %>
 
 1. On the **Network** page, select **2** from the drop down menu to specify how many NICs you want to connect. Under **Network**, select **VM Network** for NIC 1 and the name of your private network for NIC 2. Then, click **Next**.
 
- <%= image_tag("nics.png") %>
+    <%= image_tag("nics.png") %>
 
 1. On the **Create a Disk** page, click **Next**.
 
@@ -42,13 +42,13 @@ Connect to vCenter using the vSphere client. You will assign two network adapter
 
 1. Under **Hardware**, select **New CD/DVD**, then select **Datastore ISO File** and click **Browse**. Browse to **ISO > CentOS-6.5-x86_64-minimal.iso** in your datastore.
 
- <%= image_tag("newcd.png") %>
+    <%= image_tag("newcd.png") %>
 
 1. Under **Device Status**, check the **Connect at power on** checkbox.
 
 1. Under **Hardware**, select **New NIC (adding) -- VM Network**.
 
- <%= image_tag("edit-vm.png") %>
+    <%= image_tag("edit-vm.png") %>
 
 1. Under **MAC Address**, select **Manual** and specify the MAC address, then click **Finish**.
 
