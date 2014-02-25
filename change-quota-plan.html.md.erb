@@ -21,7 +21,7 @@ Follow the steps below to change the quota plan of your organization using `cf c
 
 Note: `cf curl` can only be run by an **account** administrator.
 
-## <a id='find-org-guid'></a>1. Find the GUID of your organization ##
+## <a id='find-org-guid'></a>Step 1: Find the GUID of your organization ##
 
 To find the GUID of your organization, replace MY_ORGANIZATION with the name of
 your organization and run this command:
@@ -59,7 +59,7 @@ Example:
 
 The GUID of "example\_org\_name" is _aaaa1234-1111-2222-aaaa-2aaf232aad13_.
 
-## <a id='find-current-guid'></a>2. Find the GUID of your current quota plan ##
+## <a id='find-current-guid'></a>Step 2: Find the GUID of your current quota plan ##
 
 To find the current quota plan for your organization, replace MY\_ORGANIZATION\_GUID with the GUID found in Step 1 and run:
 
@@ -79,7 +79,7 @@ Example:
 
 The GUID of the current quota plan is _bbbb-0000-faaf-1234-aa12-98765bababab_.
 
-## <a id='find-new-guid'></a>3. View available quota plans and select the quota plan GUID you want ##
+## <a id='find-new-guid'></a>Step 3: View available quota plans and select the quota plan GUID you want ##
 
 To view all quota plans available to your organization, run:
 
@@ -149,7 +149,7 @@ Select the quota plans you want to assign to your organization.
 
 In our example, we want to change from the current plan to the “bigger” plan, GUID _cccc-4567-b4b4-5432-33412ad1123e_.
 
-## <a id='change-guid'></a>4. Change the Quota Plan ##
+## <a id='change-guid'></a>Step 4: Change the Quota Plan ##
 
 Changing the quota plan GUID changes the quota plan used by the organization.
 
@@ -165,7 +165,7 @@ Example:
 
 This command changes the quota plan assigned to the organization to the “bigger” plan, GUID _cccc-4567-b4b4-5432-33412ad1123e_.
 
-## <a id='verify'></a>5. Verify the change ##
+## <a id='verify'></a>Step 5: Verify the change ##
 
 To verify the change to your quota plan, run the command from Step 2:
 
