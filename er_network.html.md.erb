@@ -1,0 +1,26 @@
+---
+title: Elastic Runtime Network Architecture
+---
+
+To ensure that you allocate the correct resources to your Elastic Runtime installation, it is important to understand the Elastic Runtime network architecture.
+
+The diagram below shows the key Elastic Runtime network components.
+
+<%= image_tag("er_network.png") %>
+
+# <a id='lb'></a>Load Balancer #
+
+The load balancer is primarily used for SSL termination. Refer to the [SSL Termination](ssl-term.html) topic for more information.
+
+Routers are designed to be horizontally scalable. If you have multiple routers, the load balancer distributes incoming traffic across these routers.
+
+# <a id='router'></a>Router #
+
+Routers manage HTTP and HTTPS traffic between web clients and application instances. In conjunction with the Cloud Controller, routers map application URLs to the corresponding application instances, distributing load between multiple instances as required.
+
+Refer to the Cloud Foundry [Architecture](concepts/architecture/index.html) topic for more information about Cloud Foundry components.
+
+# <a id='apps'></a>Applications #
+
+Instances of your application.
+
