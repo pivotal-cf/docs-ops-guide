@@ -1,0 +1,39 @@
+---
+title: Identifying Elastic Runtime Jobs Using vCenter
+---
+
+To effectively monitor, control, and manage the virtual machines making up your
+Elastic Runtime deployment, you may need to identify which VM corresponds to a
+particular job in Elastic Runtime.
+You can find the CID of a particular VM from Pivotal CF Ops Manager by
+navigating to **Elastic Runtime > Status**.
+
+If you prefer, you can also identify which Elastic Runtime job corresponds to
+which VM using the vCenter vSphere client.
+
+**Note**: The CID shown in Ops Manager is the name of the machine in vCenter.
+
+## <a id='id-jobs'></a>Identifying Elastic Runtime Jobs Using vCenter ##
+
+1. Launch the vSphere client and log in to the vCenter Server system.
+
+1. Select the **Inventory > Hosts and Clusters** view.
+
+    <%= image_tag("images/id/host-cluster.jpg") %>
+
+1. Select the Resource Pool containing your Elastic Runtime deployment.
+
+    <%= image_tag("images/id/deployment.jpg") %>
+
+1. Select the **Virtual Machines** tab.
+
+    <%= image_tag("images/id/vm-tab.jpg") %>
+
+1. Right-click the column label heading and check **job**.
+
+    <%= image_tag("images/id/job.jpg") %>
+
+1. The job column displays the Elastic Runtime job associated with each virtual
+machine.
+
+<%= image_tag("images/id/jobs.jpg") %>
