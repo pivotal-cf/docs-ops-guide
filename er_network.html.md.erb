@@ -8,7 +8,11 @@ The diagram below shows the key Elastic Runtime network components.
 
 # <a id='lb'></a>Load Balancer #
 
-The load balancer is primarily used for SSL termination. Refer to the [SSL Termination](ssl-term.html) topic for more information.
+The load balancer is primarily used for SSL termination. If you don’t want to manage your own SSL certificates or you don’t have multiple certificates you want to use with Elastic Runtime, then use the HAProxy component to provide SSL access to your PaaS. You may also want to omit HAProxy in favor of dedicated load balancing hardware that also facilitates SSL termination.
+
+To omit HAProxy, set the number of instances to zero in Ops Manager.
+
+Refer to the [SSL Termination](ssl-term.html) topic for more information.
 
 Routers are designed to be horizontally scalable. If you have multiple routers, the load balancer distributes incoming traffic across these routers.
 
@@ -16,9 +20,9 @@ Routers are designed to be horizontally scalable. If you have multiple routers, 
 
 Routers manage HTTP and HTTPS traffic between web clients and application instances. In conjunction with the Cloud Controller, routers map application URLs to the corresponding application instances, distributing load between multiple instances as required.
 
-Refer to the Cloud Foundry [Architecture](../concepts/architecture/index.html) topic for more information about Cloud Foundry components.
-
 # <a id='apps'></a>Applications #
 
 Instances of your application.
+
+Refer to the Cloud Foundry [Architecture](../concepts/architecture/index.html) topic for more information about Cloud Foundry components.
 
