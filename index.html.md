@@ -13,4 +13,3 @@ This guide covers networking and user management for Pivotal CF operators.
 * [Creating and Managing Users with the cf Command Line Interface (CLI)](./cli-user-management.html)
 * [Changing the Quota Plan of an Organization with cf CLI](./change-quota-plan.html)
 * [Identifying Elastic Runtime Jobs Using vCenter](./id-jobs.html)
-* [Using Ops Manager Resurrector](./resurrector.html)
