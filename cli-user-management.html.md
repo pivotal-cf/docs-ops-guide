@@ -170,3 +170,5 @@ The available roles are _SpaceManager_, _SpaceDeveloper_, and _SpaceAuditor_.
     Removing role SpaceAuditor to user IamAuser in org example-org / space development as admin...
     OK
     </pre>
+
+[Return to the Getting Started Guide](../getstarted/index.html)
