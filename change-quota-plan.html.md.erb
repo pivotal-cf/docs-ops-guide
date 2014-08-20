@@ -23,29 +23,28 @@ Note: Only an **account** administrator can run `cf curl`.
 
 ## <a id='find-org-guid'></a>Step 1: Find the GUID of your organization ##
 
-To find the GUID of your organization, replace MY_ORGANIZATION with the name of
+To find the GUID of your organization, replace MY-ORGANIZATION with the name of
 your organization and run this command:
 
-`CF_TRACE=true cf org MY_ORGANIZATION`
+`CF_TRACE=true cf org MY-ORGANIZATION`
 
 This command returns a filtered JSON response listing information about your
 organization.
 
-Data about your organization shows in two sections: “metadata” and “entity.”
-The “metadata” section shows the organization GUID, while the “entity” section
+Data about your organization shows in two sections: "metadata" and "entity."
+The "metadata" section shows the organization GUID, while the "entity" section
 lists the name of the organization.
 
-Note: Because “metadata” is listed before “entity” in the response, the GUID of
-the organization is shown six lines _above_ the name.
+<p class="note"><strong>Note</strong>: Because "metadata" is listed before "entity" in the response, the GUID of the organization is shown six lines _above_ the name.</p>
 
 Example:
 
 <pre class="terminal">
 
-  $ CF_TRACE=true cf org example_org_name | grep -B7 example_org_name
+  $ CF_TRACE=true cf org example-org-name | grep -B7 example-org-name
 
     REQUEST:
-    GET /v2/organizations?q=name%3Aexample_org_name&inline-relations-depth=1 HTTP/1.1
+    GET /v2/organizations?q=name%3Aexample-org-name&inline-relations-depth=1 HTTP/1.1
     --
     "metadata": {
       "guid": "aaaa1234-1111-2222-aaaa-2aaf232aad13",
@@ -54,16 +53,16 @@ Example:
       "updated_at": null
     },
     "entity": {
-      "name": "example_org_name",
+      "name": "example-org-name",
 </pre>
 
-The GUID of "example\_org\_name" is _aaaa1234-1111-2222-aaaa-2aaf232aad13_.
+The GUID of "example-org-name" is _aaaa1234-1111-2222-aaaa-2aaf232aad13_.
 
 ## <a id='find-current-guid'></a>Step 2: Find the GUID of your current quota plan ##
 
-To find the current quota plan for your organization, replace MY\_ORGANIZATION\_GUID with the GUID found in Step 1 and run:
+To find the current quota plan for your organization, replace MY-ORGANIZATION-GUID with the GUID found in Step 1 and run:
 
-`cf curl /v2/organizations/MY_ORGANIZATION_GUID -X ‘GET’ | grep quota_definition_guid`
+`cf curl /v2/organizations/MY-ORGANIZATION-GUID -X ‘GET’ | grep quota_definition_guid`
 
 This command returns a filtered JSON response showing the
 quota\_definition\_guid of your organization.
@@ -87,11 +86,11 @@ To view all quota plans available to your organization, run:
 
 This command returns a JSON response listing every quota plan available to your
 organization.
-Data about each plan shows in two sections: “metadata” and “entity.”
-The “metadata” section shows the quota plan GUID, while the “entity” section
+Data about each plan shows in two sections: "metadata" and "entity."
+The "metadata" section shows the quota plan GUID, while the "entity" section
 lists the name of the plan and the actual usage quotas.
 
-Note: Because “metadata” is listed before “entity” for each quota plan, the GUID
+Note: Because "metadata" is listed before "entity" for each quota plan, the GUID
 of a plan is shown six lines _above_ the name.
 
 Example:
@@ -147,7 +146,7 @@ _cccc-4567-b4b4-5432-33412ad1123e_.
 
 Select the quota plans you want to assign to your organization.
 
-In our example, we want to change from the current plan to the “bigger” plan, GUID _cccc-4567-b4b4-5432-33412ad1123e_.
+In our example, we want to change from the current plan to the "bigger" plan, GUID _cccc-4567-b4b4-5432-33412ad1123e_.
 
 ## <a id='change-guid'></a>Step 4: Change the Quota Plan ##
 
@@ -155,7 +154,7 @@ Changing the quota plan GUID changes the quota plan used by the organization.
 
 To change the quota plan for your organization, run:
 
-`cf curl /v2/organizations/MY_ORGANIZATION_GUID -X 'PUT' -d "{\"quota_definition_guid\":\"NEW_QUOTA_PLAN_GUID\"}"`
+`cf curl /v2/organizations/MY-ORGANIZATION-GUID -X 'PUT' -d "{\"quota_definition_guid\":\"NEW-QUOTA-PLAN-GUID\"}"`
 
 Example:
 
@@ -163,13 +162,13 @@ Example:
   $ cf curl /v2/organizations/aaaa1234-1111-2222-aaaa-2aaf232aad13 -X 'PUT' -d "{\"quota_definition_guid\":\"cccc-4567-b4b4-5432-33412ad1123e\"}"
 </pre>
 
-This command changes the quota plan assigned to the organization to the “bigger” plan, GUID _cccc-4567-b4b4-5432-33412ad1123e_.
+This command changes the quota plan assigned to the organization to the "bigger" plan, GUID _cccc-4567-b4b4-5432-33412ad1123e_.
 
 ## <a id='verify'></a>Step 5: Verify the change ##
 
 To verify the change to your quota plan, run the command from Step 2:
 
-`cf curl /v2/organizations/MY_ORGANIZATION_GUID -X ‘GET’ | grep quota_definition_guid`.
+`cf curl /v2/organizations/MY-ORGANIZATION-GUID -X ‘GET’ | grep quota_definition_guid`.
 
 This command should return a filtered JSON response showing the new
 quota\_definition\_guid" of your organization.
