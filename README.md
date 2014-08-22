@@ -7,7 +7,7 @@ It is just one of the guides associated with the Pivotal CF release.
 The full doc set is:
 
 *  [Getting Started](https://github.com/pivotal-cf/docs-pcf-gsg): "Quick Start"
-guide for preparing your VMware vSphere or vCHS / vCloud environment and
+guide for preparing your VMware vSphere or vCloud Air / vCloud environment and
 standing up Elastic Runtime using Pivotal CF
 *  [Pivotal CF Installation Guide](https://github.com/pivotal-cf/pcf-docs): How
 to use Pivotal CF to install and manage components
