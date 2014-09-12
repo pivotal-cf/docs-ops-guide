@@ -1,48 +1,88 @@
 ---
-title: Understanding the Pivotal CF SSL Termination Options
+title: Configuring Pivotal CF SSL Termination
 ---
 
-In Pivotal CF, SSL termination is turned on by default.
-You can use the Pivotal-deployed HAProxy load balancer for SSL termination, or
-you can use a load balancer that you provide.
-The SSL termination method you select determines whether certain fields in the
-Elastic Runtime configuration are required.
-The table below describes which steps are required for your SSL
-termination method.
-The [Getting Started Guide](../getstarted/index.html) describes configuring these fields.
+Pivotal CF deploys with SSL termination turned on by default, but does not
+deploy with a pre-configured load balancer.
+You must configure the Pivotal-deployed HAProxy load balancer or your own load
+balancer to use SSL termination.
+Select an SSL termination method to determine the steps you must take to
+configure Elastic Runtime.
 
-<table border="1" class="nice" >
-  <tr>
-    <th></th>
-    <th><strong>Pivotal-Deployed HAProxy Load Balancer (Default)</strong></th>
-    <th><strong>Other Load Balancer</strong></th>
-  </tr>
-  <tr>
-    <td class="left"><strong>HAProxy IPs field</strong><br />(HAProxy page)</td>
-    <td><strong>REQUIRED</strong>. Enter the IP address(es) for HAProxy. You must point your DNS to this IP. The HAProxy IP address(es) must be in your subnet.</td>
-    <td>Unnecessary. Leave blank.</td>
-  </tr>
-  <tr>
-    <td class="left"><strong>SSL Certificate field</strong><br />(HAProxy page)</td>
-    <td><strong>REQUIRED</strong>. If you are using a signed certificate from a well-known certificate authority (CA), you can import it. Alternatively, click <strong>Generate Self-Signed RSA Certificate</strong> and follow the instructions in the next step.</td>
-    <td><strong>REQUIRED</strong>. If you are using a signed certificate from a well-known certificate authority (CA), you can import it. Alternatively, click <strong>Generate Self-Signed RSA Certificate</strong> and follow the instructions in the next step.</td>
-  </tr>
-  <tr>
-    <td class="left"><strong>Router IPs field</strong><br />(Router page)</td>
-    <td>Leave this field blank. HAProxy assigns the router IPs internally.</td>
-    <td><strong>REQUIRED</strong>. Enter the static IP(s) for Pivotal CF that you have registered previously with your load balancer.</td>
-  </tr>
-</table>
+##<a id="haproxy"></a>Using the Pivotal HAProxy Load Balancer##
 
- <p class="note"><strong>Note</strong>: Verify that your DNS resolves to the HAproxy IP address, as in the following example:</p>
+Pivotal deploys the HAProxy load balancer by default.
+To use the HAProxy load balancer, you must create a wildcard A record in your
+DNS and configure three fields in Elastic Runtime.
 
-<pre>
-# In this example, 88.198.254.170 is the HAproxy IP and example.com is both the system and app domain
-$ host example.com
+1. Create an A record in your DNS that points to the HAProxy IP address.
+    <br />
+    <br />
+    For example, with `cf.example.com` as the main subdomain for your CF install
+	and an HAProxy IP address `172.16.1.1`, you must create an A record in your
+	DNS that serves `example.com` and points `*.cf` to `172.16.1.1`.
 
-example.com has address 88.198.254.170
-example.com mail is handled by 0 smtp.secureserver.net.
-example.com mail is handled by 10 mailstore1.secureserver.net.
-</pre>
+    <table border="1" class="nice" >
+        <tr>
+            <th>Name</th>
+			<th>Type</th>
+			<th>Data</th>
+			<th>Domain</th>
+		</tr>
+		<tr>
+		    <td>*.cf</td>
+		    <td>A</td>
+		    <td>176.16.1.1</td>
+		    <td>example.com</td>
+        </tr>
+	</table>
+
+1. Use the `host` command to test your DNS entry. The `host` command should
+return your HAProxy IP address.
+
+	Example:
+	<pre class='terminal'>
+	$ host cf.example.com
+    cf.example.com has address 172.16.1.1
+	$ host anything.example.com
+    anything.cf.example.com has address 172.16.1.1
+	</pre>
+
+1. Configure two fields on the HAProxy page in Elastic Runtime:
+    * **HAProxy IPs**: Enter the IP address for HAProxy.
+    The HAProxy IP address must be in your subnet.
+    * **SSL Certificate**:  If you are using a signed certificate from a
+    well-known certificate authority (CA), you can import it.
+    Alternatively, you can [generate a self-signed RSA certificate](../getstarted/index.html#generate-rsa-cert).
+
+	<p class='note'><strong>Note</strong>: The domains you use when you generate
+	RSA public and private keys must match the wildcard A record that you
+	create for the HAProxy.
+	</p>
+
+1. Configure one field on the Router IPs page in Elastic Runtime:
+    * **Router IPs**: Leave this field blank.
+	HAProxy assigns the router IPs internally.
+
+[Return to the Getting Started Guide](../getstarted/index.html)
+
+##<a id="other"></a>Using Another Load Balancer ##
+
+To use any other load balancer, you must register static IP addresses for
+Pivotal CF with your load balancer and configure three fields in Pivotal Ops
+Manager.
+
+1. Register one or more static IP address for Pivotal CF with your load
+balancer.
+
+1. Configure two fields on the HAProxy page in Elastic Runtime:
+    * **HAProxy IPs**: Leave blank.
+    * **SSL Certificate**:  If you are using a signed certificate from a
+    well-known certificate authority (CA), you can import it.
+    Alternatively, you can [generate a self-signed RSA certificate](../getstarted/index.html#generate-rsa-cert).
+
+1. Configure one field on the Router IPs page in Elastic Runtime:
+    * **Router IPs**: Enter the static IP address for Pivotal CF that you have
+	registered with your load balancer.
 
 [Return to the Getting Started Guide](../getstarted/index.html)
