@@ -6,12 +6,23 @@ Pivotal CF deploys with SSL termination turned on by default, but does not
 deploy with a pre-configured load balancer.
 You must configure the Pivotal-deployed HAProxy load balancer or your own load
 balancer to use SSL termination.
+
+We recommend using HAProxy in lab and test environments only.
+Production environments should instead use a highly-available customer-provided
+load balancing solution.
+
 Select an SSL termination method to determine the steps you must take to
 configure Elastic Runtime.
 
 ##<a id="haproxy"></a>Using the Pivotal HAProxy Load Balancer##
 
-Pivotal deploys the HAProxy load balancer by default.
+Pivotal CF deploys with a single instance of HAProxy for use in lab and test
+environments.
+You can use this HAProxy instance for SSL termination and load balancing to the
+Pivotal CF Routers.
+HAProxy can generate a self-signed certificate if you do not want to obtain a
+signed certificate from a well-known certificate authority.
+
 To use the HAProxy load balancer, you must create a wildcard A record in your
 DNS and configure three fields in Elastic Runtime.
 
@@ -37,9 +48,10 @@ DNS and configure three fields in Elastic Runtime.
         </tr>
 	</table>
 
-1. Use the `host` command to test your DNS entry. The `host` command should
-return your HAProxy IP address.
-
+1. Use the Linux `host` command to test your DNS entry. The `host` command
+should return your HAProxy IP address.
+	<br />
+	<br />
 	Example:
 	<pre class='terminal'>
 	$ host cf.example.com
@@ -52,12 +64,12 @@ return your HAProxy IP address.
     * **HAProxy IPs**: Enter the IP address for HAProxy.
     The HAProxy IP address must be in your subnet.
     * **SSL Certificate**:  If you are using a signed certificate from a
-    well-known certificate authority (CA), you can import it.
-    Alternatively, you can [generate a self-signed RSA certificate](../getstarted/index.html#generate-rsa-cert).
+    well-known certificate authority, you can import it.
+	Alternatively, you can [generate a self-signed RSA certificate](../getstarted/index.html#generate-rsa-cert).
 
-	<p class='note'><strong>Note</strong>: The domains you use when you generate
-	RSA public and private keys must match the wildcard A record that you
-	create for the HAProxy.
+	<p class='note'><strong>Note</strong>: The domains that you use when you
+	generate RSA public and private keys must match the wildcard A record that
+	you create for HAProxy.
 	</p>
 
 1. Configure one field on the Router IPs page in Elastic Runtime:
@@ -68,9 +80,15 @@ return your HAProxy IP address.
 
 ##<a id="other"></a>Using Another Load Balancer ##
 
-To use any other load balancer, you must register static IP addresses for
-Pivotal CF with your load balancer and configure three fields in Pivotal Ops
-Manager.
+Production environments should use a highly-available customer-provided load
+balancing solution that does the following:
+
+* Provides SSL termination with wildcard DNS location
+* Provides load balancing to each of the Pivotal CF Router IPs
+* Adds appropriate `x-forwarded-for` and `x-forwarded-proto` HTTP headers
+
+You must register static IP addresses for Pivotal CF with your load balancer and
+configure three fields in Pivotal Ops Manager.
 
 1. Register one or more static IP address for Pivotal CF with your load
 balancer.
@@ -78,11 +96,13 @@ balancer.
 1. Configure two fields on the HAProxy page in Elastic Runtime:
     * **HAProxy IPs**: Leave blank.
     * **SSL Certificate**:  If you are using a signed certificate from a
-    well-known certificate authority (CA), you can import it.
+    well-known certificate authority, you can import it.
     Alternatively, you can [generate a self-signed RSA certificate](../getstarted/index.html#generate-rsa-cert).
 
 1. Configure one field on the Router IPs page in Elastic Runtime:
     * **Router IPs**: Enter the static IP address for Pivotal CF that you have
 	registered with your load balancer.
+
+<p class='note'><strong>Note</strong>: When adding or removing Pivotal CF routers, you must update your load balancing solution configuration with the appropriate IP addresses.</p>
 
 [Return to the Getting Started Guide](../getstarted/index.html)
