@@ -47,8 +47,8 @@ Example:
     GET /v2/organizations?q=name%3Aexample-org-name&inline-relations-depth=1 HTTP/1.1
     --
     "metadata": {
-      "guid": "aaaa1234-1111-2222-aaaa-2aaf232aad13",
-      "url": "/v2/organizations/aaaa1234-1111-2222-aaaa-2aaf232aad13",
+      "guid": "aaaa1234-1111",
+      "url": "/v2/organizations/aaaa1234-1111",
       "created_at": "2014-02-06T02:09:09+00:00",
       "updated_at": null
     },
@@ -56,7 +56,7 @@ Example:
       "name": "example-org-name",
 </pre>
 
-The GUID of "example-org-name" is _aaaa1234-1111-2222-aaaa-2aaf232aad13_.
+The GUID of "example-org-name" is _aaaa1234-1111_.
 
 ## <a id='find-current-guid'></a>Step 2: Find the GUID of your current quota plan ##
 
@@ -71,12 +71,12 @@ Example:
 
 <pre class="terminal">
 
-  $ cf curl /v2/organizations/aaaa1234-1111-2222-aaaa-2aaf232aad13 -X 'GET' | grep quota_definition_guid
+  $ cf curl /v2/organizations/aaaa1234-1111 -X 'GET' | grep quota_definition_guid
 
-    "quota_definition_guid": "bbbb-0000-faaf-1234-aa12-98765bababab",
+    "quota_definition_guid": "bbbb6666-2222",
 </pre>
 
-The GUID of the current quota plan is _bbbb-0000-faaf-1234-aa12-98765bababab_.
+The GUID of the current quota plan is _bbbb6666-2222_.
 
 ## <a id='find-new-guid'></a>Step 3: View available quota plans and select the quota plan GUID you want ##
 
@@ -106,8 +106,8 @@ Example:
       "resources": [
       {
         "metadata": {
-          "guid": "bbbb-0000-faaf-1234-aa12-98765bababab",
-          "url": "/v2/quota_definitions/bbbb-0000-faaf-1234-aa12-98765bababab",
+          "guid": "bbbb6666-2222",
+          "url": "/v2/quota_definitions/bbbb6666-2222",
           "created_at": "2013-11-19T18:53:48+00:00",
           "updated_at": "2013-11-19T19:34:57+00:00"
         },
@@ -122,8 +122,8 @@ Example:
       },
       {
       "metadata": {
-        "guid": "cccc-4567-b4b4-5432-33412ad1123e",
-        "url": "/v2/quota_definitions/cccc-4567-b4b4-5432-33412ad1123e",
+        "guid": "cccc0000-3333",
+        "url": "/v2/quota_definitions/cccc0000-3333",
         "created_at": "2013-11-19T18:53:48+00:00",
         "updated_at": "2013-11-19T19:34:57+00:00"
       },
@@ -140,12 +140,12 @@ Example:
 </pre>
 
 In this example, the GUID of the "small" plan is
-_bbbb-0000-faaf-1234-aa12-98765bababab_ and the GUID of the "bigger" plan is
-_cccc-4567-b4b4-5432-33412ad1123e_.
+_bbbb6666-2222_ and the GUID of the "bigger" plan is
+_cccc0000-3333_.
 
 Select the quota plans you want to assign to your organization.
 
-In our example, we want to change from the current plan to the "bigger" plan, GUID _cccc-4567-b4b4-5432-33412ad1123e_.
+In our example, we want to change from the current plan to the "bigger" plan, GUID _cccc0000-3333_.
 
 ## <a id='change-guid'></a>Step 4: Change the Quota Plan ##
 
@@ -158,10 +158,10 @@ To change the quota plan for your organization, run:
 Example:
 
 <pre class="terminal">
-  $ cf curl /v2/organizations/aaaa1234-1111-2222-aaaa-2aaf232aad13 -X 'PUT' -d "{\"quota_definition_guid\":\"cccc-4567-b4b4-5432-33412ad1123e\"}"
+  $ cf curl /v2/organizations/aaaa1234-1111 -X 'PUT' -d "{\"quota_definition_guid\":\"cccc0000-3333\"}"
 </pre>
 
-This command changes the quota plan assigned to the organization to the "bigger" plan, GUID _cccc-4567-b4b4-5432-33412ad1123e_.
+This command changes the quota plan assigned to the organization to the "bigger" plan, GUID _cccc0000-3333_.
 
 ## <a id='verify'></a>Step 5: Verify the change ##
 
@@ -176,7 +176,7 @@ Example:
 
 <pre class="terminal">
 
-  $ cf curl /v2/organizations/aaaa1234-1111-2222-aaaa-2aaf232aad13 -X 'GET' | grep quota_definition_guid
+  $ cf curl /v2/organizations/aaaa1234-1111 -X 'GET' | grep quota_definition_guid
 
-  "quota_definition_guid": "cccc-4567-b4b4-5432-33412ad1123e",
+  "quota_definition_guid": "cccc0000-3333",
 </pre>
