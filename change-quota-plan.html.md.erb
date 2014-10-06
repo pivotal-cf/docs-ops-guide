@@ -62,7 +62,7 @@ The GUID of "example-org-name" is _aaaa1234-1111_.
 
 To find the current quota plan for your organization, replace MY-ORGANIZATION-GUID with the GUID found in Step 1 and run:
 
-`cf curl /v2/organizations/MY-ORGANIZATION-GUID -X ‘GET’ | grep quota_definition_guid`
+`cf curl /v2/organizations/MY-ORGANIZATION-GUID -X 'GET' | grep quota_definition_guid`
 
 This command returns a filtered JSON response showing the
 quota\_definition\_guid of your organization.
@@ -167,7 +167,7 @@ This command changes the quota plan assigned to the organization to the "bigger"
 
 To verify the change to your quota plan, run the command from Step 2:
 
-`cf curl /v2/organizations/MY-ORGANIZATION-GUID -X ‘GET’ | grep quota_definition_guid`.
+`cf curl /v2/organizations/MY-ORGANIZATION-GUID -X 'GET' | grep quota_definition_guid`.
 
 This command should return a filtered JSON response showing the new
 quota\_definition\_guid" of your organization.
