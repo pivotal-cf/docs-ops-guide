@@ -2,10 +2,8 @@
 title: Configuring Pivotal CF SSL Termination
 ---
 
-Pivotal CF deploys with SSL termination turned on by default, but does not
-deploy with a pre-configured load balancer.
-You must configure the Pivotal-deployed HAProxy load balancer or your own load
-balancer to use SSL termination.
+To use SSL termination in Pivotal CF, you must configure the Pivotal-deployed HAProxy load balancer or your own load
+balancer.
 
 We recommend using HAProxy in lab and test environments only.
 Production environments should instead use a highly-available customer-provided
@@ -24,7 +22,7 @@ HAProxy can generate a self-signed certificate if you do not want to obtain a
 signed certificate from a well-known certificate authority.
 
 To use the HAProxy load balancer, you must create a wildcard A record in your
-DNS and configure three fields in Elastic Runtime.
+DNS and configure three fields in the Elastic Runtime product tile.
 
 1. Create an A record in your DNS that points to the HAProxy IP address. The A
 record associates the **System Domain** and **Apps Domain** that you configure on the [Cloud Controller](../getstarted/index.html#cloud-controller) page with the HAProxy IP address.
@@ -89,7 +87,7 @@ balancing solution that does the following:
 * Adds appropriate `x-forwarded-for` and `x-forwarded-proto` HTTP headers
 
 You must register static IP addresses for Pivotal CF with your load balancer and
-configure three fields in Pivotal Ops Manager.
+configure three fields in the Elastic Runtime product tile.
 
 1. Register one or more static IP address for Pivotal CF with your load
 balancer.
