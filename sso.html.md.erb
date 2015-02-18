@@ -1,0 +1,28 @@
+---
+breadcrumb: Pivotal CF Documentation
+title: Configuring Single Sign-On
+---
+
+If your Enterprise User Store is exposed as a SAML Identity Provider for Single Sign-On (SSO), you can set up SSO for users to [Apps Manager Console](http://docs.pivotal.io/pivotalcf/console/index.html).
+
+SSO configuration is performed from Elastic Runtime under the **SSO Config** tab.
+
+##<a id="config-identity-provider"></a>Configuring the Identity Provider
+
+Enter a **Provider Name**. The login page displays this name if the user does not have an existing session with Enterprise Identity Provider, as shown in the image below. Access your login page by navigating to `https://login.your-system-domain.com`.
+	
+<%= image_tag("login-page.png") %>
+
+You must configure your Identity Provider to recognize Pivotal Cloud Foundry as a Service Provider. Download the Service Provider Metadata from `https://login.{your-system-domain.com}/saml/metadata` using your system domain. Find your system domain in Elastic Runtime under the **Cloud Controller** tab.
+
+<%= image_tag("cc-system-domain.png") %>
+
+Populate either **Provider Metadata** or **(OR) Provider Metadata URL**, depending on whether your Identity Provider exposes a Metadata URL. You can do this by either of the following:
+
+1. Paste the XML into the **Provider Metadata** area. Ensure that the XML declaration tag is present at the beginning of the Metadata XML. For example: `<?xml version="1.0" encoding="UTF-8"?>`
+
+1. If your Identity Provider exposes a Metadata URL, provide the Metadata URL.
+	
+	<%= image_tag("saml-sso.png") %>
+
+<p class=”note”><strong>Note</strong>: Only one of above needs to be configured. If you configure both, your Identity Provider will default to the <strong>(OR) Provider Metadata URL</strong>.</p>
