@@ -13,3 +13,4 @@ This guide covers networking and user management for Pivotal CF operators.
 * [Configuring Pivotal CF SSL Termination](./ssl-term.html)
 * [Changing the Quota Plan of an Organization with cf CLI](./change-quota-plan.html)
 * [Identifying Elastic Runtime Jobs Using vCenter](./id-jobs.html)
+* [Configuring Single Sign-On](./sso.html)
