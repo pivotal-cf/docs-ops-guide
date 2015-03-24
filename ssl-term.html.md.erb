@@ -1,8 +1,8 @@
 ---
-title: Configuring Pivotal CF SSL Termination
+title: Configuring PCF SSL Termination
 ---
 
-To use SSL termination in Pivotal CF, you must configure the Pivotal-deployed HAProxy load balancer or your own load
+To use SSL termination in [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF), you must configure the Pivotal-deployed HAProxy load balancer or your own load
 balancer.
 
 We recommend using HAProxy in lab and test environments only.
@@ -14,10 +14,10 @@ configure Elastic Runtime.
 
 ##<a id="haproxy"></a>Using the Pivotal HAProxy Load Balancer##
 
-Pivotal CF deploys with a single instance of HAProxy for use in lab and test
+PCF deploys with a single instance of HAProxy for use in lab and test
 environments.
 You can use this HAProxy instance for SSL termination and load balancing to the
-Pivotal CF Routers.
+PCF Routers.
 HAProxy can generate a self-signed certificate if you do not want to obtain a
 signed certificate from a well-known certificate authority.
 
@@ -83,13 +83,13 @@ Production environments should use a highly-available customer-provided load
 balancing solution that does the following:
 
 * Provides SSL termination with wildcard DNS location
-* Provides load balancing to each of the Pivotal CF Router IPs
+* Provides load balancing to each of the PCF Router IPs
 * Adds appropriate `x-forwarded-for` and `x-forwarded-proto` HTTP headers
 
-You must register static IP addresses for Pivotal CF with your load balancer and
+You must register static IP addresses for PCF with your load balancer and
 configure three fields in the Elastic Runtime product tile.
 
-1. Register one or more static IP address for Pivotal CF with your load
+1. Register one or more static IP address for PCF with your load
 balancer.
 
 1. Create an A record in your DNS that points to your load balancer IP address.
@@ -124,9 +124,9 @@ page with the IP address of your load balancer.
     Alternatively, you can [generate a self-signed RSA certificate](../getstarted/index.html#generate-rsa-cert).
 
 1. Configure one field on the Router IPs page in Elastic Runtime:
-    * **Router IPs**: Enter the static IP address for Pivotal CF that you have
+    * **Router IPs**: Enter the static IP address for PCF that you have
 	registered with your load balancer.
 
-<p class='note'><strong>Note</strong>: When adding or removing Pivotal CF routers, you must update your load balancing solution configuration with the appropriate IP addresses.</p>
+<p class='note'><strong>Note</strong>: When adding or removing PCF routers, you must update your load balancing solution configuration with the appropriate IP addresses.</p>
 
 [Return to the Getting Started Guide](../getstarted/index.html)

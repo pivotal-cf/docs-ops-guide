@@ -1,20 +1,20 @@
 ---
-breadcrumb: Pivotal CF Documentation
+breadcrumb: Pivotal Cloud Foundry Documentation
 title: Configuring Single Sign-On
 ---
 
-If your user store is exposed as a SAML Identity Provider for single sign-on (SSO), you can set up SSO to allow users to access the [Pivotal CF Apps Manager Console](../console/index.html) without creating a new account or re-entering credentials.
+If your user store is exposed as a SAML Identity Provider for single sign-on (SSO), you can set up SSO to allow users to access the [PCF Apps Manager Console](../console/index.html) without creating a new account or re-entering credentials.
 
 ##<a id="configure-pcf"></a>Configure Pivotal Cloud Foundry as a Service Provider
 
-You must configure Pivotal Cloud Foundry (PCF) so that your Identity Provider can recognize PCF as a Service Provider. Follow the instructions below:
+You must configure [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) so that your Identity Provider can recognize PCF as a Service Provider. Follow the instructions below:
 
 1. Log in to Ops Manager.
 1. Click the **Elastic Runtime** tile. Select **Cloud Controller** on the **Settings** tab and verify your system domain.
-	
+
 	<%= image_tag("cc-system-domain.png") %>
 1. Select **SSO Config**.
-	
+
 	<%= image_tag("saml-sso.png") %>
 
 1. Enter a **Provider Name**. Your provider name appears as a link on your Pivotal login page, which you can access at `https://login.your-system-domain.com`. The image below shows an example login page with the provider name "Your Provider Name." If you click on this link, you are redirected to your Identity Provider for authentication.

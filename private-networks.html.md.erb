@@ -1,10 +1,10 @@
 ---
-title: Isolating a Pivotal CF Deployment with a Private Network
+title: Isolating a PCF Deployment with a Private Network
 ---
 
-You may want to place your Pivotal CF deployment on a private network, then route requests to Pivotal CF from a router or a load balancer on a public network. Isolating Pivotal CF in this way increases security and allows you to use as many IP addresses as you need by subnetting the private network.
+You may want to place your [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) deployment on a private network, then route requests to PCF from a router or a load balancer on a public network. Isolating PCF in this way increases security and allows you to use as many IP addresses as you need by subnetting the private network.
 
-One way to accomplish this is to configure Network Address Translation (NAT) on a VM. The following example explains how to set up a virtual CentOS NAT box in vSphere, and use that to isolate a Pivotal CF deployment.
+One way to accomplish this is to configure Network Address Translation (NAT) on a VM. The following example explains how to set up a virtual CentOS NAT box in vSphere, and use that to isolate a PCF deployment.
 
 ## <a id='deploy_centos'></a>Step 1: Deploy a CentOS image to vSphere ##
 
@@ -111,7 +111,7 @@ Connect to vCenter using the vSphere client. You will assign two network adapter
 </pre>
 ## <a id='deploy_cf'></a> Step 3: Deploy the Ops Manager VM Template in the private network using the internal IP address ##
 
-1. Download Pivotal CF from the Pivotal Network at [https://network.pivotal.io/products/pivotal-cf](https://network.pivotal.io/products/pivotal-cf).
+1. Download PCF from the Pivotal Network at [https://network.pivotal.io/products/pivotal-cf](https://network.pivotal.io/products/pivotal-cf).
 
 2. Unzip the downloaded file.
 
