@@ -12,5 +12,6 @@ This guide covers networking and user management for [Pivotal Cloud Foundry](htt
 * [Configuring PCF SSL Termination](./ssl-term.html)
 * [Changing the Quota Plan of an Organization with cf CLI](./change-quota-plan.html)
 * [Identifying Elastic Runtime Jobs Using vCenter](./id-jobs.html)
+* [Understanding the Effects of Single Components on a PCF Upgrade](./single-component.html)
 * [Configuring Single Sign-On](./sso.html)
 * [Getting Started with the Notifications Service](./notifications.html)
