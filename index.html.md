@@ -14,4 +14,5 @@ This guide covers networking and user management for [Pivotal Cloud Foundry](htt
 * [Identifying Elastic Runtime Jobs Using vCenter](./id-jobs.html)
 * [Understanding the Effects of Single Components on a PCF Upgrade](./single-component.html)
 * [Configuring Single Sign-On](./sso.html)
+* [Configuring LDAP](./ldap-uaa.html)
 * [Getting Started with the Notifications Service](./notifications.html)
