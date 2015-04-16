@@ -73,6 +73,16 @@ This must include one of the following protocols:
     For example, a domain named "cloud.example.com" typically uses the following
 	LDAP Group Search Base: `ou=Groups,dc=example,dc=com`
 <br /><br />
+	Follow the instructions in [Granting Admin Permissions to an LDAP
+	Group](../adminguide/uaa-user-management.html#ldap-group) in _Creating and
+	Managing Users with the UAA CLI (UAAC)_ to map the groups under this search
+	base to Admin roles in Pivotal Cloud Foundry.
+<br /><br />
+    You must use the Cloud Foundry command line interface (cf CLI) to map other 
+	roles in Pivotal Cloud Foundry to individual users. See [Creating and 
+	Managing Users with the cf CLI](../adminguide/cli-user-management.html) for 
+	more information.
+<br /><br />
     * **LDAP Group Search Filter**: A string that defines LDAP Group search
 	criteria. The standard value is `member={0}`.
 
