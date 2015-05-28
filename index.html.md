@@ -16,3 +16,4 @@ This guide covers networking and user management for [Pivotal Cloud Foundry](htt
 * [Configuring Single Sign-On](./sso.html)
 * [Configuring LDAP](./ldap-uaa.html)
 * [Getting Started with the Notifications Service](./notifications.html)
+* [Switching Application Domains](./switching-domains.html)
