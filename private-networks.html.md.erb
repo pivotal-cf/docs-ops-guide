@@ -2,17 +2,26 @@
 title: Isolating a PCF Deployment with a Private Network
 ---
 
-You may want to place your [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) deployment on a private network, then route requests to PCF from a router or a load balancer on a public network. Isolating PCF in this way increases security and allows you to use as many IP addresses as you need by subnetting the private network.
+You may want to place your [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) deployment on a
+private network, then route requests to PCF from a router or a load balancer on
+a public network.
+Isolating PCF in this way increases security and allows you to use as many IP
+addresses as you need by subnetting the private network.
 
-One way to accomplish this is to configure Network Address Translation (NAT) on a VM. The following example explains how to set up a virtual CentOS NAT box in vSphere, and use that to isolate a PCF deployment.
+One way to accomplish this is to configure Network Address Translation (NAT) on
+a VM.
+The following example explains how to set up a virtual CentOS NAT box in
+vSphere, and use that to isolate a PCF deployment.
 
 ## <a id='deploy_centos'></a>Step 1: Deploy a CentOS image to vSphere ##
 
-Connect to vCenter using the vSphere client. You will assign two network adapters to the VM. This results in the VM having two IP addresses:
+Connect to vCenter using the vSphere client.
+Assign two network adapters to the VM.
+This results in the VM having two IP addresses:
 
-- A public-facing IP address: This IP address connects to the public network VLAN (WAN) through `<GATEWAY_EXTERNAL_IP>`.
+- A public-facing IP address: This IP address connects to the public network VLAN (WAN) through `GATEWAY_EXTERNAL_IP`.
 
-- An internal VLAN IP address to communicate with other BOSH/Cloud Foundry components: This IP address connects to the private network (LAN) for the Ops Manager deployment using `<GATEWAY_INTERNAL_IP>`.
+- An internal VLAN IP address to communicate with other BOSH/Cloud Foundry components: This IP address connects to the private network (LAN) for the Ops Manager deployment using `GATEWAY_INTERNAL_IP`.
 
 1. Download the latest CentOS image from [http://wiki.centos.org/Download](http://wiki.centos.org/Download).
 
@@ -109,10 +118,14 @@ Connect to vCenter using the vSphere client. You will assign two network adapter
 	shutdown -r now
 
 </pre>
-## <a id='deploy_cf'></a> Step 3: Deploy the Ops Manager VM Template in the private network using the internal IP address ##
+## <a id='deploy_cf'></a> Step 3: Deploy the Ops Manager VM Template ##
 
-1. Download PCF from the Pivotal Network at [https://network.pivotal.io/products/pivotal-cf](https://network.pivotal.io/products/pivotal-cf).
+1. Download PCF from the Pivotal Network at
+[https://network.pivotal.io/products/pivotal-cf](https://network.pivotal.io/products/pivotal-cf).
 
 2. Unzip the downloaded file.
 
-3. Deploy the Ops Manager VM template according to the instructions in the [Getting Started Guide](../getstarted/index.html). Access the deployed VM at port 8443 using `https://<GATEWAY_EXTERNAL_IP>:8443`.
+3. Deploy the Ops Manager VM template in the private network using the internal
+IP address.
+For more information, see the [Getting Started Guide](../getstarted/index.html).
+Access the deployed VM at port 8443 using `https://GATEWAY_EXTERNAL_IP:8443`.
