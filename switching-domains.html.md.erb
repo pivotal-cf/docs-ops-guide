@@ -59,7 +59,7 @@ This topic describes how to change the domain of an existing [Pivotal Cloud Foun
 	<%= image_tag '../images/switching_domains/new_domain_confirmed1.png'%>
 
 1. Repeat the above steps for each space in your PCF installation except for the System org, beginning with logging into the org and space and ending with confirming the URL update. 
-	<p class='note'><strong>Note</strong>: Ordinarily the System org contains only PCF apps that perform utility functions for your installation. Pivotal does not recommend pushing apps to this org. However, if you have pushed apps to System, you must also repeat the above steps for these.</p>
+	<p class='note'><strong>Note</strong>: Ordinarily the System org contains only PCF apps that perform utility functions for your installation. Pivotal does not recommend pushing apps to this org. However, if you have pushed apps to System, you must also repeat the above steps for these apps.</p>
 
 
 1. Once you have confirmed that every app in every space has been mapped to the new domain, delete the old domain by running `cf delete-shared-domain OLD_DOMAIN_TO_DELETE`:
