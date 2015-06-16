@@ -1,0 +1,14 @@
+---
+title: Monitoring Instance Usage with the Accounting Report
+---
+
+The Accounting Report displays instance usage information for your PCF installation. To monitor your instance usage information, select **Accounting Report** from the left navigation.
+
+You can see the average and maximum app instances in use per month under **App Instance Statistics**. The Accounting Report calculates these values from the `start`, `stop`, and `scale` app usage events in Cloud Controller.
+
+The average is calculated from the past three months of your PCF installation. The maximum is the largest number of app instances in use for your installation in a month. This value is calculated from the point when 1.5 is installed.
+
+<p class="note"><strong>Note</strong>: The average and maximum app instances do not include activity in the <strong>system</strong> org.</p>
+
+<%= image_tag("accounting-report-v1.5.png") %>
+
