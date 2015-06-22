@@ -17,4 +17,4 @@ This guide covers networking and user management for [Pivotal Cloud Foundry](htt
 * [Configuring LDAP](./ldap-uaa.html)
 * [Getting Started with the Notifications Service](./notifications.html)
 * [Switching Application Domains](./switching-domains.html)
-* [Accounting Report](./accounting-report.html)
+* [Monitoring Instance Usage with the Accounting Report](./accounting-report.html)
