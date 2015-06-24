@@ -1,0 +1,118 @@
+---
+title: AWS Diego something something
+---
+# <a id='aws-windows'></a> AWS Windows 2012 Server #
+
+1. Open the AWS console, and click on EC2.
+
+	<%= image_tag("./diego-beta/image6.png") %>
+
+1. Step 2. Click on "Instances" in the EC2 home screen.
+
+	<%= image_tag("./diego-beta/image7.png") %>
+
+1. Click on "Launch Instance" in the Instances screen.
+
+	<%= image_tag("./diego-beta/image8.png") %>
+
+1. Select Microsoft Windows Server 2012 R2 Base.
+
+	<%= image_tag("./diego-beta/image9.png") %>
+
+1. Select an instance type.
+
+	It's not especially important what size we choose. In this example, we will  	choose m3.xlarge. Then, click "next".
+
+	<%= image_tag("./diego-beta/image10.png") %>
+
+1. Select a network and subnet. The network should the same VPC we have our micro bosh deployed in.
+
+	<%= image_tag("./diego-beta/image11.png") %>
+
+	The subnet should be be the same mask as the ip address of the job running 	etcd. For example, if we run `bosh vms`, we get:
+
+	```
+ VMs total: 30
+    Deployment `cf-greenhaus1-diego'
+    
+    Director task 975
+    
+    Task 975 done
+    
+    +--------------------+---------+---------------+------------+
+    | Job/index          | State   | Resource Pool | IPs        |
+    +--------------------+---------+---------------+------------+
+    | brain_z1/0         | running | large_z1      | 10.10.5.72 |
+    | cc_bridge_z1/0     | running | bridge_z1     | 10.10.5.76 |
+    | cell_windows_z1/0  | running | large_z1      | 10.10.5.73 |
+    | cell_z1/0          | running | large_z1      | 10.10.5.74 |
+    | consul_z1/0        | running | medium_z1     | 10.10.5.11 |
+    | etcd_z1/0          | running | medium_z1     | 10.10.5.10 |
+    | route_emitter_z1/0 | running | small_z1      | 10.10.5.77 |
+    +--------------------+---------+---------------+------------+
+    
+    VMs total: 7
+	```
+
+	The `etcd_z1/0` job has an ip address of 
+	`10.10.5.10`, so our subnet should be `10.10.5.0/24`.
+
+	Then, click "Configure Security Group".
+
+1. Create a new security group that allows traffic from anywhere. This is not recommended for production deployments, but is sufficient for development purposes. Then, click "review and launch".
+
+	<%= image_tag("./diego-beta/image12.png") %>
+
+1. Click "Launch".
+
+	<%= image_tag("./diego-beta/image13.png") %>
+
+1. Key pairs: You can select your existing "bosh" key pair, check the check box to acknowledge you have the private key, and click "Launch Instances".
+
+	<%= image_tag("./diego-beta/image14.png") %>
+
+1. Launch your instance. It will take a minute or two for the instance to launch, but when it does you can right click it in your list of instances and select "Get Windows Password". You can either upload your private key file or copy its contents into the dialog.
+
+	<%= image_tag("./diego-beta/image15.png") %>
+
+	<%= image_tag("./diego-beta/image16.png") %>
+
+	Copy this down somewhere.
+
+1. Access Windows machine using SSH tunneling. To do so, we will need to get the public IP of your bosh director, which you can find by searching for an instance named "micro". 
+
+	<%= image_tag("./diego-beta/image17.png") %>
+
+	You will also need the private IP of your Windows instance:
+
+	<%= image_tag("./diego-beta/image18.png") %>
+
+1. SSH Tunnel: At the command line, enter:
+
+	```
+	ssh -L 3389:INSTANCE_PRIVATE_IP:3389 vcap@DIRECTOR_IP
+	```
+
+	For example:
+
+	```
+	ssh -L 3389:10.10.5.80:3389 vcap@52.20.21.23
+	```
+
+1. Open Microsoft Remote Desktop and create a new remote desktop with the same properties shown, with the password you retrieved earlier.
+
+	<%= image_tag("./diego-beta/image19.png") %>
+
+1. Double click the remote desktop you just created to connect to it. You may see a certificate warning which you can ignore by clicking "Continue".
+
+	<%= image_tag("./diego-beta/image20.png") %>
+
+	It may take a minute to connect the first time as Windows sets up your user 	account.
+
+	Now return to the instructions, picking up from the step to install the MSI.
+
+## <a id='known-issues'></a>Known Issues ##
+
+* No support for Docker
+* No upgrades are supported between any versions of the components
+
