@@ -70,7 +70,7 @@ REDUNDANCY_ZONE=[Bosh redundancy zone this cell is a part of] ^
 LOGGREGATOR_SHARED_SECRET=[loggregator secret from your cf bosh deploy]
 </pre>
 
-## <a id='env-vars'></a>Environment variables
+## <a id='env-vars'></a>Environment Variables
 
 ### <a id='username'></a>CONTAINERIZER\_USERNAME / ADMIN_USERNAME
 Username with admin privileges on the windows machine where you are installing the MSI. The username may need to include .\ (e.g, .\Administrator), depending on how your Windows Server is configured.
@@ -82,7 +82,7 @@ Password for the CONTAINERIZER\_USERNAME / ADMIN_USERNAME account.
 External IP of the windows machine where you are installing the MSI.
 
 ### <a id='consul-ips'></a>CONSUL_IPS
-Go to the OpsManager -> Runtime tile -> Status -> consul job and copy the IP address(es).
+Navigate to OpsManager -> Runtime tile -> Status -> consul job and copy the IP address(es).
 
 ### <a id='etcd-clust'></a>ETCD\_CLUSTER
 Go to the OpsManager -> Diego tile -> Status -> etcd job and copy the IP address(es). This must be the URI to the etcd cluster, not IP addresses. Use this command to ensure you can connect to the etcd server from Ops Manager:
