@@ -1,7 +1,10 @@
 ---
-title: AWS Diego something something
+title: Deploying Diego Beta on AWS
 ---
-# <a id='aws-windows'></a> AWS Windows 2012 Server #
+
+This topic contains instructions for deploying Diego beta on AWS. See the [Diega beta](./diego-beta.html) topic for general information on Diego beta.
+
+# <a id='aws-windows'></a>Step 1: Install the AWS Windows 2012 Server #
 
 1. Open the AWS console, and click on EC2.
 
@@ -31,7 +34,7 @@ title: AWS Diego something something
 
 	The subnet should be be the same mask as the ip address of the job running 	etcd. For example, if we run `bosh vms`, we get:
 
-	```
+	<pre class='terminal'>
  VMs total: 30
     Deployment `cf-greenhaus1-diego'
     
@@ -52,7 +55,7 @@ title: AWS Diego something something
     +--------------------+---------+---------------+------------+
     
     VMs total: 7
-	```
+	</pre>
 
 	The `etcd_z1/0` job has an ip address of 
 	`10.10.5.10`, so our subnet should be `10.10.5.0/24`.
@@ -110,6 +113,169 @@ title: AWS Diego something something
 	It may take a minute to connect the first time as Windows sets up your user 	account.
 
 	Now return to the instructions, picking up from the step to install the MSI.
+
+## <a id='disable-windows-firewall'></a> Step 2: Configure your Windows Firewall ##
+
+Either disable the Windows firewall or configure it to allow the necessary traffic.
+
+## <a id='step3'></a> Step 3: Configure the Windows Server##
+
+Run the following configuration commands on the windows server:
+
+<pre class='terminal'>
+dism /online /Enable-Feature /FeatureName:IIS-WebServer /All /NoRestart
+dism /online /Enable-Feature /FeatureName:IIS-WebSockets /All /NoRestart
+dism /online /Enable-Feature /FeatureName:Application-Server-WebServer-Support /FeatureName:AS-NET-Framework /All /NoRestart
+dism /online /Enable-Feature /FeatureName:IIS-HostableWebCore /All /NoRestart
+
+netsh interface ipv4 add dnsserver "Ethernet" address=127.0.0.1 index=1
+netsh interface ipv4 add dnsserver "Ethernet" address=DNS-SERVER-IP index=2
+netsh interface ipv4 show dnsservers
+
+sc config Dnscache start= disabled
+sc stop Dnscache
+</pre>
+Replace `DNS-SERVER-IP` with your DNS IP address.
+
+## <a id='msi'></a> Step 4: Install the MSI ##
+
+Install the MSI by running a command that sets your environment variables. The command depends on the version of the MSI you are using.
+
+<p class='note'><strong>Note</strong>: In the examples, <code>^</code> represents a line return and is the equivalent of <code>\</code> in bash. The command a one-liner.</p>
+
+The following is an example command for `DiegoWindowsMSI_f0e5ac0.msi (0.1.0.alpha.47)`:
+
+<pre class='terminal'>
+msiexec /norestart /i DiegoWindowsMSI.msi ^
+CONTAINERIZER_USERNAME=.\Administrator ^
+CONTAINERIZER_PASSWORD=secretpassword ^
+EXTERNAL_IP=10.10.5.4 ^
+CONSUL_IPS=10.10.5.11,10.10.6.11,10.10.7.11 ^
+ETCD_CLUSTER=http://10.10.5.10:4001 ^
+CF_ETCD_CLUSTER=http://10.244.0.42:4001 ^
+MACHINE_NAME=WIN-RD649GEUDP1 ^
+STACK=windows2012R2 ^
+ZONE=0c35dfe1cf34ec47e2a2 ^
+LOGGREGATOR_SHARED_SECRET=loggregator-secret
+</pre>
+
+The following is an example command for `DiegoWindowsMSI_f0e5ac0.msi (0.1.0.alpha.47)`:
+
+<pre class='terminal'>
+msiexec /norestart /i DiegoWindowsMSI.msi ^
+ADMIN_USERNAME=.\Administrator ^
+ADMIN_PASSWORD=secretpassword ^
+EXTERNAL_IP=10.10.5.4 ^
+CONSUL_IPS=10.10.5.11,10.10.6.11,10.10.7.11 ^
+ETCD_CLUSTER=http://10.10.5.10:4001 ^
+CF_ETCD_CLUSTER=http://10.244.0.42:4001 ^
+MACHINE_NAME=WIN-RD649GEUDP1 ^
+STACK=windows2012R2 ^
+REDUNDANCY_ZONE=0c35dfe1cf34ec47e2a2 ^
+LOGGREGATOR_SHARED_SECRET=loggregator-secret
+</pre>
+
+## <a id='env-vars'></a>Environment Variables
+
+### <a id='username'></a>CONTAINERIZER\_USERNAME / ADMIN_USERNAME
+
+Username for your account with admin privileges on the Windows machine where you are installing the MSI.
+
+You might need to include `.\` when specifying the username, depending on how your Windows server is configured. For example: `.\Administrator`.
+
+### <a id='password'></a>CONTAINERIZER\_PASSWORD / ADMIN_PASSWORD
+
+Password for your account with admin privileges.
+
+### <a id='ext-ip'></a>EXTERNAL_IP
+
+External IP of the Windows machine where you are installing the MSI.
+
+### <a id='consul-ips'></a>CONSUL_IPS
+
+IP addresses of consul agents from Diego bosh deploy.
+
+Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic Runtime** tile, and select **Status**. Locate your **consul** job and copy the comma-separated list of IP addresses.
+
+### <a id='etcd-cluster'></a>ETCD\_CLUSTER
+
+URI for the Diego etcd cluster from cf bosh deploy.
+
+Navigate to your PCF Ops Manager dashboard, click the **Diego** tile, and select **Status**. Locate your **etcd** job and copy the IP addresses. Run the following command to ensure you can connect to the etcd server from Ops Manager:
+
+<pre class='terminal'>
+curl http://<etcd-server-ip>:4001/v2/keys/message -XPUT -d value="Hello diego"
+</pre>
+
+### <a id='cf-etcd-clust'></a>CF\_ETCD_CLUSTER
+
+URI to the Runtime cf etcd cluster from cf bosh deploy.
+
+Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic Runtime** tile, and select **Status**. Locate your **etcd** job and copy the IP addresses. This must be the URI to the cf etcd cluster, not IP addresses.
+
+### <a id='machine-name'></a>MACHINE_NAME
+
+Hostname of the machine you are installing the Windows MSI on.
+
+This name must be unique across the machines in your cluster.
+
+### <a id='stack'></a>STACK
+
+The name of the stack.
+
+This must be `windows2012R2`.
+
+### <a id='zone'></a>ZONE / REDUNDANCY_ZONE
+
+The Bosh redundancy zone this cell is a part of.
+
+To get this zone, navigate to **EC2 Dashboard>Instances** on your AWS Console. Select the instance name. The zone is separated from the name by a dash in the format `<YOUR-INSTANCE-NAME>-<YOUR-ZONE>`.
+
+For example, an EC2 instance name with `natspartition-abcde12345fedcb54321/0` would have a zone of `abcde12345fedcb54321`.
+
+### <a id='shared-secret'></a>LOGGREGATOR\_SHARED_SECRET
+
+The shared secret listed in your CF Runtime deployment / credentials tab, e.g.:
+
+From the PCF Ops Manager Installation Dashboard, click the **Pivotal Elastic Runtime** tile, and select **Credentials**. Find the **Doppler Server** job. The **Shared Secret Credentials** information is formatted as `XXXXXXXXXX / <YOUR-SHARED-SECRET>`, as shown in the image below.
+
+<%= image_tag("./diego-beta/image4.png") %>
+
+## <a id='confirm-deployment'></a> Step 5: Confirm Successful Deployment##
+
+After successful deployment, the following jobs are running:
+
+* Consul
+* Containerizer
+* Executor
+* GardenWindows
+* Rep
+
+## <a id='push-dot-net-app'></a> Step 6: Push a .Net application ##
+
+Clone the sample app Nora from [GitHub](https://github.com/pivotal-cf-experimental/nora/tree/master/assets/nora).
+
+Run the following command:
+
+<pre class='terminal'>
+./make_a_nora
+</pre>
+
+This script executes the commands below to push, configure, and start your application.
+
+<pre class='terminal'>
+cf push $APPNAME -s windows2012R2 -b https://github.com/ryandotsmith/null-buildpack.git --no-start
+cf set-env $APPNAME DIEGO_BETA true
+cf set-env $APPNAME DIEGO_RUN_BETA true
+cf enable-diego $APPNAME
+cf start $APPNAME
+</pre>
+
+<p class='note'><strong>Note</strong>: <code>cf push</code> won’t use the given buildpack, but it’s still necessary to specify one at this point (just use the null-buildpack). The <a href='https://github.com/ryandotsmith/null-buildpack'>null buildpack</a> is not available on PCF by default.
+</p>
+
+Run `cf apps` to confirm that your app is in the `started` state.
+
 
 ## <a id='known-issues'></a>Known Issues ##
 
