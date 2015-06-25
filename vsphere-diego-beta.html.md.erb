@@ -73,19 +73,19 @@ LOGGREGATOR_SHARED_SECRET=[loggregator secret from your cf bosh deploy]
 ## <a id='env-vars'></a>Environment Variables
 
 ### <a id='username'></a>CONTAINERIZER\_USERNAME / ADMIN_USERNAME
-Username with admin privileges on the windows machine where you are installing the MSI. The username may need to include .\ (e.g, .\Administrator), depending on how your Windows Server is configured.
+Username for an account with admin privileges on the Windows machine where you are installing the MSI. You might need to include `.\` when specifying the username, depending on how your Windows server is configured. For example: `.\Administrator`.
 
 ### <a id='password'></a>CONTAINERIZER\_PASSWORD / ADMIN_PASSWORD
-Password for the CONTAINERIZER\_USERNAME / ADMIN_USERNAME account.
+Password for your admin account.
 
 ### <a id='ext-ip'></a>EXTERNAL_IP
-External IP of the windows machine where you are installing the MSI.
+External IP of the Windows machine where you are installing the MSI.
 
 ### <a id='consul-ips'></a>CONSUL_IPS
-Navigate to OpsManager -> Runtime tile -> Status -> consul job and copy the IP address(es).
+Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic Runtime** tile, and select **Status**. Locate your consul job and copy the IP addresses specified.
 
 ### <a id='etcd-clust'></a>ETCD\_CLUSTER
-Go to the OpsManager -> Diego tile -> Status -> etcd job and copy the IP address(es). This must be the URI to the etcd cluster, not IP addresses. Use this command to ensure you can connect to the etcd server from Ops Manager:
+Navigate to your PCF Ops Manager dashboard, click the **Diego** tile -> Status -> etcd job and copy the IP address(es). This must be the URI to the etcd cluster, not IP addresses. Use this command to ensure you can connect to the etcd server from Ops Manager:
 
 ```
 curl http://<etcd-server-ip>:4001/v2/keys/message -XPUT -d value="Hello diego"
