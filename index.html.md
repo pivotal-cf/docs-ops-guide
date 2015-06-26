@@ -18,3 +18,4 @@ This guide covers networking and user management for [Pivotal Cloud Foundry](htt
 * [Getting Started with the Notifications Service](./notifications.html)
 * [Switching Application Domains](./switching-domains.html)
 * [Monitoring Instance Usage with the Accounting Report](./accounting-report.html)
+* [Diego Beta](./diego-beta.html)
