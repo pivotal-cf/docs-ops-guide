@@ -75,7 +75,7 @@ Application developers can choose to deploy their application either to the exis
 
 You can download these components from [PivNet](https://network.pivotal.io/products/) by selecting **Diego for PCF (Beta)**.
 
-You must be a member of one of the following groups to access **Diego for PCF (Beta)**:
+You must be a member of one of the following groups to access the service:
 
   * Pivotal Field Engineering
   * Pivotal internal early access
@@ -95,7 +95,7 @@ Contact [support](https://support.pivotal.io) if you need access to one of these
 
 1. Click **Save**.
 
-<%= image_tag("./diego-beta/image2.png") %>
+<%= image_tag("./diego-beta/enable-diego-docker.png") %>
 
 ### <a id='docker-support'></a>Step 2: Install Diego for PCF ###
 
@@ -108,8 +108,7 @@ Contact [support](https://support.pivotal.io) if you need access to one of these
 <p class='note'><strong>Note</strong>: The default configurations are sufficient for trying out Diego beta, but you can change them as needed.
 </p>
 
+Depending on your IaaS, refer to one of the following topics to complete deploying Diego Beta:
 
-After this point, do stuff specific to your backend:
-
-  * [vsphere](vsphere-diego-beta.html)
-  * [aws](aws-diego-beta.html)
+  * [Deploying Diego Beta on vSphere](vsphere-diego-beta.html)
+  * [Deploying Diego Beta on AWS](aws-diego-beta.html)
