@@ -1,0 +1,154 @@
+---
+title: Deploying Diego Beta on AWS
+---
+
+This topic contains instructions for deploying Diego beta on AWS. See the [Diego beta](./diego-beta.html) topic for general information on Diego beta.
+
+<p class='note'><strong>Note</strong>: For instructions on how to deploy Diego beta on vSphere, see the <a href='./vsphere-diego-beta.html'>Deploying Diego Beta on vSphere</a> topic.</p>
+
+## <a id='aws-windows'></a>Step 1: Install the AWS Windows 2012 Server ##
+
+1. Open the AWS console, and click **EC2** to access your EC2 Dashboard.
+
+	<%= image_tag("./diego-beta/aws-console-home.png") %>
+
+1. Select **Instances**.
+
+	<%= image_tag("./diego-beta/ec2-dashboard.png") %>
+
+1. Click **Launch Instance**.
+
+	<%= image_tag("./diego-beta/ec2-instances.png") %>
+
+1. Locate the **Microsoft Windows Server 2012 R2 Base** AMI and click **Select**.
+
+	<%= image_tag("./diego-beta/aws-ami.png") %>
+
+1. Select an instance type of your choosing, then click **Next: Configure Instance Details**.
+
+	<%= image_tag("./diego-beta/instance-type.png") %>
+
+1. Select a network and subnet.
+	* **Network**: Select the VPC you deployed your microbosh in.
+	* **Subnet**: Select the IP address of the job running etcd. Run `bosh vms` and locate the IP address of the `etcd_z1/0` job, as shown in the example below:
+
+	<pre class='terminal'>
+    VMs total: 30
+    Deployment 'cf-greenhaus1-diego'
+    
+    Director task 975
+    
+    Task 975 done
+    
+    +--------------------+---------+---------------+------------+
+    | Job/index          | State   | Resource Pool | IPs        |
+    +--------------------+---------+---------------+------------+
+    | brain_z1/0         | running | large_z1      | 10.10.5.72 |
+    | cc_bridge_z1/0     | running | bridge_z1     | 10.10.5.76 |
+    | cell_windows_z1/0  | running | large_z1      | 10.10.5.73 |
+    | cell_z1/0          | running | large_z1      | 10.10.5.74 |
+    | consul_z1/0        | running | medium_z1     | 10.10.5.11 |
+    | etcd_z1/0          | running | medium_z1     | 10.10.5.10 |
+    | route_emitter_z1/0 | running | small_z1      | 10.10.5.77 |
+    +--------------------+---------+---------------+------------+
+    
+    VMs total: 7
+	</pre>
+
+	<%= image_tag("./diego-beta/instance-details.png") %>
+
+	Then, click **6. Configure Security Group**.
+
+1. Create a new security group that allows traffic from anywhere, as shown in the image below. Click **Review and Launch**.
+
+	<p class='note'><strong>Note</strong>: A security group with this configuration is not recommended for production deployments, but is sufficient for development purposes.</p>
+
+	<%= image_tag("./diego-beta/config-sec-group.png") %>
+
+1. Click **Launch**.
+
+	<%= image_tag("./diego-beta/review-launch.png") %>
+
+1. In the dialog box, select your existing bosh key pair and select the checkbox to acknowledge that you have access to the `bosh.pem` private key file. Click **Launch Instances**.
+
+	<%= image_tag("./diego-beta/key-pair.png") %>
+
+1. Once your instance launches, right click it in your list of instances and click **Get Windows Password**. Upload your `bosh.pem` private key file or copy its contents into the dialog.
+
+	<%= image_tag("./diego-beta/windows-password-key-pair.png") %>
+
+1. Click **Decrypt Password**.
+
+	<%= image_tag("./diego-beta/windows-password.png") %>
+
+	Save your decrypted password in a secure location.
+
+1. Access your Windows machine using SSH tunneling as the following command shows.
+
+	<pre class='terminal'>
+	ssh -L 3389:PRIVATE-IP:3389 vcap@PUBLIC-IP
+	</pre>
+
+	Replace `PUBLIC-IP` and `PRIVATE-IP` with values from your instance.
+
+	Get the **Public IP** of your bosh director by searching for an instance named "micro".
+	
+	<%= image_tag("./diego-beta/director-public-ip.png") %>
+	
+	Get the **Private IP** of your Windows instance.
+
+	<%= image_tag("./diego-beta/windows-private-ip.png") %>
+
+	Example SSH Tunnel command:
+
+	<pre class='terminal'>
+	ssh -L 3389:10.10.5.80:3389 vcap@52.20.21.23
+	</pre>
+
+1. Open Microsoft Remote Desktop. Using the password you decrypted in your AWS Console, create a new remote desktop with the properties shown below.
+
+	<%= image_tag("./diego-beta/create-remote-desktop.png") %>
+
+1. Double click the remote desktop you created to connect to it. If you see the following certificate warning, ignore it by clicking **Continue**.
+
+	<%= image_tag("./diego-beta/cert-warning.png") %>
+
+## <a id='msi'></a> Step 2: Install the MSI ##
+
+<%= partial 'msi-env-vars' %>
+
+## <a id='confirm-deployment'></a> Step 3: Confirm Successful Deployment ##
+
+After successful deployment, the following jobs are running:
+
+* Consul
+* Containerizer
+* Executor
+* GardenWindows
+* Rep
+
+## <a id='push-dot-net-app'></a> Step 4: Push a .Net application ##
+
+Clone the sample app Nora from [GitHub](https://github.com/pivotal-cf-experimental/nora/tree/master/assets/nora).
+
+Run the following command:
+
+<pre class='terminal'>
+./make_a_nora
+</pre>
+
+This script executes the commands below to push, configure, and start your application.
+
+<pre class='terminal'>
+cf push $APPNAME -s windows2012R2 -b https://github.com/ryandotsmith/null-buildpack.git --no-start
+cf set-env $APPNAME DIEGO_BETA true
+cf set-env $APPNAME DIEGO_RUN_BETA true
+cf enable-diego $APPNAME
+cf start $APPNAME
+</pre>
+
+<p class='note'><strong>Note</strong>: <code>cf push</code> does not use the given buildpack, but since it is necessary to specify one at this point, specify the null-buildpack as shown in the example.
+</p>
+
+Run `cf apps` to confirm that your app is in the `started` state.
+
