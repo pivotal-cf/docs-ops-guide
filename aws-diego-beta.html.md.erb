@@ -24,12 +24,12 @@ This topic contains instructions for deploying Diego beta on AWS. See the [Diego
 
 	<%= image_tag("./diego-beta/aws-ami.png") %>
 
-1. Select an instance type of your choosing, then click **Next: Configure Instance Details**.
+1. Select an instance type, then click **Next: Configure Instance Details**.
 
 	<%= image_tag("./diego-beta/instance-type.png") %>
 
 1. Select a network and subnet.
-	* **Network**: Select the VPC you deployed your microbosh in.
+	* **Network**: Select the VPC in which you deployed your microbosh.
 	* **Subnet**: Select the IP address of the job running etcd. Run `bosh vms` and locate the IP address of the `etcd_z1/0` job, as shown in the example below:
 
 	<pre class='terminal'>
@@ -83,7 +83,7 @@ This topic contains instructions for deploying Diego beta on AWS. See the [Diego
 
 	Save your decrypted password in a secure location.
 
-1. Access your Windows machine using SSH tunneling as the following command shows.
+1. Access your Windows machine using SSH tunneling as the following command shows:
 
 	<pre class='terminal'>
 	ssh -L 3389:PRIVATE-IP:3389 vcap@PUBLIC-IP
