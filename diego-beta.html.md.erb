@@ -6,7 +6,7 @@ This topic describes how to install Diego and .Net beta releases.
 
 <p class='note'><strong>Note</strong>: This is an beta release. It is intended for demonstration purposes for customers. There are no guarantees on being able to upgrade to subsequent General Availability releases. Pivotal does not recommend running Diego beta in production.</p>
 
-<%= image_tag("./diego-beta/image1.jpg") %>
+<%= image_tag("./diego-beta/install-dashboard.png") %>
 
 ## <a id='overview'></a>Overview ##
 
@@ -33,7 +33,7 @@ Application developers can choose to deploy their application either to the exis
 			Ops Manager
 		</td>
 		<td>
-			&ge; 1.4.2
+			1.5.x.y
 		</td>
 		<td>
 			Ops Manager must be running on Amazon Web Services (AWS) or vSphere.
@@ -44,8 +44,7 @@ Application developers can choose to deploy their application either to the exis
 			Elastic Runtime
 		</td>
 		<td>
-			1.5.0.alpha.735.6255c2d
-		</td>
+			1.5.x.y
 		<td>
 			Contains <a href='https://github.com/cloudfoundry/cf-release/releases/tag/v207'>CF Release 207</a>
 		</td>
@@ -55,10 +54,10 @@ Application developers can choose to deploy their application either to the exis
 			Diego for PCF
 		</td>
 		<td>
-			0.1.0.alpha.50.2ba66c
+			0.2.0
 		</td>
 		<td>
-			Contains <a href='https://github.com/cloudfoundry-incubator/diego-release/commit/bbdd0d01a2bafb2f7772a0f088262858bccd4620'>Release 0.1099.0</a>
+			Contains <a href='https://github.com/cloudfoundry-incubator/diego-release/commit/f7b15f8da536eee7be696896890943dbc6202242'>Release 0.1198.0</a>
 		</td>
 	</tr>
 	<tr>
@@ -71,17 +70,21 @@ Application developers can choose to deploy their application either to the exis
 			Needed to push applications or Docker images to Diego instead of the existing DEAs.
 		</td>
 	</tr>
+	<tr>
+		<td>
+			SSH Key
+		</td>
+		<td>
+		</td>
+		<td>
+			Refer to the <a href='#ssh-key'>Provide an SSH Key</a> section for instructions.
+		</td>
+	</tr>
 </table>
 
+<p class='note'><strong>Note</strong>: You must use this exact combination of versions. These versions have been tested together and are correctly working as of 7 July 2015.</p>
+
 You can download these components from [PivNet](https://network.pivotal.io/products/) by selecting **Diego for PCF (Beta)**.
-
-You must be a member of one of the following groups to access the service:
-
-  * Pivotal Field Engineering
-  * Pivotal internal early access
-  * Diego Beta
-
-Contact [support](https://support.pivotal.io) if you need access to one of these groups.
 
 ## <a id='installation'></a>Installation ##
 
@@ -107,6 +110,30 @@ Contact [support](https://support.pivotal.io) if you need access to one of these
 
 <p class='note'><strong>Note</strong>: The default configurations are sufficient for trying out Diego beta, but you can change them as needed.
 </p>
+
+### <a id='ssh-key'></a>Step 3: Provide an SSH Key ###
+
+You must generate and provide an SSH key for host verification in order for a successful deployment.
+
+1. Generate an SSH key by running the following command:
+
+    <pre class='terminal'>
+    $ ssh-keygen
+    </pre>
+
+1. From the PCF Ops Manager Installation Dashboard, click **Diego for PCF**.
+
+1. Select the **Diego** tab and copy the contents of the generated file into the **SSH Proxy Private Key** box, as the image below shows.
+
+<%= image_tag("./diego-beta/ssh-key.png") %>
+
+## <a id='known-issues'></a>Important Caveats and Known Issues ##
+
+* No upgrades are supported between versions of the Diego tile.
+* Diego SSH support has not been tested or verified on this release.
+* If your environment does not have internet access, you must disable the Diego Acceptance Test errand before deployment.
+
+## <a id='complete-installation'></a>Complete Deploying Diego Beta ##
 
 Depending on your IaaS, refer to one of the following topics to complete deploying Diego Beta:
 
