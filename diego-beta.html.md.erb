@@ -2,17 +2,19 @@
 title: Diego Beta
 ---
 
+_This is a beta release intended for demonstration purposes for customers. Pivotal does not recommend running Diego beta in production. There are no guarantees on being able to upgrade to subsequent General Availability releases._
+
 This topic describes how to install Diego and .Net beta releases.
 
-<p class='note'><strong>Note</strong>: This is a beta release. It is intended for demonstration purposes for customers. There are no guarantees on being able to upgrade to subsequent General Availability releases. Pivotal does not recommend running Diego beta in production.</p>
-
-<%= image_tag("./diego-beta/install-dashboard.png") %>
+<p class='note'><strong>Note</strong>: You must delete the <strong>Diego for PCF</strong> tile from your Ops Manager Installation dashboard before upgrading between versions of Elastic Runtime.</p>
 
 ## <a id='overview'></a>Overview ##
 
 You can use the **Diego for PCF** beta tile to deploy Diego alongside your **Pivotal Elastic Runtime** tile. This allows you to test the new Diego functionality with your installation. This includes support for .Net and Docker.
 
-Application developers can choose to deploy their application either to the existing Elastic Runtime or to Diego beta.
+Application developers can choose to deploy their application either to the existing Elastic Runtime or to Diego Beta.
+
+<%= image_tag("./diego-beta/install-dashboard.png") %>
 
 ## <a id='prerequisites'></a>Requirements ##
 
@@ -86,7 +88,7 @@ Application developers can choose to deploy their application either to the exis
 
 You can download these components from [PivNet](https://network.pivotal.io/products/):
 
-  * [Diego for PCF (Beta)](https://www.google.com/url?q=https%3A%2F%2Fnetwork.pivotal.io%2Fproducts%2Fpivotal-diego-pcf&sa=D&sntz=1&usg=AFQjCNHO0A2a-ietqCA5eWE4QY8t8e09aA)
+  * [Diego for PCF (Beta)](https://network.pivotal.io/products/pivotal-diego-pcf)
   * [Elastic Runtime](https://network.pivotal.io/products/pivotal-cf#/releases/282)
   * [Ops Manager](https://network.pivotal.io/products/pivotal-cf#/releases/281)
 
@@ -106,9 +108,9 @@ You can download these components from [PivNet](https://network.pivotal.io/produ
 
 ### <a id='docker-support'></a>Step 2: Install Diego for PCF ###
 
-1. Download the tile from [PivNet](https://network.pivotal.io/).
+1. Download the tile from [PivNet](https://network.pivotal.io/pivotal-diego-pcf).
 
-1. From the PCF Ops Manager Installation Dashboard, click **Import a Product** to upload the Diego beta tile.
+1. From the PCF Ops Manager Installation Dashboard, click **Import a Product** to upload the downloaded `.pivotal` file.
 
 1. Click **Apply Changes**.
 
@@ -125,17 +127,21 @@ You must generate and provide an SSH key for host verification in order for a su
     $ ssh-keygen
     </pre>
 
+    This generates two files. You need to copy the private key file, which does not have the `.pub` extension.
+
 1. From the PCF Ops Manager Installation Dashboard, click **Diego for PCF**.
 
-1. Select the **Diego** tab and copy the contents of the generated file into the **SSH Proxy Private Key** box, as the image below shows.
+1. Select the **Diego** tab and copy the contents of the generated private key file into the **SSH Proxy Private Key** box, as the image below shows:
 
-<%= image_tag("./diego-beta/ssh-key.png") %>
+    <%= image_tag("./diego-beta/ssh-key.png") %>
 
 ## <a id='known-issues'></a>Important Caveats and Known Issues ##
 
 * No upgrades are supported between versions of the Diego tile.
 * Diego SSH support has not been tested or verified on this release.
-* If your environment does not have internet access, you must disable the Diego Acceptance Test errand before deployment.
+* If your environment does not have internet access, you must disable the **Acceptance Tests** errand checkbox in the **Errands** tab of the **Diego for PCF** tile before deployment, as the image below shows:
+
+    <%= image_tag("./diego-beta/disable-acceptance-tests.png") %>
 
 ## <a id='complete-installation'></a>Complete Deploying Diego Beta for Windows ##
 
