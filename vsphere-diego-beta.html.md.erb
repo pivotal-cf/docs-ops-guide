@@ -67,7 +67,7 @@ cf enable-diego $APPNAME
 cf start $APPNAME
 </pre>
 
-<p class='note'><strong>Note</strong>: <code>cf push</code> won’t use the given buildpack, but it’s still necessary to specify one at this point (just use the null-buildpack). The <a href='https://github.com/ryandotsmith/null-buildpack'>null buildpack</a> is not available on PCF by default.
+<p class='note'><strong>Note</strong>: <code>cf push</code> does not use the given buildpack. It is necessary to specify one at this point, so use the null-buildpack. The <a href='https://github.com/ryandotsmith/null-buildpack'>null buildpack</a> is not available on PCF by default.
 </p>
 
 Run `cf apps` to confirm that your app is in the `started` state.

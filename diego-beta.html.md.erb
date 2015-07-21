@@ -2,15 +2,15 @@
 title: Diego Beta Overview
 ---
 
-_This is a beta release intended for demonstration purposes for customers. Pivotal does not recommend running Diego beta in production. There are no guarantees on being able to upgrade to subsequent General Availability releases._
+_This is a beta release intended for demonstration purposes for customers. Pivotal does not recommend running Diego beta in production. There are no guarantees that you can upgrade to subsequent General Availability releases._
 
-This topic describes how to install Diego and .Net beta releases.
+This topic describes how to install Diego and .NET beta releases. Diego is the next-generation container scheduler for Cloud Foundry Elastic Runtime.
 
 <p class='note'><strong>Note</strong>: You must delete the <strong>Diego for PCF</strong> tile from your Ops Manager Installation dashboard before upgrading between versions of Elastic Runtime.</p>
 
 ## <a id='overview'></a>Overview ##
 
-You can use the **Diego for PCF** beta tile to deploy Diego alongside your **Pivotal Elastic Runtime** tile. This allows you to test the new Diego functionality with your installation. This includes support for .Net and Docker.
+You can use the Diego for PCF tile to deploy Diego alongside your <a href="https://network.pivotal.io/products/elastic-runtime">Elastic Runtime</a> tile. This tile allows you to test the new Diego functionality with your installation and includes support for both .NET and Docker.
 
 Application developers can choose to deploy their application either to the existing Elastic Runtime or to Diego Beta.
 
@@ -130,7 +130,7 @@ You can download these components from [PivNet](https://network.pivotal.io/produ
 
 ### <a id='ssh-key'></a>Step 3: Provide an SSH Key ###
 
-You must generate and provide an SSH key for host verification in order for a successful deployment.
+You must generate and provide an SSH key for host verification.
 
 1. Generate an SSH key by running the following command:
 
@@ -138,9 +138,9 @@ You must generate and provide an SSH key for host verification in order for a su
     $ ssh-keygen
     </pre>
 
-    This generates two files. You need to copy the private key file, which does not have the `.pub` extension.
+    This generates two files. Copy the private key file, which does not have the `.pub` extension.
 
-1. From the PCF Ops Manager Installation Dashboard, click **Diego for PCF**.
+1. From the Ops Manager Installation Dashboard, click **Diego for PCF**.
 
 1. Select the **Diego** tab and copy the contents of the generated private key file into the **SSH Proxy Private Key** box, as the image below shows:
 
@@ -154,7 +154,7 @@ You must generate and provide an SSH key for host verification in order for a su
 
     <%= image_tag("./diego-beta/disable-acceptance-tests.png") %>
 
-## <a id='complete-installation'></a>Complete Deploying Diego Beta for Windows ##
+## <a id='complete-installation'></a>Finish Deploying Diego Beta for Windows ##
 
 Depending on your IaaS, refer to one of the following topics to complete deploying Diego Beta for Windows:
 
