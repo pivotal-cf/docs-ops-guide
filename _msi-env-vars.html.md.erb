@@ -52,13 +52,13 @@ External IP of the Windows machine where you are installing the MSI.
 
 ### <a id='consul-ips'></a>CONSUL_IPS
 
-IP addresses of consul agents from Diego bosh deploy.
+IP addresses of consul agents from Diego BOSH deployment.
 
 Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic Runtime** tile, and select **Status**. Locate your **consul** job and copy the comma-separated list of IP addresses.
 
 ### <a id='etcd-cluster'></a>ETCD\_CLUSTER
 
-URI for the Diego etcd cluster from cf bosh deploy.
+URI for the Diego etcd cluster from your Cloud Foundry BOSH deployment.
 
 Navigate to your PCF Ops Manager dashboard, click the **Diego** tile, and select **Status**. Locate your **etcd** job and copy the IP addresses. Run the following command to ensure you can connect to the etcd server from Ops Manager:
 
@@ -68,7 +68,7 @@ curl http://<etcd-server-ip>:4001/v2/keys/message -XPUT -d value="Hello diego"
 
 ### <a id='cf-etcd-clust'></a>CF\_ETCD_CLUSTER
 
-URI to the Runtime cf etcd cluster from cf bosh deploy.
+URI to the Runtime cf etcd cluster from Cloud Foundry BOSH deployment.
 
 Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic Runtime** tile, and select **Status**. Locate your **etcd** job and copy the IP addresses. This must be the URI to the cf etcd cluster, not IP addresses.
 
@@ -86,7 +86,7 @@ This must be `windows2012R2`.
 
 ### <a id='zone'></a>ZONE / REDUNDANCY_ZONE
 
-The Bosh redundancy zone this cell is a part of.
+The BOSH redundancy zone this cell is a part of.
 
 To get this zone, navigate to **EC2 Dashboard>Instances** on your AWS Console. Select the instance name. The zone is separated from the name by a dash in the format `<YOUR-INSTANCE-NAME>-<YOUR-ZONE>`.
 
