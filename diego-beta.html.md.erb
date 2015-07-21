@@ -6,7 +6,7 @@ _This is a beta release intended for demonstration purposes for customers. Pivot
 
 This topic describes how to install Diego and .NET beta releases. Diego is the next-generation container scheduler for Cloud Foundry Elastic Runtime.
 
-<p class='note'><strong>Note</strong>: You must delete the <strong>Diego for PCF</strong> tile from your Ops Manager Installation dashboard before upgrading between versions of Elastic Runtime.</p>
+<p class='note'><strong>Note</strong>: You must delete the <a href="https://network.pivotal.io/products/pivotal-diego-pcf">Diego for PCF (Beta)</a> tile from your Ops Manager Installation dashboard before upgrading between versions of Elastic Runtime.</p>
 
 ## <a id='overview'></a>Overview ##
 
@@ -107,7 +107,7 @@ You can download these components from [PivNet](https://network.pivotal.io/produ
 
 ### <a id='docker-support'></a>Step 1: Enable Docker Support ###
 
-1. From your PCF Ops Manager Installation Dashboard, click the **Pivotal Elastic Runtime** tile.
+1. From your PCF Ops Manager Installation Dashboard, click the Elastic Runtime tile.
 
 1. Select the **Cloud Controller** tab.
 
@@ -148,9 +148,9 @@ You must generate and provide an SSH key for host verification.
 
 ## <a id='known-issues'></a>Important Caveats and Known Issues ##
 
-* No upgrades are supported between versions of the Diego tile.
+* No upgrades are supported between versions of the Diego for PCF tile.
 * Diego SSH support has not been tested or verified on this release.
-* If your environment does not have internet access, you must disable the **Acceptance Tests** errand checkbox in the **Errands** tab of the **Diego for PCF** tile before deployment, as the image below shows:
+* If your environment does not have internet access, you must disable the **Acceptance Tests** errand checkbox in the **Errands** tab of the Diego for PCF tile before deployment, as the image below shows:
 
     <%= image_tag("./diego-beta/disable-acceptance-tests.png") %>
 
