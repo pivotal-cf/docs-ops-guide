@@ -1,30 +1,13 @@
 Install the MSI by running a command that sets your environment variables. The command depends on the version of the MSI you are using.
 
-<p class='note'><strong>Note</strong>: In the examples, <code>^</code> represents a line return and is the equivalent of <code>\</code> in bash. The command a one-liner.</p>
+<p class='note'><strong>Note</strong>: The following example assumes that the MSI was downloaded to <code>C:\diego.msi</code>.</p>
 
 The following is an example command for `DiegoWindowsMSI_f0e5ac0.msi (0.1.0.alpha.47)`:
 
 <pre class='terminal'>
-msiexec /norestart /i DiegoWindowsMSI.msi ^
-CONTAINERIZER_USERNAME=.\Administrator ^
-CONTAINERIZER_PASSWORD=secretpassword ^
-EXTERNAL_IP=10.10.5.4 ^
-CONSUL_IPS=10.10.5.11,10.10.6.11,10.10.7.11 ^
-ETCD_CLUSTER=http://10.10.5.10:4001 ^
-CF_ETCD_CLUSTER=http://10.244.0.42:4001 ^
-MACHINE_NAME=WIN-RD649GEUDP1 ^
-STACK=windows2012R2 ^
-ZONE=0c35dfe1cf34ec47e2a2 ^
-LOGGREGATOR_SHARED_SECRET=loggregator-secret
-</pre>
-
-The following is an example command for `DiegoWindowsMSI_f0e5ac0.msi (0.1.0.alpha.47)`:
-
-<pre class='terminal'>
-msiexec /norestart /i DiegoWindowsMSI.msi ^
-ADMIN_USERNAME=.\Administrator ^
+msiexec /norestart /i c:\diego.msi ^
+ADMIN_USERNAME=Administrator ^
 ADMIN_PASSWORD=secretpassword ^
-EXTERNAL_IP=10.10.5.4 ^
 CONSUL_IPS=10.10.5.11,10.10.6.11,10.10.7.11 ^
 ETCD_CLUSTER=http://10.10.5.10:4001 ^
 CF_ETCD_CLUSTER=http://10.244.0.42:4001 ^
@@ -34,29 +17,17 @@ REDUNDANCY_ZONE=0c35dfe1cf34ec47e2a2 ^
 LOGGREGATOR_SHARED_SECRET=loggregator-secret
 </pre>
 
-## <a id='env-vars'></a>Environment Variables
+## <a id='env-vars'></a>Environment Variables for Ops Manager Deployments
 
-### <a id='username'></a>CONTAINERIZER\_USERNAME / ADMIN_USERNAME
+If you used Ops Manager to deploy Diego beta, complete the following steps to find the values that you need for the `misexec` command:
 
-Username for your account with admin privileges on the Windows machine where you are installing the MSI.
+###<a id='opsman-consul-ips'></a>CONSUL_IPS
 
-You might need to include `.\` when specifying the username, depending on how your Windows server is configured. For example: `.\Administrator`.
+IP addresses of consul agents from your Diego BOSH deployment.
 
-### <a id='password'></a>CONTAINERIZER\_PASSWORD / ADMIN_PASSWORD
+Navigate to your PCF Ops Manager dashboard, click the **Runtime** tile, and select **Status**. Locate your **consul** job and copy the comma-separated list of IP addresses.
 
-Password for your account with admin privileges.
-
-### <a id='ext-ip'></a>EXTERNAL_IP
-
-External IP of the Windows machine where you are installing the MSI.
-
-### <a id='consul-ips'></a>CONSUL_IPS
-
-IP addresses of consul agents from Diego BOSH deployment.
-
-Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic Runtime** tile, and select **Status**. Locate your **consul** job and copy the comma-separated list of IP addresses.
-
-### <a id='etcd-cluster'></a>ETCD\_CLUSTER
+###<a id='opsman-etcd-cluster'></a>ETCD_CLUSTER
 
 URI for the Diego etcd cluster from your Cloud Foundry BOSH deployment.
 
@@ -66,36 +37,42 @@ Navigate to your PCF Ops Manager dashboard, click the **Diego** tile, and select
 curl http://<etcd-server-ip>:4001/v2/keys/message -XPUT -d value="Hello diego"
 </pre>
 
-### <a id='cf-etcd-clust'></a>CF\_ETCD_CLUSTER
+###<a id='opsman-cf-etcd-cluster'></a>CF\_ETCD\_CLUSTER
 
-URI to the Runtime cf etcd cluster from Cloud Foundry BOSH deployment.
+URI for the Runtime cf etcd cluster from your Cloud Foundry BOSH deployment.
 
-Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic Runtime** tile, and select **Status**. Locate your **etcd** job and copy the IP addresses. This must be the URI to the cf etcd cluster, not IP addresses.
+Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic Runtime** tile, and select **Status**. Locate your **etcd** job and copy the IP address. Format the IP address as a URL with port 4001 as in the example URL http://10.10.5.10:4001.
 
-### <a id='machine-name'></a>MACHINE_NAME
-
-Hostname of the machine you are installing the Windows MSI on.
-
-This name must be unique across the machines in your cluster.
-
-### <a id='stack'></a>STACK
-
-The name of the stack.
-
-This must be `windows2012R2`.
-
-### <a id='zone'></a>ZONE / REDUNDANCY_ZONE
+###<a id='opsman-zone'></a>ZONE / REDUNDANCY_ZONE
 
 The BOSH redundancy zone this cell is a part of.
 
-To get this zone, navigate to **EC2 Dashboard>Instances** on your AWS Console. Select the instance name. The zone is separated from the name by a dash in the format `<YOUR-INSTANCE-NAME>-<YOUR-ZONE>`.
+Navigate to your PCF Ops Manager Dashboard, click the **Diego for PCF** tile, and select **Credentials**. Locate the username and password for **Receptor Credentials** and navigate to  `http://receptor.<YOUR-DOMAIN>/v1/cells`.
 
-For example, an EC2 instance name with `natspartition-abcde12345fedcb54321/0` would have a zone of `abcde12345fedcb54321`.
+You should see `zone` listed inside each existing cell, as the example below shows:
 
-### <a id='shared-secret'></a>LOGGREGATOR\_SHARED_SECRET
+```
+[
+   {
+      "cell_id":"cell-partition-0880c1d1dca06bbf67e1-0",
+      "zone":"0880c1d1dca06bbf67e1",
+      "capacity":{
+         "memory_mb":30679,
+         "disk_mb":15993,
+         "containers":256
+      }
+   }
+]
+```
 
-The shared secret listed in your CF Runtime deployment / credentials tab, e.g.:
+If you are using AWS, you can get the zone by navigating to **EC2 Dashboard>Instances** on your AWS Console. Select the instance name. The zone is separated from the name by a dash in the format `<YOUR-INSTANCE-NAME>-<YOUR-ZONE>`.
 
-From the PCF Ops Manager Installation Dashboard, click the **Pivotal Elastic Runtime** tile, and select **Credentials**. Find the **Doppler Server** job. The **Shared Secret Credentials** information is formatted as `XXXXXXXXXX / <YOUR-SHARED-SECRET>`, as shown in the image below.
+For example, an EC2 instance name with `nats-partition-abcde12345fedcb54321/0` would have a zone of `abcde12345fedcb54321`.
+
+###<a id='log-shared-secret'></a>LOGGREGATOR\_SHARED\_SECRET
+
+The shared secret from your CF Runtime deployment.
+
+Navigate to your PCF Ops Manager dashboard and select **Credentials**. Find the **Doppler Server** job. The **Shared Secret Credentials** information is formatted as `XXXXXXXXXX / <YOUR-SHARED-SECRET>`, as shown in the image below.
 
 <%= image_tag("./diego-beta/log-shared-secret.png") %>
