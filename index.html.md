@@ -17,6 +17,5 @@ This guide covers networking and user management for [Pivotal Cloud Foundry](htt
 * [Configuring LDAP](./ldap-uaa.html)
 * [Switching Application Domains](./switching-domains.html)
 * [Monitoring Instance Usage with the Accounting Report](./accounting-report.html)
-* [Diego Beta Overview](./diego-beta.html)
-* [Deploying Diego Beta on AWS for Windows](aws-diego-beta.html)
-* [Deploying Diego Beta on vSphere for Windows](vsphere-diego-beta.html)
+* [Diego Beta Overview](./diego-beta-overview.html)
+* [Deploying Diego Beta](deploying-diego-beta.html)
