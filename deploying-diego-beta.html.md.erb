@@ -1,53 +1,35 @@
 ---
-title: Deploying Diego Beta on vSphere for Windows
+title: Deploying Diego Beta
 ---
 
-This topic contains instructions for deploying Diego beta on vSphere for Windows. See the [Diego Beta Overview](./diego-beta.html) topic for general information on Diego beta.
+This topic contains instructions for setting up a Windows cell in a Diego deployment. See the [Diego Beta Overview](./diego-beta-overview.html) topic for general information on Diego beta.
 
-<p class='note'><strong>Note</strong>: For instructions on how to deploy Diego Beta on AWS, see the <a href='./aws-diego-beta.html'>Deploying Diego Beta on AWS for Windows</a> topic.</p>
+## <a id='prequisites'></a> Prerequisites
 
-## <a id='install-windows-server'></a> Step 1: Install a Windows Server ##
+* A working Diego deployment. Refer to [Diego Beta Overview](./diego-beta-overview.html) for instructions.
+* A Windows cell
 
-Install a Windows Server 2012 R2 64bit VM on the same vSphere cluster to which you deployed **Diego for PCF**.
+<p class='note'><strong>Note</strong>: We recommend that you used the following Windows ISO SHA1: <code>B6F063436056510357CB19CB77DB781ED9C11DF3</code>.</p>
 
-## <a id='disable-windows-firewall'></a> Step 2: Configure your Windows Firewall ##
+## <a id='install-windows-server'></a> Step 1: Set Up the Windows Cell ##
 
-Either disable the Windows firewall or configure it to allow the necessary traffic.
+Download the `setup.ps1` file from [Pivotal Network](https://network.pivotal.io/products/pivotal-diego-pcf). From your file explorer, right-click the `setup.ps1` file and click **Run with powershell**. The script configures the required Windows features, DNS settings, and your firewall for your Windows cell.
 
-## <a id='step3'></a> Step 3: Configure the Windows Server##
-
-Run the following configuration commands on the windows server:
-
-<pre class='terminal'>
-dism /online /Enable-Feature /FeatureName:IIS-WebServer /All /NoRestart
-dism /online /Enable-Feature /FeatureName:IIS-WebSockets /All /NoRestart
-dism /online /Enable-Feature /FeatureName:Application-Server-WebServer-Support /FeatureName:AS-NET-Framework /All /NoRestart
-dism /online /Enable-Feature /FeatureName:IIS-HostableWebCore /All /NoRestart
-
-netsh interface ipv4 add dnsserver "Ethernet" address=127.0.0.1 index=1
-netsh interface ipv4 add dnsserver "Ethernet" address=DNS-SERVER-IP index=2
-netsh interface ipv4 show dnsservers
-
-sc config Dnscache start= disabled
-sc stop Dnscache
-</pre>
-Replace `DNS-SERVER-IP` with your DNS IP address.
-
-## <a id='msi'></a> Step 4: Install the MSI ##
+## <a id='msi'></a> Step 2: Install the MSI ##
 
 <%= partial 'msi-env-vars' %>
 
-## <a id='confirm-deployment'></a> Step 5: Confirm Successful Deployment##
+## <a id='confirm-deployment'></a> Step 3: Confirm Successful Deployment##
 
 After successful deployment, the following jobs are running:
 
-* Consul
-* Containerizer
-* Executor
-* GardenWindows
-* Rep
+  * Consul
+  * Containerizer
+  * Executor
+  * GardenWindows
+  * Rep
 
-## <a id='push-dot-net-app'></a> Step 6: Push a .Net application ##
+## <a id='push-dot-net-app'></a> Step 4: Push a .Net application ##
 
 Clone the sample app Nora from [GitHub](https://github.com/pivotal-cf-experimental/nora/tree/master/assets/nora).
 
