@@ -14,7 +14,7 @@ You can use the Diego for PCF tile to deploy Diego alongside your <a href="https
 
 Application developers can choose to deploy their application either to the existing Elastic Runtime or to Diego Beta.
 
-<%= image_tag("./diego-beta/install-dashboard.png") %>
+<%= image_tag("./diego/install-dashboard.png") %>
 
 ## <a id='prerequisites'></a>Requirements ##
 
@@ -115,7 +115,7 @@ You can download these components from [PivNet](https://network.pivotal.io/produ
 
 1. Click **Save**.
 
-<%= image_tag("./diego-beta/enable-diego-docker.png") %>
+<%= image_tag("./diego/enable-diego-docker.png") %>
 
 ### <a id='docker-support'></a>Step 2: Install Diego for PCF ###
 
@@ -144,7 +144,7 @@ You must generate and provide an SSH key for host verification.
 
 1. Select the **Diego** tab and copy the contents of the generated private key file into the **SSH Proxy Private Key** box, as the image below shows:
 
-    <%= image_tag("./diego-beta/ssh-key.png") %>
+    <%= image_tag("./diego/ssh-key.png") %>
 
 ## <a id='known-issues'></a>Important Caveats and Known Issues ##
 
@@ -152,8 +152,8 @@ You must generate and provide an SSH key for host verification.
 * Diego SSH support has not been tested or verified on this release.
 * If your environment does not have internet access, you must disable the **Acceptance Tests** errand checkbox in the **Errands** tab of the Diego for PCF tile before deployment, as the image below shows:
 
-    <%= image_tag("./diego-beta/disable-acceptance-tests.png") %>
+    <%= image_tag("./diego/disable-acceptance-tests.png") %>
 
 ## <a id='complete-installation'></a>Finish Deploying Diego Beta for Windows ##
 
-Refer the [Deploying Diego Beta](./deploying-diego-beta.html) topic to complete deploying Diego Beta for Windows.
+Refer the [Deploying Diego Beta](./deploying-diego.html) topic to complete deploying Diego Beta for Windows.
