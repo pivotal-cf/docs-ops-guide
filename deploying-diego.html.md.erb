@@ -4,69 +4,89 @@ title: Deploying Diego Beta for Windows
 
 This topic contains instructions for setting up a Windows instance in a Diego deployment. See the [Diego Beta Overview](./diego-overview.html) topic for general information on Diego beta.
 
-## <a id='prequisites'></a> Prerequisites
+## <a id='prequisites'></a> Prerequisites ##
 
 * A working Diego deployment
-* A Windows instance that is routable to your Diego deployment
+* A Windows Server 2012R2 VM instance that is routable to your Diego deployment.
 
 ## <a id='install-windows-server'></a> Step 1: Set Up the Windows Cell ##
 
-Download the `setup.ps1` file from [Pivotal Network](https://network.pivotal.io/products/pivotal-diego-pcf). From your file explorer, right-click the `setup.ps1` file and click **Run with powershell**. The script configures the required Windows features, DNS settings, and your firewall for your Windows cell.
+1. Download the `setup.ps1` file from [Pivotal Network](https://network.pivotal.io/products/pivotal-diego-pcf).
+
+1. From your file explorer, right-click the downloaded `setup.ps1` file and
+click **Run with powershell**.
+The script configures the required Windows features, DNS settings, and your
+firewall for your Windows cell.
 
 ## <a id='msi'></a> Step 2: Install the MSI ##
 
-Install the MSI by running a command that sets your environment variables. The command depends on the version of the MSI you are using.
+Install the MSI by running a command that sets your environment variables.
+The command depends on the version of the MSI you are using.
 
-<p class='note'><strong>Note</strong>: The following example assumes that the MSI was downloaded to <code>C:\diego.msi</code>.</p>
-
-The following is an example command for `DiegoWindowsMSI_f0e5ac0.msi (0.1.0.alpha.47)`:
+<p class='note'><strong>Note</strong>: The following example assumes that the MSI was downloaded to <code>C:\temp\Diego_Windows_v0_148.msi</code>.</p>
 
 <pre class='terminal'>
-msiexec /norestart /i c:\diego.msi ^
-ADMIN_USERNAME=Administrator ^
-ADMIN_PASSWORD=secretpassword ^
-CONSUL_IPS=10.10.5.11,10.10.6.11,10.10.7.11 ^
-ETCD_CLUSTER=http://10.10.5.10:4001 ^
-CF_ETCD_CLUSTER=http://10.244.0.42:4001 ^
-MACHINE_NAME=WIN-RD649GEUDP1 ^
-STACK=windows2012R2 ^
-REDUNDANCY_ZONE=0c35dfe1cf34ec47e2a2 ^
-LOGGREGATOR_SHARED_SECRET=loggregator-secret
+$ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
+  ADMIN_USERNAME=Administrator ^
+  ADMIN_PASSWORD=secretpassword ^
+  CONSUL_IPS=10.10.5.11,10.10.6.11,10.10.7.11 ^
+  ETCD_CLUSTER=http://10.10.5.10:4001 ^
+  CF_ETCD_CLUSTER=http://10.244.0.42:4001 ^
+  MACHINE_NAME=WIN-RD649GEUDP1 ^
+  STACK=windows2012R2 ^
+  REDUNDANCY_ZONE=0c35dfe1cf34ec47e2a2 ^
+  LOGGREGATOR_SHARED_SECRET=loggregator-secret ^
+  EXTERNAL_IP=10.10.5.35
 </pre>
 
-## <a id='env-vars'></a>Environment Variables for Ops Manager Deployments
+<p class='note'><strong>Note</strong>: You can find <code>EXTERNAL_IP</code> by running <code>ipconfig</code> on the Windows VM.</p>
 
-If you used Ops Manager to deploy Diego beta, complete the following steps to find the values that you need for the `msiexec` command:
+## <a id='env-vars'></a>Environment Variables for Ops Manager Deployments ##
 
-###<a id='opsman-consul-ips'></a>CONSUL_IPS
+If you used Ops Manager to deploy Diego beta, complete the following steps to
+find the values that you need for the `msiexec` command:
+
+### <a id='opsman-consul-ips'></a>CONSUL_IPS ###
 
 IP addresses of consul agents from your Diego BOSH deployment.
 
-Navigate to your PCF Ops Manager dashboard, click the **Runtime** tile, and select **Status**. Locate your **consul** job and copy the comma-separated list of IP addresses.
+Navigate to your PCF Ops Manager dashboard, click the **Elastic Runtime** tile,
+and select **Status**.
+Locate your **consul** job and copy the comma-separated list of IP addresses.
 
-###<a id='opsman-etcd-cluster'></a>ETCD_CLUSTER
+### <a id='opsman-etcd-cluster'></a>ETCD_CLUSTER ###
 
 URI for the Diego etcd cluster from your Cloud Foundry BOSH deployment.
 
-Navigate to your PCF Ops Manager dashboard, click the **Diego** tile, and select **Status**. Locate your **etcd** job and copy the IP addresses. Run the following command to ensure you can connect to the etcd server from Ops Manager:
+Navigate to your PCF Ops Manager dashboard, click the **Diego** tile, and select
+**Status**.
+Locate your **etcd** job and copy the IP addresses.
+Run the following command to ensure you can connect to the etcd server from Ops Manager:
 
 <pre class='terminal'>
-curl http://<etcd-server-ip>:4001/v2/keys/message -XPUT -d value="Hello diego"
+$ curl http://ETCD-SERVER-IP:4001/v2/keys/message -XPUT -d value="Hello diego"
 </pre>
 
-###<a id='opsman-cf-etcd-cluster'></a>CF\_ETCD\_CLUSTER
+### <a id='opsman-cf-etcd-cluster'></a>CF\_ETCD\_CLUSTER ###
 
-URI for the Runtime cf etcd cluster from your Cloud Foundry BOSH deployment.
+URI for the Elastic Runtime cf etcd cluster from your Cloud Foundry BOSH
+deployment.
 
-Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic Runtime** tile, and select **Status**. Locate your **etcd** job and copy the IP address. Format the IP address as a URL with port 4001 as in the example URL http://10.10.5.10:4001.
+Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic Runtime** tile, and select **Status**.
+Locate your **etcd** job and copy the IP address.
+Format the IP address as a URL with port 4001, as in the following example URL:  `http://10.10.5.10:4001`
 
-###<a id='opsman-zone'></a>ZONE / REDUNDANCY_ZONE
+### <a id='opsman-zone'></a>ZONE / REDUNDANCY_ZONE ###
 
-The BOSH redundancy zone this cell is a part of.
+The BOSH redundancy zone that this cell is a part of.
 
-Navigate to your PCF Ops Manager Dashboard, click the **Diego for PCF** tile, and select **Credentials**. Locate the username and password for **Receptor Credentials** and navigate to  `http://receptor.<YOUR-DOMAIN>/v1/cells`.
+Navigate to your PCF Ops Manager Dashboard, click the **Diego for PCF** tile,
+and select **Credentials**.
+Locate the username and password for **Receptor Credentials** and navigate to
+`http://receptor.YOUR-DOMAIN/v1/cells`.
 
-You should see `zone` listed inside each existing cell, as the example below shows:
+You should see `zone` listed inside each existing cell, as the example below
+shows:
 
 ```
 [
@@ -82,49 +102,108 @@ You should see `zone` listed inside each existing cell, as the example below sho
 ]
 ```
 
-If you are using AWS, you can get the zone by navigating to **EC2 Dashboard>Instances** on your AWS Console. Select the instance name. The zone is separated from the name by a dash in the format `<YOUR-INSTANCE-NAME>-<YOUR-ZONE>`.
+If you are using AWS, you can find the zone by navigating to **EC2 Dashboard>Instances** on your AWS Console and selecting the instance name.
+The zone is separated from the name by a dash in the format `INSTANCE-ZONE`.
 
-For example, an EC2 instance name with `nats-partition-abcde12345fedcb54321/0` would have a zone of `abcde12345fedcb54321`.
+For example, an EC2 instance name with `nats-partition-abcde12345fedcb54321/0` has a zone of `abcde12345fedcb54321`.
 
-###<a id='log-shared-secret'></a>LOGGREGATOR\_SHARED\_SECRET
+### <a id='log-shared-secret'></a>LOGGREGATOR\_SHARED\_SECRET ###
 
-The shared secret from your CF Runtime deployment.
+The shared secret from your Elastic Runtime deployment.
 
-Navigate to your PCF Ops Manager dashboard and select **Credentials**. Find the **Doppler Server** job. The **Shared Secret Credentials** information is formatted as `XXXXXXXXXX / <YOUR-SHARED-SECRET>`, as shown in the image below.
+Navigate to your PCF Ops Manager dashboard and select **Credentials**.
+Find the **Doppler Server** job.
+The **Shared Secret Credentials** information is formatted as `XXXXXXXXXX / YOUR-SHARED-SECRET`, as shown in the image below.
 
 <%= image_tag("./diego/log-shared-secret.png") %>
 
-## <a id='confirm-deployment'></a> Step 3: Confirm Successful Deployment##
+## <a id='confirm-deployment'></a> Step 3: Confirm Successful Deployment ##
 
-After successful deployment, the following jobs are running:
-
+1. After successful deployment, the following jobs are running:
   * Consul
   * Containerizer
   * Executor
   * GardenWindows
   * Rep
 
-## <a id='push-dot-net-app'></a> Step 4: Push a .NET application ##
+1. Browse to `http://receptor.YOUR-DOMAIN/v1/cells` to view the Windows cells.
+For example:
 
-Clone the sample app Nora from [GitHub](https://github.com/pivotal-cf-experimental/nora/tree/master/assets/nora).
+```json
+[
+  {
+    "cell_id": "cell_z1-0",
+    "zone": "z1",
+    "capacity": {
+      "memory_mb": 30158,
+      "disk_mb": 45766,
+      "containers": 256
+    },
+    "rootfs_providers": {
+      "docker": [
 
-Run the following command:
+      ],
+      "preloaded": [
+        "cflinuxfs2"
+      ]
+    }
+  },
+  {
+    "cell_id": "cell_z2-0",
+    "zone": "z2",
+    "capacity": {
+      "memory_mb": 30158,
+      "disk_mb": 45766,
+      "containers": 256
+    },
+    "rootfs_providers": {
+      "docker": [
 
-<pre class='terminal'>
-./make_a_nora
-</pre>
+      ],
+      "preloaded": [
+        "cflinuxfs2"
+      ]
+    }
+  },
+  {
+    "cell_id": "WIN-FCTL342T6B1",
+    "zone": "z1",
+    "capacity": {
+      "memory_mb": 15624,
+      "disk_mb": 35487,
+      "containers": 100
+    },
+    "rootfs_providers": {
+      "preloaded": [
+        "windows2012R2"
+      ]
+    }
+  }
+]
+```
 
-This script executes the commands below to push, configure, and start your application.
+## <a id='push-app'></a> Step 4: Push a .NET application ##
 
-<pre class='terminal'>
-cf push $APPNAME -s windows2012R2 -b https://github.com/ryandotsmith/null-buildpack.git --no-start
-cf set-env $APPNAME DIEGO_BETA true
-cf set-env $APPNAME DIEGO_RUN_BETA true
-cf enable-diego $APPNAME
-cf start $APPNAME
-</pre>
+1. Clone the sample app Nora from [GitHub](https://github.com/pivotal-cf-experimental/nora/tree/master/assets/nora).
 
-<p class='note'><strong>Note</strong>: <code>cf push</code> does not use the given buildpack. It is necessary to specify one at this point, so use the null-buildpack. The <a href='https://github.com/ryandotsmith/null-buildpack'>null buildpack</a> is not available on PCF by default.
-</p>
+1. Run the following command:
+  <pre class='terminal'>
+  $ ./make_a_nora
+  </pre>
+  This script executes the commands below to push, configure, and start your
+  application.
+  <pre class='terminal'>
+  $ cf push $APPNAME -s windows2012R2 -b  https://github.com/ryandotsmith/null-buildpack.git --no-start
+  $ cf set-env $APPNAME DIEGO\_BETA true
+  $ cf set-env $APPNAME DIEGO\_RUN\_BETA true
+  $ cf enable-diego $APPNAME
+  $ cf start $APPNAME
+  </pre>
+  <p class='note'><strong>Note</strong>: <code>cf push</code> does not use the
+  given buildpack. It is necessary to specify one at this point, so use the
+  null-buildpack. The <a
+  href='https://github.com/ryandotsmith/null-buildpack'>null buildpack</a> is
+  not available on PCF by default.
+  </p>
 
-Run `cf apps` to confirm that your app is in the `started` state.
+1. Run `cf apps` to confirm that your app is in the `started` state.

@@ -1,20 +1,19 @@
 Install the MSI by running a command that sets your environment variables. The command depends on the version of the MSI you are using.
 
-<p class='note'><strong>Note</strong>: The following example assumes that the MSI was downloaded to <code>C:\diego.msi</code>.</p>
-
-The following is an example command for `DiegoWindowsMSI_f0e5ac0.msi (0.1.0.alpha.47)`:
+<p class='note'><strong>Note</strong>: The following example assumes that the MSI was downloaded to <code>X:\temp\Diego_Windows_v0_148.msi</code>.</p>
 
 <pre class='terminal'>
-msiexec /norestart /i c:\diego.msi ^
-ADMIN_USERNAME=Administrator ^
-ADMIN_PASSWORD=secretpassword ^
-CONSUL_IPS=10.10.5.11,10.10.6.11,10.10.7.11 ^
-ETCD_CLUSTER=http://10.10.5.10:4001 ^
-CF_ETCD_CLUSTER=http://10.244.0.42:4001 ^
-MACHINE_NAME=WIN-RD649GEUDP1 ^
-STACK=windows2012R2 ^
-REDUNDANCY_ZONE=0c35dfe1cf34ec47e2a2 ^
-LOGGREGATOR_SHARED_SECRET=loggregator-secret
+$ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
+  ADMIN_USERNAME=Administrator ^
+  ADMIN_PASSWORD=secretpassword ^
+  CONSUL_IPS=10.10.5.11,10.10.6.11,10.10.7.11 ^
+  ETCD_CLUSTER=http://10.10.5.10:4001 ^
+  CF_ETCD_CLUSTER=http://10.244.0.42:4001 ^
+  MACHINE_NAME=WIN-RD649GEUDP1 ^
+  STACK=windows2012R2 ^
+  REDUNDANCY_ZONE=0c35dfe1cf34ec47e2a2 ^
+  LOGGREGATOR_SHARED_SECRET=loggregator-secret ^
+  EXTERNAL_IP=10.10.5.35 ^
 </pre>
 
 ## <a id='env-vars'></a>Environment Variables for Ops Manager Deployments
