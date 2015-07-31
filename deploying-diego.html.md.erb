@@ -23,7 +23,23 @@ firewall for your Windows cell.
 Install the MSI by running a command that sets your environment variables.
 The command depends on the version of the MSI you are using.
 
-<p class='note'><strong>Note</strong>: The following example assumes that the MSI was downloaded to <code>C:\temp\Diego_Windows_v0_148.msi</code>.</p>
+<p class='note'><strong>Note</strong>: The following instructions assume that the MSI was downloaded to <code>C:\temp\Diego_Windows_v0_148.msi</code>.</p>
+
+<pre class='terminal'>
+$ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
+  ADMIN_USERNAME=[Username with admin privileges] ^
+  ADMIN_PASSWORD=[Previous user password] ^
+  CONSUL_IPS=[Comma-separated IP addresses of consul agents from BOSH deploy of CF] ^
+  ETCD_CLUSTER=[URI of your Diego etcd cluster from BOSH deploy] ^
+  CF_ETCD_CLUSTER=[URI of your Elastic Runtime CF etcd cluster from bosh deploy of cf] ^
+  STACK=[CF Stack (e.g., windows2012R2)] ^
+  REDUNDANCY_ZONE=[Diego zone that this cell is part of] ^
+  LOGGREGATOR_SHARED_SECRET=[loggregator secret from your BOSH deploy of CF] ^
+  EXTERNAL_IP=[External IP of box] ^
+  MACHINE_NAME=[This machine's name (must be unique across your cluster)] ^
+</pre>
+
+An example:
 
 <pre class='terminal'>
 $ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
@@ -181,29 +197,3 @@ For example:
   }
 ]
 ```
-
-## <a id='push-app'></a> Step 4: Push a .NET application ##
-
-1. Clone the sample app Nora from [GitHub](https://github.com/pivotal-cf-experimental/nora/tree/master/assets/nora).
-
-1. Run the following command:
-  <pre class='terminal'>
-  $ ./make_a_nora
-  </pre>
-  This script executes the commands below to push, configure, and start your
-  application.
-  <pre class='terminal'>
-  $ cf push $APPNAME -s windows2012R2 -b  https://github.com/ryandotsmith/null-buildpack.git --no-start
-  $ cf set-env $APPNAME DIEGO\_BETA true
-  $ cf set-env $APPNAME DIEGO\_RUN\_BETA true
-  $ cf enable-diego $APPNAME
-  $ cf start $APPNAME
-  </pre>
-  <p class='note'><strong>Note</strong>: <code>cf push</code> does not use the
-  given buildpack. It is necessary to specify one at this point, so use the
-  null-buildpack. The <a
-  href='https://github.com/ryandotsmith/null-buildpack'>null buildpack</a> is
-  not available on PCF by default.
-  </p>
-
-1. Run `cf apps` to confirm that your app is in the `started` state.
