@@ -8,6 +8,9 @@ This topic contains instructions for setting up a Windows instance in a Diego de
 
 * A working Diego deployment
 * A Windows Server 2012R2 VM instance that is routable to your Diego deployment.
+  Recommended:
+  * **r3.xlarge**, see [https://github.com/cloudfoundry-incubator/diego-release/commit/c9331bc1b1000bd135cb99a025a3680d1a12ac87](https://github.com/cloudfoundry-incubator/diego-release/commit/c9331bc1b1000bd135cb99a025a3680d1a12ac87)
+  * Windows ISO SHA1: B6F063436056510357CB19CB77DB781ED9C11DF3
 
 ## <a id='install-windows-server'></a> Step 1: Set Up the Windows Cell ##
 
@@ -36,7 +39,7 @@ $ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
   REDUNDANCY_ZONE=[Diego zone that this cell is part of] ^
   LOGGREGATOR_SHARED_SECRET=[loggregator secret from your BOSH deploy of CF] ^
   EXTERNAL_IP=[External IP of box] ^
-  MACHINE_NAME=[This machine's name (must be unique across your cluster)] ^
+  MACHINE_NAME=[This machine's name (must be unique across your cluster)]
 </pre>
 
 An example:
@@ -48,11 +51,11 @@ $ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
   CONSUL_IPS=10.10.5.11,10.10.6.11,10.10.7.11 ^
   ETCD_CLUSTER=http://10.10.5.10:4001 ^
   CF_ETCD_CLUSTER=http://10.244.0.42:4001 ^
-  MACHINE_NAME=WIN-RD649GEUDP1 ^
   STACK=windows2012R2 ^
   REDUNDANCY_ZONE=0c35dfe1cf34ec47e2a2 ^
   LOGGREGATOR_SHARED_SECRET=loggregator-secret ^
-  EXTERNAL_IP=10.10.5.35
+  EXTERNAL_IP=10.10.5.35 ^
+  MACHINE_NAME=WIN-RD649GEUDP1
 </pre>
 
 <p class='note'><strong>Note</strong>: You can find <code>EXTERNAL_IP</code> by running <code>ipconfig</code> on the Windows VM.</p>
