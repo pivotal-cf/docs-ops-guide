@@ -1,6 +1,6 @@
 Install the MSI by running a command that sets your environment variables. The command depends on the version of the MSI you are using.
 
-<p class='note'><strong>Note</strong>: The following example assumes that the MSI was downloaded to <code>X:\temp\Diego_Windows_v0_148.msi</code>.</p>
+<p class='note'><strong>Note</strong>: The following example assumes that the MSI was downloaded to <code>C:\temp\Diego_Windows_v0_148.msi</code>.</p>
 
 <pre class='terminal'>
 $ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
@@ -40,7 +40,7 @@ curl http://<etcd-server-ip>:4001/v2/keys/message -XPUT -d value="Hello diego"
 
 URI for the Runtime cf etcd cluster from your Cloud Foundry BOSH deployment.
 
-Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic Runtime** tile, and select **Status**. Locate your **etcd** job and copy the IP address. Format the IP address as a URL with port 4001 as in the example URL http://10.10.5.10:4001.
+Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic Runtime** tile, and select **Status**. Locate your **etcd** job and copy the IP address. Format the IP address as a URL with port 4001 as in the example URL `http://10.10.5.10:4001`.
 
 ###<a id='opsman-zone'></a>ZONE / REDUNDANCY_ZONE
 
