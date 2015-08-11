@@ -143,7 +143,7 @@ You must generate and provide an SSH key for host verification.
     $ ssh-keygen
     </pre>
 
-    This generates two files. Copy the private key file, which does not have the `.pub` extension.
+    When prompted for a passphrase by this command, leave it empty. This command generates two files. Copy the private key file, which does not have the `.pub` extension.
 
 1. From the Ops Manager Installation Dashboard, click **Diego for PCF**.
 
@@ -154,7 +154,7 @@ You must generate and provide an SSH key for host verification.
 ## <a id='known-issues'></a>Important Caveats and Known Issues ##
 
 * No upgrades are supported between versions of the Diego for PCF tile.
-* Diego SSH support has not been tested or verified on this release.
+* Diego SSH support has not been tested or verified on this beta release, and its functionality may be incomplete.
 * If your environment does not have internet access, you must disable the **Acceptance Tests** errand checkbox in the **Errands** tab of the Diego for PCF tile before deployment, as the image below shows:
 
     <%= image_tag("./diego/disable-acceptance-tests.png") %>
