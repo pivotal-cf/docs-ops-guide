@@ -140,7 +140,7 @@ If either of these components are single components, you cannot push, stage, or 
 The Apps Manager app and App Usage Service components for the Apps Manager Database run in a single DEA instance. You cannot use the Apps Manager or the CLI during the upgrade of the DEA. </td>
 </tr>
 <tr>
-  <td>Loggregator Server</td>
+  <td>Doppler Server</td>
   <td></td>
   <td></td>
   <td>Ops Manager operators will see 2-5 minute gaps in logging.</td>
