@@ -1,0 +1,101 @@
+---
+title: Key Metrics for Monitoring a Pivotal Cloud Foundry Deployment
+---
+
+The Pivotal Cloud Ops team monitors the health of its Cloud Foundry deployments using Datadog. [This repository](./https://github.com/pivotal-cf-experimental/datadog-config-oss) contains the customized configuration of Datadog for monitoring production and staging in a CF deployment.
+
+This topic describes the metrics included in the custom-configured Datadog dashboard, and how the Pivotal Cloud Ops team uses them to monitor a PCF deployment.
+
+## <a id='bosh-health'></a>BOSH Health Monitor
+
+<%= image_tag 'metrics/bosh_health_combined.png'%>
+
+### What we monitor 
+
+Health, broken down by component:
+
+- Backend:
+	- NATS
+	- Doppler
+	- Stats
+	- HM9000
+	- BOSH
+	- NAT Box
+	- ETCD
+- Frontend:
+	- Router
+	- DEA
+	- API
+	- UAA
+
+### Why we monitor it
+
+Each row displays the average percentage of "healthy" instances for the relevant component over the last 5 minutes and 24 hours.
+
+For example, suppose your GoRouter has ten instance. If one is not healthy, the stoplight turns red and shows %90.
+
+
+### The system metric behind it
+
+`[bosh.healthmonitor.system.healthy]`
+
+
+### Alerts
+
+NEED MORE INFO
+
+### Other things to know
+
+Because BOSH restores systems very quickly when they go down, we send alerts generated from this metric to a buffer queue in our alerting system (Pagerduty) that waits two minutes before it sends an alert to the operator. We do this because BOSH/CF restores service reliably enough so that we don't need to be notified in real time for transitory restarts.
+
+
+## <a id='req-per-sec'></a>Requests per second
+
+<%= image_tag 'metrics/req_per_sec.png'%>
+
+### What we monitor 
+
+Requests per second for each Frontend component:
+- Router
+- DEA
+- API
+- UAA
+
+
+### Why we monitor it
+
+To track the basic flow of traffic through the components in the system.
+
+### The system metric behind it
+
+`cf.collector.router.requests(component: app/cloudcontroller/uaa, deployment: production)`
+
+### Alerts
+
+None
+
+### Other things to know
+
+None
+
+## <a id='nats-traffic-delta'></a>NATS Traffic Delta
+
+
+### What we monitor 
+### Why we monitor it
+### The system metric behind it
+### Alerts
+### Other things to know
+
+## <a id='router-status'></a>Router Status
+
+##  <a id='dea-status'></a> DEA Status
+
+
+
+
+### What we monitor 
+### Why we monitor it
+### The system metric behind it
+### Alerts
+### Other things to know
