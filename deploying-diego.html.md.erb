@@ -2,117 +2,124 @@
 title: Deploying Diego Beta for Windows
 ---
 
-This topic contains instructions for setting up a Windows instance in a Diego 
+This topic contains instructions for setting up a Windows cell in a Diego 
 deployment. 
+
+A **cell** is a virtual machine (VM) that stages, hosts, and manages application lifecycles. 
 See the [Diego Beta Overview](./diego-overview.html) topic for general 
 information on Diego Beta.
 
-## <a id='prequisites'></a> Prerequisites ##
+## <a id='prequisites'></a>Prerequisites ##
 
 * A working Diego deployment
-* A Windows Server 2012R2 VM instance that is routable to your Diego deployment.
-  Recommendations:
-  * On AWS, use an **r3.xlarge** instance. See [recommended instance types](https://github.com/cloudfoundry-incubator/diego-release/tree/3b229e0b971402387bd7c1831e96b2a177cbfcae#recommended-instance-types) in the GitHub Diego 
+* A Windows Server 2012R2 VM instance that is routable to your Diego deployment
+    * On AWS, we recommend an **r3.xlarge** instance. See [recommended instance 
+types](https://github.com/cloudfoundry-incubator/diego-release/tree/3b229e0b971402387bd7c1831e96b2a177cbfcae#recommended-instance-types) in the GitHub Diego 
 release repo for details.
-  * If you are creating a new Windows image, and not using a predefined supplied by your IAAS, we recommend using this [ISO image](https://msdn.microsoft.com/subscriptions/json/GetDownloadRequest?brand=MSDN&locale=en-us&fileId=62611&activexDisabled=true&akamaiDL=false) as a starting point. You must have an MSDN account to download this ISO image.
+    * If you are creating a new Windows image, and not using one predefined and 
+supplied by your IaaS, we recommend using this [ISO image](https://msdn.microsoft.com/subscriptions/json/GetDownloadRequest?brand=MSDN&locale=en-us&fileId=62611&activexDisabled=true&akamaiDL=false) as a starting 
+point. You must have an MSDN account to download this ISO image.
 
-## <a id='cell'></a> Step 1: Configure the Windows Cell ##
+## <a id='cell'></a>Step 1: Configure the Windows Cell ##
 
-In Diego, a cell is a virtual machine (VM) that that stages, hosts, and manages the lifecycle of each application instance running in it.
-Follow the instructions below to configure the Windows cell.
+Follow the instructions below to download and configure the Windows cell.
 
-1. Log in to the [Pivotal Network](https://network.pivotal.io/).
+1. From your Windows cell, log in to the [Pivotal Network](https://network.pivotal.io/).
 
 1. Download the `setup.ps1` file from the Pivotal Network at [https://network.pivotal.io/products/pivotal-diego-pcf](https://network.pivotal.io/products/pivotal-diego-pcf). 
 
-1. On the Windows cell, open File Explorer, right-click the downloaded `setup.ps1` file, and click **Run with PowerShell**.
-Running this script configures the required Windows features, DNS settings, and 
-your firewall for your Windows cell.
+1. Open File Explorer.
 
-## <a id='env-vars'></a>Determine Environment Variables for Ops Manager Deployments ##
+1. Right-click on the `setup.ps1` file and select **Run with PowerShell**.
+The `setup.ps1` script configures Windows features, DNS settings, and the 
+firewall for your Windows cell.
 
-If you used Ops Manager to deploy Diego Beta, complete the following steps to 
-determine the values that you need to run the `msiexec` command in [Step 3: Install the MSI](#msi).
+## <a id='env-vars'></a>Step 2: Determine Environment Variables ##
+
+Use Ops Manager to determine the environment values that you need to run the 
+`msiexec` command in [Step 3: Install the MSI](#msi).
 
 ### <a id='consul-ips'></a>CONSUL_IPS ###
 
 IP addresses of consul agents from your Diego BOSH deployment.
 
-Navigate to your PCF Ops Manager dashboard, click the **Elastic Runtime** tile,
-and select **Status**.
-Locate your **consul** job and copy the comma-separated list of IP addresses.
+  * Navigate to your PCF Ops Manager dashboard, click the **Elastic Runtime** 
+  tile, and select **Status**.
+  Locate your **consul** job and copy the comma-separated list of IP addresses.
 
 ### <a id='etcd-cluster'></a>ETCD_CLUSTER ###
 
 URL of the etcd cluster from your Diego BOSH deployment.
 
-Navigate to your PCF Ops Manager dashboard, click the **Diego for PCF** tile, and select **Status**.
-Locate your **etcd** job and copy the IP addresses.
-Run the following command to ensure you can connect to the etcd server from Ops Manager:
-
-<pre class='terminal'>
-$ curl http://ETCD-SERVER-IP:4001/v2/keys/message -XPUT -d value="Hello diego"
-</pre>
+  * Navigate to your PCF Ops Manager dashboard, click the **Diego for PCF** 
+  tile, and select **Status**.
+  Locate your **etcd** job and copy the IP addresses.
+  Run the following command to ensure you can connect to the etcd server from 
+  Ops Manager:
+  <pre class='terminal'>
+  $ curl http://ETCD-SERVER-IP:4001/v2/keys/message -XPUT -d value="Hello diego"
+  </pre>
 
 ### <a id='cluster'></a>CF\_ETCD\_CLUSTER ###
 
 URL for the Elastic Runtime CF etcd cluster from your Cloud Foundry BOSH
 deployment.
 
-Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic Runtime** tile, and select **Status**.
-Locate your **etcd** job and copy the IP address.
-Format the IP address as a URL with port 4001, as in the following example URL:  `http://10.10.5.10:4001`
+  * Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic 
+  Runtime** tile, and select **Status**.
+  Locate your **etcd** job and copy the IP address.
+  Format the IP address as a URL with port 4001, as in the following example: 
+  `http://192.168.11.10:4001`
 
 ### <a id='zone'></a>ZONE / REDUNDANCY_ZONE ###
 
 The BOSH redundancy zone that contains this cell as a member.
 
-Navigate to your PCF Ops Manager Dashboard, click the **Diego for PCF** tile,
-and select **Credentials**.
-Locate the username and password for **Receptor Credentials** and navigate to
-`http://receptor.YOUR-DOMAIN/v1/cells`.
-
-You should see `zone` listed inside each existing cell, as the example below
-shows:
-
-```
-[
-   {
-      "cell_id":"cell-partition-880c1d1dca06bbf67e1-0",
-      "zone":"0880c1d1dca06bbf67e1",
-      "capacity":{
-         "memory_mb":30679,
-         "disk_mb":15993,
-         "containers":256
-      }
-   }
-]
-```
-
-If you are using AWS, you can find the zone by navigating to **EC2 Dashboard>Instances** on your AWS Console and selecting the instance name.
-The zone is separated from the name by a dash, in the format `INSTANCE-ZONE`.
-
-For example, an EC2 instance name with `nats-partition-abcde12345fedcb54321/0` has a zone of `abcde12345fedcb54321`.
+  * Navigate to your PCF Ops Manager Dashboard, click the **Diego for PCF** 
+  tile, and select **Credentials**.
+  Locate the username and password for **Receptor Credentials** and navigate to 
+  `http://receptor.YOUR-DOMAIN/v1/cells`.
+  <br><br>
+  You should see `zone` listed inside each existing cell, as the example below
+  shows:
+  <pre>
+  [
+     {
+        "cell\_id":"cell-partition-880c1d1dca06bbf67e1-0",
+        "zone":"0880c1d1dca06bbf67e1",
+        "capacity":{
+           "memory\_mb":30679,
+           "disk\_mb":15993,
+           "containers":256
+        }
+     }
+  ]
+  </pre>
+  If you are using AWS, navigate to **EC2 Dashboard>Instances** on your AWS 
+  Console and select the instance name to find the zone. 
+  AWS displays the zone with the instance name, in the format `INSTANCE-ZONE`.
+  <br><br>
+  For example, the EC2 instance `nats-partition-012345abcde` exists within the 
+  zone `012345abcde`.
 
 ### <a id='log-shared-secret'></a>LOGGREGATOR\_SHARED\_SECRET ###
 
 The shared secret from your Elastic Runtime deployment.
 
-Navigate to your PCF Ops Manager dashboard and select **Credentials**.
-Find the **Doppler Server** job.
-The **Shared Secret Credentials** information is formatted as `XXXXXXXXXX / YOUR-SHARED-SECRET`, as shown in the image below.
+  * Navigate to your PCF Ops Manager dashboard and select **Credentials**.
+  Locate the **Doppler Server** job to find your **Shared Secret Credentials**, 
+  as shown in the image below.
+  <%= image_tag("./diego/log-shared-secret.png") %>
 
-<%= image_tag("./diego/log-shared-secret.png") %>
-
-## <a id='msi'></a> Step 3: Install the MSI ##
+## <a id='msi'></a>Step 3: Install the MSI ##
 
 Install the MSI by running a command that sets your environment variables.
-The command depends on the version of the MSI you are using.
+The command that you run depends on the version of the MSI that you are using.
 
-<p class='note'><strong>Note</strong>: The following instructions assume that the MSI was downloaded to <code>c\temp\Diego_Windows_v0_148.msi</code>. Follow the instructions in the <a href="#env-vars">Environment Variables for Ops Manager Deployments</a> section to determine the values to set.</p>
+For example, the command to run the `Diego_Windows_v0_148.msi` uses the following format:
 
 <pre class='terminal'>
-$ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
+$ msiexec /norestart /i ABSOLUTE_PATH_TO_MSI\Diego_Windows_v0_148.msi ^
   ADMIN_USERNAME=[Username with admin privileges] ^
   ADMIN_PASSWORD=[Admin user password] ^
   CONSUL_IPS=[Comma-separated IP addresses of consul agents from BOSH deploy of CF] ^
@@ -125,7 +132,9 @@ $ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
   MACHINE_NAME=[Name of this machine. Note: Must be unique across your cluster]
 </pre>
 
-An example:
+<p class='note'><strong>Note</strong>: If you used Ops Manager to deploy Diego Beta, complete the steps in the <a href="#env-vars">Determine Environment Variables</a> section to find the values that you need to run the <code>msiexec</code> command.</p>
+
+If you downloaded the MSI to `c:\temp\Diego_Windows_v0_148.msi`, the command might look like the following exampe:
 
 <pre class='terminal'>
 $ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
@@ -141,13 +150,13 @@ $ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
   MACHINE_NAME=WIN-RD649GEUDP1
 </pre>
 
-<p class='note'><strong>Note</strong>: Run <code>ipconfig</code> on the Windows VM to find <code>EXTERNAL_IP</code>.</p>
+<p class='note'><strong>Note</strong>: Run <code>ipconfig</code> on the Windows VM to find the <code>EXTERNAL_IP</code>.</p>
 
-## <a id='confirm-deployment'></a> Step 3: Confirm Successful Deployment ##
+## <a id='confirm-deployment'></a> Step 4: Confirm Successful Deployment ##
 
 1. Launch **Task Manager**.
 
-1. Confirm that **Task Manager** shows that the following five services are  running:
+1. Use **Task Manager** to confirm that the following five services are running:
   <table border='1' class='nice'>
     <tr>
       <th>NAME</th>
@@ -187,58 +196,58 @@ $ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
   </table> 
 
 1. Browse to `http://receptor.YOUR-DOMAIN/v1/cells` and search for `windows2012R2` to view the Windows cells.
+  <br><br>
+  For example:
 
-For example:
+    ```json
+    [
+      {
+        "cell_id": "cell_z1-0",
+        "zone": "z1",
+        "capacity": {
+          "memory_mb": 30158,
+          "disk_mb": 45766,
+          "containers": 256
+        },
+        "rootfs_providers": {
+          "docker": [
 
-```json
-[
-  {
-    "cell_id": "cell_z1-0",
-    "zone": "z1",
-    "capacity": {
-      "memory_mb": 30158,
-      "disk_mb": 45766,
-      "containers": 256
-    },
-    "rootfs_providers": {
-      "docker": [
+          ],
+          "preloaded": [
+            "cflinuxfs2"
+          ]
+        }
+      },
+      {
+        "cell_id": "cell_z2-0",
+        "zone": "z2",
+        "capacity": {
+          "memory_mb": 30158,
+          "disk_mb": 45766,
+          "containers": 256
+        },
+        "rootfs_providers": {
+          "docker": [
 
-      ],
-      "preloaded": [
-        "cflinuxfs2"
-      ]
-    }
-  },
-  {
-    "cell_id": "cell_z2-0",
-    "zone": "z2",
-    "capacity": {
-      "memory_mb": 30158,
-      "disk_mb": 45766,
-      "containers": 256
-    },
-    "rootfs_providers": {
-      "docker": [
-
-      ],
-      "preloaded": [
-        "cflinuxfs2"
-      ]
-    }
-  },
-  {
-    "cell_id": "WIN-FCTL342T6B1",
-    "zone": "z1",
-    "capacity": {
-      "memory_mb": 15624,
-      "disk_mb": 35487,
-      "containers": 100
-    },
-    "rootfs_providers": {
-      "preloaded": [
-        "windows2012R2"
-      ]
-    }
-  }
-]
-```
+          ],
+          "preloaded": [
+            "cflinuxfs2"
+          ]
+        }
+      },
+      {
+        "cell_id": "WIN-FCTL342T6B1",
+        "zone": "z1",
+        "capacity": {
+          "memory_mb": 15624,
+          "disk_mb": 35487,
+          "containers": 100
+        },
+        "rootfs_providers": {
+          "preloaded": [
+            "windows2012R2"
+          ]
+        }
+      }
+    ]
+    ```
