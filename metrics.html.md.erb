@@ -37,12 +37,12 @@ For example, suppose your GoRouter has ten instance. If one is not healthy, the 
 
 ### The system metric behind it
 
-`[bosh.healthmonitor.system.healthy]`
+`bosh.healthmonitor.system.healthy`
 
 
 ### Alerts
 
-NEED MORE INFO
+!!!TQ: NEED MORE INFO
 
 ### Other things to know
 
@@ -55,7 +55,7 @@ Because BOSH restores systems very quickly when they go down, we send alerts gen
 
 ### What we monitor 
 
-Requests per second for each Frontend component:
+Requests per second for each of the following components:
 - Router
 - DEA
 - API
@@ -80,14 +80,95 @@ None
 
 ## <a id='nats-traffic-delta'></a>NATS Traffic Delta
 
+<%= image_tag 'metrics/nats_delta.png' %>
 
 ### What we monitor 
+
+Nats traffic(moving average of 30 minutes) differences over the last hour.
+
 ### Why we monitor it
+
+So we can detect significant NATS traffic drop which can indicate a problem with the NATs health.
+
 ### The system metric behind it
+
+`aws.ec2.network_in(deployment: production, job:nats_z1/nats_z2}`
+
 ### Alerts
+
+None
+
 ### Other things to know
 
-## <a id='router-status'></a>Router Status
+None
+
+
+
+
+## <a id='etcd-uptime'></a>ETCD Leader Uptime
+
+<%= image_tag 'metrics/etcd_uptime.png' %>
+
+### What we monitor 
+
+Uptime of the ETCD leader
+
+### Why we monitor it
+
+When the ETCD leader is down this usually either causes or is the symptom of a push failure.
+
+### The system metric behind it
+
+`cloudops_tools.etcd_leader_health`
+
+### Alerts
+
+None
+
+### Other things to know
+
+None
+
+
+
+## <a id='ssh-attempts'></a>SSH Attempts
+
+<%= image_tag 'metrics/ssh_attempts.png' %>
+
+### What we monitor 
+
+Count of iptables 'first packet' to port 22 anywhere on the internet.
+
+### Why we monitor it
+
+This is a good indicator of abuse. Malicious users may load an SSH-cracker on to PWS and use it us to launch atacks. We need to know about it and stop them.
+
+### The system metric behind it
+
+`cloudops.tools.ssh-abuse-monitor`
+
+!!!TQ: in one place we have `cloudops_tools...` and in another `cloudops.tools...`; which is it?
+
+### Alerts
+
+None
+
+### Other things to know
+
+"This is a custom CF app that Clould Ops maintains in a private repos (https://github.com/pivotal-cloudops/ssh-abuse-monitor) - it’s not private for any good reason, we just have not released it. The best case is this feature is rolled into the product. The DEAs send their iptables logs to Logsearch, ssh-abuse-monitor polls logsearch and pushes a metric to datadog."
+
+!!!PMQ: erm, what the hell do we do with this?
+
+
+
+
+
+
+# <a id='router-status'></a>Router Status Metrics
+
+
+
+
 
 ##  <a id='dea-status'></a> DEA Status
 
