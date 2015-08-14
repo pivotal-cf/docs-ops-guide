@@ -265,13 +265,62 @@ None
 
 ### Other things to know
 
-Scaling is easy, if in doubt, add some routers.
+Our rule of thumb is: Scaling is easy, if in doubt, add some routers.
 
 
-#  <a id='dea-status'></a> DEA Status
+## <a id=aws-events></a>AWS Events
 
 ### What we monitor 
+
+Feed from ‘aws ec2 events’ 
+
+!!!TQ check to make sure this is right, engineer doc had this flagged as unsure
+
 ### Why we monitor it
+
+Tells us about VM, RDS and other things critical to know from our IaaS.
+
+!!!TQ this needs unpacking
+
 ### The system metric behind it
+
+N/A
+
 ### Alerts
+
+None
+
 ### Other things to know
+
+Only applies to CloudFoundry deployments on AWS.
+
+
+#  <a id='dea-status-column'></a> The DEA Status Column
+
+<%= image_tag 'metrics/dea_status_column.png' %>
+
+
+## <a id=reservable-stagers></a>Reservable Stagers
+
+### What we monitor 
+
+How many 1GB apps can be staged.
+
+### Why we monitor it
+
+Better capacity planning. If the number is too low users will not be able to stage more apps or even scale their apps.
+
+### The system metric behind it
+
+`sum:cf.collector.reservable_stagers{deployment:production}`
+
+### Alerts
+
+Alerts when there aren’t enough reservable stagers.
+
+### Other things to know
+
+It forms a basis for DEA Runners needed.
+
+
+
