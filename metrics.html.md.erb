@@ -103,8 +103,6 @@ None
 None
 
 
-
-
 ## <a id='etcd-uptime'></a>ETCD Leader Uptime
 
 <%= image_tag 'metrics/etcd_uptime.png' %>
@@ -159,21 +157,118 @@ None
 
 !!!PMQ: erm, what the hell do we do with this?
 
+# <a id='router-column'></a>The Router Column
+
+<%= image_tag 'metrics/router-column.png' %>
+
+## <a id='app-instance-count'></a>App Instance Count
+
+
+### What we monitor 
+
+Count of running app instances
+
+### Why we monitor it
+
+Big swings in app count can indicate malicious user behavior or CF component issues, either of which are important for Cloud Ops to address quickly.
+
+### The system metric behind it
+
+`avg:cf.collector.HM9000.HM9000.NumberOfAppsWithAllInstancesReporting{deployment:production}`
+
+### Alerts
+
+running app number change rate
+
+### Other things to know
+
+!!!TQ: need clarification
+
+Also has the ‘cliff’ behavior as well. If this spikes up, you need to pay attention to the Runner/Stager metrics.
 
 
 
+## <a id='total-routes'></a>Total Routes
+
+### What we monitor 
+
+Count of routes held by the GoRouter.
+
+### Why we monitor it
+
+The count on all routers should be the same. If this differs between routers, it usually indicates a NATS problem. See [some helpful link](#) for help trouble shooting this scenario.
+
+!!!TQ [this](http://docs.pivotal.io/pivotalcf/customizing/troubleshooting.html#time_out) is all i could find searching for NATS troubleshooting. Is this relevant/helpful? Suggestions?
+
+### The system metric behind it
+
+`cf.collector.router.total_routes`
+
+### Alerts
+
+prod CF: Number of routes in the router's routing table is too low
+
+### Other things to know
+
+- We show the delta over the last N min so that an operator can see an absolute change rather than counting on the shape of the graph, which can be misleading. 
+
+- The router are “the” way into all CF systems (both CF components and customer apps). If they go down (or don’t have routes) the system is down. It’s a keystone component and understanding what it’s metrics tell us is very important. This is a metric with a “cliff”, nominal changes are < 20, if we are doing a marketing event we might see ~200. Those are okay. Outside of that we really only see full failure ( minus 4000+ routes). There is nothing in between. 
+
+!!!TQ This needs unpacking
 
 
-# <a id='router-status'></a>Router Status Metrics
+
+## <a id='router-dial-errors'></a>Router Dial Errors
+
+### What we monitor 
+
+5xx from the routers to backend CF components and Apps.
+There are separate measures for CF Components and User pushed apps.
+
+### Why we monitor it
+
+This tells us is we have failures connecting to components.
 
 
+### The system metric behind it
+
+`avg:cloudops_tools.app_instance_monitor.router.dial.errors{domain:run.pivotal.io}`/`avg:cloudops_tools.app_instance_monitor.router.dial.errors{cf_component:false}`
 
 
+### Alerts
 
-##  <a id='dea-status'></a> DEA Status
+- No data for router dial errors
+- Router dial errors for console.run.pivotal.io
+- Too many router dial errors for cf components
+
+### Other things to know
+
+Any dial errors to CC, UAA, Dopplers and any other BOSH deployed CF component must be investigated. Same for admin domain apps (*run.pivotal.io in our case). We expect dial errors from our large population of customer app (4000+). People push bad apps, or are running dev iterations, etc and will have 502s. We don’t alert on them, we observe that 5xx in the 500/10 min range are normal. If we saw this number to jump to 1000+/10 min, we’d investigate. 
+
+## <a id='rotuer-cpu'></a>Router CPU
+
+### What we monitor 
+
+OS-level CPU usage.
+
+### Why we monitor it
+
+Routers are multi-threaded and like a lot of CPU, if they are using too much CPU we will scale them via BOSH.
+
+### The system metric behind it
+
+`bosh.healthmonitor.system.cpu.user{deployment:cf-cfapps-io2,job:<router_job>}`
+
+### Alerts
+
+None
+
+### Other things to know
+
+Scaling is easy, if in doubt, add some routers.
 
 
-
+#  <a id='dea-status'></a> DEA Status
 
 ### What we monitor 
 ### Why we monitor it
