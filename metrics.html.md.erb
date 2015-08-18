@@ -10,7 +10,7 @@ This topic describes the metrics included in the custom-configured Datadog dashb
 
 <%= image_tag 'metrics/bosh_health_combined.png'%>
 
-### What we monitor 
+### What we monitor
 
 Health, broken down by component:
 
@@ -42,7 +42,7 @@ For example, suppose your GoRouter has ten instance. If one is not healthy, the 
 
 ### Alerts
 
-!!!TQ: NEED MORE INFO
+None
 
 ### Other things to know
 
@@ -53,7 +53,7 @@ Because BOSH restores systems very quickly when they go down, we send alerts gen
 
 <%= image_tag 'metrics/req_per_sec.png'%>
 
-### What we monitor 
+### What we monitor
 
 Requests per second for each of the following components:
 - Router
@@ -82,7 +82,7 @@ None
 
 <%= image_tag 'metrics/nats_delta.png' %>
 
-### What we monitor 
+### What we monitor
 
 Nats traffic(moving average of 30 minutes) differences over the last hour.
 
@@ -107,7 +107,7 @@ None
 
 <%= image_tag 'metrics/etcd_uptime.png' %>
 
-### What we monitor 
+### What we monitor
 
 Uptime of the ETCD leader
 
@@ -133,7 +133,7 @@ None
 
 <%= image_tag 'metrics/ssh_attempts.png' %>
 
-### What we monitor 
+### What we monitor
 
 Count of iptables 'first packet' to port 22 anywhere on the internet.
 
@@ -164,7 +164,7 @@ None
 ## <a id='app-instance-count'></a>App Instance Count
 
 
-### What we monitor 
+### What we monitor
 
 Count of running app instances
 
@@ -182,15 +182,13 @@ running app number change rate
 
 ### Other things to know
 
-!!!TQ: need clarification
-
 Also has the ‘cliff’ behavior as well. If this spikes up, you need to pay attention to the Runner/Stager metrics.
 
-
+!!!TQ: need clarification
 
 ## <a id='total-routes'></a>Total Routes
 
-### What we monitor 
+### What we monitor
 
 Count of routes held by the GoRouter.
 
@@ -220,7 +218,7 @@ prod CF: Number of routes in the router's routing table is too low
 
 ## <a id='router-dial-errors'></a>Router Dial Errors
 
-### What we monitor 
+### What we monitor
 
 5xx from the routers to backend CF components and Apps.
 There are separate measures for CF Components and User pushed apps.
@@ -247,7 +245,7 @@ Any dial errors to CC, UAA, Dopplers and any other BOSH deployed CF component mu
 
 ## <a id='rotuer-cpu'></a>Router CPU
 
-### What we monitor 
+### What we monitor
 
 OS-level CPU usage.
 
@@ -270,7 +268,7 @@ Our rule of thumb is: Scaling is easy, if in doubt, add some routers.
 
 ## <a id=aws-events></a>AWS Events
 
-### What we monitor 
+### What we monitor
 
 Feed from ‘aws ec2 events’ 
 
@@ -302,7 +300,7 @@ Only applies to CloudFoundry deployments on AWS.
 
 ## <a id=reservable-stagers></a>Reservable Stagers
 
-### What we monitor 
+### What we monitor
 
 How many 1GB apps can be staged.
 
@@ -320,7 +318,149 @@ Alerts when there aren’t enough reservable stagers.
 
 ### Other things to know
 
-It forms a basis for DEA Runners needed.
+Used to calculate DEA runners needed.
+
+## <a id='mem-free-bytes'></a>Mem Free Bytes
+
+### What we monitor
+
+Total free memory on the DEAs
+
+### Why we monitor it
+
+Better capacity planning. If the number is too low, users will not be able to stage more apps or scale staged apps.
+
+### The system metric behind it
+
+`cf.collector.mem_free_bytes{deployment:production,job:dea}`
+
+### Alerts
+
+None
+
+### Other things to know
+
+Used to calculate DEA runners needed.
 
 
+## <a id='hours-since-last-start'></a>Hours since last DEA start
 
+
+### What we monitor
+
+Number of hours since the last DEA was started.
+
+### Why we monitor it
+
+If DEAs are restarting frequently this can indicate a bug in the DEA. This can directly impact customer-facing performance as it can cause apps to constantly be restaged.
+
+### The system metric behind it
+
+(min:cf.collector.uptime_in_seconds{deployment:production,job:dea}) / 3600
+
+### Alerts
+
+None
+
+### Other things to know
+
+None
+
+
+## <a id='over-4gb-ram'></a>Percent of DEAs with more than 4 GB free RAM
+
+### What we monitor
+
+What percentage of existing DEAs are available to stage 4 GB apps.
+
+### Why we monitor it
+
+To make sure a user can push a 4 GB app.
+
+### The system metric behind it
+
+`avg:cloudops_tools.dea_monitor.reservable_stagers_aggregate{deployment:production} * 100`
+
+!!!TQ: is that the right metric? doesn't look like it...
+
+### Alerts
+
+None
+
+### Other things to know
+
+None
+
+
+## <a id='app-stage-fail'></a>Application Staging Failures
+
+
+### What we monitor
+
+How many app staging requests failed on the runner.
+
+### Why we monitor it
+
+To ensure that users aren't facing issues staging apps.
+
+### The system metric behind it
+
+`avg:cloudops_tools.failed_stages.counts_per_5min{deployment:production}`
+
+### Alerts
+
+None
+
+### Other things to know
+
+None
+
+
+## <a id='dea-runners-needed'></a>DEA runners needed
+
+
+### What we monitor
+
+If there are any DEA runners needed.
+
+### Why we monitor it
+
+To tell us how many more runners we might need to add.
+
+### The system metric behind it
+
+`avg:cloudops_tools.dea_monitor.additional_runners_needed{deployment:production}`
+
+### Alerts
+
+None
+
+### Other things to know
+
+This metric is from an internal tool and is based on usage patterns seen in the past. There is no golden formula for this metric.
+
+!!!TQ: what the heck does that mean? There must be a formula that does in fact produce this composite metric from primitives. Is the idea that this will depend on particulars of a deployment, so that Cloud Ops' formula wouldn't be appropriate for someone else?
+
+
+## <a id='stage-per-hour'></a>Stages per hour
+
+
+### What we monitor
+
+How many apps are being staged every hour.
+
+### Why we monitor it
+
+Userful for statistical purposes and debugging issues with the system. If there are no apps being staged for 15 minutes, we might want to look at the system and see if anything is wrong.
+
+### The system metric behind it
+
+`avg:cloudops_tools.stages.counts_per_5min{deployment:production}.rollup(sum,3600)`
+
+### Alerts
+
+blah
+
+### Other things to know
+
+blah
