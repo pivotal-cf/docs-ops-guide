@@ -2,7 +2,7 @@
 title: Key Metrics for Monitoring a Pivotal Cloud Foundry Deployment
 ---
 
-The Pivotal Cloud Ops team monitors the health of its Cloud Foundry deployments using Datadog. [This repository](./https://github.com/pivotal-cf-experimental/datadog-config-oss) contains the customized configuration of Datadog for monitoring production and staging in a CF deployment.
+The Pivotal Cloud Ops team monitors the health of its Cloud Foundry deployments using Datadog. [This repository](https://github.com/pivotal-cf-experimental/datadog-config-oss) contains the customized configuration of Datadog for monitoring production and staging in a CF deployment.
 
 This topic describes the metrics included in the custom-configured Datadog dashboard, and how the Pivotal Cloud Ops team uses them to monitor a PCF deployment.
 
@@ -194,7 +194,7 @@ Count of routes held by the GoRouter.
 
 ### Why we monitor it
 
-The count on all routers should be the same. If this differs between routers, it usually indicates a NATS problem. See [some helpful link](#) for help trouble shooting this scenario.
+The count on all routers should be the same. If this differs between routers, it usually indicates a NATS problem. See some helpful link for help trouble shooting this scenario.
 
 !!!TQ [this](http://docs.pivotal.io/pivotalcf/customizing/troubleshooting.html#time_out) is all i could find searching for NATS troubleshooting. Is this relevant/helpful? Suggestions?
 
