@@ -4,158 +4,188 @@ title: Key Metrics for Monitoring a Pivotal Cloud Foundry Deployment
 
 The Pivotal Cloud Ops team monitors the health of its Cloud Foundry deployments using Datadog. [This repository](https://github.com/pivotal-cf-experimental/datadog-config-oss) contains the customized configuration of Datadog for monitoring production and staging in a CF deployment.
 
-This topic describes the metrics included in the custom-configured Datadog dashboard, and how the Pivotal Cloud Ops team uses them to monitor a PCF deployment.
+This topic describes the metrics included in the custom-configured Datadog dashboard, and how the Pivotal Cloud Ops team uses them to monitor a PCF deployment. 
+
+<%= image_tag 'metrics/dashboard.png'%>
 
 ## <a id='bosh-health'></a>BOSH Health Monitor
 
 <%= image_tag 'metrics/bosh_health_combined.png'%>
 
-### What we monitor
-
-Health, broken down by component:
-
-- Backend:
-	- NATS
-	- Doppler
-	- Stats
-	- HM9000
-	- BOSH
-	- NAT Box
-	- ETCD
-- Frontend:
-	- Router
-	- DEA
-	- API
-	- UAA
-
-### Why we monitor it
-
-Each row displays the average percentage of "healthy" instances for the relevant component over the last 5 minutes and 24 hours.
-
-For example, suppose your GoRouter has ten instance. If one is not healthy, the stoplight turns red and shows %90.
-
-
-### The system metric behind it
-
-`bosh.healthmonitor.system.healthy`
-
-
-### Alerts
-
-None
-
-### Other things to know
-
-Because BOSH restores systems very quickly when they go down, we send alerts generated from this metric to a buffer queue in our alerting system (Pagerduty) that waits two minutes before it sends an alert to the operator. We do this because BOSH/CF restores service reliably enough so that we don't need to be notified in real time for transitory restarts.
-
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>Health, broken down by component:
+		<ul>
+			<li>
+				Backend:
+				<ul>
+					<li>NATS</li>
+					<li>Doppler</li>
+					<li>Stats</li>
+					<li>HM9000</li>
+					<li>BOSH</li>
+					<li>NAT Box</li>
+					<li>ETCD</li>
+				</ul>
+			</li>
+			<li>
+				Frontend:
+				<ul>
+					<li>Router</li>
+					<li>DEA</li>
+					<li>API</li>
+					<li>UAA</li>
+				</ul>
+			</li>
+		<ul>
+	</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>Each row displays the average percentage of "healthy" instances for the relevant component over the last 5 minutes and 24 hours.<br>For example, suppose your GoRouter has ten instance. If one is not healthy, the stoplight turns red and shows %90.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>bosh.healthmonitor.system.healthy</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>None</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>Because BOSH restores systems very quickly when they go down, we send alerts generated from this metric to a buffer queue in our alerting system (Pagerduty) that waits two minutes before it sends an alert to the operator. We do this because BOSH/CF restores service reliably enough so that we don't need to be notified in real time for transitory restarts.</td>
+</tr>
+</table>
 
 ## <a id='req-per-sec'></a>Requests per second
 
 <%= image_tag 'metrics/req_per_sec.png'%>
 
-### What we monitor
-
-Requests per second for each of the following components:
-- Router
-- DEA
-- API
-- UAA
-
-
-### Why we monitor it
-
-To track the basic flow of traffic through the components in the system.
-
-### The system metric behind it
-
-`cf.collector.router.requests(component: app/cloudcontroller/uaa, deployment: production)`
-
-### Alerts
-
-None
-
-### Other things to know
-
-None
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>
+		Requests per second for each of the following components:
+		<ul>
+			<li>Router</li>
+			<li>DEA</li>
+			<li>API</li>
+			<li>UAA</li>
+		</ul>
+	</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>To track the basic flow of traffic through the components in the system.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>cf.collector.router.requests(component: app/cloudcontroller/uaa, deployment: production)</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>None</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>None</td>
+</tr>
+</table>
 
 ## <a id='nats-traffic-delta'></a>NATS Traffic Delta
 
-<%= image_tag 'metrics/nats_delta.png' %>
+<% image_tag 'metrics/nats_delta.png' %>
 
-### What we monitor
 
-Nats traffic(moving average of 30 minutes) differences over the last hour.
-
-### Why we monitor it
-
-So we can detect significant NATS traffic drop which can indicate a problem with the NATs health.
-
-### The system metric behind it
-
-`aws.ec2.network_in(deployment: production, job:nats_z1/nats_z2}`
-
-### Alerts
-
-None
-
-### Other things to know
-
-None
-
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>Nats traffic(moving average of 30 minutes) differences over the last hour.</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>So we can detect significant NATS traffic drop which can indicate a problem with the NATs health.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>aws.ec2.network_in(deployment: production, job:nats_z1/nats_z2}</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>None</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>None</td>
+</tr>
+</table>
 
 ## <a id='etcd-uptime'></a>ETCD Leader Uptime
 
-<%= image_tag 'metrics/etcd_uptime.png' %>
-
-### What we monitor
-
-Uptime of the ETCD leader
-
-### Why we monitor it
-
-When the ETCD leader is down this usually either causes or is the symptom of a push failure.
-
-### The system metric behind it
-
-`cloudops_tools.etcd_leader_health`
-
-### Alerts
-
-None
-
-### Other things to know
-
-None
+<% image_tag 'metrics/etcd_uptime.png' %>
 
 
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>Uptime of the ETCD leader</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>When the ETCD leader is down this usually either causes or is the symptom of a push failure.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>cloudops_tools.etcd_leader_health</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>None</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>None</td>
+</tr>
+</table>
 
 ## <a id='ssh-attempts'></a>SSH Attempts
 
-<%= image_tag 'metrics/ssh_attempts.png' %>
+<% image_tag 'metrics/ssh_attempts.png' %>
 
-### What we monitor
 
-Count of iptables 'first packet' to port 22 anywhere on the internet.
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>Count of iptables 'first packet' to port 22 anywhere on the internet.</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>This is a good indicator of abuse. Malicious users may load an SSH-cracker on to PWS and use it us to launch atacks. We need to know about it and stop them.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>`cloudops.tools.ssh-abuse-monitor`
 
-### Why we monitor it
+<!-- !!!TQ: in one place we have `cloudops_tools...` and in another `cloudops.tools...`; which is it? -->
 
-This is a good indicator of abuse. Malicious users may load an SSH-cracker on to PWS and use it us to launch atacks. We need to know about it and stop them.
+	</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>None</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>
+		This is a custom CF app that Clould Ops maintains in a private repos (https://github.com/pivotal-cloudops/ssh-abuse-monitor) - it’s not private for any good reason, we just have not released it. The best case is this feature is rolled into the product. The DEAs send their iptables logs to Logsearch, ssh-abuse-monitor polls logsearch and pushes a metric to datadog.
 
-### The system metric behind it
+		<!-- I don't know how to turn this into docs language -->
+	</td>
+</tr>
+</table>
 
-`cloudops.tools.ssh-abuse-monitor`
-
-!!!TQ: in one place we have `cloudops_tools...` and in another `cloudops.tools...`; which is it?
-
-### Alerts
-
-None
-
-### Other things to know
-
-"This is a custom CF app that Clould Ops maintains in a private repos (https://github.com/pivotal-cloudops/ssh-abuse-monitor) - it’s not private for any good reason, we just have not released it. The best case is this feature is rolled into the product. The DEAs send their iptables logs to Logsearch, ssh-abuse-monitor polls logsearch and pushes a metric to datadog."
-
-!!!PMQ: erm, what the hell do we do with this?
 
 # <a id='router-column'></a>The Router Column
 
@@ -164,304 +194,352 @@ None
 ## <a id='app-instance-count'></a>App Instance Count
 
 
-### What we monitor
-
-Count of running app instances
-
-### Why we monitor it
-
-Big swings in app count can indicate malicious user behavior or CF component issues, either of which are important for Cloud Ops to address quickly.
-
-### The system metric behind it
-
-`avg:cf.collector.HM9000.HM9000.NumberOfAppsWithAllInstancesReporting{deployment:production}`
-
-### Alerts
-
-running app number change rate
-
-### Other things to know
-
-Also has the ‘cliff’ behavior as well. If this spikes up, you need to pay attention to the Runner/Stager metrics.
-
-!!!TQ: need clarification
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>Count of running app instances</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>Big swings in app count can indicate malicious user behavior or CF component issues, either of which are important for Cloud Ops to address quickly.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td>
+		<code>avg:cf.collector.HM9000.HM9000.NumberOfAppsWithAllInstancesReporting{deployment:production}</code>
+	</td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>running app number change rate</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>Also has the ‘cliff’ behavior as well. If this spikes up, you need to pay attention to the Runner/Stager metrics.
+<!-- !!!TQ: need clarification -->
+	</td>
+</tr>
+</table>
 
 ## <a id='total-routes'></a>Total Routes
 
-### What we monitor
 
-Count of routes held by the GoRouter.
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>Count of routes held by the GoRouter.</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>The count on all routers should be the same. If this differs between routers, it usually indicates a NATS problem. See [some helpful link](http://docs.pivotal.io/pivotalcf/customizing/troubleshooting.html#time_out) for help trouble shooting this scenario.
 
-### Why we monitor it
+<!-- !!!TQ that is all i could find searching for NATS troubleshooting. Is this relevant/helpful? Suggestions? -->
 
-The count on all routers should be the same. If this differs between routers, it usually indicates a NATS problem. See some helpful link for help trouble shooting this scenario.
-
-!!!TQ [this](http://docs.pivotal.io/pivotalcf/customizing/troubleshooting.html#time_out) is all i could find searching for NATS troubleshooting. Is this relevant/helpful? Suggestions?
-
-### The system metric behind it
-
-`cf.collector.router.total_routes`
-
-### Alerts
-
-prod CF: Number of routes in the router's routing table is too low
-
-### Other things to know
-
-- We show the delta over the last N min so that an operator can see an absolute change rather than counting on the shape of the graph, which can be misleading. 
-
-- The router are “the” way into all CF systems (both CF components and customer apps). If they go down (or don’t have routes) the system is down. It’s a keystone component and understanding what it’s metrics tell us is very important. This is a metric with a “cliff”, nominal changes are < 20, if we are doing a marketing event we might see ~200. Those are okay. Outside of that we really only see full failure ( minus 4000+ routes). There is nothing in between. 
-
-!!!TQ This needs unpacking
-
-
+	</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>cf.collector.router.total_routes</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>prod CF: Number of routes in the router's routing table is too low</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>
+		<ul>
+			<li>
+				We show the delta over the last N min so that an operator can see an absolute change rather than counting on the shape of the graph, which can be misleading.
+			</li>
+			<li>
+				The router are “the” way into all CF systems (both CF components and customer apps). If they go down (or don’t have routes) the system is down. It’s a keystone component and understanding what it’s metrics tell us is very important. This is a metric with a “cliff”, nominal changes are < 20, if we are doing a marketing event we might see ~200. Those are okay. Outside of that we really only see full failure ( minus 4000+ routes). There is nothing in between.
+			</li>
+		</ul>
+	</td>
+</tr>
+</table>
 
 ## <a id='router-dial-errors'></a>Router Dial Errors
 
-### What we monitor
 
-5xx from the routers to backend CF components and Apps.
-There are separate measures for CF Components and User pushed apps.
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>5xx from the routers to backend CF components and Apps.
+There are separate measures for CF Components and User pushed apps.</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>This tells us is we have failures connecting to components.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>avg:cloudops_tools.app_instance_monitor.router.dial.errors{domain:run.pivotal.io} / avg:cloudops_tools.app_instance_monitor.router.dial.errors{cf_component:false}</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>
+		<ul>
+			<li>No data for router dial errors</li>
+			<li>Router dial errors for console.run.pivotal.io</li>
+			<li>Too many router dial errors for cf components</li>
+		</ul>
+	</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>Any dial errors to CC, UAA, Dopplers and any other BOSH-deployed CF component must be investigated. Same for admin domain apps (<code>*run.pivotal.io</code> in our case). We expect dial errors from our large population of customer app (4000+). People push bad apps, or are running dev iterations, etc and will have 502s. We don’t alert on them, we observe that 5xx in the 500/10 min range are normal. If we saw this number to jump to 1000+/10 min, we’d investigate.</td>
+</tr>
+</table>
 
-### Why we monitor it
-
-This tells us is we have failures connecting to components.
-
-
-### The system metric behind it
-
-`avg:cloudops_tools.app_instance_monitor.router.dial.errors{domain:run.pivotal.io}`/`avg:cloudops_tools.app_instance_monitor.router.dial.errors{cf_component:false}`
-
-
-### Alerts
-
-- No data for router dial errors
-- Router dial errors for console.run.pivotal.io
-- Too many router dial errors for cf components
-
-### Other things to know
-
-Any dial errors to CC, UAA, Dopplers and any other BOSH deployed CF component must be investigated. Same for admin domain apps (*run.pivotal.io in our case). We expect dial errors from our large population of customer app (4000+). People push bad apps, or are running dev iterations, etc and will have 502s. We don’t alert on them, we observe that 5xx in the 500/10 min range are normal. If we saw this number to jump to 1000+/10 min, we’d investigate. 
 
 ## <a id='rotuer-cpu'></a>Router CPU
 
-### What we monitor
 
-OS-level CPU usage.
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>OS-level CPU usage.</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>Routers are multi-threaded and like a lot of CPU, if they are using too much CPU we will scale them via BOSH.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>bosh.healthmonitor.system.cpu.user{deployment:cf-cfapps-io2,job:<router_job>}</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>None</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>Our rule of thumb is: Scaling is easy, if in doubt, add some routers.</td>
+</tr>
+</table>
 
-### Why we monitor it
-
-Routers are multi-threaded and like a lot of CPU, if they are using too much CPU we will scale them via BOSH.
-
-### The system metric behind it
-
-`bosh.healthmonitor.system.cpu.user{deployment:cf-cfapps-io2,job:<router_job>}`
-
-### Alerts
-
-None
-
-### Other things to know
-
-Our rule of thumb is: Scaling is easy, if in doubt, add some routers.
 
 
-## <a id=aws-events></a>AWS Events
+## <a id="aws-events"></a>AWS Events
 
-### What we monitor
 
-Feed from ‘aws ec2 events’ 
-
-!!!TQ check to make sure this is right, engineer doc had this flagged as unsure
-
-### Why we monitor it
-
-Tells us about VM, RDS and other things critical to know from our IaaS.
-
-!!!TQ this needs unpacking
-
-### The system metric behind it
-
-N/A
-
-### Alerts
-
-None
-
-### Other things to know
-
-Only applies to CloudFoundry deployments on AWS.
-
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>Feed from ‘aws ec2 events’ </td>
+	<!-- check to make sure this is right, engineer doc had this flagged as unsure -->
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>Tells us about VM, RDS and other things critical to know from our IaaS.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td>N/A</td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>None</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>Only applies to CloudFoundry deployments on AWS.</td>
+</tr>
+</table>
 
 #  <a id='dea-status-column'></a> The DEA Status Column
 
 <%= image_tag 'metrics/dea_status_column.png' %>
 
 
-## <a id=reservable-stagers></a>Reservable Stagers
+## <a id='reservable-stagers'></a>Reservable Stagers
 
-### What we monitor
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>How many 1GB apps can be staged.</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>Better capacity planning. If the number is too low users will not be able to stage more apps or even scale their apps.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>sum:cf.collector.reservable_stagers{deployment:production}</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>Alerts when there aren’t enough reservable stagers.</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>Used to calculate DEA runners needed.</td>
+</tr>
+</table>
 
-How many 1GB apps can be staged.
-
-### Why we monitor it
-
-Better capacity planning. If the number is too low users will not be able to stage more apps or even scale their apps.
-
-### The system metric behind it
-
-`sum:cf.collector.reservable_stagers{deployment:production}`
-
-### Alerts
-
-Alerts when there aren’t enough reservable stagers.
-
-### Other things to know
-
-Used to calculate DEA runners needed.
 
 ## <a id='mem-free-bytes'></a>Mem Free Bytes
 
-### What we monitor
-
-Total free memory on the DEAs
-
-### Why we monitor it
-
-Better capacity planning. If the number is too low, users will not be able to stage more apps or scale staged apps.
-
-### The system metric behind it
-
-`cf.collector.mem_free_bytes{deployment:production,job:dea}`
-
-### Alerts
-
-None
-
-### Other things to know
-
-Used to calculate DEA runners needed.
-
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>Total free memory on the DEAs</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>Better capacity planning. If the number is too low, users will not be able to stage more apps or scale staged apps.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>cf.collector.mem_free_bytes{deployment:production,job:dea}</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>None</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>Used to calculate DEA runners needed.</td>
+</tr>
+</table>
 
 ## <a id='hours-since-last-start'></a>Hours since last DEA start
 
 
-### What we monitor
-
-Number of hours since the last DEA was started.
-
-### Why we monitor it
-
-If DEAs are restarting frequently this can indicate a bug in the DEA. This can directly impact customer-facing performance as it can cause apps to constantly be restaged.
-
-### The system metric behind it
-
-(min:cf.collector.uptime_in_seconds{deployment:production,job:dea}) / 3600
-
-### Alerts
-
-None
-
-### Other things to know
-
-None
-
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>Number of hours since the last DEA was started.</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>If DEAs are restarting frequently this can indicate a bug in the DEA. This can directly impact customer-facing performance as it can cause apps to constantly be restaged.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>(min:cf.collector.uptime_in_seconds{deployment:production,job:dea}) / 3600</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>None</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>None</td>
+</tr>
+</table>
 
 ## <a id='over-4gb-ram'></a>Percent of DEAs with more than 4 GB free RAM
 
-### What we monitor
 
-What percentage of existing DEAs are available to stage 4 GB apps.
-
-### Why we monitor it
-
-To make sure a user can push a 4 GB app.
-
-### The system metric behind it
-
-`avg:cloudops_tools.dea_monitor.reservable_stagers_aggregate{deployment:production} * 100`
-
-!!!TQ: is that the right metric? doesn't look like it...
-
-### Alerts
-
-None
-
-### Other things to know
-
-None
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>What percentage of existing DEAs are available to stage 4 GB apps.</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>To make sure a user can push a 4 GB app.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>avg:cloudops_tools.dea_monitor.reservable_stagers_aggregate{deployment:production} * 100</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>None</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>None</td>
+</tr>
+</table>
 
 
 ## <a id='app-stage-fail'></a>Application Staging Failures
 
 
-### What we monitor
-
-How many app staging requests failed on the runner.
-
-### Why we monitor it
-
-To ensure that users aren't facing issues staging apps.
-
-### The system metric behind it
-
-`avg:cloudops_tools.failed_stages.counts_per_5min{deployment:production}`
-
-### Alerts
-
-None
-
-### Other things to know
-
-None
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>How many app staging requests failed on the runner.</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>To ensure that users aren't facing issues staging apps.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>avg:cloudops_tools.failed_stages.counts_per_5min{deployment:production}</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>None</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>None</td>
+</tr>
+</table>
 
 
 ## <a id='dea-runners-needed'></a>DEA runners needed
 
 
-### What we monitor
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>If there are any DEA runners needed.</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>To tell us how many more runners we might need to add.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>avg:cloudops_tools.dea_monitor.additional_runners_needed{deployment:production}</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>None</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>This metric is from an internal tool and is based on usage patterns seen in the past. There is no golden formula for this metric.</td>
+</tr>
+</table>
 
-If there are any DEA runners needed.
-
-### Why we monitor it
-
-To tell us how many more runners we might need to add.
-
-### The system metric behind it
-
-`avg:cloudops_tools.dea_monitor.additional_runners_needed{deployment:production}`
-
-### Alerts
-
-None
-
-### Other things to know
-
-This metric is from an internal tool and is based on usage patterns seen in the past. There is no golden formula for this metric.
-
-!!!TQ: what the heck does that mean? There must be a formula that does in fact produce this composite metric from primitives. Is the idea that this will depend on particulars of a deployment, so that Cloud Ops' formula wouldn't be appropriate for someone else?
+<!-- !!!TQ: what the heck does that mean? There must be a formula that does in fact produce this composite metric from primitives. Is the idea that this will depend on particulars of a deployment, so that Cloud Ops' formula wouldn't be appropriate for someone else? -->
 
 
 ## <a id='stage-per-hour'></a>Stages per hour
 
+<table border='1' class='nice'>
+<tr>
+	<th>What we monitor</th>
+	<td>How many apps are being staged every hour.</td>
+</tr>
+<tr>
+	<th>Why we monitor it</th>
+	<td>Useful for statistical purposes and debugging issues with the system. If there are no apps being staged for 15 minutes, we might want to look at the system and see if anything is wrong.Useful for statistical purposes and debugging issues with the system. If there are no apps being staged for 15 minutes, we might want to look at the system and see if anything is wrong.Useful for statistical purposes and debugging issues with the system. If there are no apps being staged for 15 minutes, we might want to look at the system and see if anything is wrong.Useful for statistical purposes and debugging issues with the system. If there are no apps being staged for 15 minutes, we might want to look at the system and see if anything is wrong.Useful for statistical purposes and debugging issues with the system. If there are no apps being staged for 15 minutes, we might want to look at the system and see if anything is wrong.</td>
+</tr>
+<tr>
+	<th>The system metric</th>
+	<td><code>avg:cloudops_tools.stages.counts_per_5min{deployment:production}.rollup(sum,3600)</code></td>
+</tr>
+<tr>
+	<th>Alerts triggered</th>
+	<td>None</td>
+</tr>
+<tr>
+	<th>Other things to know</th>
+	<td>None</td>
+</tr>
+</table>
 
-### What we monitor
 
-How many apps are being staged every hour.
 
-### Why we monitor it
 
-Userful for statistical purposes and debugging issues with the system. If there are no apps being staged for 15 minutes, we might want to look at the system and see if anything is wrong.
-
-### The system metric behind it
-
-`avg:cloudops_tools.stages.counts_per_5min{deployment:production}.rollup(sum,3600)`
-
-### Alerts
-
-None
-
-### Other things to know
-
-None
 
