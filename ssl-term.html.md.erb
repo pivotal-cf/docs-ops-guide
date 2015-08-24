@@ -61,21 +61,15 @@ should return your HAProxy IP address.
     anything.cf.example.com has address 172.16.1.1
 	</pre>
 
-1. Configure two fields on the HAProxy page in Elastic Runtime:
-    * **HAProxy IPs**: Enter the IP address for HAProxy.
-    The HAProxy IP address must be in your subnet.
-    * **SSL Certificate**:  If you are using a signed certificate from a
-    well-known certificate authority, you can import it.
-	Alternatively, you can generate a self-signed RSA certificate.
+1. From the PCF Ops Manager Dashboard, click on the Elastic Runtime tile.
 
-	<p class='note'><strong>Note</strong>: The domains that you use when you
-	generate RSA public and private keys must match the wildcard A record that
-	you create for HAProxy.
-	</p>
+1. Select **IPs and Ports**
 
-1. Configure one field on the Router IPs page in Elastic Runtime:
-    * **Router IPs**: Leave this field blank.
-	HAProxy assigns the router IPs internally.
+1. Enter the IP address for HAProxy in the the **HAProxy IPs** field.
+
+1. Leave the **Router IPs** field blank. HAProxy assigns the router IPs internally.
+
+1. Provide your SSL certificate on the **Security Config** page. See [Providing a Certificate for your SSL Termination Point](./security_config.html)
 
 [Return to the Getting Started Guide](../getstarted/index.html)
 
@@ -119,15 +113,16 @@ your load balancer.
       </tr>
     </table>
 
-1. Configure two fields on the HAProxy page in Elastic Runtime:
-    * **HAProxy IPs**: Leave blank.
-    * **SSL Certificate**:  If you are using a signed certificate from a
-    well-known certificate authority, you can import it.
-    Alternatively, you can generate a self-signed RSA certificate.
 
-1. Configure one field on the Router IPs page in Elastic Runtime:
-    * **Router IPs**: Enter the static IP address for PCF that you have
-	registered with your load balancer.
+1. From the PCF Ops Manager Dashboard, click on the Elastic Runtime tile.
+
+1. Select **IPs and Ports**
+
+1. Leave the **HAProxy IPs** field blank.
+
+1. In the **Router IPs** field, enter the static IP address for PCF that you have registered with your load balancer.
+
+1. Provide your SSL certificate on the **Security Config** page. See [Providing a Certificate for your SSL Termination Point](./security_config.html)
 
 <p class='note'><strong>Note</strong>: When adding or removing PCF routers, you must update your load balancing solution configuration with the appropriate IP addresses.</p>
 
