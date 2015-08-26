@@ -19,6 +19,8 @@ server.
 Connecting Elastic Runtime to LDAP allows the UAA to authenticate users using
 LDAP search and bind operations.
 
+See [Onboarding Users with LDAP](../adminguide/ldap-user-management.html) for information about managing user identity with LDAP in PCF.
+
 ##<a id='configure'></a>Configuring the LDAP Endpoint ##
 
 To integrate the UAA with LDAP, configure Elastic Runtime with your LDAP
@@ -97,21 +99,3 @@ Dashboard.
 
     <%=image_tag("uaa/apply-changes.png")%>
 
-##<a id='clients'></a>UAA Clients ##
-
-In addition to any users or client applications that LDAP defines, UAA creates
-and authenticates default users defined in the `uaa.yml` file on the UAA VM.
-
-UAA installs the following clients:
-
-* admin
-* autoscaling_service
-* cc\_service\_broker\_client
-* cf
-* cloud_controller
-* login
-* portal
-* system_passwords
-
-Use the UAA Command Line Interface (UAAC) to edit which default users the
-`uaa.yml` file defines. For information about the UAAC, see [Creating and Managing Users with the UAA CLI (UAAC)](../adminguide/uaa-user-management.html).
