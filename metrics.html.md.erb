@@ -17,7 +17,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 <table border='1' class='nice'>
 <tr>
 	<th>What we monitor</th>
-	<td>Health, broken down by component:
+	<td>Health, broken down by component. Each row displays the average percentage of healthy instances for the relevant component over the last 5 minutes and 24 hours.<br>For example, suppose your Router has ten instances. If one instance is not healthy, the stoplight turns red and shows 90%. <br><br>We monitor health for the following components:<br><br>
 		<ul>
 			<li>
 				Backend:
@@ -45,10 +45,12 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 </tr>
 <tr>
 	<th>Why we monitor it</th>
-	<td>Each row displays the average percentage of "healthy" instances for the relevant component over the last 5 minutes and 24 hours.<br>For example, suppose your GoRouter has ten instance. If one is not healthy, the stoplight turns red and shows %90.</td>
+	<td>
+		To ensure all VMs are functioning properly.
+	</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>bosh.healthmonitor.system.healthy</code></td>
 </tr>
 <tr>
@@ -56,14 +58,13 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 	<td>None</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
-	<td>Because BOSH restores systems very quickly when they go down, we send alerts generated from this metric to a buffer queue in our alerting system (Pagerduty) that waits two minutes before it sends an alert to the operator. We do this because BOSH/CF restores service reliably enough so that we do not need to be notified in real time for transitory restarts.</td>
+	<th>Notes</th>
+	<td>
+		Alerts generated from this metric go to a buffer queue in our alerting system, Pagerduty. Because BOSH restores systems quickly when they go down, we wait two minutes before forwarding unresolved alerts to our operators.</td>
 </tr>
 </table>
 
 ## <a id='req-per-sec'></a>Requests per second
-
-<%= image_tag 'metrics/req_per_sec.png'%>
 
 <table border='1' class='nice'>
 <tr>
@@ -80,10 +81,10 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 </tr>
 <tr>
 	<th>Why we monitor it</th>
-	<td>To track the basic flow of traffic through the components in the system.</td>
+	<td>To track the flow of traffic through the components in the system.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>cf.collector.router.requests(component: app/cloudcontroller/uaa)</code></td>
 </tr>
 <tr>
@@ -91,7 +92,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 	<td>None</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>None</td>
 </tr>
 </table>
@@ -103,14 +104,18 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 <table border='1' class='nice'>
 <tr>
 	<th>What we monitor</th>
-	<td>NATS traffic (moving average of 30 minutes) differences over the last hour.</td>
+	<td>
+		Delta of average NATS traffic over the last hour.
+		<br><br>
+		The displayed metric is the difference between the average NATS traffic over the last 30 minutes and the average NATS traffic over the interval from 90 to 60 minutes prior.
+	</td>
 </tr>
 <tr>
 	<th>Why we monitor it</th>
-	<td>So we can detect significant NATS traffic drop which can indicate a problem with the NATS health.</td>
+	<td>To detect significant drops in NATS traffic. A sudden drop might indicate a problem with the health of the NATS VMs.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>aws.ec2.network_in</code></td>
 </tr>
 <tr>
@@ -118,7 +123,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 	<td>None</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>None</td>
 </tr>
 </table>
@@ -131,14 +136,16 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 <table border='1' class='nice'>
 <tr>
 	<th>What we monitor</th>
-	<td>Uptime of the ETCD leader</td>
+	<td>
+		Time since ETCD leader last was down.
+	</td>
 </tr>
 <tr>
 	<th>Why we monitor it</th>
-	<td>When the ETCD leader is down this usually either causes or is the symptom of a push failure.</td>
+	<td>When the ETCD leader goes down, it usually indicates a push failure.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>cloudops_tools.etcd_leader_health</code></td>
 </tr>
 <tr>
@@ -146,7 +153,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 	<td>None</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>None</td>
 </tr>
 </table>
@@ -167,7 +174,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 	<td>This is a good indicator of abuse. Malicious users may load an SSH-cracker on to PWS and use it us to launch atacks. We need to know about it and stop them.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>cloudops.tools.ssh-abuse-monitor</code></td>
 
 <!-- !!!TQ: in one place we have `cloudops_tools...` and in another `cloudops.tools...`; which is it? -->
@@ -179,7 +186,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 	<td>None</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>
 		This metric is generated by a private internal app called ssh-abuse-monitor maintained by Cloud Ops. DEAs send their iptables logs to Logsearch, and ssh-abuse-monitor polls logsearch and pushes a metric to Datadog.
 	</td>
@@ -204,7 +211,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 	<td>Big swings in app count can indicate malicious user behavior or CF component issues, either of which are important for Cloud Ops to address quickly.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td>
 		<code>avg:cf.collector.HM9000.HM9000.NumberOfAppsWithAllInstancesReporting</code>
 	</td>
@@ -214,7 +221,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 	<td>running app number change rate</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>If this spikes up, you need to pay attention to the Runner/Stager metrics.
 
 	</td>
@@ -235,7 +242,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 	</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>cf.collector.router.total_routes</code></td>
 </tr>
 <tr>
@@ -243,14 +250,14 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 	<td>prod CF: Number of routes in the router's routing table is too low</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td
 		<ul>
 			<li>
 				We show the delta over the last N min so that an operator can see an absolute change rather than counting on the shape of the graph, which can be misleading.
 			</li>
 			<li>
-				The router are “the” way into all CF systems (both CF components and customer apps). If they go down (or don’t have routes) the system is down. It’s a keystone component and understanding what it’s metrics tell us is very important. This is a metric with a “cliff”: nominal changes are < 20, if we are doing a marketing event we might see ~200. Those are okay. Outside of that we really only see full failure ( minus 4000+ routes). There is nothing in between.
+				The router are “the” way into all CF systems (both CF components and customer apps). If they go down (or don’t have routes) the system is down. It’s a keystone component and understanding what it’s metrics tell us is important. This is a metric with a “cliff”: nominal changes are < 20, if we are doing a marketing event we might see ~200. Those are okay. Outside of that we really only see full failure ( minus 4000+ routes). There is nothing in between.
 			</li>
 		</ul>
 	</td>
@@ -271,7 +278,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>This tells us is we have failures connecting to components.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>avg:cloudops_tools.app_instance_monitor.router.dial.errors{domain:run.pivotal.io} / avg:cloudops_tools.app_instance_monitor.router.dial.errors{cf_component:false}</code></td>
 </tr>
 <tr>
@@ -285,7 +292,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>Any dial errors to CC, UAA, Dopplers and any other BOSH-deployed CF component must be investigated. Same for admin domain apps (<code>*run.pivotal.io</code> in our case). We expect dial errors from our large population of customer app (4000+). People push bad apps, or are running dev iterations, etc and will have 502s. We don’t alert on them, we observe that 5xx in the 500/10 min range are normal. If we saw this number to jump to 1000+/10 min, we’d investigate.</td>
 </tr>
 </table>
@@ -304,7 +311,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>Routers are multi-threaded and like a lot of CPU, if they are using too much CPU we will scale them via BOSH.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>bosh.healthmonitor.system.cpu.user{deployment:cf-cfapps-io2,job:<router_job>}</code></td>
 </tr>
 <tr>
@@ -312,7 +319,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>None</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>Our rule of thumb is: Scaling is easy, if in doubt, add some routers.</td>
 </tr>
 </table>
@@ -333,7 +340,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>Tells us about VM, RDS and other things critical to know from our IaaS.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td>N/A</td>
 </tr>
 <tr>
@@ -341,7 +348,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>None</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>Only applies to CloudFoundry deployments on AWS.</td>
 </tr>
 </table>
@@ -363,7 +370,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>Better capacity planning. If the number is too low users will not be able to stage more apps or even scale their apps.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>sum:cf.collector.reservable_stagers</code></td>
 </tr>
 <tr>
@@ -371,7 +378,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>Alerts when there aren’t enough reservable stagers.</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>Used to calculate DEA runners needed.</td>
 </tr>
 </table>
@@ -389,7 +396,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>Better capacity planning. If the number is too low, users will not be able to stage more apps or scale staged apps.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>cf.collector.mem_free_bytes{job:dea}</code></td>
 </tr>
 <tr>
@@ -397,7 +404,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>None</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>Used to calculate DEA runners needed.</td>
 </tr>
 </table>
@@ -415,7 +422,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>If DEAs are restarting frequently this can indicate a bug in the DEA. This can directly impact customer-facing performance as it can cause apps to constantly be restaged.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>(min:cf.collector.uptime_in_seconds{job:dea}) / 3600</code></td>
 </tr>
 <tr>
@@ -423,7 +430,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>None</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>None</td>
 </tr>
 </table>
@@ -441,7 +448,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>To make sure a user can push a 4 GB app.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>avg:cloudops_tools.dea_monitor.reservable_stagers_aggregate * 100</code></td>
 </tr>
 <tr>
@@ -449,7 +456,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>None</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>None</td>
 </tr>
 </table>
@@ -468,7 +475,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>To ensure that users are not facing issues staging apps.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>avg:cloudops_tools.failed_stages.counts_per_5min</code></td>
 </tr>
 <tr>
@@ -476,7 +483,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>None</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>None</td>
 </tr>
 </table>
@@ -495,7 +502,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>To tell us how many more runners we might need to add.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>avg:cloudops_tools.dea_monitor.additional_runners_needed</code></td>
 </tr>
 <tr>
@@ -503,7 +510,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>None</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>This metric is from an internal tool and is based on usage patterns seen in the past. There is no golden formula for this metric.</td>
 </tr>
 </table>
@@ -520,7 +527,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>This metric is useful for statistical purposes and debugging issues with the system. If there are no apps being staged for 15 minutes, we might want to look at the system and see if anything is wrong.</td>
 </tr>
 <tr>
-	<th>The system metric</th>
+	<th>System metric</th>
 	<td><code>avg:cloudops_tools.stages.counts_per_5min.rollup(sum,3600)</code></td>
 </tr>
 <tr>
@@ -528,7 +535,7 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>None</td>
 </tr>
 <tr>
-	<th>Other things to know</th>
+	<th>Notes</th>
 	<td>None</td>
 </tr>
 </table>
