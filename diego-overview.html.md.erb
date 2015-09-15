@@ -137,3 +137,5 @@ You must generate and provide an SSH key for host verification.
 * If your environment does not have Internet access, you must deselect the **Acceptance Tests** errand checkbox in the **Errands** tab of the Diego for PCF tile before deployment, as the image below shows:
 
     <%= image_tag("./diego/disable-acceptance-tests.png") %>
+    
+* Note that for the Beta release, Docker functionality is limited in a few ways. Diego is not detecting the port or user from the Docker Image, so Docker applications must runnable as the vcap user and listen on port 8080. With the Elastic Runtime 1.6 release, the platform will detect the user and port from the Docker image and correctly make these connections.
