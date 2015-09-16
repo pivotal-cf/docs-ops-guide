@@ -65,34 +65,7 @@ deployment.
 
 ### <a id='zone'></a>ZONE / REDUNDANCY_ZONE ###
 
-The BOSH redundancy zone that contains this cell as a member.
-
-  * Navigate to your PCF Ops Manager Dashboard, click the **Diego for PCF** 
-  tile, and select **Credentials**.
-  Locate the username and password for **Receptor Credentials** and navigate to 
-  `http://receptor.YOUR-DOMAIN/v1/cells`.
-  <br><br>
-  You should see `zone` listed inside each existing cell, as the example below
-  shows:
-  <pre>
-  [
-     {
-        "cell\_id":"cell-partition-880c1d1dca06bbf67e1-0",
-        "zone":"0880c1d1dca06bbf67e1",
-        "capacity":{
-           "memory\_mb":30679,
-           "disk\_mb":15993,
-           "containers":256
-        }
-     }
-  ]
-  </pre>
-  If you are using AWS, navigate to **EC2 Dashboard>Instances** on your AWS 
-  Console and select the instance name to find the zone. 
-  AWS displays the zone with the instance name, in the format `INSTANCE-ZONE`.
-  <br><br>
-  For example, the EC2 instance `nats-partition-012345abcde` exists within the 
-  zone `012345abcde`.
+Use the value `windows` for this field (see examples below)
 
 ### <a id='log-shared-secret'></a>LOGGREGATOR\_SHARED\_SECRET ###
 
@@ -117,7 +90,7 @@ $ msiexec /norestart /i ABSOLUTE_PATH_TO_MSI\Diego_Windows_v0_148.msi ^
   CONSUL_IPS=[Comma-separated IP addresses of consul agents from BOSH deploy of CF] ^
   CF_ETCD_CLUSTER=[URL of your Elastic Runtime CF etcd cluster from BOSH deploy of CF] ^
   STACK=[CF Stack (e.g., windows2012R2)] ^
-  REDUNDANCY_ZONE=[Diego zone that contains this cell as a member] ^
+  REDUNDANCY_ZONE=windows ^
   LOGGREGATOR_SHARED_SECRET=[Loggregator secret from your BOSH deploy of CF] ^
   EXTERNAL_IP=[External IP of Windows VM] ^
   MACHINE_NAME=[Name of this machine. Note: Must be unique across your cluster]
@@ -134,7 +107,7 @@ $ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
   CONSUL_IPS=10.10.5.11,10.10.6.11,10.10.7.11 ^
   CF_ETCD_CLUSTER=http://10.244.0.42:4001 ^
   STACK=windows2012R2 ^
-  REDUNDANCY_ZONE=0c35dfe1cf34ec47e2a2 ^
+  REDUNDANCY_ZONE=windows ^
   LOGGREGATOR_SHARED_SECRET=loggregator-secret ^
   EXTERNAL_IP=10.10.5.35 ^
   MACHINE_NAME=WIN-RD649GEUDP1
