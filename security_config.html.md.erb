@@ -2,38 +2,36 @@
 title: Providing a Certificate for your SSL Termination Point
 ---
 
+This topic describes the procedure for providing Elastic Runtime with an SSL certificate, as part of the process of configuring Elastic Runtime for deployment. See [Getting Started with Pivotal Cloud Foundry](../getstarted/index.html) for help installing PCF on your IaaS of choice.
+
+1. In the Pivotal Cloud Foundry Ops Manager Installation Dashboard, click the **Elastic Runtime** tile.
+
 1. Select **Security Config**.
 
-1. Enter your SSL Certificate
-  
-  * In a production environment, use a signed **SSL Certificate**
+1. Enter your SSL Certificate, as follows:
+  * (Option 1) In a production environment, use a signed **SSL Certificate**
     from a known certificate authority (CA). Copy and paste the values for
     **Certificate PEM** and **Private Key PEM** from the signed certificate
     into the appropriate text fields.
-  * In a development or testing environment, you may use a self-signed
-    certificate.
-    <p class='note'><strong>Note</strong>: Pivotal does not recommend using a
-    self-signed certificate for production deployments.</p>
-
-    To use a self-signed certificate, follow the steps below:
-
-    * Click the **Generate Self-Signed RSA Certificate** link to launch the
-      RSA certificate wizard.
-    * Enter your system and app domains in wildcard format.
-      Optionally, also add any custom domains in wildcard format.
-      The example below uses `*.example.com`.
-      <p class="note"><strong>Note</strong>: Wildcard DNS records only work
-        for a single domain name component or component fragment. For
-        example, <code>*.domain.com</code> works for
-        <code>apps.domain.com</code> and <code>system.domain.com</code>, but
-        not for <code>my.apps.domain.com</code> or
-        <code>my.system.domain.com</code>.
-      </p>
-    * Click **Generate**.
-    <%= image_tag("generate-cert.png") %>
-    * Elastic Runtime populates the **SSL Certificate** fields with RSA
-      certificate and private key information.
-    * Select the **Trust Self-Signed Certificates** checkbox.
+  * (Option 2) In a development or testing environment, you may use a self-signed
+    certificate. To use a self-signed certificate, follow the steps below:
+      - Click the **Generate Self-Signed RSA Certificate** link to launch the
+    RSA certificate wizard.
+      - Enter your system and app domains in wildcard format.
+    Optionally, also add any custom domains in wildcard format.
+    The example below uses `*.example.com`.
+    <p class="note"><strong>Note</strong>: Wildcard DNS records only work
+      for a single domain name component or component fragment. For
+      example, <code>*.domain.com</code> works for
+      <code>apps.domain.com</code> and <code>system.domain.com</code>, but
+      not for <code>my.apps.domain.com</code> or
+      <code>my.system.domain.com</code>.
+    </p>
+      - Click **Generate**.
+  <%= image_tag("generate-cert.png") %>
+      - Elastic Runtime populates the **SSL Certificate** fields with RSA
+    certificate and private key information.
+      - Select the **Trust Self-Signed Certificates** checkbox.
 
 1. **(Optional)** Enter a colon-separated list of custom SSL ciphers to pass to HAProxy in the **HAProxy SSL Ciphers** field. If you leave this field empty, PCF uses the default SSL ciphers specified in `cf-release/jobs/haproxy/spec`.
 
