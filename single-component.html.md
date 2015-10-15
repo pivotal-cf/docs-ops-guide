@@ -16,7 +16,7 @@ Although this behavior might be acceptable for a test environment, you should co
 The table lists components in the order that Ops Manager upgrades each component, and includes the following columns:
 
 * **Scalable?**: Indicates whether the component has an editable value or a preconfigured and unchangeable value of one instance.
-    <p class="note"><strong>Note</strong>: For components marked with a checkmark in this column, we recommend that you change the preconfigured instance value of 1 to a value that best supports your production environment. For more information on scaling a deployment, refer to the [Scaling Cloud Foundry topic](../concepts/high-availability.html).
+    <p class="note"><strong>Note</strong>: For components marked with a checkmark in this column, we recommend that you change the preconfigured instance value of 1 to a value that best supports your production environment. For more information about scaling a deployment, refer to the [Scaling Cloud Foundry topic](../concepts/high-availability.html).
 * **Extended Downtime**: Indicates that the component is unavailable for up to five minutes during an Ops Manager upgrade.
 * **Other Limitations and Information**: Provides the following information:
     * Component availability, behavior, and usage during an upgrade
