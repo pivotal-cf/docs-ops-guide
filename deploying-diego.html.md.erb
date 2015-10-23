@@ -26,7 +26,7 @@ Follow the instructions below to download and configure the Windows cell.
 
 1. From your Windows cell, log in to the [Pivotal Network](https://network.pivotal.io/).
 
-1. Download the `setup.ps1` file from the Pivotal Network at [https://network.pivotal.io/products/pivotal-diego-pcf](https://network.pivotal.io/products/pivotal-diego-pcf). 
+1. Download `setup.ps1` from the DiegoWindows folder in [Elastic Runtime](https://network.pivotal.io/products/elastic-runtime).
 
 1. Open File Explorer.
 
@@ -34,87 +34,34 @@ Follow the instructions below to download and configure the Windows cell.
 The `setup.ps1` script configures Windows features, DNS settings, and the 
 firewall for your Windows cell.
 
-## <a id='env-vars'></a>Step 2: Determine Environment Variables ##
+## Step 2: Run the Install Script Generator ##
 
-Use Ops Manager to determine the environment values that you need to run the 
-`msiexec` command in [Step 3: Install the MSI](#msi).
+1. Download `generate.exe` from the DiegoWindows folder in [Elastic Runtime](https://network.pivotal.io/products/elastic-runtime).
 
-### <a id='consul-ips'></a>CONSUL_IPS ###
+1. From a command prompt, run `generate.exe` with the following arguments:
+  
+<pre class='terminal'>
+$ generate.exe -boshUrl https://username:password@bosh-director.example.com:25555 -windowsUsername=Administrator -windowsPassword=Password123! -outputDir C:\diego-windows
+</pre>
 
-IP addresses of consul agents from your Diego BOSH deployment.
+Find your boshUrl in the [troubleshooting](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html) documentation.
 
-  * Navigate to your PCF Ops Manager dashboard, click the **Elastic Runtime** 
-  tile, and select **Status**.
-  Locate your **consul** job and copy the comma-separated list of IP addresses.
+The windowsUsername will be used to run Containerizer. The user provided must be a member of the Administrators group.
+All other services will run as the SYSTEM user.
 
-### <a id='cluster'></a>CF\_ETCD\_CLUSTER ###
-
-URL for the Elastic Runtime CF etcd cluster from your Cloud Foundry BOSH
-deployment.
-
-  * Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic 
-  Runtime** tile, and select **Status**.
-  Locate your **etcd** job and copy the IP address.
-  Format the IP address as a URL with port 4001, as in the following example: 
-  `http://192.168.11.10:4001`
-
-### <a id='zone'></a>ZONE / REDUNDANCY_ZONE ###
-
-Use the value `windows` for this field.
-
-### <a id='log-shared-secret'></a>LOGGREGATOR\_SHARED\_SECRET ###
-
-The shared secret from your Elastic Runtime deployment.
-
-  * Navigate to your PCF Ops Manager dashboard and select **Credentials**.
-  Locate the **Doppler Server** job to find your **Shared Secret Credentials**, 
-  as shown in the image below.
-  <%= image_tag("./diego/log-shared-secret.png") %>
+The outputDir specifies the directory that will contain the required certificates and a script to run the installers.
 
 ## <a id='msi'></a>Step 3: Install the MSI ##
 
-Install the MSI by running a command that sets your environment variables.
-The command that you run depends on the version of the MSI that you are using.
+1. Download both `DiegoWindows.msi` and `GardenWindows.msi` from the DiegoWindows folder in [Elastic Runtime](https://network.pivotal.io/products/elastic-runtime) to the outputDir specified above.
 
-For example, the command to run the `Diego_Windows_v0_148.msi` uses the following format:
-
-<pre class='terminal'>
-$ msiexec /norestart /i ABSOLUTE_PATH_TO_MSI\Diego_Windows_v0_148.msi ^
-  ADMIN_USERNAME=[Username with admin privileges] ^
-  ADMIN_PASSWORD=[Admin user password] ^
-  CONSUL_IPS=[Comma-separated IP addresses of consul agents from BOSH deploy of CF] ^
-  CF_ETCD_CLUSTER=[URL of your Elastic Runtime CF etcd cluster from BOSH deploy of CF] ^
-  STACK=[CF Stack (e.g., windows2012R2)] ^
-  REDUNDANCY_ZONE=windows ^
-  LOGGREGATOR_SHARED_SECRET=[Loggregator secret from your BOSH deploy of CF] ^
-  EXTERNAL_IP=[External IP of Windows VM] ^
-  MACHINE_NAME=[Name of this machine. Note: Must be unique across your cluster]
-</pre>
-
-<p class='note'><strong>Note</strong>: If you used Ops Manager to deploy Diego Beta, complete the steps in the <a href="#env-vars">Determine Environment Variables</a> section to find the values that you need to run the <code>msiexec</code> command.</p>
-
-If you downloaded the MSI to `c:\temp\Diego_Windows_v0_148.msi`, the command might look like the following exampe:
-
-<pre class='terminal'>
-$ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
-  ADMIN_USERNAME=Administrator ^
-  ADMIN_PASSWORD=SecretPassword ^
-  CONSUL_IPS=10.10.5.11,10.10.6.11,10.10.7.11 ^
-  CF_ETCD_CLUSTER=http://10.244.0.42:4001 ^
-  STACK=windows2012R2 ^
-  REDUNDANCY_ZONE=windows ^
-  LOGGREGATOR_SHARED_SECRET=loggregator-secret ^
-  EXTERNAL_IP=10.10.5.35 ^
-  MACHINE_NAME=WIN-RD649GEUDP1
-</pre>
-
-<p class='note'><strong>Note</strong>: Run <code>ipconfig</code> on the Windows VM to find the <code>EXTERNAL_IP</code>.</p>
+1. Run `install.bat` from the outputDir.
 
 ## <a id='confirm-deployment'></a> Step 4: Confirm Successful Deployment ##
 
 1. Launch **Task Manager**.
 
-1. Use **Task Manager** to confirm that the following five services are running:
+1. Navigate to the Services tab and confirm that the following services are running:
   <table border='1' class='nice'>
     <tr>
       <th>NAME</th>
@@ -129,11 +76,6 @@ $ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
     <tr>
       <td>Containerizer</td>
       <td>CF Containerizer</td>
-      <td>Running</td>
-    </tr>
-    <tr>
-      <td>Executor</td>
-      <td>CF Executor</td>
       <td>Running</td>
     </tr>
     <tr>
@@ -153,59 +95,11 @@ $ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
     </tr>
   </table> 
 
-1. Browse to `http://receptor.YOUR-DOMAIN/v1/cells` and search for `windows2012R2` to view the Windows cells.
-  <br><br>
-  For example:
+1. Download/clone the [CF Smoke Tests](https://github.com/cloudfoundry/cf-smoke-tests.git) repository
 
-    ```json
-    [
-      {
-        "cell_id": "cell_z1-0",
-        "zone": "z1",
-        "capacity": {
-          "memory_mb": 30158,
-          "disk_mb": 45766,
-          "containers": 256
-        },
-        "rootfs_providers": {
-          "docker": [
+1. Follow the instructions from the README to run the smoke tests against your
+environment with the `enable_windows_tests` configuration flag set to `true`.
 
-          ],
-          "preloaded": [
-            "cflinuxfs2"
-          ]
-        }
-      },
-      {
-        "cell_id": "cell_z2-0",
-        "zone": "z2",
-        "capacity": {
-          "memory_mb": 30158,
-          "disk_mb": 45766,
-          "containers": 256
-        },
-        "rootfs_providers": {
-          "docker": [
-
-          ],
-          "preloaded": [
-            "cflinuxfs2"
-          ]
-        }
-      },
-      {
-        "cell_id": "WIN-FCTL342T6B1",
-        "zone": "z1",
-        "capacity": {
-          "memory_mb": 15624,
-          "disk_mb": 35487,
-          "containers": 100
-        },
-        "rootfs_providers": {
-          "preloaded": [
-            "windows2012R2"
-          ]
-        }
-      }
-    ]
-    ```
+This will deploy a sample .NET application to one of your Windows cells and
+exercise basic CF functionality to ensure your deployment is functioning
+properly.
