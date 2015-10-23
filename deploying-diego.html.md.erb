@@ -1,21 +1,21 @@
 ---
-title: Deploying Diego Beta for Windows
+title: Deploying Diego for Windows
 ---
 
-This topic contains instructions for setting up a Windows cell in a Diego 
-deployment. 
+This topic contains instructions for setting up a Windows cell in a Diego
+deployment.
 
-A **cell** is a virtual machine (VM) that stages, hosts, and manages application lifecycles. 
-See the [Diego Beta Overview](./diego-overview.html) topic for general 
-information about Diego Beta.
+A **cell** is a virtual machine (VM) that stages, hosts, and manages application lifecycles.
+See the [Diego Overview](./diego-overview.html) topic for general
+information about Diego.
 
 ## <a id='prequisites'></a>Prerequisites ##
 
 * A working Diego deployment
 * A Windows Server 2012R2 VM instance that is routable to your Diego deployment
     * See [recommended instance types](https://github.com/cloudfoundry-incubator/diego-release/tree/3b229e0b971402387bd7c1831e96b2a177cbfcae#recommended-instance-types) in the GitHub Diego release repo for details.
-    * If you are creating a new Windows image, and not using one predefined and 
-supplied by your IaaS, we recommend using this [ISO image](https://msdn.microsoft.com/subscriptions/json/GetDownloadRequest?brand=MSDN&locale=en-us&fileId=62611&activexDisabled=true&akamaiDL=false) as a starting 
+    * If you are creating a new Windows image, and not using one predefined and
+supplied by your IaaS, we recommend using this [ISO image](https://msdn.microsoft.com/subscriptions/json/GetDownloadRequest?brand=MSDN&locale=en-us&fileId=62611&activexDisabled=true&akamaiDL=false) as a starting
 point. You must have an MSDN account to download this ISO image.
 * A new subnet for the Windows cell
     * You should place the Windows cell and BOSH in separate subnets to avoid potential conflicts. A BOSH deploys fails if the Windows cell uses an IP address that BOSH needs.
@@ -26,24 +26,24 @@ Follow the instructions below to download and configure the Windows cell.
 
 1. From your Windows cell, log in to the [Pivotal Network](https://network.pivotal.io/).
 
-1. Download the `setup.ps1` file from the Pivotal Network at [https://network.pivotal.io/products/pivotal-diego-pcf](https://network.pivotal.io/products/pivotal-diego-pcf). 
+1. Download the `setup.ps1` file from the Pivotal Network at [https://network.pivotal.io/products/pivotal-diego-pcf](https://network.pivotal.io/products/pivotal-diego-pcf).
 
 1. Open File Explorer.
 
 1. Right-click on the `setup.ps1` file and select **Run with PowerShell**.
-The `setup.ps1` script configures Windows features, DNS settings, and the 
+The `setup.ps1` script configures Windows features, DNS settings, and the
 firewall for your Windows cell.
 
 ## <a id='env-vars'></a>Step 2: Determine Environment Variables ##
 
-Use Ops Manager to determine the environment values that you need to run the 
+Use Ops Manager to determine the environment values that you need to run the
 `msiexec` command in [Step 3: Install the MSI](#msi).
 
 ### <a id='consul-ips'></a>CONSUL_IPS ###
 
 IP addresses of consul agents from your Diego BOSH deployment.
 
-  * Navigate to your PCF Ops Manager dashboard, click the **Elastic Runtime** 
+  * Navigate to your PCF Ops Manager dashboard, click the **Elastic Runtime**
   tile, and select **Status**.
   Locate your **consul** job and copy the comma-separated list of IP addresses.
 
@@ -52,10 +52,10 @@ IP addresses of consul agents from your Diego BOSH deployment.
 URL for the Elastic Runtime CF etcd cluster from your Cloud Foundry BOSH
 deployment.
 
-  * Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic 
+  * Navigate to your PCF Ops Manager dashboard, click the **Pivotal Elastic
   Runtime** tile, and select **Status**.
   Locate your **etcd** job and copy the IP address.
-  Format the IP address as a URL with port 4001, as in the following example: 
+  Format the IP address as a URL with port 4001, as in the following example:
   `http://192.168.11.10:4001`
 
 ### <a id='zone'></a>ZONE / REDUNDANCY_ZONE ###
@@ -67,7 +67,7 @@ Use the value `windows` for this field.
 The shared secret from your Elastic Runtime deployment.
 
   * Navigate to your PCF Ops Manager dashboard and select **Credentials**.
-  Locate the **Doppler Server** job to find your **Shared Secret Credentials**, 
+  Locate the **Doppler Server** job to find your **Shared Secret Credentials**,
   as shown in the image below.
   <%= image_tag("./diego/log-shared-secret.png") %>
 
@@ -91,7 +91,7 @@ $ msiexec /norestart /i ABSOLUTE_PATH_TO_MSI\Diego_Windows_v0_148.msi ^
   MACHINE_NAME=[Name of this machine. Note: Must be unique across your cluster]
 </pre>
 
-<p class='note'><strong>Note</strong>: If you used Ops Manager to deploy Diego Beta, complete the steps in the <a href="#env-vars">Determine Environment Variables</a> section to find the values that you need to run the <code>msiexec</code> command.</p>
+<p class='note'><strong>Note</strong>: If you used Ops Manager to deploy Diego, complete the steps in the <a href="#env-vars">Determine Environment Variables</a> section to find the values that you need to run the <code>msiexec</code> command.</p>
 
 If you downloaded the MSI to `c:\temp\Diego_Windows_v0_148.msi`, the command might look like the following exampe:
 
@@ -151,7 +151,7 @@ $ msiexec /norestart /i c:\temp\Diego_Windows_v0_148.msi ^
       <td>CF Rep</td>
       <td>Running</td>
     </tr>
-  </table> 
+  </table>
 
 1. Browse to `http://receptor.YOUR-DOMAIN/v1/cells` and search for `windows2012R2` to view the Windows cells.
   <br><br>
