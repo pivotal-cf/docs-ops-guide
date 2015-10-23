@@ -18,5 +18,5 @@ This guide covers networking and user management for [Pivotal Cloud Foundry](htt
 * [Switching Application Domains](./switching-domains.html)
 * [Monitoring Instance Usage with the Accounting Report](./accounting-report.html)
 * [Diego for PCF Overview](./diego-overview.html)
-* [Deploying Diego  for Windows](./deploying-diego.html)
+* [Deploying Diego for Windows](./deploying-diego.html)
 * [Key Metrics for Monitoring a Pivotal Cloud Foundry Deployment](./metrics.html)
