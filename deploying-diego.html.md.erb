@@ -9,7 +9,41 @@ A **cell** is a virtual machine (VM) that stages, hosts, and manages application
 See the [Diego Beta Overview](./diego-overview.html) topic for general 
 information on Diego Beta.
 
-## <a id='prequisites'></a>Prerequisites ##
+The following are two methods for installing a Windows cell into your CF deployment,
+via <a href="#cloudformation">Amazon CloudFormation</a> and <a href="#manual">manually</a> by connecting directly to a Windows VM.
+
+## <a id='cloudformation'></a>Amazon CloudFormation
+
+### Prerequisites
+
+* A working Diego deployment
+
+There is a CloudFormation template in the DiegoWindows folder of [Elastic Runtime](https://network.pivotal.io/products/elastic-runtime).
+This template can be uploaded to [CloudFormation](https://console.aws.amazon.com/cloudformation/home) for automatic
+setup of a Windows cell.
+
+The CloudFormation wizard will ask for a number of parameters.
+
+1. SecurityGroup: Security group ID to use for the Windows cells
+1. BoshUserName: Username for BOSH director
+1. BoshPassword: Pasword for BOSH director (Make sure your password meets [Windows complexity requirements](https://technet.microsoft.com/en-us/library/Cc786468(v=WS.10).aspx))
+1. BoshHost: Bosh director host
+1. ContainerizerPassword: Pasword for containerizer user e.g. password123!
+1. CellName: The name for your cell
+1. VPCID: the id of the vpc in which the cell and the subnet will be created
+1. NAT Instance: the instance ID of the NAT box. Search for `NAT` in the CloudFormation dropdown, it will typically be the first result. 
+1. SubnetCIDR: the IP range of the Windows cell subnet, e.g. `10.0.100.0/24`. It should not collide with an existing subnet within the VPC.
+1. Keypair: A keypair that you have the private key to. This will be necessary to retrieve the Administrator password to the Windows VMs that are created.
+
+The CloudFormation template will configure the Windows cell for the
+appropriate availability zone based on the provided security group, install the
+MSI and register itself with Diego. The CloudFormation template will only
+succeed if all services are up and running after installation. To debug a
+failed install, set "Rollback on failure" to "No" under advanced options.
+
+## <a id="manual"></a>Manual Setup
+
+### Prerequisites
 
 * A working Diego deployment
 * A Windows Server 2012R2 VM instance that is routable to your Diego deployment
@@ -20,7 +54,7 @@ point. You must have an MSDN account to download this ISO image.
 * A new subnet for the Windows cell
     * You should place the Windows cell and BOSH in separate subnets to avoid potential conflicts. A BOSH deploys fails if the Windows cell uses an IP address that BOSH needs.
 
-## <a id='cell'></a>Step 1: Configure the Windows Cell ##
+### <a id='cell'></a>Step 1: Configure the Windows Cell ##
 
 Follow the instructions below to download and configure the Windows cell.
 
@@ -34,7 +68,7 @@ Follow the instructions below to download and configure the Windows cell.
 The `setup.ps1` script configures Windows features, DNS settings, and the 
 firewall for your Windows cell.
 
-## Step 2: Run the Install Script Generator ##
+### Step 2: Run the Install Script Generator
 
 1. Download `generate.exe` from the DiegoWindows folder in [Elastic Runtime](https://network.pivotal.io/products/elastic-runtime). 
 **Note** that if you are using Internet Explorer to download the file it will currently remove the `.exe` extension from the file, so you will have to rename it to have the extension.
@@ -52,13 +86,13 @@ All other services will run as the SYSTEM user.
 
 The outputDir specifies the directory that will contain the required certificates and a script to run the installers.
 
-## <a id='msi'></a>Step 3: Install the MSI ##
+### <a id='msi'></a>Step 3: Install the MSI
 
 1. Download both `DiegoWindows.msi` and `GardenWindows.msi` from the DiegoWindows folder in [Elastic Runtime](https://network.pivotal.io/products/elastic-runtime) to the outputDir specified above.
 
 1. Run `install.bat` from the outputDir.
 
-## <a id='confirm-deployment'></a> Step 4: Confirm Successful Deployment ##
+### <a id='confirm-deployment'></a> Step 4: Confirm Successful Deployment
 
 1. Launch **Task Manager**.
 
