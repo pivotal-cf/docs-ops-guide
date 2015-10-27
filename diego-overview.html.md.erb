@@ -1,159 +1,26 @@
 ---
-title: Diego for PCF (Beta) Overview
+title: Using Diego in Pivotal Cloud Foundry
 ---
 
-<p class='tip'>The Diego for PCF (Beta) release is intended for demonstration purposes. Pivotal does not recommend running the Diego Beta in production. Pivotal does not guarantee that you can upgrade the Diego Beta to subsequent General Availability releases.</p>
+This topic describes using Diego in the Pivotal Cloud Foundry (PCF) 1.6 release.
+Diego is the next-generation container scheduler for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) Elastic Runtime.
 
-This topic describes how to install the Diego for PCF (Beta) release. 
-Diego is the next-generation container scheduler for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) Elastic Runtime. 
+In the Pivotal Cloud Foundry (PCF) 1.6 release, Diego replaces the [DEAs](concepts/architecture/execution-agent.html) and the [Health Manager](concepts/architecture/#hm9k). Diego is installed and enabled in PCF 1.6 by default. 
 
-<p class='note'><strong>Note</strong>: You must delete the <a href="https://network.pivotal.io/products/pivotal-diego-pcf">Diego for PCF</a> tile from your Ops Manager Installation dashboard before upgrading between versions of Elastic Runtime.</p>
+<p class="note"><strong>Note</strong>: Before you install PCF 1.6, you must uninstall any Diego Beta installations. For more information on upgrading to PCF 1.6, see <a href="../customizing/upgrading-pcf.html">Upgrading Operations Manager</a>.</p>
 
-Refer to the [Deploying Diego Beta for Windows](./deploying-diego.html) topic 
-for information about deploying Diego Beta for Windows.
+## Configure Diego in PCF
 
-##<a id='overview'></a>Overview ##
+1. Log in to Pivotal Ops Manager.
 
-In Ops Manager, use the Diego for PCF tile to deploy Diego to Pivotal Cloud 
-Foundry. 
-This tile allows you to test the new Diego functionality with your installation 
-and includes support for both .NET and Docker.  
+1. Click the **Ops Manager Director** tile.
 
-If you also deploy <a href="https://network.pivotal.io/products/elastic-runtime">Pivotal Elastic Runtime</a>, application developers can choose to deploy their applications 
-either to Diego or to Elastic Runtime.
+1. Select **Diego**.
+<%= image_tag("images/diego/diego-config.png") %>
 
-<%= image_tag("./diego/install-dashboard.png") %>
+2. Select the **Use Diego by default instead of DEAs** checkbox to ensure that all applications pushed to your PCF deployment use the Diego container management system. For new installations, this option is selected by default. If you are upgrading to PCF 1.6, you must select this option to automatically enable Diego for newly pushed applications. 
 
-##<a id='prerequisites'></a>Requirements ##
+    <p class='note'><strong>Note</strong>: If you do not select this option,  application developers must explicitly target Diego when pushing their applications.</p>
 
-<table border='1' class='nice'>
-  <tr>
-    <th>Component</th>
-    <th>Version</th>
-    <th>Notes</th>
-	</tr>
-  <tr>
-    <td>Ops Manager</td>
-    <td>1.5.x.y</td>
-    <td>Ops Manager must be running on Amazon Web Services (AWS), vSphere, vCloud, or OpenStack</td>
-  </tr>
-  <tr>
-    <td>Elastic Runtime</td>
-    <td>1.5.x.y</td>
-    <td>Contains <a href='https://github.com/cloudfoundry/cf-release/releases/tag/v207'>CF Release 208</a></td>
-  </tr>
-  <tr>
-    <td>Diego for PCF</td>
-    <td>0.2.0</td>
-    <td>Contains <a href='https://github.com/cloudfoundry-incubator/diego-release/commit/f7b15f8da536eee7be696896890943dbc6202242'>Release 0.1198.0</a></td>
-  </tr>
-  <tr>
-    <td><a href='https://github.com/cloudfoundry-incubator/diego-cli-plugin'>Diego CLI plugin</a></td>
-    <td></td>
-    <td>Needed to push applications or Docker images to Diego instead of the existing DEAs</td>
-  </tr>
-  <tr>
-    <td>Diego Windows MSI</td>
-    <td>0.148</td>
-    <td>Find the MSI on the <a href="https://network.pivotal.io/products/pivotal-diego-pcf">Diego for PCF (Beta)</a> Pivotal Network page</td>
-  </tr>
-  <tr>
-    <td>SSH Key</td>
-    <td></td>
-    <td>Refer to the <a href='#ssh-key'>Provide an SSH Key</a> section for instructions</td>
-  </tr>
-</table>
+3. (Optional) Select the **Allow SSH access to apps** checkbox to allow application developers to `ssh` directly into their application instances on Diego. See the [Diego-SSH Overview](../customizing/diego-ssh/) topic for more details.
 
-<p class='note'><strong>Note</strong>: You must use this exact combination of versions. These versions have been tested together and work correctly as of 7 July 2015.</p>
-
-You can download these components from the [Pivotal Network](https://network.pivotal.io/products/):
-
-  * [Diego for PCF 
-    (Beta)](https://network.pivotal.io/products/pivotal-diego-pcf)
-  * [Pivotal Elastic 
-    Runtime](https://network.pivotal.io/products/elastic-runtime)
-  * [Pivotal Cloud Foundry Ops 
-    Manager](https://network.pivotal.io/products/ops-manager)
-
-##<a id='installation'></a>Installation and Configuration ##
-
-###<a id='docker'></a>Step 1: Enable Docker Support ###
-
-1. In the PCF Ops Manager Installation Dashboard, click the Elastic Runtime 
-tile.
-
-1. Select the **Cloud Controller** tab.
-
-1. Select the **Enable Diego Docker support** checkbox.
-
-1. Click **Save**.
-
-<%= image_tag("./diego/enable-diego-docker.png") %>
-
-###<a id='docker-diego'></a>Step 2: Install Diego for PCF ###
-
-1. Download the Diego for PCF `.pivotal` file from [Pivotal Network](https://network.pivotal.io/products/pivotal-diego-pcf).
-
-1. Import Diego for PCF into Ops Manager by following the instructions for [Adding and Importing Products](../customizing/add-delete.html#add-import).
-
-1. In the Ops Manager Installation Dashboard, click the **Diego for PCF** tile.
-
-    <%= image_tag("./diego/diego-tile.png") %>
-
-###<a id='configure'></a>Step 3: Configure Diego for PCF ###
-
-<a id='ssh-key'></a>
-####Generate an SSH Key
-
-You must generate and provide an SSH key for host verification.
-
-1. In a terminal window, run `ssh-keygen` to generate an SSH key pair. When prompted, leave the passphrase empty. 
-    <pre class='terminal'>
-    $ ssh-keygen
-    Generating public/private rsa key pair.
-    Enter file in which to save the key (/Users/localuser/.ssh/id_rsa): diego
-    Enter passphrase (empty for no passphrase):
-    Enter same passphrase again:
-    </pre>
-    The `ssh-keygen` command generates two files, a private and a public key. 
-    The private key file lacks a `.pub` extension. 
-
-1. Copy the contents of the private key file.
-
-1. In the Ops Manager Installation Dashboard, click the **Diego for PCF** tile.
-
-1. Select the **Diego** tab.
-
-1. Paste the contents of the generated private key file into the **SSH Proxy Private Key** field, as the image below shows:
-
-    <%= image_tag("./diego/ssh-key.png") %>
-
-<a id='resourcessh-key'></a>
-####(Optional) Configure Resources
-
-Pivotal recommends that you configure Diego for High Availability (HA) and Quorum to mitigate failover situations, as follows:
-
-**High Availability**: To configure Diego for PCF for high availability, Pivotal recommends that you increase the **Instances** of each Diego component to at least `2`.
-
-**Quorum**: An etcd cluster requires a quorum to accept requests. To maintain a quorum, more than half of the nodes in an etcd cluster must be responsive to each other. 
-
-  * A cluster with 2 nodes loses quorum if a single node fails.
-  * A cluster with 3 or 4 nodes maintains quorum if a single node fails. 
-  * A cluster with 5 or more nodes maintains quorum if one or two nodes fail.
-
-To satisfy the requirements of high availability and quorum, increase the number of etcd **Instances** to `3` or `5`.
-
-<%= image_tag("./diego/diego-resources.png") %>
-
-##<a id='known-issues'></a>Warnings and Known Issues ##
-
-* No upgrades are supported between versions of the Diego for PCF tile.
-* Diego SSH support has not been tested or verified on this Beta release, and 
-its functionality may be incomplete.
-* If your environment does not have Internet access, you must deselect the 
-**Acceptance Tests** errand checkbox in the **Errands** tab of the Diego for 
-PCF tile before deployment, as the image below shows:
-
-    <%= image_tag("./diego/disable-acceptance-tests.png") %>
-    
-* Diego Beta does not detect the port or user from a Docker Image, so Docker applications must run as the VCAP user and listen on port 8080. With the Elastic Runtime 1.6 release, Diego detects the user and port from Docker images.
