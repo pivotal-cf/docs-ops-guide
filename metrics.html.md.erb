@@ -1,12 +1,12 @@
 ---
-title: Key Metrics for Monitoring a Pivotal Cloud Foundry Deployment
+title: Key Metrics for Monitoring a Pivotal Cloud Foundry&reg; Deployment
 ---
 
 The Pivotal Cloud Ops team monitors the health of its Cloud Foundry deployments using a customized Datadog dashboard. This topic describes each of the key metrics as they are rendered in the custom dashboard, and why they are useful for monitoring the health of a Cloud Foundry deployment.
 
-Cloud Ops' practices are tailored to the specific details of the Cloud Foundry deployments they operate.  Therefore, the descriptions here are meant to be informative examples rather than general prescriptions. Pivotal recommends that operators experiment with different combinations of metrics and alerts appropriate to their specific requirements.
+Cloud Ops' practices are tailored to the specific details of the Cloud Foundry deployments they operate. Therefore, the descriptions here are meant to be informative examples rather than general prescriptions. Pivotal recommends that operators experiment with different combinations of metrics and alerts appropriate to their specific requirements.
 
-The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and screenboards can be found in the [Datadog Config repository](https://github.com/pivotal-cf-experimental/datadog-config-oss).
+The Cloud Ops team's custom configuration of Datadog's dashboards, alerts, and screenboards can be found in the [Datadog Config repository](https://github.com/pivotal-cf-experimental/datadog-config-oss).
 
 <%= image_tag 'metrics/dashboard.png' %>
 
@@ -262,7 +262,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts and sc
 				We show the delta over the last N min so that an operator can see an absolute change rather than counting on the shape of the graph, which can be misleading.
 			</li>
 			<li>
-				The router are “the” way into all CF systems (both CF components and customer apps). If they go down (or don’t have routes) the system is down. It’s a keystone component and understanding what it’s metrics tell us is important. This is a metric with a “cliff”: nominal changes are < 20, if we are doing a marketing event we might see ~200. Those are okay. Outside of that we really only see full failure ( minus 4000+ routes). There is nothing in between.
+				The router are “the” way into all CF systems (both CF components and customer apps). If they go down (or don’t have routes) the system is down. It’s a keystone component and understanding what it’s metrics tell us is important. This is a metric with a “cliff”: nominal changes are under 20, while if we are doing a marketing event we might see ~200. Those are okay. Outside of that, we really only see full failure ( minus 4000+ routes). There is nothing in between.
 			</li>
 		</ul>
 	</td>
@@ -550,8 +550,4 @@ There are separate measures for CF Components and User pushed apps.</td>
 	<td>None</td>
 </tr>
 </table>
-
-
-
-
 
