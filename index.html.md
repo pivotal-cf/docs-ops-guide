@@ -3,7 +3,7 @@ breadcrumb: Pivotal Cloud Foundry&reg; Documentation
 title: Operator's Guide
 ---
 
-This guide covers networking and user management for [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) operators.
+This guide covers networking and user management for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf)&reg; (PCF) operators.
 
 <h2>Table of Contents</h2>
 
