@@ -2,7 +2,7 @@
 title: Understanding the Effects of Single Components on a Pivotal Cloud Foundry&reg; Upgrade
 ---
 
-The **Resource Config** page of Pivotal Elastic Runtime tile in the [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf)&reg; (PCF) Ops Manager shows the 24 components that the Ops Manager Director installs.
+The **Resource Config** page of Pivotal Elastic Runtime tile in the [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) Ops Manager shows the 24 components that the Ops Manager Director installs.
 You can specify the number of instances for 11 of the components.
 We deliver the remaining 13 resources as single components, meaning that they have a preconfigured and unchangeable value of one instance.
 
