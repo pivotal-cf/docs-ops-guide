@@ -15,13 +15,19 @@ A **cell** is a virtual machine (VM) that stages, hosts, and manages application
 
 ###<a id='download'></a>Step 1: Download the CloudFormation Template
 
-1. Sign in to [Pivotal Network](https://network.pivotal.io/). 
+1. Navigate to the [Elastic Runtime product on Pivotal Network](https://network.pivotal.io/products/elastic-runtime). This points to the latest release of the **Elastic Runtime** product, so the version numbers that you see may differ.
 
-1. Select <b>Elastic Runtime</b>. From the <b>DiegoWindows</b> folder, select and download the CloudFormation template.
+1. Select the **DiegoWindows** file group from the table.
+
+	![DiegoWindows file group](images/greenhouse/diego-windows-file-group.png)
+
+1. Download the **AWS CloudFormation.json** file to the directory of your choosing.
+	
+	![DiegoWindows CloudFormation](images/greenhouse/diego-windows-cloudformation.png)
 
 ###<a id='upload'></a>Step 2: Upload the Template to Amazon Web Services
 
-Log in to the Amazon Web Services [CloudFormation console](https://console.aws.amazon.com/cloudformation/home). When prompted by the CloudFormation wizard, provide the following information:
+Log in to the Amazon Web Services [CloudFormation console](https://console.aws.amazon.com/cloudformation/home). Choose **Create Stack** with the downloaded CloudFormation template. When prompted by the CloudFormation wizard, provide the following information:
 
   * **SecurityGroup**: Security group ID to use for the Windows cells
   * **BoshUserName**: User name to use to access the BOSH director
@@ -34,11 +40,15 @@ Log in to the Amazon Web Services [CloudFormation console](https://console.aws.a
   * **SubnetCIDR**: The IP range of the Windows cell subnet, for example `10.0.100.0/24`. You should provide a range that does not collide with an existing subnet within the VPC.
   * **Keypair**: A keypair. You must have the private key to this keypair to retrieve the Administrator password to the Windows VMs that are created.
 
+![DiegoWindows CloudFormation Form](images/greenhouse/cloud-formation-form.png)
+
 The CloudFormation template will configure the Windows cell for the
 appropriate availability zone based on the provided security group, install the
 MSI, and register itself with Diego. The CloudFormation template will only
 succeed if all services are up and running after installation. To debug a
 failed install, set "Rollback on failure" to `No` under advanced options.
+
+![DiegoWindows CloudFormation Form](images/greenhouse/rollback-on-failure.png)
 
 ## <a id="manual"></a>Install Manually 
 
