@@ -15,20 +15,20 @@ A **cell** is a virtual machine (VM) that stages, hosts, and manages application
 
 ###<a id='download'></a>Step 1: Download the CloudFormation Template
 
-1. Navigate to the [Elastic Runtime product on Pivotal Network](https://network.pivotal.io/products/elastic-runtime). This points to the latest release of the **Elastic Runtime** product, so the version numbers that you see may differ.
+1. Navigate to the [Elastic Runtime product on Pivotal Network](https://network.pivotal.io/products/elastic-runtime). This points to the latest release of the **Elastic Runtime** product.
 
-1. Select the **DiegoWindows** file group from the table.
+1. Select **DiegoWindows** from the list of Release Download Files.
 
 	![DiegoWindows file group](images/greenhouse/diego-windows-file-group.png)
 
-1. Download the **AWS CloudFormation.json** file to the directory of your choosing.
+1. Download the **DiegoWindows AWS CloudFormation.json** file.
 	
 	![DiegoWindows CloudFormation](images/greenhouse/diego-windows-cloudformation.png)
 
 ###<a id='upload'></a>Step 2: Upload the Template to Amazon Web Services
 
-Log in to the Amazon Web Services [CloudFormation console](https://console.aws.amazon.com/cloudformation/home). Choose **Create Stack** with the downloaded CloudFormation template. When prompted by the CloudFormation wizard, provide the following information:
-
+Log in to the Amazon Web Services [CloudFormation console](https://console.aws.amazon.com/cloudformation/home). Choose **Create Stack** and upload the DiegoWindows AWS CloudFormation template to Amazon S3. When prompted by the CloudFormation wizard, provide the following information:
+ 
   * **SecurityGroup**: Security group ID to use for the Windows cells
   * **BoshUserName**: User name to use to access the BOSH director
   * **BoshPassword**: Password to use to access the BOSH director.
@@ -68,17 +68,15 @@ point. You must have an MSDN account to download this ISO image.
 
 Follow the instructions below to download and configure the Windows cell.
 
-1. From your Windows cell, navigate to the [Elastic Runtime product on Pivotal Network](https://network.pivotal.io/products/elastic-runtime). This points to the latest release of the **Elastic Runtime** product, so the version numbers that you see may differ.
+1. From your Windows cell, navigate to the [Elastic Runtime product on Pivotal Network](https://network.pivotal.io/products/elastic-runtime). 
 
 1. Select the **DiegoWindows** file group from the table.
 
 	![DiegoWindows file group](images/greenhouse/diego-windows-file-group.png)
 
-1. Download the **setup.ps1** and **generate.exe** files to the directory of your choosing. Keep this window open, you will need it in the following steps.
+1. Download the **setup.ps1** and **generate.exe** files. Keep this window open, you will need it in the following steps.
 
-  <p class='note'><strong>Note</strong>: If you download the file using Internet Explorer, the `.exe` extension will be removed. You must rename the file to add the `.exe` extension.</p>
-  
-	![DiegoWindows file group](images/greenhouse/diego-windows-setup-files.png)
+  <p class='note'><strong>Note</strong>: If you download the generate.exe file using Internet Explorer, the `.exe` extension will be removed. You must rename the file to add the `.exe` extension.</p>
 
 ### <a id='cell'></a>Step 2: Configure the Windows Cell ##
 
