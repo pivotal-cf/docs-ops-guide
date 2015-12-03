@@ -2,6 +2,8 @@
 title: Configuring Pivotal Cloud Foundry&reg; SSL Termination for vSphere Deployments
 ---
 
+<strong><%= modified_date %></strong>
+
 To use SSL termination in [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF), you must
 configure the Pivotal-deployed HAProxy load balancer or your own load balancer.
 
@@ -21,7 +23,7 @@ PCF Routers.
 HAProxy can generate a self-signed certificate if you do not want to obtain a
 signed certificate from a well-known certificate authority.
 <%= partial '../customizing/known-issue-self-signed-certs' %>
-  
+
 To use the HAProxy load balancer, you must create a wildcard A record in your
 DNS and configure three fields in the Elastic Runtime product tile.
 
