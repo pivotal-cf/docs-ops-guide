@@ -16,6 +16,7 @@ This guide covers networking and user management for [Pivotal Cloud Foundry&reg;
 * [Configuring Single Sign-On](./sso.html)
 * [Configuring LDAP](./ldap-uaa.html)
 * [Switching Application Domains](./switching-domains.html)
+* [Scaling instances in Resource Config for Elastic Runtime](./scaling-ert-components.html)
 * [Monitoring Instance Usage with the Accounting Report](./accounting-report.html)
 * [Using Diego in Pivotal Cloud Foundry](./diego-overview.html)
 * [Deploying Diego for Windows](./deploying-diego.html)
