@@ -1,12 +1,12 @@
 ---
-title: Scaling Instances in Resource Config for Elastic Runtime
+title: Scaling Instances in Elastic Runtime
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic discusses how to scale instances in Elastic Runtime for different deployment scenarios. To increase the capacity and availability of the Pivotal Cloud Foundry&reg; platform, and to decrease the chances of downtime, you can scale a deployment up using the instructions below. 
+This topic discusses how to scale instances in Elastic Runtime for different deployment scenarios. To increase the capacity and availability of the Pivotal Cloud Foundry&reg; (PCF) platform, and to decrease the chances of downtime, you can scale a deployment up using the instructions below. 
 
-If you are looking to make a standard Diego or PCF configuration high availabiilty, see the [Zero Downtime Deployment and Scaling in CF](http://docs.pivotal.io/pivotalcf/concepts/high-availability.html) topic.
+If you want to make a standard Diego or PCF configuration highly available, see the [Zero Downtime Deployment and Scaling in CF](http://docs.pivotal.io/pivotalcf/concepts/high-availability.html) topic.
 
 ##<a id='core'></a>Scaling instances in Resource Config##
 
@@ -14,18 +14,26 @@ If you are looking to make a standard Diego or PCF configuration high availabiil
 
 1. Click the Elastic Runtime tile in the Installation Dashboard.
 
-1. **Select Resource Config**. Scale instances for:
+1. **Select Resource Config**. Choose one of the following scenarios below to scale instances and enter the suggested values for:
 
-  * [Using Diego with no DEAs](#diego-nodeas)
-  * [Using External Databases](#external-databases)
-  * [Using MySQL only](#mysql-only)
-  * [Using External Blobstore - S3](#external-blobstore)
-  * [Using External LB instead of HAProxy](#external-lb)
-  * [Using Ops Metrics](#ops-metric)
+    * [Using Diego with no DEAs](#diego-nodeas)
+    * [Using External Databases](#external-databases)
+    * [Using MySQL only](#mysql-only)
+    * [Using External Blobstore - S3](#external-blobstore)
+    * [Using External LB instead of HAProxy](#external-lb)
+    * [Using Ops Metrics](#ops-metric)
 
 <%= image_tag("images/scaling-ert.png") %>
 
+1. Click **Save**.
+
+1. Return to the **Installation Dashboard** and click **Apply Changes**.
+
+*Scaling Instances for Various Deployment Scenarios*
+
 ###<a id='diego-nodeas'></a>Using Diego with no DEAs ###
+
+If you are using [Diego in PCF](scaling-ert-components.html.md.erb) by default instead of DEAs, use the following values for the Resource Config: 
 
 <table border="1" class="nice" >
   <tr>
@@ -68,6 +76,8 @@ If you are looking to make a standard Diego or PCF configuration high availabiil
 
 ###<a id='external-databases'></a>Using External Databases  ###
 
+If you are using an external database, use the following values for the Resource Config:
+
 <table border="1" class="nice" >
   <tr>
     <th width=8%><strong>Job</strong></th>
@@ -104,6 +114,8 @@ If you are looking to make a standard Diego or PCF configuration high availabiil
 
 ###<a id='mysql-only'></a>Using MySQL only  ###
 
+If you are using a MySQL database, use the following values for the Resource Config:
+
 <table border="1" class="nice" >
   <tr>
     <th width=8%><strong>Job</strong></th>
@@ -139,6 +151,8 @@ If you are looking to make a standard Diego or PCF configuration high availabiil
 
 ###<a id='external-blobstore'></a>Using External Blobstore (S3)   ###
 
+If you are using an external Blobstore, use the following values for the Resource Config:
+
 <table border="1" class="nice" >
   <tr>
     <th width=8%><strong>Job</strong></th>
@@ -153,6 +167,8 @@ If you are looking to make a standard Diego or PCF configuration high availabiil
 </table>
 
 ###<a id='external-lb'></a>Using External LB instead of HAProxy    ###
+
+If you are using an external load balancer, use the following values for the Resource Config:
 
 <table border="1" class="nice" >
   <tr>
@@ -177,7 +193,10 @@ If you are looking to make a standard Diego or PCF configuration high availabiil
   </tr>
 </table>
 
-###<a id='ops-metric'></a>Using Ops Metric    ###
+###<a id='ops-metric'></a>Using Pivotal Ops Metric    ###
+
+If you are using [Ops Metrics](https://docs.pivotal.io/pivotalcf/customizing/use-metrics.html), use the following values for the Resource Config:
+
 <table border="1" class="nice" >
   <tr>
     <th width=8%><strong>Job</strong></th>
