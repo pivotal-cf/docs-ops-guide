@@ -14,8 +14,10 @@ If you want to make a standard Diego or PCF configuration highly available, see 
 
 1. Click the Elastic Runtime tile in the Installation Dashboard.
 
-1. **Select Resource Config**. Choose one of the following scenarios below to scale instances and enter the suggested values for:
+1. Select **Resource Config**. 
+<%= image_tag("images/scaling-ert.png") %>
 
+1. Choose one of the following options below to scale instances for your particular deployment scenario: 
     * [Using Diego with no DEAs](#diego-nodeas)
     * [Using External Databases](#external-databases)
     * [Using MySQL only](#mysql-only)
@@ -23,17 +25,15 @@ If you want to make a standard Diego or PCF configuration highly available, see 
     * [Using External LB instead of HAProxy](#external-lb)
     * [Using Ops Metrics](#ops-metric)
 
-<%= image_tag("images/scaling-ert.png") %>
-
-1. Click **Save**.
+1. Enter the suggested values outlined in each scenario below, and click **Save**.
 
 1. Return to the **Installation Dashboard** and click **Apply Changes**.
 
-*Scaling Instances for Various Deployment Scenarios*
+##<a id='scenarios'></a>Scaling Instances for Various Deployment Scenarios##
 
 ###<a id='diego-nodeas'></a>Using Diego with no DEAs ###
 
-If you are using [Diego in PCF](scaling-ert-components.html.md.erb) by default instead of DEAs, use the following values for the Resource Config: 
+If you are using [Diego in PCF](https://docs.pivotal.io/pivotalcf/customizing/cloudform-er-config.html#diego) by default instead of DEAs, enter the following values in the Resource Config: 
 
 <table border="1" class="nice" >
   <tr>
@@ -76,7 +76,7 @@ If you are using [Diego in PCF](scaling-ert-components.html.md.erb) by default i
 
 ###<a id='external-databases'></a>Using External Databases  ###
 
-If you are using an external database, use the following values for the Resource Config:
+If you are using an [external database](https://docs.pivotal.io/pivotalcf/customizing/cloudform-er-config.html#sys-db), enter the following values in the Resource Config:
 
 <table border="1" class="nice" >
   <tr>
@@ -114,7 +114,7 @@ If you are using an external database, use the following values for the Resource
 
 ###<a id='mysql-only'></a>Using MySQL only  ###
 
-If you are using a MySQL database, use the following values for the Resource Config:
+If you are using a MySQL database, enter the following values in the Resource Config:
 
 <table border="1" class="nice" >
   <tr>
@@ -149,9 +149,9 @@ If you are using a MySQL database, use the following values for the Resource Con
   </tr>
 </table>
 
-###<a id='external-blobstore'></a>Using External Blobstore (S3)   ###
+###<a id='external-blobstore'></a>Using External Blobstore -S3   ###
 
-If you are using an external Blobstore, use the following values for the Resource Config:
+If you are using an external [Blobstore](https://docs.pivotal.io/pivotalcf/customizing/cloudform-er-config.html#filestore), enter the following value in the Resource Config:
 
 <table border="1" class="nice" >
   <tr>
@@ -168,7 +168,7 @@ If you are using an external Blobstore, use the following values for the Resourc
 
 ###<a id='external-lb'></a>Using External LB instead of HAProxy    ###
 
-If you are using an external load balancer, use the following values for the Resource Config:
+If you are using an external load balancer, enter the following values in the Resource Config:
 
 <table border="1" class="nice" >
   <tr>
@@ -195,7 +195,7 @@ If you are using an external load balancer, use the following values for the Res
 
 ###<a id='ops-metric'></a>Using Pivotal Ops Metric    ###
 
-If you are using [Ops Metrics](https://docs.pivotal.io/pivotalcf/customizing/use-metrics.html), use the following values for the Resource Config:
+If you are using [Ops Metrics](https://docs.pivotal.io/pivotalcf/customizing/use-metrics.html), enter the following value in the Resource Config:
 
 <table border="1" class="nice" >
   <tr>
