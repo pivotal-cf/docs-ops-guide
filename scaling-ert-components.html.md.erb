@@ -6,9 +6,9 @@ title: Scaling Instances in Elastic Runtime
 
 This topic discusses how to scale instances in Elastic Runtime for different deployment scenarios. To increase the capacity and availability of the Pivotal Cloud Foundry&reg; (PCF) platform, and to decrease the chances of downtime, you can scale a deployment up using the instructions below. 
 
-If you want to make a standard Diego or PCF configuration highly available, see the [Zero Downtime Deployment and Scaling in CF](http://docs.pivotal.io/pivotalcf/concepts/high-availability.html) topic.
+If you want to make a Diego or PCF configuration highly available, see the [Zero Downtime Deployment and Scaling in CF](./../concepts/high-availability.html) topic.
 
-##<a id='core'></a>Scaling instances in Resource Config##
+##<a id='steps'></a>Steps for Scaling Instances##
 
 1. Navigate to the Pivotal Cloud Foundry® Operations Manager Installation Dashboard.
 
@@ -17,195 +17,197 @@ If you want to make a standard Diego or PCF configuration highly available, see 
 1. Select **Resource Config**. 
 <%= image_tag("images/scaling-ert.png") %>
 
-1. Choose one of the following options below to scale instances for your particular deployment scenario: 
-    * [Using Diego with no DEAs](#diego-nodeas)
-    * [Using External Databases](#external-databases)
-    * [Using MySQL only](#mysql-only)
-    * [Using External Blobstore - S3](#external-blobstore)
-    * [Using External LB instead of HAProxy](#external-lb)
-    * [Using Ops Metrics](#ops-metric)
+1. If you are using one of the following configurations in [Pivotal Elastic Runtime](./customizing/cloudform-er-config.html), enter the values in the corresponding table to scale instances for your particular deployment: 
+    * [Diego with no DEAs](#diego-nodeas)
+    * [External Databases](#external-databases)
+    * [MySQL only](#mysql-only)
+    * [External Blobstore](#external-blobstore)
+    * [External Load Balancer](#external-lb)
+    * [Ops Metrics](#ops-metric)
 
-1. Enter the suggested values outlined in each scenario below, and click **Save**.
+    ###<a id='diego-nodeas'></a>Diego with no DEAs ###
+
+    <p class='note'><strong>Note</strong>: To make Diego highly available, see the <a href="./../concepts/high-availability.html">Zero Downtime Deployment and Scaling in CF</a> topic. This scenario is geared toward a basic installation. </p>
+
+     If you are using [Diego by default instead of DEAs](./../customizing/cloudform-er-config.html#diego), enter the following values in the Resource Config: 
+
+    <table border="1" class="nice" >
+      <tr>
+        <th width=8%><strong>Job</strong></th>
+        <th width=8%><strong>Instance Count</strong></th>
+        <th width=22%><strong>Notes</strong></th>
+      </tr>
+      <tr>
+        <td>Diego Cell</td>
+        <td>&ge; 3</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Diego Brain</td>
+        <td>&ge; 1</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Diego Bulletin Board System (BBS)</td>
+        <td>&ge; 1</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>DEA</td>
+        <td>0</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Consul</td>
+        <td>&ge; 1</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Health Manager</td>
+        <td>0</td>
+        <td></td>
+      </tr>
+    </table>
+
+
+    ###<a id='external-databases'></a>External Databases  ###
+
+    If you are using an [external database](./../customizing/cloudform-er-config.html#sys-db), enter the following values in the Resource Config:
+
+    <table border="1" class="nice" >
+      <tr>
+        <th width=8%><strong>Job</strong></th>
+        <th width=8%><strong>Instance Count</strong></th>
+        <th width=22%><strong>Notes</strong></th>
+      </tr>
+      <tr>
+        <td>MySQL Server</td>
+        <td>0</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>MySQL Proxy</td>
+        <td>0</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Apps Manager Database (Postgres)</td>
+        <td>0</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Cloud Controller Database (Postgres)</td>
+        <td>0</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>UAA Database (Postgres)</td>
+        <td>0</td>
+        <td></td>
+      </tr>
+    </table>
+
+
+    ###<a id='mysql-only'></a>MySQL  ###
+
+     <p class='note'><strong>Note</strong>: This scenario is not applicable if you are using both a MySQL and Postgres internal database. For example, you will utilize both databases in order to save data on an existing Postgres database if you installed PCF 1.5 or earlier before [upgrading to PCF 1.6](./../customizing/upgrading-pcf.html#pcf16upgrade).</p>
+
+    If you are using a MySQL database, enter the following values in the Resource Config:
+
+    <table border="1" class="nice" >
+      <tr>
+        <th width=8%><strong>Job</strong></th>
+        <th width=8%><strong>Instance Count</strong></th>
+        <th width=22%><strong>Notes</strong></th>
+      </tr>
+      <tr>
+        <td>MySQL server</td>
+        <td>&ge; 1</td>
+        <td>Must be set to an odd number.</td>
+      </tr>
+      <tr>
+        <td>MySQL Proxy</td>
+        <td>&ge; 1</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Apps Manager Database (Postgres)</td>
+        <td>0</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Cloud Controller Database (Postgres)</td>
+        <td>0</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>UAA Database (Postgres)</td>
+        <td>0</td>
+        <td></td>
+      </tr>
+    </table>
+
+    ###<a id='external-blobstore'></a>External Blobstore   ###
+
+    If you are using an external [Blobstore](./../customizing/cloudform-er-config.html#filestore), enter the following value in the Resource Config:
+
+    <table border="1" class="nice" >
+      <tr>
+        <th width=8%><strong>Job</strong></th>
+        <th width=8%><strong>Instance Count</strong></th>
+        <th width=22%><strong>Notes</strong></th>
+      </tr>
+      <tr>
+        <td>NFS</td>
+        <td>0</td>
+        <td></td>
+      </tr>
+    </table>
+
+    ###<a id='external-lb'></a>External Load Balancer    ###
+
+    If you are using an external load balancer, enter the following values in the Resource Config:
+
+    <table border="1" class="nice" >
+      <tr>
+        <th width=8%><strong>Job</strong></th>
+        <th width=8%><strong>Instance Count</strong></th>
+        <th width=22%><strong>Notes</strong></th>
+      </tr>
+      <tr>
+        <td>HAProxy</td>
+        <td>0</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Router</td>
+        <td>&ge; 1</td>
+        <td>For Amazon Web Services, set the Elastic Load Balancer name in the Router's "External Load Balancer" field.</td>
+      </tr>
+      <tr>
+        <td>Diego Brain</td>
+        <td>&ge; 1</td>
+        <td>For AWS, if you have the Diego SSH feature enabled, set the SSH ELB name in the Router's "External Load Balancer" field.</td>
+      </tr>
+    </table>
+
+    ###<a id='ops-metric'></a>Pivotal Ops Metric    ###
+
+    If you are using [Ops Metrics](./../customizing/use-metrics.html), enter the following value in the Resource Config:
+
+    <table border="1" class="nice" >
+      <tr>
+        <th width=8%><strong>Job</strong></th>
+        <th width=8%><strong>Instance Count</strong></th>
+        <th width=22%><strong>Notes</strong></th>
+      </tr>
+      <tr>
+        <td>Collector</td>
+        <td>&ge; 1</td>
+        <td>Must have Ops Metric tile added to PCF before you scale this up. See <a href='./../customizing/add-delete.html'>Adding and Deleting Products topic.</td>
+      </tr>
+    </table>
+
+1. Enter the suggested values outlined in each scenario above, and click **Save**.
 
 1. Return to the **Installation Dashboard** and click **Apply Changes**.
-
-##<a id='scenarios'></a>Scaling Instances for Various Deployment Scenarios##
-
-###<a id='diego-nodeas'></a>Using Diego with no DEAs ###
-
-If you are using [Diego in PCF](https://docs.pivotal.io/pivotalcf/customizing/cloudform-er-config.html#diego) by default instead of DEAs, enter the following values in the Resource Config: 
-
-<table border="1" class="nice" >
-  <tr>
-    <th width=8%><strong>Job</strong></th>
-    <th width=8%><strong>Instance Count</strong></th>
-    <th width=22%><strong>Notes</strong></th>
-  </tr>
-  <tr>
-    <td>Diego Cell</td>
-    <td>&ge; 3</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Diego Brain</td>
-    <td>&ge; 1</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Diego Bulletin Board System (BBS)</td>
-    <td>&ge; 1</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>DEA</td>
-    <td>0</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Consul</td>
-    <td>&ge; 1</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Health Manager</td>
-    <td>0</td>
-    <td></td>
-  </tr>
-</table>
-
-
-###<a id='external-databases'></a>Using External Databases  ###
-
-If you are using an [external database](https://docs.pivotal.io/pivotalcf/customizing/cloudform-er-config.html#sys-db), enter the following values in the Resource Config:
-
-<table border="1" class="nice" >
-  <tr>
-    <th width=8%><strong>Job</strong></th>
-    <th width=8%><strong>Instance Count</strong></th>
-    <th width=22%><strong>Notes</strong></th>
-  </tr>
-  <tr>
-    <td>MySQL Server</td>
-    <td>0</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>MySQL Proxy</td>
-    <td>0</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Apps Manager Database (Postgres)</td>
-    <td>0</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Cloud Controller Database (Postgres)</td>
-    <td>0</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>UAA Database (Postgres)</td>
-    <td>0</td>
-    <td></td>
-  </tr>
-</table>
-
-
-###<a id='mysql-only'></a>Using MySQL only  ###
-
-If you are using a MySQL database, enter the following values in the Resource Config:
-
-<table border="1" class="nice" >
-  <tr>
-    <th width=8%><strong>Job</strong></th>
-    <th width=8%><strong>Instance Count</strong></th>
-    <th width=22%><strong>Notes</strong></th>
-  </tr>
-  <tr>
-    <td>MySQL server</td>
-    <td>&ge; 1</td>
-    <td>Must be set to an odd number.</td>
-  </tr>
-  <tr>
-    <td>MySQL Proxy</td>
-    <td>&ge; 1</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Apps Manager Database (Postgres)</td>
-    <td>0</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Cloud Controller Database (Postgres)</td>
-    <td>0</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>UAA Database (Postgres)</td>
-    <td>0</td>
-    <td></td>
-  </tr>
-</table>
-
-###<a id='external-blobstore'></a>Using External Blobstore -S3   ###
-
-If you are using an external [Blobstore](https://docs.pivotal.io/pivotalcf/customizing/cloudform-er-config.html#filestore), enter the following value in the Resource Config:
-
-<table border="1" class="nice" >
-  <tr>
-    <th width=8%><strong>Job</strong></th>
-    <th width=8%><strong>Instance Count</strong></th>
-    <th width=22%><strong>Notes</strong></th>
-  </tr>
-  <tr>
-    <td>NFS</td>
-    <td>0</td>
-    <td></td>
-  </tr>
-</table>
-
-###<a id='external-lb'></a>Using External LB instead of HAProxy    ###
-
-If you are using an external load balancer, enter the following values in the Resource Config:
-
-<table border="1" class="nice" >
-  <tr>
-    <th width=8%><strong>Job</strong></th>
-    <th width=8%><strong>Instance Count</strong></th>
-    <th width=22%><strong>Notes</strong></th>
-  </tr>
-  <tr>
-    <td>HAProxy</td>
-    <td>0</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Router</td>
-    <td>&ge; 1</td>
-    <td>For AWS, set the ELB name in the Router's "External Load Balancer" field.</td>
-  </tr>
-  <tr>
-    <td>Diego Brain</td>
-    <td>&ge; 1</td>
-    <td>For AWS, if you have the Diego SSH feature enabled, set the SSH ELB name in the Router's "External Load Balancer" field.</td>
-  </tr>
-</table>
-
-###<a id='ops-metric'></a>Using Pivotal Ops Metric    ###
-
-If you are using [Ops Metrics](https://docs.pivotal.io/pivotalcf/customizing/use-metrics.html), enter the following value in the Resource Config:
-
-<table border="1" class="nice" >
-  <tr>
-    <th width=8%><strong>Job</strong></th>
-    <th width=8%><strong>Instance Count</strong></th>
-    <th width=22%><strong>Notes</strong></th>
-  </tr>
-  <tr>
-    <td>Collector</td>
-    <td>&ge; 1</td>
-    <td>Must have Ops Metric tile added to PCF before you scale this up. See <a href='http://docs.pivotal.io/pivotalcf/customizing/add-delete.html'>Adding and Deleting Products topic.</td>
-  </tr>
-</table>
