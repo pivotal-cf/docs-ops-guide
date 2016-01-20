@@ -67,7 +67,7 @@ supplied by your IaaS, we recommend using this [ISO image](https://msdn.microsof
 point. You must have an MSDN account to download this ISO image.
 	* We recommend at least 50 gigabytes of storage space for your Windows VM instance.
 
-    <p class='note'><strong>Note</strong>: The IP of your windows cell must not conflict with those of VMS managed by BOSH. This can be accomplished with a separate subnet in your VPC or by using an IP from an <strong>Ops Manager</strong> declared <a href="http://docs.pivotal.io/pivotalcf/customizing/vsphere-config.html#networks">Excluded IP Range</a>.</p>
+    <p class='note'><strong>Note</strong>: The IP address of your Windows cell must not conflict with the IP addresses of VMs managed by BOSH. To prevent a conflict, use separate subnets in your VPC for the Windows cell and BOSH VMs, or assign the Windows cell an IP address from the <a href="../customizing/vsphere-config.html#networks">Excluded IP Range</a> that you declared in Ops Manager.</p>
 
 ###<a id='setup-files'></a>Step 1: Retrieve Setup Files
 
