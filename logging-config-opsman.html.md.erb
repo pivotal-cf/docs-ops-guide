@@ -1,0 +1,52 @@
+---
+title: Configuring System Logging in Elastic Runtime
+---
+
+<strong><%= modified_date %></strong>
+
+This topic explains how to configure the Pivotal Cloud Foundry&reg; [Loggregator system](../loggregator/architecture.html) to scale its maximum throughput, and to forward logs to an external aggregator service.
+
+## <a id='scaling'></a> Scaling Loggregator ##
+
+Elastic Runtime system components and apps constantly generate log and metrics data. The [Metron](../loggregator/architecture.html#metron) agent running on each component or application VM collects and sends this data out to [Doppler](../loggregator/architecture.html#doppler) components, which temporarily buffer the data before periodically forwarding it to the [Traffic Controller](../loggregator/architecture.html#traffic-controller). The Traffic Controller then serves the aggregated data stream through the Firehose WebSocket endpoint.
+
+When the log and metrics data input to a Doppler exceeds its buffer size for a given interval, data can be lost. You can take several actions to minimize this loss.
+
+### Increase buffer size
+
+1. In the **Pivotal Cloud Foundry&reg; (PCF) Ops Manager Installation Dashboard**, click the **Elastic Runtime** tile.
+1. Select **System Logging**.
+1. Increase the drain buffer size to prevent loss of log data.
+1. Click **Save**.
+1. Click **Apply Changes**.
+<%= image_tag 'ert_syslog_config.png' %>
+
+### Add additional Doppler instances
+
+1. In the **PCF Ops Manager Installation Dashboard**, click the **Elastic Runtime** tile.
+1. Select **Resource Config**.
+1. Increase the number in the **Instances** column and the **Doppler Server** row.
+  <%= image_tag 'loggregator_config.png' %>
+1. Click **Save**.
+1. Click **Apply Changes**.
+
+### Add additional Traffic Controller instances
+
+1. In the **PCF Ops Manager Installation Dashboard**, click the **Elastic Runtime** tile.
+1. Select **Resource Config**.
+1. Increase the number in the **Instances** column and the **Loggregator Trafficcontroller** row.
+  <%= image_tag 'loggregator_config.png' %>
+1. Click **Save**.
+1. Click **Apply Changes**.
+
+## <a id='syslog-forward'></a> Enabling System Log Forwarding ##
+
+Elastic Runtime can forward log data to an external aggregator service instead of routing it to the Loggregator Firehose. System log forwarding for [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) is managed through the **PCF Ops Manager Installation Dashboard**. To enable syslog forwarding:
+
+1. Click the **Elastic Runtime** tile.
+1. Select **System Logging**.
+1. Enter the Hostname, Port, and Protocol for your third-party log management service.
+1. (Optional) Increase the drain buffer size to prevent loss of log data.
+1. Click **Save**.
+1. Click **Apply Changes**.
+<%= image_tag 'ert_syslog_config.png' %>
