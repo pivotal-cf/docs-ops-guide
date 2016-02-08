@@ -235,7 +235,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts, and s
 </tr>
 <tr>
 	<th>Why we monitor it</th>
-	<td>The count on all routers should be the same. If this differs between routers, it usually indicates a NATS problem.
+	<td>The count on all routers should be the same. If this count differs between routers, it usually indicates a NATS problem.
 	</td>
 </tr>
 <tr>
@@ -249,7 +249,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts, and s
 <tr>
 	<th>Notes</th>
 	<td>
-	The router is the only point of access into all CF components and customer apps. If the router goes down or does not have routes, the system is down and a large dip will appear in the graph. Small fluctuations are not reflected on the graph. Large spikes during a marketing event, for example, are expected. Large spikes typically indicate a problem, and could also indicate a denial of service attack.
+	The router is the only point of access into all CF components and customer apps. Large spikes in this graph typically indicate a problem, and could indicate a denial of service attack. For example, if the router goes down or does not have routes, the system is down and a large dip appears in the graph. However, some large spikes, such as during a marketing event, are expected. Small fluctuations are not reflected on the graph.
 	</td>
 </tr>
 </table>
@@ -331,7 +331,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts, and s
 <table border='1' class='nice'>
 <tr>
 	<th>What we monitor</th>
-	<td>Feed from <code>aws ec2 events</code> </td>
+	<td>The feed from <code>aws ec2 events</code>. </td>
 	<!-- check to make sure this is right, engineer doc had this flagged as unsure -->
 </tr>
 <tr>
@@ -348,7 +348,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts, and s
 </tr>
 <tr>
 	<th>Notes</th>
-	<td>Only applies to CloudFoundry deployments on AWS.</td>
+	<td>Only applies to Cloud Foundry deployments on AWS.</td>
 </tr>
 </table>
 
@@ -366,7 +366,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts, and s
 </tr>
 <tr>
 	<th>Why we monitor it</th>
-	<td>Better capacity planning. If the number is too low users will not be able to stage more apps or even scale their apps.</td>
+	<td>Better capacity planning. If this number is too low, users are unable to stage new apps or scale existing apps.</td>
 </tr>
 <tr>
 	<th>System metric</th>
@@ -403,7 +403,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts, and s
 </tr>
 <tr>
 	<th>Notes</th>
-	<td>Used to calculate DEA runners needed.</td>
+	<td>Used to calculate <a href='#dea-runners-needed'>DEA Runners Needed</a>.</td>
 </tr>
 </table>
 
@@ -417,7 +417,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts, and s
 </tr>
 <tr>
 	<th>Why we monitor it</th>
-	<td>If DEAs are restarting frequently this can indicate a bug in the DEA. This can directly impact customer-facing performance as it can cause apps to constantly be restaged.</td>
+	<td>Frequent DEA restarts might indicate a bug in the DEA. Frequent restarts also directly impact customer-facing performance by causing apps to restage.</td>
 </tr>
 <tr>
 	<th>System metric</th>
@@ -491,11 +491,11 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts, and s
 <table border='1' class='nice'>
 <tr>
 	<th>What we monitor</th>
-	<td>If there are any DEA runners needed.</td>
+	<td>Whether there are any DEA runners needed.</td>
 </tr>
 <tr>
 	<th>Why we monitor it</th>
-	<td>To tell us how many more runners we might need to add.</td>
+	<td>To tell us how many more runners to add.</td>
 </tr>
 <tr>
 	<th>System metric</th>
@@ -520,7 +520,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts, and s
 </tr>
 <tr>
 	<th>Why we monitor it</th>
-	<td>This metric is useful for statistical purposes and debugging issues with the system. If there are no apps being staged for 15 minutes, we might want to look at the system and see if anything is wrong.</td>
+	<td>This metric is useful for statistical purposes and for debugging issues with the system. If there are no apps being staged for 15 minutes, we might want to check for problems with the system.</td>
 </tr>
 <tr>
 	<th>System metric</th>
