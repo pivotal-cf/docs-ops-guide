@@ -1,0 +1,53 @@
+---
+title: Troubleshooting Diego for Windows
+---
+
+<strong><%= modified_date %></strong>
+
+This topic contains instructions for troubleshooting your Diego Windows deployment of CloudFoundry.
+
+##<a id='application-errors'></a>Application Errors
+
+The first step is making sure your .NET application for CloudFoundry is ready for your deployment. The bulk of the following types of errors can usually be seen right after pushing your .NET application using the CloudFoundry CLI.
+
+###<a id='no-compatible-cell'></a>No Compatible Cell
+
+![diegoWindows-no-compatible-cell](images/greenhouse/no-compatible-cell.png)
+
+This error usually indicates that the **RepService** has not registered your Windows Cell with the rest of your Cloud Foundry Deployment. The RepService will attempt to reconnect on an interval, and so it can sometimes resolve itself within a few minutes, but restarting the **RepService** within your cell(s) will trigger a reconnection immediately.
+
+![diegoWindows-no-compatible-cell](images/greenhouse/restart-rep.png)
+
+###<a id='unsucessful-start'></a>Start Unsuccessful
+
+![diegoWindows-no-compatible-cell](images/greenhouse/start-unsucessful.png
+)
+
+This error is usually the result of an application, .NET or otherwise, that is not correctly configured for the CloudFoundry Windows environment. You must push your application from a working directory containing either a **.exe** binary or a valid **Web.config** file for .NET applications. You can also pass a *-p* flag to your *cf push* command to pass the path to such a directory.
+
+![diegoWindows-no-compatible-cell](images/greenhouse/missing-dlls.png
+)
+
+This can also be a sign that your application does not contain all of its required .dlls and/or dependencies. Double-check that your application's dependencies are all contained in your pushed application.
+
+##<a id='hakim-errors'></a>Hakim Errors
+
+Hakim is a diagnostic tool intended to reveal some of the more common configuration issues we have encountered with Windows Cells.
+
+![diegoWindows-no-compatible-cell](images/greenhouse/failed-hakim.png)
+
+To run, simply download the **hakim.exe** binary to your Windows cell from your corresponding **DiegoWindows** download in the [Elastic Runtime product on Pivotal Network](https://network.pivotal.io/products/elastic-runtime). Then navigate to the folder containing your downloaded binary using your shell of choice and then execute the binary.
+
+If hakim detects no errors it will not output anything the console, but here are some instructions to resolve most of the detected problems:
+
+- **Stopped windows processes**. Output will contain: *The following processes are not running:* This is usually indicative of a failed deployment. If a complete re-provision of your Windows components does not fix this issue, then it is best to contact support with the exact deployment steps followed and version of Pivotal Cloud Foundry deployed.
+- **Unable to reach consul host**. Output will contain: *Failed to resolve consul host*. This usually indicates that something is interfering with DNS resolution on the Windows Cell. To resolve this error, you should make that localhost (127.0.0.1) is set to be the primary DNS server for the active network adapter.
+- **Fair Share CPU Scheduling**. Output will contain: *Fair Share CPU Scheduling must be disabled*. This setting must be disabled for your windows cell to function properly. You can turn this off via the **Group Policy Management** console, and then *restarting* your windows cell.
+- **Firewall Service**. Output will contain: *Windows firewall service is not enabled*. This check determines whether the Windows firewall is running, which is how the DiegoWindows product enforces PCF security group settings for applications running on the cell. Applications will be able to run without this, but security groups will not work as intended and apps will have unrestricted network access.
+- **NTP Service**. Output will contain: *There was an error detecting ntp synchronization on your machine*. Clock skew with other CloudFoundry components can occur if NTP is not configured which can result in odd errors, such as not receiving any application metrics for the apps running on the affected machine. You should use the same NTP server that is being used by the rest of your CF deployment.
+- **Unable to create Container**. Output will contain: *Failed to create container*. This usually indicates that there's a general issue  with the Windows containerization service. The full output message of this error can be helpful to help the support team diagnose the problem further.
+
+##<a id='other'></a>Other issues
+To better troubleshoot other issues you may encounter it can be helpful to look through the Event Viewer logs on Windows. Inside `Windows Logs/Application` you can look for log messages coming from the different services running as part of DiegoWindows. These services are often chatty during normal operation so there can be a lot to sift through, but generally clearing the logs, reproducing the issue, and then looking through the latest messages can be a helpful way to isolate where an issue is coming from. Exporting these and sending them along with support tickets can also help expedite the support process.
+
+![event-viewer](images/greenhouse/event-viewer.png)
