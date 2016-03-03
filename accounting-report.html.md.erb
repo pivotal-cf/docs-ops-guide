@@ -1,16 +1,33 @@
 ---
-title: Monitoring Instance Usage with the Accounting Report
+title: Monitoring Instance Usage in Apps Manager
 ---
 
 <strong><%= modified_date %></strong>
 
-The Accounting Report displays instance usage information for your [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) installation. To monitor your instance usage information, select **Accounting Report** from the left navigation.
+## <a id="accounting-report.png"></a>Accounting Report
 
-You can see the average and maximum app instances in use per month under **App Instance Statistics**. The Accounting Report calculates these values from the `start`, `stop`, and `scale` app usage events in Cloud Controller.
+The Accounting Report displays instance usage information for all orgs in your [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) deployment except the <strong>system</strong> org. This provides a high-level overview of your usage by displaying your monthly count of app instances. 
 
-The maximum is the largest number of app instances in use at any one time. This value is calculated from data generated after 1.5 is installed. The average count of app instances is calculated from all data already in the Usage Service, including the time prior to when 1.5 is installed.
+Select **Accounting Report** from the left navigation of Apps Manager. You can see the average and maximum app instances in use per month under **App Instance Statistics**. The maximum is the largest number of app instances in use at any one time. The Accounting Report calculates these values from the `start`, `stop`, and `scale` app usage events in Cloud Controller.
 
-<p class="note"><strong>Note</strong>: The average and maximum app instances do not include activity in the <strong>system</strong> org.</p>
+<%= image_tag("accounting-report.png") %>
 
-<%= image_tag("accounting-report-v1.5.png") %>
+## <a id="usage-report.png"></a>Usage Report
 
+The Usage Report provides a more granular view of your usage by detailing app memory usage and service instance usage information for all spaces in a particular org, including the **system** org. 
+
+From the **system** org, click **Usage Report**.
+
+<%= image_tag("usage-report-link.png") %>
+
+The top of the Usage Report displays total app memory usage and service instance usage by all spaces in your org.
+
+<%= image_tag("usage-report.png") %>
+
+**Spaces Details** breaks down your app memory usage and service instance usage by spaces.  
+
+<%= image_tag("service-details.png") %>
+
+Click the name of an app to view its **Configuration History**.
+
+<%= image_tag("app-usage-service.png") %>
