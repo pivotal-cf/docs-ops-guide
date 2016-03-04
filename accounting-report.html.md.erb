@@ -1,12 +1,13 @@
 ---
 title: Monitoring Instance Usage in Apps Manager
+owner: Apps Manager
 ---
 
 <strong><%= modified_date %></strong>
 
 ## <a id="accounting-report"></a>Accounting Report
 
-The Accounting Report displays instance usage information for all orgs in your [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) deployment except the <strong>system</strong> org. This provides a high-level overview of your usage by displaying your monthly count of app instances. 
+The Accounting Report displays instance usage information for all orgs in your [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) deployment except the <strong>system</strong> org. This provides a high-level overview of your usage by displaying your monthly count of app instances.
 
 Select **Accounting Report** from the left navigation of Apps Manager. You can see the average and maximum app instances in use per month under **App Instance Statistics**. The maximum is the largest number of app instances in use at any one time. The Accounting Report calculates these values from the `start`, `stop`, and `scale` app usage events in Cloud Controller.
 
@@ -14,7 +15,7 @@ Select **Accounting Report** from the left navigation of Apps Manager. You can s
 
 ## <a id="usage-report"></a>Usage Report
 
-The Usage Report provides a more granular view of your usage by detailing app memory usage and service instance usage information for all spaces in a particular org, including the **system** org. 
+The Usage Report provides a more granular view of your usage by detailing app memory usage and service instance usage information for all spaces in a particular org, including the **system** org.
 
 From the **system** org, click **Usage Report**.
 
@@ -24,7 +25,7 @@ The top of the Usage Report displays total app memory usage and service instance
 
 <%= image_tag("usage-report.png") %>
 
-**Spaces Details** breaks down your app memory usage and service instance usage by spaces.  
+**Spaces Details** breaks down your app memory usage and service instance usage by spaces.
 
 <%= image_tag("service-details.png") %>
 
