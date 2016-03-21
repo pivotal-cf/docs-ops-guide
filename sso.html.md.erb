@@ -21,28 +21,13 @@ Follow the instructions below:
 
 	<%= image_tag("sso-config.png") %>
 
-1. Enter a **Provider Name**. Your provider name appears as a link on your
-Pivotal login page, which you can access at `https://login.YOUR-SYSTEM-DOMAIN`.
-The image below shows an example login page with the provider name "Your
-Provider Name."
-If you click on this link, you are redirected to your Identity Provider for
-authentication.
+1. When redirected to the **Use an Identity Provider** page, you must complete the following steps:
+    * Retrieve the metadata URL from your Identity Provider and copy it into the **Use an Identity Provider** area.
+    * Create a passphrase. Ops Manager encrypts data using the passphrase that you provide.
+    * Read the **End User License Agreement**, and select the checkbox to accept the terms.
+    * Click **Setup Authentication**.
 
-	<%= image_tag("login-page.png") %>
-
-1. Populate either **Provider Metadata** or **(OR) Provider Metadata URL**, depending on whether your Identity Provider exposes a Metadata URL. You can do this by either of the following:
-	* Download your Identity Provider metadata and paste this XML into the **Provider Metadata** area.
-		Ensure that the XML declaration tag is present at the beginning of the Metadata XML. For example:
-		<pre>
-		<?xml version="1.0" encoding="UTF-8"?>
-		&lt;EntityDescriptor&gt;
-		&lt;/EntityDescriptor&gt;
-		</pre>
-	* If your Identity Provider exposes a Metadata URL, provide the Metadata URL.
-
-	<p class='note'><strong>Note</strong>: You only need to select one of the above configurations. If you configure both, your Identity Provider defaults to the <strong>(OR) Provider Metadata URL</strong>.</p>
-
-1. Click **Save**.
+    <%= image_tag("/images/meta-url.png") %>
 
 1. Click **Apply Changes** on the Ops Manager home page for the configuration to take effect.
 
