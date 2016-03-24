@@ -33,7 +33,11 @@ endpoint information as follows:
 
     <%=image_tag("uaa/er-tile.png")%>
 
-1. In the left navigation menu, select **LDAP Config**.
+1. Click the **Elastic Runtime** tile. Select **Authentication and Enterprise SSO** on the **Settings** tab.
+
+1. Scroll down and select the **LDAP Server** option.
+
+	<%= image_tag("er17-config-authsso-ldap.png") %>
 
 1. Enter the following LDAP endpoint configuration information:
     * **LDAP Server URL**: A URL pointing to the LDAP server.
@@ -88,8 +92,6 @@ This must include one of the following protocols:
 <br /><br />
     * **LDAP Group Search Filter**: A string that defines LDAP Group search
 	criteria. The standard value is `member={0}`.
-
-    <%=image_tag("uaa/ldap-config.png")%>
 
 1. Click **Save**.
 

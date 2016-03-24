@@ -5,31 +5,37 @@ title: Configuring Single Sign-On
 
 <strong><%= modified_date %></strong>
 
-If your user store is exposed as a SAML Identity Provider for single sign-on (SSO), you can set up SSO to allow users to access the [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) [Apps Manager](../console/index.html) without creating a new account or re-entering credentials.
+If your user store is exposed as a SAML Identity Provider for single sign-on (SSO), you can set up SSO to allow users to access the [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) [Apps Manager](../console/index.html) without creating a new account or re-entering credentials. This topic explains how to configure PCF and your Identity Provider (IdP) so that your IdP recognizes PCF as a service provider.
 
 ##<a id="configure-pcf"></a>Configure Pivotal Cloud Foundry&reg; as a Service Provider
 
-You must configure Pivotal Cloud Foundry (PCF) so that your
-Identity Provider can recognize PCF as a Service Provider.
-Follow the instructions below:
+You must configure Pivotal Cloud Foundry (PCF) so that your Identity Provider can recognize PCF as a Service Provider. Follow the instructions below:
 
 1. Log in to Ops Manager.
-1. Click the **Elastic Runtime** tile. Select **Cloud Controller** on the **Settings** tab and verify your system domain.
 
-	<%= image_tag("cloud-controller.png") %>
-1. Select **SSO Config**.
+1. Click the **Elastic Runtime** tile. Select **Authentication and Enterprise SSO** on the **Settings** tab.
 
-	<%= image_tag("sso-config.png") %>
+1. Scroll down and select the **SAML Identity Provider** option.
 
-1. When redirected to the **Use an Identity Provider** page, you must complete the following steps:
+	<%= image_tag("er17-config-authsso-saml.png") %>
+
+1. Access your Pivotal login page at `login.YOUR-SYSTEM-DOMAIN`. Record your Provider Name, which appears as a link.
+
+    <%= image_tag("meta-url.png") %>
+
+1. Navigate to the Provider Name link. When redirected to the **Use an Identity Provider** page, you must complete the following steps:
     * Retrieve the metadata URL from your Identity Provider and copy it into the **Use an Identity Provider** area.
     * Create a passphrase. Ops Manager encrypts data using the passphrase that you provide.
     * Read the **End User License Agreement**, and select the checkbox to accept the terms.
     * Click **Setup Authentication**.
 
-    <%= image_tag("/images/meta-url.png") %>
+1. Navigate back to the **Elastic Runtime** tile **Authentication and Enterprise SSO** section. Fill in the **Provider Name** and **(OR) Provider Metadata URL** fields with the information above.
 
-1. Click **Apply Changes** on the Ops Manager home page for the configuration to take effect.
+1. (Optional) Configure checkboxes for **Sign Authentication Requests** and **Require Signed Assertions** to determine what your IdP and PCF deployment expect from each other.
+
+1. On the Ops Manager home page, click **Apply Changes** for the configuration to take effect.
+
+1. In the **Authentication and Enterprise SSO** section, click **Save**.
 
 ##<a id="configure-identity-provider"></a>Configure Your Identity Provider
 
