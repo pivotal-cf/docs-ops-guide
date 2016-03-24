@@ -1,0 +1,51 @@
+---
+title: Using Docker Trusted Registries
+owner: Ops Manager
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to configure your Docker Trusted Registries with Pivotal Cloud Foundry&reg; (PCF). To use private registries, you must choose either to submit your certificate authority (CA) certificate or provide the IP address for your private Docker Trusted Registry. 
+
+See the [Using Docker in Cloud Foundry](../concepts/docker.html) topic for more information.
+
+## <a id='ops-man'></a> Using a CA Certificate
+
+If you provide your CA certificate in the Ops Manager configuration, follow this procedure:
+
+1. In the **PCF Ops Manager Installation Dashboard**, click the **Ops Manager Director** tile.
+
+1. Click **Security**. 
+
+    <%= image_tag("images/docker-registry-ops-man.png") %>
+
+1. In the **Trusted Certificates** field paste one or more CA certificate.  The CA can be any level in your certificate chain as long as it is the same level or higher than the CA certificate that the Docker Trusted Registry uses.
+
+1. Click **Save**.
+
+1. If you are:
+  - Configuring Ops Manager Installation for the first time, return to your specific IAAS configuration to continue the installation process.
+  - Modifying an existing Ops Manager installation, return to the **PCF Ops Manager Installation Dashboard** and click **Apply Changes**.
+
+After configuration, BOSH propagates this CA certificate to all application containers in your deployment. You are then able to push and pull images from your Docker Trusted Registries.
+
+## <a id='ert'></a> Using an IP Address Whitelist
+
+If you choose not to provide a CA certificate, you must provide the IP address of your trusted Docker registry:
+
+1. Navigate to the PCF Operations Manager **Installation Dashboard**.
+
+1. Click the **Pivotal Elastic Runtime** tile, and navigate to the **Application Containers** tab. 
+
+	<%= image_tag("images/docker-registry-ert.png") %>
+
+1. Provide the IP address and port which should point to a Docker Trusted Registry. 
+
+1. Click **Save**. 
+
+1. If you are: 
+	- Configuring Elastic Runtime for the first time, return to your specific IAAS configuration to continue the installation process.
+	- Modifying an existing Elastic Runtime installation, return to the PCF Ops Manager Installation Dashboard and click Apply Changes.
+
+After configuration, Elastic Runtime allows Docker images to come through the specified IP address without checking certificates.
+

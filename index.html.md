@@ -17,8 +17,10 @@ This guide covers networking and user management for [Pivotal Cloud Foundry&reg;
 * [Configuring LDAP](./ldap-uaa.html)
 * [Switching Application Domains](./switching-domains.html)
 * [Scaling Instances in Elastic Runtime](./scaling-ert-components.html)
+* [Using Docker Trusted Registries](./docker-registry.html)
 * [Monitoring Instance Usage in Apps Manager](./accounting-report.html)
 * [Using Diego in Pivotal Cloud Foundry&reg;](./diego-overview.html)
 * [Deploying Diego for Windows](./deploying-diego.html)
 * [The Pivotal Cloud Ops Approach to Monitoring a Pivotal Cloud Foundry&reg; Deployment](./metrics.html)
 * [Providing a Certificate for your SSL Termination Point](./security_config.html)
+
