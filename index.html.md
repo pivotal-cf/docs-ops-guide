@@ -13,6 +13,7 @@ This guide covers networking and user management for [Pivotal Cloud Foundry&reg;
 * [Changing the Quota Plan of an Organization with cf CLI](./change-quota-plan.html)
 * [Identifying Elastic Runtime Jobs Using vCenter](./id-jobs.html)
 * [Understanding the Effects of Single Components on a Pivotal Cloud Foundry&reg; Upgrade](./single-component.html)
+* [Configuring UAA Password Policy](./pw-policy.html)
 * [Configuring Single Sign-On](./sso.html)
 * [Configuring LDAP](./ldap-uaa.html)
 * [Switching Application Domains](./switching-domains.html)
