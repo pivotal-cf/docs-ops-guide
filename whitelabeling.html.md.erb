@@ -1,0 +1,39 @@
+---
+title: White Labeling
+owner: Elastic Runtime
+---
+
+This topic describes how Pivotal Cloud Foundry&reg; operators can visually brand Apps Manager by changing certain text, colors, and images of the interface. Developers view the customized interface when logging in, creating an account, resetting a password, or using Apps Manager.
+
+Operators customize Apps Manager by configuring the **Generic White Labeling** and **Apps Manager Config** pages of the Pivotal Elastic Runtime tile.
+
+## <a id='generic'></a>Generic White Labeling
+
+1. Login to Ops Manager by navigating to your Ops Manager IP in a browser.
+1. Click **Pivotal Elastic Runtime**.
+1. Click the **Generic White Labeling** tab.
+
+	<%= image_tag 'whitelabeling.png' %>
+
+1. For **Company Name**, enter the name of your organization. If left blank, the name defaults to **Pivotal**.
+1. For **Accent Color**, enter the hexadecimal code for the color used to accent various visual elements. For example, `#71ffda`.
+1. For **Main Logo**, enter a Base64-encoded URL string for an image to use as your main logo. The image can be square or wide. For example, `data:image/png;base64,iVBORw0...`. If left blank, the image defaults to the Pivotal Logo.
+1. For **Square Logo/Favicon**, enter a Base64-encoded URL string for an image to use as your favicon, in the Apps Manager header, and in places that require a smaller logo. For example, `data:image/png;base64,iVBORw0...`. If left blank, the image defaults to the Pivotal Logo.
+1. For **Footer Text**, enter a string to be displayed as the footer. If left blank, the footer text defaults to **Pivotal Software Inc. All rights reserved.**.
+1. To add up to three footer links that appear to the right of the footer text, complete the following steps:  
+	* Click **Add**.
+	* For **Link text**, enter a label for the link.
+	* For **Url**, enter an external or relative URL. For example, `http://docs.pivotal.io` or `/tools.html`.
+
+## <a id='apps-man'></a>Apps Manager Config
+
+1. Login to Ops Manager by navigating to your Ops Manager IP in a browser.
+1. Click **Pivotal Elastic Runtime**.
+1. Click the **Apps Manager Config** tab.
+
+	<%= image_tag 'config-apps-man.png' %>
+
+1. For **Product Name**, enter text to replace **Apps Manager** in the header and the title of Apps Manager. This text defaults to **Apps Manager** if left blank.
+1. For **Marketplace Name**, enter text to replace the header in the Marketplace pages. This text defaults to **Marketplace** if left blank.
+1. By default, Apps Manager includes three sidebar links: **Marketplace**, **Docs**, and **Tools**. You can edit existing sidebar links by clicking the name of the link and editing the **Link text** and **Url** fields. Or, you can remove the link by clicking the trash icon next to its name. If you want to add a new sidebar link, click **Add** and complete the **Link text** and **Url** fields.
+<p class="note"><strong>Note</strong>: Removing any of the default links will remove them from the sidebar for all users.</p>
