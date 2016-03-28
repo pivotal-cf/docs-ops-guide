@@ -36,7 +36,7 @@ You must configure Pivotal Cloud Foundry (PCF) so that your Identity Provider ca
 
 	<%= image_tag("login-page.png") %>
 
-1. Populate either **Provider Metadata** or **(OR) Provider Metadata URL**, depending on whether your Identity Provider exposes a Metadata URL. You can do this by either of the following:
+1. Populate either **Provider Metadata** or **(OR) Provider Metadata URL**, depending on whether your Identity Provider exposes a Metadata URL. Pivotal recommends that you complete Provider Metadata URL rather than the Provider Metadata field because the metadata can change. You can do this by either of the following:
 	* Download your Identity Provider metadata and paste this XML into the **Provider Metadata** area.
 		Ensure that the XML declaration tag is present at the beginning of the Metadata XML. For example:
 		<pre>
