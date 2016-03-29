@@ -24,19 +24,27 @@ Refer to the instructions in the sections below to configure your deployment wit
 
 You must configure Pivotal Cloud Foundry (PCF) so that your Identity Provider can recognize PCF as a Service Provider. Follow the instructions below:
 
-1. Log in to Ops Manager.
-1. Click the **Elastic Runtime** tile. Select **Cloud Controller** on the **Settings** tab and verify your system domain.
+1. From the **Installation Dashboard**, click the **Elastic Runtime** tile.
+1. Select the **Domains** tab to verify your system domain.
 
-	<%= image_tag("cloud-controller.png") %>
-1. Select **SSO Config**.
+	<%= image_tag("new-domains.png") %>
+1. Select **Authentication and Enterprise SSO**.
 
-	<%= image_tag("sso-config.png") %>
+	<%= image_tag("sso-ert.png") %>
 
-1. Enter a **Provider Name**. Your provider name appears as a link on your Pivotal login page, which you can access at `https://login.YOUR-SYSTEM-DOMAIN`. The image below shows an example login page with the provider name "Your Provider Name." If you click on this link, you are redirected to your Identity Provider for authentication.
+1. Select **SAML Identity Provider**.
 
-	<%= image_tag("login-page.png") %>
+1. Enter a **Provider Name**. Your provider name appears as a link on your Pivotal login page, which you can access at `https://login.YOUR-SYSTEM-DOMAIN`, which you retrieved above. When prompted:
+	* Create a passphrase. Ops Manager encrypts data using the passphrase that you provide.
+	* Read the **End User License Agreement**, and select the checkbox to accept the terms.
+	* Click **Setup Authentication**.
 
-1. Populate either **Provider Metadata** or **(OR) Provider Metadata URL**, depending on whether your Identity Provider exposes a Metadata URL. Pivotal recommends that you complete Provider Metadata URL rather than the Provider Metadata field because the metadata can change. You can do this by either of the following:
+	<%= image_tag("meta-url.png") %>
+
+1. Your Identity Provider login page appears. Enter your username and password. Click Login.
+
+1. Retrieve the metadata from your Identity Provider and copy it into either the **Provider Metadata** or the **Provider Metadata URL** fields, depending on whether your Identity Provider exposes a Metadata URL. Pivotal recommends that you complete Provider Metadata URL rather than the Provider Metadata field because the metadata can change. You can do this by either of the following:
+	* If your Identity Provider exposes a Metadata URL, provide the Metadata URL.
 	* Download your Identity Provider metadata and paste this XML into the **Provider Metadata** area.
 		Ensure that the XML declaration tag is present at the beginning of the Metadata XML. For example:
 		<pre>
@@ -44,7 +52,7 @@ You must configure Pivotal Cloud Foundry (PCF) so that your Identity Provider ca
 		&lt;EntityDescriptor&gt;
 		&lt;/EntityDescriptor&gt;
 		</pre>
-	* If your Identity Provider exposes a Metadata URL, provide the Metadata URL.
+	
 
 	<p class='note'><strong>Note</strong>: You only need to select one of the above configurations. If you configure both, your Identity Provider defaults to the <strong>(OR) Provider Metadata URL</strong>.</p>
 
