@@ -18,7 +18,7 @@ This guide covers networking and user management for [Pivotal Cloud Foundry&reg;
 * [Switching Application Domains](./switching-domains.html)
 * [Scaling Instances in Elastic Runtime](./scaling-ert-components.html)
 * [Using Docker Trusted Registries](./docker-registry.html)
-* [White Labeling](./whitelabeling.html)
+* [White Labeling Apps Manager](./whitelabeling.html)
 * [Monitoring Instance Usage in Apps Manager](./accounting-report.html)
 * [Using Diego in Pivotal Cloud Foundry&reg;](./diego-overview.html)
 * [Deploying Diego for Windows](./deploying-diego.html)
