@@ -5,13 +5,15 @@ owner: Ops Manager
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to configure your Docker Trusted Registries with Pivotal Cloud Foundry&reg; (PCF). To use private registries, you must choose either to submit your certificate authority (CA) certificate or provide the IP address for your private Docker Trusted Registry. 
+This topic describes how to configure your Docker Trusted Registries with Pivotal Cloud Foundry&reg; (PCF). 
+To use private registries, you must choose either to submit your root certificate authority (CA) certificate 
+or provide the IP address for your private Docker Trusted Registry. 
 
 See the [Using Docker in Cloud Foundry](../concepts/docker.html) topic for more information.
 
 ## <a id='ops-man'></a> Using a CA Certificate
 
-If you provide your CA certificate in the Ops Manager configuration, follow this procedure:
+If you provide your root CA certificate in the Ops Manager configuration, follow this procedure:
 
 1. In the **PCF Ops Manager Installation Dashboard**, click the **Ops Manager Director** tile.
 
@@ -19,7 +21,8 @@ If you provide your CA certificate in the Ops Manager configuration, follow this
 
     <%= image_tag("images/docker-registry-ops-man.png") %>
 
-1. In the **Trusted Certificates** field paste one or more CA certificate.  The CA can be any level in your certificate chain as long as it is the same level or higher than the CA certificate that the Docker Trusted Registry uses.
+1. In the **Trusted Certificates** field paste one or more root CA certificates.
+The Docker Trusted Registry does not use the CA certificate itself but uses a certificate that is signed by the CA certificate. 
 
 1. Click **Save**.
 
