@@ -17,62 +17,15 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
 1. Select **Resource Config**. 
 <%= image_tag("images/scaling-ert.png") %>
 
-1. If you are using one of the following configurations in [Pivotal Elastic Runtime](./../customizing/cloudform-er-config.html), enter the values in the corresponding table to scale instances for your particular deployment: 
-    * [Diego with no DEAs](#diego-nodeas)
+1. If you are using one of the following configurations in [Pivotal Elastic Runtime](./../customizing/cloudform-er-config.html), choose the values in the corresponding table to scale instances for your particular deployment: 
     * [External Databases](#external-databases)
-    * [MySQL only](#mysql-only)
     * [External Blobstore](#external-blobstore)
     * [External Load Balancer](#external-lb)
     * [JMX Bridge](#jmx-bridge)
 
-    ###<a id='diego-nodeas'></a>Diego with no DEAs ###
-
-    <p class='note'><strong>Note</strong>: To make Diego highly available, see the <a href="./../concepts/high-availability.html">Zero Downtime Deployment and Scaling in CF</a> topic. This scenario is applicable to a basic installation. </p>
-
-     If you are using [Diego by default instead of DEAs](./../customizing/cloudform-er-config.html#diego), enter the following values in the Resource Config: 
-
-    <table border="1" class="nice" >
-      <tr>
-        <th width=8%><strong>Job</strong></th>
-        <th width=8%><strong>Instance Count</strong></th>
-        <th width=22%><strong>Notes</strong></th>
-      </tr>
-      <tr>
-        <td>Diego Cell</td>
-        <td>&ge; 3</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Diego Brain</td>
-        <td>&ge; 1</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Diego Bulletin Board System (BBS)</td>
-        <td>&ge; 1</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>DEA</td>
-        <td>0</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Consul</td>
-        <td>&ge; 1</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Health Manager</td>
-        <td>0</td>
-        <td></td>
-      </tr>
-    </table>
-
-
     ###<a id='external-databases'></a>External Databases  ###
 
-    If you are using an [external database](./../customizing/cloudform-er-config.html#sys-db), enter the following values in the Resource Config:
+    If you are using an [external database](./../customizing/cloudform-er-config.html#sys-db), choose the following values in the Resource Config:
 
     <table border="1" class="nice" >
       <tr>
@@ -108,48 +61,9 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
     </table>
 
 
-    ###<a id='mysql-only'></a>MySQL  ###
-
-     <p class='note'><strong>Note</strong>: This scenario is not applicable if you are using a MySQL and Postgres configuration.  For example, you have system data from a pre-1.6.0 Elastic Runtime installation.</p>
-
-    If you are using a MySQL database, enter the following values in the Resource Config:
-
-    <table border="1" class="nice" >
-      <tr>
-        <th width=8%><strong>Job</strong></th>
-        <th width=8%><strong>Instance Count</strong></th>
-        <th width=22%><strong>Notes</strong></th>
-      </tr>
-      <tr>
-        <td>MySQL server</td>
-        <td>&ge; 1</td>
-        <td>Must be set to an odd number.</td>
-      </tr>
-      <tr>
-        <td>MySQL Proxy</td>
-        <td>&ge; 1</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Apps Manager Database (Postgres)</td>
-        <td>0</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Cloud Controller Database (Postgres)</td>
-        <td>0</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>UAA Database (Postgres)</td>
-        <td>0</td>
-        <td></td>
-      </tr>
-    </table>
-
     ###<a id='external-blobstore'></a>External Blobstore   ###
 
-    If you are using an external [Blobstore](./../customizing/cloudform-er-config.html#filestore), enter the following value in the Resource Config:
+    If you are using an external [Blobstore](./../customizing/cloudform-er-config.html#filestore), choose the following value in the Resource Config:
 
     <table border="1" class="nice" >
       <tr>
@@ -166,7 +80,7 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
 
     ###<a id='external-lb'></a>External Load Balancer    ###
 
-    If you are using an external load balancer, enter the following values in the Resource Config:
+    If you are using an external load balancer, choose the following values in the Resource Config:
 
     <table border="1" class="nice" >
       <tr>
@@ -193,7 +107,7 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
 
     ###<a id='jmx-bridge'></a>JMX Bridge    ###
 
-    If you are using [JMX Bridge](./../customizing/use-metrics.html), enter the following value in the Resource Config:
+    If you are using [JMX Bridge](./../customizing/use-metrics.html), choose the following value in the Resource Config:
 
     <table border="1" class="nice" >
       <tr>
@@ -208,6 +122,6 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
       </tr>
     </table>
 
-1. Enter the suggested values outlined in each scenario above, and click **Save**.
+1. Choose the suggested values outlined in each scenario above, and click **Save**.
 
 1. Return to the **Installation Dashboard** and click **Apply Changes**.
