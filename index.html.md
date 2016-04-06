@@ -33,8 +33,6 @@ This guide covers networking and user management for [Pivotal Cloud Foundry&reg;
 
 * <a href="./accounting-report.html" class="subnav">Monitoring Instance Usage in Apps Manager</a>
 
-* <a href="./diego-overview.html">Using Diego in Pivotal Cloud Foundry&reg;</a>
-
 * <a href="./deploying-diego.html" class="subnav">Deploying Diego for Windows</a>
 
 * <a href="./metrics.html" class="subnav">The Pivotal Cloud Ops Approach to Monitoring a Pivotal Cloud Foundry&reg; Deployment</a>
