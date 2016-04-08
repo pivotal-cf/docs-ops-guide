@@ -20,7 +20,6 @@ Dashboard.
 1. Under **Configure the point-of-entry to this environment**, choose one of the following:
   * **Configure Encrypted External Load Balancer**: Select this option if your deployment uses an external load balancer that can forward encrypted traffic to the Elastic Runtime Router.
   * **Configure HAProxy**: Select this option to use HAProxy as your first point of entry.
-<p class="note"><strong>Note</strong>: If you choose the radio button to configure external load balancer without encryption you cannot provide SSL termination.</p>
 
 1. Provide your SSL Termination Certificate and Private Key.
 <%= image_tag 'ssl-termination.png' %>
@@ -35,4 +34,4 @@ Dashboard.
 
 1. (HAProxy Only) Select **Disable HTTP traffic to HAProxy** if you want HAProxy to only allow HTTPS traffic. 
 
-1. Configure **SSL Ciphers**. Leave these fields blank unless you want to use a specific set of SSL ciphers for the Router or HAProxy. Enter a colon-separated list of custom SSL ciphers to pass to the Router or HAProxy in the **SSL Ciphers** field. 
+1. Configure **SSL Ciphers**. Leave these fields blank unless you want to use a specific set of SSL ciphers for the Router or HAProxy. Enter a colon-separated list of custom SSL ciphers to pass to the Router or HAProxy. 
