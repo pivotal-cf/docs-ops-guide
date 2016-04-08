@@ -19,6 +19,8 @@ This guide covers networking and user management for [Pivotal Cloud Foundry&reg;
 
 * <a href="./single-component.html" class="subnav">Understanding the Effects of Single Components on a Pivotal Cloud Foundry&reg; Upgrade</a>
 
+* <a href="./logging-config-opsman.html" class="subnav">Configuring System Logging in Elastic Runtime</a>
+
 * <a href="./pw-policy.html" class="subnav">Configuring UAA Password Policy</a>
 
 * <a href="./auth-sso.html" class="subnav">Configuring Authentication and Enterprise SSO</a>
