@@ -18,7 +18,7 @@ This guide covers networking and user management for [Pivotal Cloud Foundry&reg;
 * [Switching Application Domains](./switching-domains.html)
 * [Configuring SSH Access](./config-ssh.html)
 * [Scaling Instances in Elastic Runtime](./scaling-ert-components.html)
-* [Monitoring Instance Usage in Apps Manager](./accounting-report.html)
+* [Monitoring Instance Usage](./accounting-report.html)
 * [Using Diego in Pivotal Cloud Foundry&reg;](./diego-overview.html)
 * [Deploying Diego for Windows](./deploying-diego.html)
 * [Troubleshooting Diego for Windows](./troubleshooting-diego-windows.html)
