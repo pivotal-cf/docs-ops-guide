@@ -5,9 +5,17 @@ owner: Apps Manager
 
 <strong><%= modified_date %></strong>
 
-This topic describes the Accounting Report and Usage Report, which provide app instance usage information. The Accounting Report provides a summarized report, while the Usage Report provides a more detailed view of the data. Access these reports by [logging into the Apps Manager](../customizing/console-login.html).
+This page assumes you are using cf CLI v6
 
-## <a id="accounting-report"></a>Accounting Report
+This topic describes how to retrieve app and service instance usage information. You can access the data using Apps Manager or from the command line using the cf CLI.
+
+## <a id='apps-man'></a>Monitoring Instance Usage from Apps Manager ##
+
+There are two ways to monitor app and service instance usage from Apps Manager. The Accounting Report provides a summarized report, and the Usage Report provides a more detailed view of the data. 
+
+To access these reports you must be [logged into the Apps Manager](../customizing/console-login.html).
+
+### <a id="accounting-report"></a>Accounting Report
 
 The Accounting Report displays instance usage information for all orgs in your [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) deployment except the <strong>system</strong> org. The Report provides a high-level overview of your usage by displaying your monthly count of app instances. 
 
@@ -15,7 +23,7 @@ Select **Accounting Report** from the left navigation of Apps Manager. You can s
 
 <%= image_tag("accounting-report.png") %>
 
-## <a id="usage-report"></a>Usage Report
+### <a id="usage-report"></a>Usage Report
 
 The Usage Report provides a more granular view of your usage by detailing app memory usage and service instance usage information for all spaces in a particular org, including the **system** org.
 
@@ -34,3 +42,189 @@ The top of the Usage Report displays total app memory usage and service instance
 Click the name of an app to view its **Configuration History**.
 
 <%= image_tag("app-usage-service.png") %>
+
+## <a id='cf-cli'></a>Monitoring Instance Usage from the cf CLI ##
+
+This section describes how to use the cf CLI to retrieve information about your app and service instances.
+
+1. Target the endpoint of your Cloud Controller.
+<pre class="terminal">$ cf api api.YOUR-SYSTEM-DOMAIN</pre>
+1. Log in with your credentials.
+<pre class="terminal">
+$ cf login
+API endpoint:  api.YOUR-SYSTEM-DOMAIN
+Email: user<span>@</span>domain.com
+Password:
+Authenticating...
+OK
+...
+Targeted org  YOUR-ORG
+Targeted space  development
+ API endpoint:    https<span>://ap</span>i.YOUR-SYSTEM-DOMAIN (API version:  2.52.0)
+ User:            us<span>er@do</span>main.com
+ Org:             YOUR-ORG
+ Space:           development
+</pre>
+1. Retrieve information about your apps using `cf curl`.
+<pre class="terminal">$ cf curl /v2/apps
+{
+   "total\_results": 2,
+   "total\_pages": 1,
+   "prev\_url": null,
+   "next\_url": null,
+   "resources": [
+      {
+         "metadata": {
+            "guid": "acf2ce33-ee92-54TY-9adb-55a596a8dcba",
+            "url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba",
+            "created\_at": "2016-02-06T17:40:31Z",
+            "updated\_at": "2016-02-06T18:09:17Z"
+         },
+         "entity": {
+            "name": "YOUR-APP",
+[...]
+            "space\_url": "/v2/spaces/a0205ae0-a691-4667-92bc-0d0dd712b6d3",
+            "stack\_url": "/v2/stacks/86205f38-84fc-4bc2-b2b8-af7f55669f04",
+            "routes\_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/routes",
+            "events\_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/events",
+            "service\_bindings\_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/service\_bindings",
+	            "route\_mappings\_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/route\_mappings"
+         }
+      },
+      {
+         "metadata": {
+            "guid": "79bb58cc-3737-43be-ac70-39a2843b5178",
+            "url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178",
+            "created\_at": "2016-02-15T23:25:47Z",
+            "updated\_at": "2016-03-12T21:54:59Z"
+         },
+         "entity": {
+            "name": "ANOTHER-APP",
+[...]
+            "space\_url": "/v2/spaces/a0205ae0-a691-4667-92bc-0d0dd712b6d3",
+            "stack\_url": "/v2/stacks/86205f38-84fc-4bc2-b2b8-af7f55669f04",
+            "routes\_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/routes",
+            "events\_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/events",
+            "service\_bindings\_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/service\_bindings",
+            "route\_mappings\_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/route\_mappings"
+         }
+      }
+   ]
+}
+</pre>
+The output of this command provides the URL endpoints for your apps. In the example above the endpoints for the two apps are `/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba`, and `/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178`.
+1. Append `/summary` to the `url` listed for each app and `cf curl` it to get instance information. The result below shows the number of running instances and information about any bound services.
+<pre class="terminal">$ cf curl /v2/apps/acf2ce75-ee92-4bb6-9adb-55a596a8dcba/summary
+{
+   "guid": "acf2ce75-ee92-4bb6-9adb-55a596a8dcba",
+   "name": "YOUR-APP",
+   "routes": [
+      {
+         "guid": "7421b6af-75cb-4334-a862-bc5e1ababfe6",
+         "host": "YOUR-APP",
+         "path": "",
+         "domain": {
+            "guid": "fb6bd89f-2ed9-49d4-9ad1-97951a573135",
+            "name": "YOUR-DOMAIN.io"
+         }
+      }
+   ],
+   "running\_instances": 5,
+   "services": [
+      {
+         "guid": "b9cdr456-3c61-4f8a-a307-9b4ty836fb2e",
+         "name": "YOUR-APP-db",
+         "bound\_app\_count": 1,
+         "last\_operation": {
+            "type": "create",
+            "state": "succeeded",
+            "description": "",
+            "updated\_at": null,
+            "created\_at": "2016-02-05T04:58:46Z"
+         },
+         "dashboard\_url": "htt<span>ps://</span>cloudfoundry.appdirect.com/api/custom/cloudfoundry/v2/sso/start?serviceUuid=b5cASDF-3c61-4f8a-a307-9bf85j45fb2e",
+         "service\_plan": {
+            "guid": "fbcec3af-3e8d-4ee7-adfe-3f12a137ed66",
+            "name": "turtle",
+            "service": {
+               "guid": "34dbc753-34ed-4cf1-9a87-a255dfca5339b",
+               "label": "elephantsql",
+               "provider": null,
+               "version": null
+[...]
+</pre>
+1. If you have services that are not bound to your apps, you can retrieve details about both bound and unbound service instances by using `cf curl` with `/v2/service_instances?`:
+<pre class="terminal">
+$ cf curl /v2/service\_instances?
+{
+   "total\_results": 4,
+   "total\_pages": 1,
+   "prev\_url": null,
+   "next\_url": null,
+   "resources": [
+      {
+         "metadata": {
+            "guid": "b9cdr456-3c61-4f8a-a307-9b4ty836fb2e",
+            "url": "/v2/service\_instances/b9cdr456-3c61-4f8a-a307-9b4ty836fb2e",
+            "created\_at": "2016-02-05T04:58:46Z",
+            "updated\_at": null
+         },
+         "entity": {
+            "name": "YOUR-BOUND-DB-INSTANCE",
+            "credentials": {},
+            "service\_plan\_guid": "fbcec3af-3e8d-4ee7-adfe-3f12a137ed66",
+            "space\_guid": "a0205ae0-a691-4667-92bc-0d0dd712b6d3",
+            "gateway\_data": null,
+            "dashboard\_url": "htt<span>ps://cl</span>oudfoundry.appdirect.com/api/custom/cloudfoundry/v2/sso/start?serviceUuid=b9cdr456-3c61-4f8a-a307-9b4ty836fb2e",
+            "type": "managed\_service\_instance",
+            "last\_operation": {
+               "type": "create",
+               "state": "succeeded",
+               "description": "",
+               "updated\_at": null,
+               "created\_at": "2016-02-05T04:58:46Z"
+            },
+            "tags": [],
+            "space\_url": "/v2/spaces/a0205ae0-a691-4667-92bc-0d0dd712b6d3",
+            "service\_plan\_url": "/v2/service\_plans/fbcec3af-3e8d-4ee7-adfe-3f12a137ed66",
+            "service\_bindings\_url": "/v2/service\_instances/b9cdr456-3c61-4f8a-a307-9b4ty836fb2e/service\_bindings",
+            "service\_keys\_url": "/v2/service\_instances/b9cdr456-3c61-4f8a-a307-9b4ty836fb2e/service\_keys",
+            "routes\_url": "/v2/service\_instances/b9cdr456-3c61-4f8a-a307-9b4ty836fb2e/routes"
+         }
+      },
+      {
+         "metadata": {
+            "guid": "78be3399-bdc7-4fbf-a1a4-6858a50d0ff3",
+            "url": "/v2/service\_instances/78be3399-bdc7-4fbf-a1a4-6858a50d0ff3",
+            "created\_at": "2016-02-15T23:45:30Z",
+            "updated\_at": null
+         },
+         "entity": {
+            "name": "YOUR-UNBOUND-DB-INSTANCE",
+            "credentials": {},
+            "service\_plan\_guid": "fbcec3af-3e8d-4ee7-adfe-3f12a137ed66",
+            "space\_guid": "a0205ae0-a691-4667-92bc-0d0dd712b6d3",
+            "gateway\_data": null,
+            "dashboard\_url": "htt<span>ps://clo</span>udfoundry.appdirect.com/api/custom/cloudfoundry/v2/sso/start?serviceUuid=78be3399-bdc7-4fbf-a1a4-6858a50d0ff3",
+            "type": "managed\_service\_instance",
+            "last\_operation": {
+               "type": "create",
+               "state": "succeeded",
+               "description": "",
+               "updated\_at": null,
+               "created\_at": "2016-02-15T23:45:30Z"
+            },
+            "tags": [],
+            "space\_url": "/v2/spaces/a0205ae0-a691-4667-92bc-0d0dd712b6d3",
+            "service\_plan\_url": "/v2/service\_plans/fbcec3af-3e8d-4ee7-adfe-3f12a137ed66",
+            "service\_bindings\_url": "/v2/service\_instances/78be3399-bdc7-4fbf-a1a4-6858a50d0ff3/service\_bindings",
+            "service\_keys\_url": "/v2/service\_instances/78be3399-bdc7-4fbf-a1a4-6858a50d0ff3/service\_keys",
+            "routes\_url": "/v2/service\_instances/78be3399-bdc7-4fbf-a1a4-6858a50d0ff3/routes"
+         }
+      },
+   ]
+}
+</pre>
+
+
+
