@@ -1,14 +1,16 @@
 ---
 breadcrumb: Pivotal Cloud Foundry&reg; Documentation
-title: Configuring Authentication and Enterprise SSO
+title: Configuring Authentication and Enterprise SSO for Elastic Runtime
 owner: Identity
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) authentication and single sign-on configuration with Lightweight Directory Access Protocol (LDAP) and Security Assertion Markup Language (SAML). Connecting Elastic Runtime to either the LDAP or SAML external user store allows the User Account and Authentication (UAA) server to authenticate users and extends features native to those integrations, such as search, bind and assertion.
+This topic describes [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) authentication and single sign-on configuration with Lightweight Directory Access Protocol (LDAP) and Security Assertion Markup Language (SAML).
 
-If your user store is exposed as a SAML or LDAP Identity Provider for single sign-on (SSO), you can set up SSO to allow users to access the [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) [Apps Manager](../console/index.html) without creating a new account or re-entering credentials.
+Connecting Elastic Runtime to either the LDAP or SAML external user store allows the User Account and Authentication (UAA) server to delegate authentication to existing enterprise user stores.
+
+If your enterprise user store is exposed as a SAML or LDAP Identity Provider for single sign-on (SSO), you can set up SSO to allow users to access the [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) [Apps Manager](../console/index.html) and Command Line Interface (cf CLI) without creating a new account or, if using SAML, re-entering credentials.
 
 The Cloud Foundry User Account and Authentication ([UAA](https://github.com/cloudfoundry/uaa/tree/develop)) server provides identity management for Elastic Runtime in three ways:
 
@@ -16,16 +18,17 @@ The Cloud Foundry User Account and Authentication ([UAA](https://github.com/clou
 * Authenticates users with their Elastic Runtime credentials
 * Acts as an SSO service using Elastic Runtime or other credentials
 
-See [Adding Existing LDAP Users to a PCF Deployment](../customizing/ldap-user-management.html) for information about managing user identity with LDAP in PCF.
+See [Adding Existing SAML or LDAP Users to a PCF Deployment](../customizing/external-user-management.html) for information about managing user identity and pre-provisioning user roles with SAML or LDAP in PCF.
 
-Refer to the instructions in the sections below to configure your deployment with SAML or LDAP, as appropriate:
+Refer to the instructions below to configure your deployment with SAML or LDAP, as appropriate:
 
-##<a id="configure-pcf"></a>Configure PCF for SAML
+##<a id="configure-pcf"></a>Configure PCF Elastic Runtime for SAML
 
-You must configure Pivotal Cloud Foundry (PCF) so that your Identity Provider can recognize PCF as a Service Provider. Follow the instructions below:
+You must configure Pivotal Cloud Foundry (PCF) so that your Identity Provider can recognize PCF as a Service Provider:
 
 1. From the **Installation Dashboard**, click the **Elastic Runtime** tile.
-1. Select the **Domains** tab to verify your system domain.
+
+1. Select the **Domains** tab and make note of your system domain.
 
 	<%= image_tag("new-domains.png") %>
 1. Select **Authentication and Enterprise SSO**.
