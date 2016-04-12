@@ -23,7 +23,7 @@ This guide covers networking and user management for [Pivotal Cloud Foundry&reg;
 
 * <a href="./pw-policy.html" class="subnav">Configuring UAA Password Policy</a>
 
-* <a href="./auth-sso.html" class="subnav">Configuring Authentication and Enterprise SSO</a>
+* <a href="./auth-sso.html" class="subnav">Configuring Authentication and Enterprise SSO for Elastic Runtime</a>
 
 * <a href="./switching-domains.html" class="subnav">Switching Application Domains</a>
 
