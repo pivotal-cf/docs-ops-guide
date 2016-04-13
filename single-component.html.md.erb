@@ -134,13 +134,27 @@ You can disable this component before an upgrade to reduce the overall system do
   <td></td>
 </tr>
 <tr>
-  <td>DEA</td>
+  <td>Diego Cells</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
-  <td>Your ability to manage an app when an upgrade affects the DEA depends on the number of instances that you specify for the Cloud Controller and DEA components.
-If either of these components are single components, you cannot push, stage, or restart an app during the upgrade.
-<br />
-The Apps Manager app and App Usage Service components for the Apps Manager Database run in a single DEA instance. You cannot use the Apps Manager or the CLI during the upgrade of the DEA. </td>
+  <td>Your ability to manage an app when an upgrade affects Diego Cells depends on the number of instances that you specify for the Diego Cells, Cloud Controller, and other Diego components.
+If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
+<br/>
+If you only have one Diego Cell, upgrading it will cause downtime for the apps that run on it, including the Apps Manager app and the App Usage Service.</td>
+</tr>
+<tr>
+  <td>Diego BBS</td>
+  <td>&#10003;</td>
+  <td>&#10003;</td>
+  <td>Your ability to manage an app when an upgrade affects the Diego BBS depends on the number of instances that you specify for the Diego BBS, Cloud Controller, and other Diego components.
+If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
+</tr>
+<tr>
+  <td>Diego Brain</td>
+  <td>&#10003;</td>
+  <td>&#10003;</td>
+  <td>Your ability to manage an app when an upgrade affects the Diego Brain depends on the number of instances that you specify for the Diego Brain, Cloud Controller, and other Diego components.
+If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
 </tr>
 <tr>
   <td>Doppler Server</td>
@@ -160,7 +174,7 @@ The Apps Manager app and App Usage Service components for the Apps Manager Datab
   <td></td>
   <td>These errands run scripts that connect the Apps Manager app and the App Usage Service components to the Apps Manager Database.
 <br />
-The Apps Manager app and App Usage Service components runs in a single DEA instance and the Apps Manager Database is a single component. If there is an upgrade issue with either Apps Manager Database instance or the DEA instance, the upgrade fails and Ops Manager will not run this errand.</td>
+The Apps Manager app and App Usage Service components runs in a single Diego Cell instance and the Apps Manager Database is a single component. If there is an upgrade issue with either the Apps Manager Database instance or the Diego Cell instance, the upgrade fails and Ops Manager will not run the Apps Manager deployment errand again.</td>
 </tr>
 </table>
 
