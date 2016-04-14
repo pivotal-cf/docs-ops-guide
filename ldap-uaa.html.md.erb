@@ -35,9 +35,10 @@ endpoint information as follows:
     <%=image_tag("uaa/er-tile.png")%>
 
 1. In the left navigation menu, select **LDAP Config**.
+    <%=image_tag("uaa/ldap-config.png")%>
 
 1. Enter the following LDAP endpoint configuration information:
-    * **LDAP Server URL**: A URL pointing to the LDAP server.
+    * **Server URL**: A URL pointing to the LDAP server.
 This must include one of the following protocols:
         * `ldap://`: This specifies that the LDAP server uses an unencrypted
 		connection.
@@ -47,18 +48,15 @@ This must include one of the following protocols:
 		truststore.
     * **LDAP Credentials**: The LDAP Distinguished Name (DN) and password for
 	binding to the LDAP Server. Example DN: `cn=administrator,ou=Users,dc=example,dc=com`
-<br /><br />
-    Note: We recommend that you provide LDAP credentials that grant read-only
-	permissions on the LDAP Search Base and the LDAP Group Search Base.
-<br /><br />
-    * **LDAP Search Base**: The location in the LDAP directory tree from which
+    <p class="note"><strong>Note</strong>: Pivotal recommends that you provide LDAP credentials that grant read-only
+	permissions on the User Search Base.</p>
+    * **User Search Base**: The location in the LDAP directory tree from which
 	any LDAP User search begins.
-	The typical LDAP Search Base matches your domain name.
+	The typical User Search Base matches your domain name.
 <br /><br />
-    For example, a domain named "cloud.example.com" typically uses the following
-	LDAP User Search Base: `ou=Users,dc=example,dc=com`
+    For example, a domain named "cloud.example.com" typically uses the following User Search Base: `ou=Users,dc=example,dc=com`
 <br /><br />
-    * **LDAP Search Filter**: A string that defines LDAP User search criteria.
+    * **User Search Filter**: A string that defines LDAP User search criteria.
 	These search criteria allow LDAP to perform more effective and efficient
 	searches. For example, the standard LDAP search filter `cn=Smith` returns
 	all objects with a common name equal to `Smith`.
@@ -71,27 +69,13 @@ This must include one of the following protocols:
     In addition to `cn`, other attributes commonly searched for and returned are
 	`mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
 <br /><br />
-    * **LDAP Group Search Base**: The location in the LDAP directory tree from
-	which the LDAP Group search begins.
+	* **Admin Groups**: If you want to map LDAP groups to the Admin role, select **Enable Admin Groups** and complete the following fields. Otherwise, select **No Groups**.
+		* **Group Search Base**: Enter the location in the LDAP directory tree from which the LDAP Group search begins. For example, a domain named “cloud.example.com” typically uses the following Group Search Base: `ou=Groups,dc=example,dc=com`. Review the instructions in the Granting Admin Permissions to an LDAP Group section of the [Creating and Managing Users with the UAA CLI (UAAC)](../adminguide/uaa-user-management.html#ldap-group) topic for more information. 
+		* **Group Search Filter**: Enter the string that defines LDAP Group search criteria by replacing the `0` in `member={0}` with the user DN.
 <br /><br />
-    For example, a domain named "cloud.example.com" typically uses the following
-	LDAP Group Search Base: `ou=Groups,dc=example,dc=com`
-<br /><br />
-	Follow the instructions in [Granting Admin Permissions to an LDAP
-	Group](../adminguide/uaa-user-management.html#ldap-group) in _Creating and
-	Managing Users with the UAA CLI (UAAC)_ to map the groups under this search
-	base to Admin roles in Pivotal Cloud Foundry.
-<br /><br />
-    You must use the Cloud Foundry command line interface (cf CLI) to map other
-	roles in Pivotal Cloud Foundry to individual users. See [Creating and
-	Managing Users with the cf CLI](../adminguide/cli-user-management.html) for
-	more information.
-<br /><br />
-    * **LDAP Group Search Filter**: A string that defines LDAP Group search
-	criteria. The standard value is `member={0}`.
-+<br /><br />
-    * **Server SSL Cert**: Paste in the root certificate of your CA certificate or your self-signed certificate.
-    <%=image_tag("uaa/ldap-config.png")%>
+    * **Server SSL Cert**: Paste in the root certificate of your CA certificate or your self-signed certificate. Required only for `ldaps://`.
+    * **Server SSL AltName**: Enter a Subject Alternative Name for your certificate. Required only for `ldaps://`.
+    * **Email Attribute**: Enter the name of the attribute that contains the user's email address.
 
 1. Click **Save**.
 
