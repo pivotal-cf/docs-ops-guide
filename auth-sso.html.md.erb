@@ -129,10 +129,11 @@ This must include one of the following protocols:
     For example, a domain named "cloud.example.com" typically uses the following LDAP Group Search Base: `ou=Groups,dc=example,dc=com`
 <br /><br />
 	Follow the instructions in [Granting Admin Permissions to an LDAP Group](../adminguide/uaa-user-management.html#ldap-group) in _Creating and Managing Users with the UAA CLI (UAAC)_ to map the groups under this search base to admin roles in Pivotal Cloud Foundry.
-	<p class="note"><strong>Note</strong>: Refer to [](../customizing/ldap-user-management.html) for on-boarding individual LDAP users and mapping them to PCF Roles.</p>
+	<p class="note"><strong>Note</strong>: Refer to <a href="../customizing/ldap-user-management.html">Adding Existing 
+SAML or LDAP Users to a PCF Deployment</a> for on-boarding individual LDAP users and mapping them to PCF Roles.</p>
     * **Group Search Filter**: A string that defines LDAP Group search	criteria. The standard value is `member={0}`.
 <br /><br />
-    * **Server SSL Cert**: Paste in the root certificate of your CA certificate or your self-signed certificate.
+    * **Server SSL Cert**: Paste in the root certificate from your CA certificate or your self-signed certificate.
 
 1. Click **Save**.
 
