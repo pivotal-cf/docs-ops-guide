@@ -8,21 +8,22 @@ owner: Identity
 
 This topic describes [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) authentication and single sign-on configuration with Lightweight Directory Access Protocol (LDAP) and Security Assertion Markup Language (SAML).
 
+Refer to the instructions below to configure your deployment with SAML or LDAP.
+
 Connecting Elastic Runtime to either the LDAP or SAML external user store allows the User Account and Authentication (UAA) server to delegate authentication to existing enterprise user stores.
 
-If your enterprise user store is exposed as a SAML or LDAP Identity Provider for single sign-on (SSO), you can set up SSO to allow users to access the [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) [Apps Manager](../console/index.html) and Command Line Interface (cf CLI) without creating a new account or, if using SAML, re-entering credentials.
+If your enterprise user store is exposed as a SAML or LDAP Identity Provider for single sign-on (SSO), you can set up SSO to allow users to access
+ the Apps Manager and Command Line Interface (cf CLI) without creating a new account or, if using SAML, re-entering credentials.
 
 See [Adding Existing SAML or LDAP Users to a PCF Deployment](../customizing/external-user-management.html) for information about managing user identity and pre-provisioning user roles with SAML or LDAP in PCF.
 
-Refer to the instructions below to configure your deployment with SAML or LDAP, as appropriate:
-
-##<a id="configure-saml"></a>Configure PCF to use a SAML Identity Provider
+##<a id="configure-saml"></a>Configure PCF to Use a SAML Identity Provider
 
 To connect PCF Elastic Runtime with SAML, you must configure PCF to act as a service provider for SAML and integrate SAML as an identity provider for PCF.
 
 ###<a id="configure-pcf-for-saml"></a>Configure PCF as a Service Provider for SAML
 
-You must configure Pivotal Cloud Foundry (PCF) so that your Identity Provider can recognize PCF as a Service Provider:
+You must configure PCF so that your Identity Provider can recognize PCF as a Service Provider:
 
 1. From the **Installation Dashboard**, click the **Elastic Runtime** tile.
 
@@ -48,7 +49,8 @@ You must configure Pivotal Cloud Foundry (PCF) so that your Identity Provider ca
 
 	<p class='note'><strong>Note</strong>: You only need to select one of the above configurations. If you configure both, your Identity Provider defaults to the <strong>(OR) Provider Metadata URL</strong>.</p>
 
-	<p class="note"><strong>Note</strong>: Refer to [Adding Existing SAML or LDAP Users to a Pivotal Cloud Foundry&reg; Deployment](../customizing/ldap-user-management.html) for how to onboard SAML users and map them to PCF user roles.</p>
+	<p class="note"><strong>Note</strong>: Refer to <a href="../customizing/ldap-user-management.html">Adding Existing SAML or 
+LDAP Users to a PCF Deployment</a> for how to onboard SAML users and map them to PCF user roles.</p>
 
 1. By default, all SAML Authentication Request from PCF are signed. To change this, disable the **Sign Authentication Requests** checkbox and configure your Identity Provider to verify SAML authentication requests.
 
@@ -58,7 +60,7 @@ You must configure Pivotal Cloud Foundry (PCF) so that your Identity Provider ca
 
 1. Click **Save**.
 
-1. Click the **Installation Dashboard** link to return to the Installation Dashboard.
+1. Return to the **Installation Dashboard** by clicking the link.
 
 1. On the Installation Dashboard, click **Apply Changes**.
 
@@ -70,7 +72,7 @@ You must configure your Identity Provider to recognize PCF as a Service Provider
 
 Download the Service Provider Metadata from `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata`. Consult the documentation for your Identity Provider for configuration instructions.
 
-Refer to the table below for information about certain industry-standard Identity Providers and how to integrate them with Pivotal Cloud Foundry&reg;:
+Refer to the table below for information about certain industry-standard Identity Providers and how to integrate them with PCF:
 
 <table border="1">
 	<tr>
@@ -89,11 +91,11 @@ Refer to the table below for information about certain industry-standard Identit
 
 <p class="note"><strong>Note</strong>: Some Identity Providers allow uploads of Service Provider Metadata. Other providers require you to manually enter the Service Provider Metadata into a form.</p>
 
-## <a id="configure-ldap"></a>Configure PCF to use an LDAP Identity Provider
+## <a id="configure-ldap"></a>Configure PCF to Use an LDAP Identity Provider
 
 To integrate the UAA with LDAP, configure Elastic Runtime with your LDAP endpoint information as follows:
 
-1. Log into the Pivotal Cloud Foundry Operations Manager web interface.
+1. Log into the Operations Manager web interface.
 
 1. On the Product Dashboard, select **Pivotal Elastic Runtime**.
 
@@ -128,7 +130,7 @@ This must include one of the following protocols:
 <br /><br />
     For example, a domain named "cloud.example.com" typically uses the following LDAP Group Search Base: `ou=Groups,dc=example,dc=com`
 <br /><br />
-	Follow the instructions in [Granting Admin Permissions to an LDAP Group](../adminguide/uaa-user-management.html#ldap-group) in _Creating and Managing Users with the UAA CLI (UAAC)_ to map the groups under this search base to admin roles in Pivotal Cloud Foundry.
+	Follow the instructions in [Granting Admin Permissions to an LDAP Group](../adminguide/uaa-user-management.html#ldap-group) in _Creating and Managing Users with the UAA CLI (UAAC)_ to map the groups under this search base to admin roles in PCF.
 	<p class="note"><strong>Note</strong>: Refer to <a href="../customizing/ldap-user-management.html">Adding Existing 
 SAML or LDAP Users to a PCF Deployment</a> for on-boarding individual LDAP users and mapping them to PCF Roles.</p>
     * **Group Search Filter**: A string that defines LDAP Group search	criteria. The standard value is `member={0}`.
@@ -137,7 +139,7 @@ SAML or LDAP Users to a PCF Deployment</a> for on-boarding individual LDAP users
 
 1. Click **Save**.
 
-1. Click the **Installation Dashboard** link to return to the Installation Dashboard.
+1. Return to the **Installation Dashboard** by clicking the link.
 
 1. On the Installation Dashboard, click **Apply Changes**.
 
