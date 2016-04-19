@@ -31,7 +31,7 @@ This guide covers networking and user management for [Pivotal Cloud Foundry&reg;
 
 * <a href="./docker-registry.html" class="subnav">Using Docker Trusted Registries</a>
 
-* <a href="./whitelabeling.html" class="subnav">White Labeling Apps Manager</a>
+* <a href="./custom-branding.html" class="subnav">Custom Branding Apps Manager</a>
 
 * <a href="./accounting-report.html" class="subnav">Monitoring Instance Usage in Apps Manager</a>
 
