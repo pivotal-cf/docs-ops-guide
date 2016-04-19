@@ -11,7 +11,7 @@ This guide covers networking and user management for [Pivotal Cloud Foundry&reg;
 
 * <a href="./er_network.html" class="subnav">Understanding the Elastic Runtime Network Architecture</a>
 
-* <a href="./ssl-term.html" class="subnav">Configuring Pivotal Cloud Foundry&reg; SSL Termination for vSphere Deployments</a>
+* <a href="./ssl-term.html">Configuring Pivotal Cloud Foundry&reg; SSL Termination for vSphere Deployments</a>
 
 * <a href="./change-quota-plan.html" class="subnav">Changing the Quota Plan of an Organization with cf CLI</a>
 
