@@ -64,8 +64,8 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
 
     ###<a id='internal-mysql'></a>Internal MySQL  ###
 
-    If you are using the internal MySQL database on a clean install, or on an upgrade from a configuration that previously used internal MySQL databases, you shouldn't need to change this configuration. The following values are set by default. If you need to change back to this configuration, choose the following values in the Resource Config (note that you will lose any data that has been written to your other database option):
-    
+    If you are using the internal MySQL database on a clean install, or on an upgrade from a configuration that previously used internal MySQL databases, you do not need to change the default values shown below. If you need to change back to this configuration, choose the values shown below in the Resource Config. <p class="note"><strong>Note</strong>: Changing back to this configuration deletes any data written to your other database option.</p>
+
     <table border="1" class="nice" >
       <tr>
         <th width=8%><strong>Job</strong></th>
@@ -101,7 +101,7 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
 
     ###<a id='internal-databases'></a>Internal Databases (for Upgrades)  ###
 
-    If you are upgrading from a previous installation that used both Postgres and MySQL databases, you will need to maintain this configuration to avoid data loss.
+    If you are upgrading from a previous installation that used both Postgres and MySQL databases, you must maintain this configuration to avoid data loss.
 
     <table border="1" class="nice" >
       <tr>
