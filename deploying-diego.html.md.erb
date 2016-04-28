@@ -1,11 +1,12 @@
 ---
 title: Deploying Diego for Windows
+owner: Diego
 ---
 
 <strong><%= modified_date %></strong>
 
 This topic contains instructions for setting up a Windows cell in a Diego
-deployment. For more information about Diego, see the [Diego Architecture](../concepts/diego/diego-architecture.html) and [Diego Components](../concepts/diego/diego-components.html) topics.
+deployment. For more information about Diego, see the [Diego Architecture](../concepts/diego/diego-architecture.html) topic.
 
 A **cell** is a virtual machine (VM) that stages, hosts, and manages application lifecycles. You can install a Windows cell into your Cloud Foundry (CF) deployment through Amazon Web Services (AWS) [CloudFormation](#cloudformation) or by [manually](#manual) connecting directly to a Windows VM.
 
@@ -41,16 +42,16 @@ A **cell** is a virtual machine (VM) that stages, hosts, and manages application
   * **ContainerizerPassword**: Password for the containerizer user. Must be alphanumeric and contain at least one uppercase, one lowercase, and one numeric character.
   * **DesiredCapacity**: Number of Windows cells to deploy
   * **Keypair**: A keypair. You must have the private key to this keypair to retrieve the Administrator password to the Windows VMs that are created.
-  * **NATInstance**: The instance ID of the NAT box. To find this instance ID, search for `NAT` in the CloudFormation dropdown.  
+  * **NATInstance**: The instance ID of the NAT box. To find this instance ID, search for `NAT` in the CloudFormation dropdown.
   * **SecurityGroup**: Security group ID to use for the Windows cells
   * **SubnetCIDR**: The IP range of the Windows cell subnet. For example, `10.0.100.0/24`. You should provide a range that does not collide with an existing subnet within the VPC.
   * **VPCID**: The ID of the VPC where you want the cell and subnet to be created
   ![DiegoWindows CloudFormation Form](images/greenhouse/cloud-formation-form.png)
   <br>
-  The CloudFormation template performs the following functions: 
-      1. Configures the Windows cell for the appropriate availability zone, based on the security group that you provide. 
+  The CloudFormation template performs the following functions:
+      1. Configures the Windows cell for the appropriate availability zone, based on the security group that you provide.
       1. Installs the MSI.
-      1. Registers itself with Diego. 
+      1. Registers itself with Diego.
 
   The CloudFormation template succeeds only if all services are up and running after installation. To debug a failed installation, navigate to Advanced Options and set **Rollback on failure** to `No`.
   ![DiegoWindows CloudFormation Form](images/greenhouse/rollback-on-failure.png)
@@ -82,7 +83,7 @@ Follow the instructions below to download and configure the Windows cell.
 1. Download the **setup.ps1** and **generate.exe** files. Keep this window open to complete the steps below.
   <p class='note'><strong>Note</strong>: If you download the generate.exe file using Internet Explorer, Internet Explorer removes the <code>.exe</code> extension. You must rename the file to add the <code>.exe</code> extension.</p>
 
-###<a id='cell'></a>Step 2: Configure Windows Cell 
+###<a id='cell'></a>Step 2: Configure Windows Cell
 
 1. Using **File Explorer**, navigate to the location where you downloaded the **setup.ps1** and **generate.exe** files.
 

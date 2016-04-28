@@ -1,5 +1,6 @@
 ---
 title: The Pivotal Cloud Ops Approach to Monitoring a Pivotal Cloud Foundry&reg; Deployment
+owner: Cloud Ops
 ---
 
 <strong><%= modified_date %></strong>
@@ -22,7 +23,7 @@ The Cloud Ops team's custom configuration of Datadog's dashboards, alerts, and s
 <tr>
   <th width="22%">What we monitor</th>
   <td>Health, broken down by component. Each row displays the average percentage of healthy instances for the relevant component over the last 5 minutes, and over the last 24 hours.
-    <br><br>For example, suppose that your Router has ten instances. If one instance becomes unhealthy, the stoplight turns red and shows 90%. 
+    <br><br>For example, suppose that your Router has ten instances. If one instance becomes unhealthy, the stoplight turns red and shows 90%.
     <br><br>We monitor health for the following components:<br><br>
     <ul>
       <li>NATS</li>
@@ -101,8 +102,8 @@ Alerts generated from this metric are passed to a buffer queue in our alerting s
   <th width="22%">What we monitor</th>
   <td>Delta of average NATS traffic over the last hour.
     <br><br>
-    The displayed metric is the difference between the average NATS traffic 
-    over the last 30 minutes and the average NATS traffic over the interval 
+    The displayed metric is the difference between the average NATS traffic
+    over the last 30 minutes and the average NATS traffic over the interval
     from 90 to 60 minutes prior.
   </td>
 </tr>
@@ -336,4 +337,3 @@ Alerts generated from this metric are passed to a buffer queue in our alerting s
   <td>Only applies to Cloud Foundry deployments on AWS.</td>
 </tr>
 </table>
-
