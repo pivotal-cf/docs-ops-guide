@@ -11,9 +11,9 @@ This topic describes how to change the domain of an existing [Pivotal Cloud Foun
 
 1. In PCF Ops Manager, select the **Pivotal Elastic Runtime** tile.
 
-1. Select **Cloud Controller** from the menu to see the current **Apps Domain** for your Elastic Runtime deployment. In the following example it is `myapps.mydomain.com`.
+1. Select **Domains** from the menu to see the current **Apps Domain** for your Elastic Runtime deployment. In the following example it is `myapps.mydomain.com`.
 
-	<%= image_tag '../images/switching_domains/old_domain.png'%>
+	<%= image_tag '../images/switching_domains/er17-switchdomains-before.png'%>
 
 1. In the terminal, run `cf login -a YOUR_API_ENDPOINT`. The cf CLI prompts you for your PCF username and password, as well as the org and space you want to access. See [Identifying the API Endpoint for your Elastic Runtime Instance](../customizing/api-endpoint.html) if you don’t know your API endpoint.
 
@@ -81,4 +81,4 @@ This topic describes how to change the domain of an existing [Pivotal Cloud Foun
 
 1. Configure your Elastic Runtime tile to use the new domain, and apply changes. Apps that you push after your update finishes use this new domain.
 
-	<%= image_tag '../images/switching_domains/new_domain_config.png'%>
+	<%= image_tag '../images/switching_domains/er17-switchdomains-after.png'%>

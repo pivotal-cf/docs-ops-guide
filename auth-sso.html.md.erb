@@ -1,0 +1,146 @@
+---
+breadcrumb: Pivotal Cloud Foundry&reg; Documentation
+title: Configuring Authentication and Enterprise SSO for Elastic Runtime
+owner: Identity
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) authentication and single sign-on configuration with Lightweight Directory Access Protocol (LDAP) and Security Assertion Markup Language (SAML).
+
+Refer to the instructions below to configure your deployment with SAML or LDAP.
+
+Connecting Elastic Runtime to either the LDAP or SAML external user store allows the User Account and Authentication (UAA) server to delegate authentication to existing enterprise user stores.
+
+If your enterprise user store is exposed as a SAML or LDAP Identity Provider for single sign-on (SSO), you can set up SSO to allow users to access
+ the Apps Manager and Command Line Interface (cf CLI) without creating a new account or, if using SAML, without re-entering credentials.
+
+See [Adding Existing SAML or LDAP Users to a PCF Deployment](../customizing/external-user-management.html) for information about managing user identity and pre-provisioning user roles with SAML or LDAP in PCF.
+
+##<a id="configure-saml"></a>Configure PCF to Use a SAML Identity Provider
+
+To connect PCF Elastic Runtime with SAML, you must configure PCF to act as a service provider for SAML and integrate SAML as an identity provider for PCF.
+
+###<a id="configure-pcf-for-saml"></a>Configure PCF as a Service Provider for SAML
+
+You must configure PCF so that your Identity Provider can recognize PCF as a Service Provider:
+
+1. From the **Installation Dashboard**, click the **Elastic Runtime** tile.
+
+1. Select the **Domains** tab and make note of your system domain.
+
+	<%= image_tag("new-domains.png") %>
+
+1. Select **Authentication and Enterprise SSO**.
+
+1. Select **SAML Identity Provider**.
+
+	<%= image_tag("sso-ert.png") %>
+
+1. Set the **Provider Name**. This a unique name for the Identity Provider. Allowed characters are alphanumeric, plus, `_` and `-`. Do not change this name after deployment because all external users link to this provider.
+
+1. Enter a **Display Name**. Your provider display name appears as a link on your Pivotal login page, which you can access at `https://login.YOUR-SYSTEM-DOMAIN`.
+
+	<%= image_tag("login-page.png") %>
+
+1. Retrieve the metadata from your Identity Provider and copy it into either the **Provider Metadata** or the **Provider Metadata URL** fields, depending on whether your Identity Provider exposes a Metadata URL. Refer to the [Configure SAML Identity Provider for PCF](#configure-saml-for-pcf) section for more information. Pivotal recommends that you use Provider Metadata URL rather than Provider Metadata because the metadata can change. You can do this by either of the following:
+	* If your Identity Provider exposes a Metadata URL, provide the Metadata URL.
+	* Download your Identity Provider metadata and paste this XML into the **Provider Metadata** area.
+
+	<p class='note'><strong>Note</strong>: You only need to select one of the above configurations. If you configure both, your Identity Provider defaults to the <strong>(OR) Provider Metadata URL</strong>.</p>
+
+	<p class="note"><strong>Note</strong>: Refer to <a href="../customizing/ldap-user-management.html">Adding Existing SAML or 
+LDAP Users to a PCF Deployment</a> for how to onboard SAML users and map them to PCF user roles.</p>
+
+1. By default, all SAML Authentication Request from PCF are signed. To change this, disable the **Sign Authentication Requests** checkbox and configure your Identity Provider to verify SAML authentication requests.
+
+1. To validate the signature for the incoming SAML assertions, enable the **Required Signed Assertions** checkbox and configure your Identity Provider to send signed SAML Assertions. 
+
+1. Select the **Name ID Format** for your SAML Identity Provider. This translates to username on PCF Elastic Runtime. The default is Email Address.
+
+1. Click **Save**.
+
+1. Return to the **Installation Dashboard** by clicking the link.
+
+1. On the Installation Dashboard, click **Apply Changes**.
+
+    <%=image_tag("uaa/apply-changes.png")%>
+
+###<a id="configure-saml-for-pcf"></a>Configure SAML as an Identity Provider for PCF
+
+You must configure your Identity Provider to recognize PCF as a Service Provider.
+
+Download the Service Provider Metadata from `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata`. Consult the documentation for your Identity Provider for configuration instructions.
+
+Refer to the table below for information about certain industry-standard Identity Providers and how to integrate them with PCF:
+
+<table border="1">
+	<tr>
+		<th>Solution Name</th>
+		<th>Integration Guide</th>
+	</tr>
+	<tr>
+		<td><a href='http://www.ca.com/us/securecenter/ca-single-sign-on.aspx'>CA Single Sign-On aka CA SiteMinder</a></td>
+		<td><a href="./images/CASM-PivotalCloudFoundryFederationRunbook-ver1.0.pdf">PDF</a></td>
+	</tr>
+	<tr>
+		<td><a href='https://www.pingidentity.com/en/products/pingfederate.html'>Ping Federate</a></td>
+		<td><a href="./images/PingFederate-PCF-SSO-Runbook.pdf">PDF</a></td>
+	</tr>
+</table>
+
+<p class="note"><strong>Note</strong>: Some Identity Providers allow uploads of Service Provider Metadata. Other providers require you to manually enter the Service Provider Metadata into a form.</p>
+
+## <a id="configure-ldap"></a>Configure PCF to Use an LDAP Identity Provider
+
+To integrate the UAA with LDAP, configure Elastic Runtime with your LDAP endpoint information as follows:
+
+1. Log into the Operations Manager web interface.
+
+1. On the Product Dashboard, select **Pivotal Elastic Runtime**.
+
+    <%=image_tag("uaa/er-tile.png")%>
+
+1. In the left navigation menu, select **Authentication and Enterprise SSO**.
+
+    <%=image_tag("uaa/ldap-config.png")%>
+
+1. Under **Configure your UAA** select **LDAP Server**.
+
+1. Enter the following LDAP endpoint configuration information:
+    * **Server URL**: A URL pointing to the LDAP server.
+This must include one of the following protocols:
+        * `ldap://`: This specifies that the LDAP server uses an unencrypted connection.
+        * `ldaps://`: This specifies that the LDAP server uses SSL for an encrypted connection and requires that the LDAP server holds a trusted certificate or that you import a trusted certificate to the JVM truststore.
+    * **LDAP Credentials**: The LDAP Distinguished Name (DN) and password for binding to the LDAP Server. Example DN: `cn=administrator,ou=Users,dc=example,dc=com`
+    <p class="note"><strong>Note</strong>: We recommend that you provide LDAP credentials that grant read-only permissions on the LDAP Search Base and the LDAP Group Search Base.</p>
+    * **User Search Base**: The location in the LDAP directory tree from which any LDAP User search begins.
+	The typical LDAP Search Base matches your domain name.
+<br /><br />
+    For example, a domain named "cloud.example.com" typically uses the following LDAP User Search Base: `ou=Users,dc=example,dc=com`
+<br /><br />
+    * **User Search Filter**: A string that defines LDAP User search criteria. These search criteria allow LDAP to perform more effective and efficient	searches. For example, the standard LDAP search filter `cn=Smith` returns all objects with a common name equal to `Smith`.
+<br /><br />
+	In the LDAP search filter string that you use to configure Elastic Runtime,	use `{0}` instead of the username. For example, use `cn={0}` to return all LDAP objects with the same common
+	name as the username.
+<br /><br />
+    In addition to `cn`, other attributes commonly searched for and returned are `mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
+<br /><br />
+    * **Group Search Base**: The location in the LDAP directory tree from which the LDAP Group search begins.
+<br /><br />
+    For example, a domain named "cloud.example.com" typically uses the following LDAP Group Search Base: `ou=Groups,dc=example,dc=com`
+<br /><br />
+	Follow the instructions in [Granting Admin Permissions to an LDAP Group](../adminguide/uaa-user-management.html#ldap-group) in _Creating and Managing Users with the UAA CLI (UAAC)_ to map the groups under this search base to admin roles in PCF.
+	<p class="note"><strong>Note</strong>: Refer to <a href="../customizing/ldap-user-management.html">Adding Existing 
+SAML or LDAP Users to a PCF Deployment</a> for on-boarding individual LDAP users and mapping them to PCF Roles.</p>
+    * **Group Search Filter**: A string that defines LDAP Group search	criteria. The standard value is `member={0}`.
+<br /><br />
+    * **Server SSL Cert**: Paste in the root certificate from your CA certificate or your self-signed certificate.
+
+1. Click **Save**.
+
+1. Return to the **Installation Dashboard** by clicking the link.
+
+1. On the Installation Dashboard, click **Apply Changes**.
+
+    <%=image_tag("uaa/apply-changes.png")%>
