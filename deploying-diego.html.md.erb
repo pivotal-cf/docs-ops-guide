@@ -39,7 +39,6 @@ A **cell** is a virtual machine (VM) that stages, hosts, and manages application
   * **BoshPassword**: Password to use to access the BOSH director
   * **BoshUserName**: User name to use to access the BOSH director
   * **CellName**: Name for your cell
-  * **ContainerizerPassword**: Password for the containerizer user. Must be alphanumeric and contain at least one uppercase, one lowercase, and one numeric character.
   * **DesiredCapacity**: Number of Windows cells to deploy
   * **Keypair**: A keypair. You must have the private key to this keypair to retrieve the Administrator password to the Windows VMs that are created.
   * **NATInstance**: The instance ID of the NAT box. To find this instance ID, search for `NAT` in the CloudFormation dropdown.
@@ -98,15 +97,11 @@ The **setup.ps1** script configures Windows features, DNS settings, and the fire
 
 1. From a command prompt, run **generate.exe** with the following arguments:
     * **boshUrl**: Find your `boshUrl` in the [troubleshooting](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html) documentation.
-    * **windowsUsername**: Used to run Containerizer. The user provided must be a member of the Administrators group. All other services will run as the SYSTEM user.
-    * **windowsPassword**: The password for your specified Windows user.
     * **outputDir**: The directory that will contain the required certificates and a script to run the installers.
 
 	```
 	$ generate.exe ^
 	-boshUrl https://username:password@bosh-director.example.com:25555 ^
-	-windowsUsername=Administrator ^
-	-windowsPassword=Password123 ^
 	-outputDir C:\diego-windows
 	```
 
