@@ -5,7 +5,7 @@ owner: Apps Manager
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to retrieve app and service instance usage information. You can access the data using Apps Manager or from the command line using the cf CLI.
+This topic describes how to retrieve app and service instance usage information. You can access the data using Apps Manager or by calling the Apps Man API from the cf CLI.
 
 ## <a id='apps-man'></a>Monitoring Instance Usage from Apps Manager ##
 
@@ -41,12 +41,15 @@ Click the name of an app to view its **Configuration History**.
 
 <%= image_tag("app-usage-service.png") %>
 
-## <a id='cf-cli'></a>Monitoring Instance Usage from the cf CLI ##
+## <a id='cf-cli'></a>Monitoring App and Service Usages from the cf CLI ##
 
-This section describes how to use the cf CLI to retrieve information about your app and service instances.
+This section describes how to use the cf CLI to retrieve information about your app and service instances via the Cloud Controller and Usage Service APIs. For each API call, you use the `cf curl` command to query an endpoint consisting of `/v2/` followed by a query string. For example, to call the `apps` function, which returns information about your running apps, you run the command `cf curl /v2/apps`.
+
+Before you can retrieve any app or service information, you need to target the Cloud Controller and log in, as follows:
 
 1. Target the endpoint of your Cloud Controller.
 <pre class="terminal">$ cf api api.YOUR-SYSTEM-DOMAIN</pre>
+
 1. Log in with your credentials.
 <pre class="terminal">
 $ cf login
@@ -63,7 +66,10 @@ Targeted space  development
  Org:             YOUR-ORG
  Space:           development
 </pre>
-1. Retrieve information about your apps using `cf curl`.
+
+### Retrieve Apps Information
+
+1. The `apps` endpoint retrieves information about all of your apps.
 <pre class="terminal">$ cf curl /v2/apps
 {
    "total\_results": 2,
@@ -110,8 +116,9 @@ Targeted space  development
    ]
 }
 </pre>
-The output of this command provides the URL endpoints for your apps. In the example above the endpoints for the two apps are `/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba`, and `/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178`.
-1. Append `/summary` to the `url` listed for each app and `cf curl` it to get instance information. The result below shows the number of running instances and information about any bound services.
+The output of this command provides the URL endpoints for each app, under `metadata: url`. You can use these app-specific endpoints to retrieve more information about that app. In the example above the endpoints for the two apps are `/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba`, and `/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178`.
+
+1. The `summary` endpoint under each app-specific url retrieves the instances and any bound services for that application.
 <pre class="terminal">$ cf curl /v2/apps/acf2ce75-ee92-4bb6-9adb-55a596a8dcba/summary
 {
    "guid": "acf2ce75-ee92-4bb6-9adb-55a596a8dcba",
@@ -151,7 +158,36 @@ The output of this command provides the URL endpoints for your apps. In the exam
                "version": null
 [...]
 </pre>
-1. If you have services that are not bound to your apps, you can retrieve details about both bound and unbound service instances by using `cf curl` with `/v2/service_instances?`:
+
+1. Use the `app_usages` endpoint to return a report covering app usage within an organization or space during a period of time. Form the query as follows:
+   * The Cloud Controller API endpoint
+   * The string `/2/accounting_report/organizations`
+   * Your organization GUID. This is the identifier string that follows "organizations" in the URL that your Apps Manager redirects to.
+   * The string `app_usages`.
+   * `start=` followed by your start date in YYYY-MM-DD format.
+   * `end=` followed by your start date in YYYY-MM-DD format.
+<pre class="terminal">$ cf curl /v2/apps/accounting\_report/organizations/8f88362f-547c-4158-808b-4605468387d5/app\_usages?start=2016-06-01&end=2016-06-13
+{
+   "organization\_guid": "<SOME\_ORGANIZATION\_GUID>",
+   "period\_start": "2016-06-01T00:00:00Z",
+   "period\_end": "2016-06-13T23:59:59Z",
+   "app\_usages": [
+      {
+         "space\_guid": "<SOME_SPACE_GUID>,
+         "space\_name": "<SOME_SPACE_NAME>",
+         "app\_name": "<SOME\_APP\_NAME>",
+         "app\_guid": "<SOME\_APP\_GUID>",
+         "instance\_count": 6,
+         "memory\_in\_mb\_per\_instance": 64,
+         "duration\_in\_seconds": 76730
+      }
+   ]
+}
+</pre>
+
+### Retrieve Services Information
+
+1. The `service_instances?` endpoint retrieves details about both bound and unbound service instances:
 <pre class="terminal">
 $ cf curl /v2/service\_instances?
 {
