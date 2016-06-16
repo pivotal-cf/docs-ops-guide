@@ -43,7 +43,7 @@ Click the name of an app to view its **Configuration History**.
 
 ## <a id='cf-cli'></a>Monitoring App and Service Usages from the cf CLI ##
 
-This section describes how to use the cf CLI to retrieve information about your app and service instances via the Cloud Controller and Usage Service APIs. For each API call, you use the `cf curl` command to query an endpoint consisting of `/v2/` followed by a query string. For example, to call the `apps` function, which returns information about your running apps, you run the command `cf curl /v2/apps`.
+This section describes how to use the cf CLI to retrieve information about your app and service instances via the Cloud Controller and Usage Service APIs. For each API call, you use the `curl` command to query an endpoint consisting of `/v2/` followed by a query string. For example, to call the `apps` function, which returns information about your running apps, you run the command `cf curl /v2/apps`.
 
 Before you can retrieve any app or service information, you need to target the Cloud Controller and log in, as follows:
 
@@ -52,7 +52,7 @@ Before you can retrieve any app or service information, you need to target the C
 
 1. Log in with your credentials.
 <pre class="terminal">
-$ cf login
+$ cf login -u admin
 API endpoint:  api.YOUR-SYSTEM-DOMAIN
 Email: user<span>@</span>domain.com
 Password:
@@ -67,7 +67,22 @@ Targeted space  development
  Space:           development
 </pre>
 
-### Retrieve Apps Information
+1. `curl` the `/system_usage_report` on the Usage Service.
+<pre class="terminal">
+curl "https://app-usage.<system-domain>/system_usage_report" -k -v -H "authorization: `cf oauth-token`"</pre>
+
+### <a id=individual_org></a> Individual Org Usage ###
+
+1. Run `cf login -u janeOrgManager`.
+<pre class="terminal"
+$ curl "https://app-usage.<system-domain>organizations/`cf org <org name you want usage for> --guid`/app_usages?start=2016-06-01&end=2016-06-09" -k -v -H "authorization: `cf oauth-token`"
+</pre>
+
+1. curl the `/app_usages` and/or `/service_usages` endpoints on the Usage service.
+<pre class="terminal"
+$ curl "https://app-usage.<system-domain>organizations/`cf org <org name you want usage for> --guid`/service_usages?start=2016-06-01&end=2016-06-09" -k -v -H "authorization: `cf oauth-token`"</pre>
+
+### <a id=retrieve_apps></a> Retrieve Apps Information ###
 
 1. The `apps` endpoint retrieves information about all of your apps.
 <pre class="terminal">$ cf curl /v2/apps
@@ -166,7 +181,8 @@ The output of this command provides the URL endpoints for each app, under `metad
    * The string `app_usages`.
    * `start=` followed by your start date in YYYY-MM-DD format.
    * `end=` followed by your start date in YYYY-MM-DD format.
-<pre class="terminal">$ cf curl /v2/apps/accounting\_report/organizations/8f88362f-547c-4158-808b-4605468387d5/app\_usages?start=2016-06-01&end=2016-06-13
+
+      <pre class="terminal">$ cf curl /v2/apps/accounting\_report/organizations/8f88362f-547c-4158-808b-4605468387d5/app\_usages?start=2016-06-01&end=2016-06-13
 {
    "organization\_guid": "<SOME\_ORGANIZATION\_GUID>",
    "period\_start": "2016-06-01T00:00:00Z",
@@ -185,7 +201,7 @@ The output of this command provides the URL endpoints for each app, under `metad
 }
 </pre>
 
-### Retrieve Services Information
+### <a id=retrieve_services></a> Retrieve Services Information ###
 
 1. The `service_instances?` endpoint retrieves details about both bound and unbound service instances:
 <pre class="terminal">
