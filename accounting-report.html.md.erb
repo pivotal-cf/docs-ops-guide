@@ -47,11 +47,11 @@ The Usage Report provides a more granular view of your usage by detailing app me
 
 ## <a id='cf-cli'></a>Monitoring App and Service Usages from the cf CLI ##
 
-This section describes how to use the cf CLI to retrieve information about your app and service instances via the Cloud Controller and Usage service APIs. For each API call, you use the `curl` command to query an endpoint consisting of `/cf login/` followed by a query string. For example, to call the `system_usages` function, which returns information about your Usage service, you run the command `cf login -u admin / systems_usage_report`.
+This section describes how to use the cf CLI to retrieve information about your app and service instances via the Cloud Controller and Usage service APIs. 
 
-### <a id="targetcc"></a>Target the Cloud Controller Endpoint and Log In
+### <a id="targetcc"></a>Obtain System Usage Information
 
-Before you can retrieve any app or service information, you need to target the Cloud Controller and log in, as follows:
+Before you can retrieve any app or service information, you need to target the Cloud Controller and log in as admin, as follows:
 
 1. Target the endpoint of your Cloud Controller.
 <pre class="terminal">$ cf api api.YOUR-DOMAIN</pre>
@@ -74,8 +74,10 @@ Targeted space  development
 </pre>
 
 3. Run `curl` for the `/system_usage_report` on the Usage service.
+
 <pre class="terminal">
-curl "https<span>:</span>//app-usage.YOUR-DOMAIN/system\_usage\_report" -k -v -H "authorization: `cf oauth-token`"</pre>
+curl "https<span>:/</span>/app-usage.YOUR-DOMAIN/system\_usage\_report" -k -v -H "authorization:<span>`cf oauth-token`"</span>"
+</pre>
 
 ### <a id="individual_org"></a> Obtain Usage Information about an Org ###
 
@@ -85,7 +87,7 @@ To obtain individual org usage information, use the following procedure.  You sh
 
 2. Run `curl` for the `/app_usages` and/or `/service_usages` endpoints on the Usage service.
 
-    <pre class="terminal">
+<pre class="terminal">
 $ curl "https<span>:</span>//app-usage.YOUR-DOMAIN/organizations/`cf org YOUR-ORG --guid`/app_usages?start=YYYY-MM-DD&end=YYYY-MM-DD" -k -v -H "authorization: `cf oauth-token`"
 {
    "organization_guid": "8d83362f-587a-4148-806b-4407428887b5",
@@ -104,10 +106,8 @@ $ curl "https<span>:</span>//app-usage.YOUR-DOMAIN/organizations/`cf org YOUR-OR
    ]
 }
 </pre>
-
     and/or
-
-    <pre class="terminal">
+<pre class="terminal">
 $ curl "<span>https:</span>//app-usage.YOUR-DOMAIN/organizations/\`cf org YOUR-ORG --guid\`/service\_usages?start=YYYY-MM-DD&end=YYYY-MM-DD" -k -v -H "authorization: \`cf oauth-token`"
 {
    "organization\_guid": "8d83362f-587a-4148-806b-4407428887b5",
