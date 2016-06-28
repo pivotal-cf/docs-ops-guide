@@ -8,54 +8,9 @@ owner: Diego
 This topic contains instructions for setting up a Windows cell in a Diego
 deployment. For more information about Diego, see the [Diego Architecture](../concepts/diego/diego-architecture.html) topic.
 
-A **cell** is a virtual machine (VM) that stages, hosts, and manages application lifecycles. You can install a Windows cell into your Cloud Foundry (CF) deployment through Amazon Web Services (AWS) [CloudFormation](#cloudformation) or by [manually](#manual) connecting directly to a Windows VM.
+A **cell** is a virtual machine (VM) that stages, hosts, and manages application lifecycles. You can install a Windows cell into your Cloud Foundry (CF) deployment by connecting directly to a Windows VM.
 
-##<a id='cloudformation'></a>Install through AWS CloudFormation
-
-###Prerequisites
-
-* A working Diego deployment
-
-###<a id='download'></a>Step 1: Download CloudFormation Template
-
-1. Navigate to the [Elastic Runtime product on Pivotal Network](https://network.pivotal.io/products/elastic-runtime). This points to the latest release of the **Elastic Runtime** product.
-
-1. Select **DiegoWindows** from the list of Release Download Files.
-
-	![DiegoWindows file group](images/greenhouse/diego-windows-file-group.png)
-
-1. Download the **DiegoWindows AWS CloudFormation.json** file.
-
-	![DiegoWindows CloudFormation](images/greenhouse/diego-windows-cloudformation.png)
-
-###<a id='upload'></a>Step 2: Upload Template to AWS
-
-1. Log in to the AWS [CloudFormation console](https://console.aws.amazon.com/cloudformation/home).
-
-1. Choose **Create Stack** and upload the DiegoWindows AWS CloudFormation template to Amazon S3.
-
-1. Provide the following information:
-  * **BoshHost**: BOSH director host
-  * **BoshPassword**: Password to use to access the BOSH director
-  * **BoshUserName**: User name to use to access the BOSH director
-  * **CellName**: Name for your cell
-  * **DesiredCapacity**: Number of Windows cells to deploy
-  * **Keypair**: A keypair. You must have the private key to this keypair to retrieve the Administrator password to the Windows VMs that are created.
-  * **NATInstance**: The instance ID of the NAT box. To find this instance ID, search for `NAT` in the CloudFormation dropdown.
-  * **SecurityGroup**: Security group ID to use for the Windows cells
-  * **SubnetCIDR**: The IP range of the Windows cell subnet. For example, `10.0.100.0/24`. You should provide a range that does not collide with an existing subnet within the VPC.
-  * **VPCID**: The ID of the VPC where you want the cell and subnet to be created
-  ![DiegoWindows CloudFormation Form](images/greenhouse/cloud-formation-form.png)
-  <br>
-  The CloudFormation template performs the following functions:
-      1. Configures the Windows cell for the appropriate availability zone, based on the security group that you provide.
-      1. Installs the MSI.
-      1. Registers itself with Diego.
-
-  The CloudFormation template succeeds only if all services are up and running after installation. To debug a failed installation, navigate to Advanced Options and set **Rollback on failure** to `No`.
-  ![DiegoWindows CloudFormation Form](images/greenhouse/rollback-on-failure.png)
-
-##<a id="manual"></a>Install Manually
+##<a id="manual"></a>Install
 
 ###Prerequisites
 
