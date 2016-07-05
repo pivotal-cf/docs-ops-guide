@@ -10,9 +10,41 @@ deployment. For more information about Diego, see the [Diego Architecture](../co
 
 A **cell** is a virtual machine (VM) that stages, hosts, and manages application lifecycles. You can install a Windows cell into your Cloud Foundry (CF) deployment by connecting directly to a Windows VM.
 
+##<a id="limitations"></a>Limitations
+
+###<a id="cf-features-not-supported"></a>Unsupported Features
+
+Diego for Windows does not yet support the following features:
+
+* Guaranteed binary compatibility with Diego BOSH releases.
+* BOSH rolling updates for CF or core operating system updates in Windows.
+* Fair sharing of CPU resources. Diego for Windows uses hard allocations instead.
+* Container SSH access from the cf CLI.
+* ICMP egress by default. You must explicitly enable ICMP through security groups.
+* Emitting firewall logs into the CF log pipeline.
+
+###<a id="stability-scalability"></a>Stability and Scalability Expectations
+
+Capacity planning for Windows instances of CF varies greatly based on the overhead caused by the components you add to the instance. 
+
+###<a id="supported-applications"></a>Supported Applications
+
+The following application types are known to run correctly on Diego Windows:
+
+* [ASP .NET MVC](https://github.com/cloudfoundry-incubator/wats/tree/af669382b4639e7605afc23f1dc8d48d8bfa5dd1/assets/nora/NoraPublished). 
+
+	<p class="note"><strong>Note</strong>: Twelve-factor ASP.NET MVC apps compiled against .NET 3.5+ were tested most extensively.</p>
+
+* [Windows-compiled executables](https://github.com/cloudfoundry-incubator/wats/tree/af669382b4639e7605afc23f1dc8d48d8bfa5dd1/assets/webapp).
+* [Batch scripts with a manually specified start command](https://github.com/cloudfoundry-incubator/wats/tree/af669382b4639e7605afc23f1dc8d48d8bfa5dd1/assets/batch-script).
+
+###<a id="applications-not-supported"></a>Unsupported Applications
+
+Diego for Windows does not support [WCF Applications](http://forums.iis.net/t/1174466.aspx).
+
 ##<a id="manual"></a>Install
 
-###Prerequisites
+###<a id="prereqs"></a>Prerequisites
 
 * A working Diego deployment
 * A Windows Server 2012R2 VM instance that is routable to your Diego deployment
