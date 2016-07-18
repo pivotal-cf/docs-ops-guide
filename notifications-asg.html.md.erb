@@ -1,0 +1,101 @@
+---
+title: Configuring Application Security Group for Email Notifications
+owner: Ops Manager
+---
+
+<strong><%= modified_date %></strong>
+
+##<a id='notifications-service'></a>Notifications Service##
+
+To set up your notification service, follow the [_Getting Started with the Notifications Service docs_](http://docs.pivotal.io/pivotalcf/adminguide/notifications.html).
+
+##<a id='applications-security-groups'></a>Application Security Groups##
+
+To allow this service to have network access you will need to create
+[Application Security Groups](http://docs.pivotal.io/pivotalcf/adminguide/app-sec-groups.html) (ASGs).
+
+<p class="note"><strong>Note</strong>: Without Application Security Groups the service will not be usable.</p>
+
+## <a id="notifications-service-network-connections"></a> Notifications Service Network Connections ##
+
+This service is deployed as a suite of applications to the `notifications-with-ui` space in the
+`system` org, and requires the following outbound network connections:
+
+|Destination		|Ports       	|Protocol   	|Reason
+|---			|---         	|---        	|---
+|`SMTP_SERVER`		|587 (default)	|tcp (default)	|This service is used to send out email notifications
+|`LOAD_BALANCER_IP`	|80, 443     	|tcp        	|This service will access the load balancer
+|`ASSIGNED_NETWORK`	|3306        	|tcp        	|This service requires access to internal services. `ASSIGNED_NETWORK` is the CIDR of the network assigned to this service.
+
+<p class="note"><strong>Note</strong>: The SMTP Server port and protocol are dependent on how you configure your server.</p>
+
+### SMTP Server
+
+Your Email Notifications settings can be found on the left hand side of the Settings tab of your Pivotal Elastic Runtime tile. You will need to make note of your `Address of SMTP Server` and `Port of SMTP Server`. You will have to find the IP addresses and protocol of your SMTP Server from the server you are using. Create a file smtp-server.json as follows:
+
+```
+[
+    {
+        "protocol": "tcp",
+        "destination": SMTP_SERVER_IPS,
+        "ports": "587"
+    }
+]
+```
+
+Create a security group called smtp-server:
+```
+cf create-security-group smtp-server smtp-server.json
+```
+
+### Load Balancer
+
+If the built-in HAProxy is being used as the load balancer. The IP addresses can be found in Pivotal Elastic Runtime Tile → Settings Tab → Networking under HAProxy IPs, (e.g., 10.68.196.250). Create a file load-balancer-https.json as follows: 
+
+```
+[
+    {
+        "protocol": "tcp",
+        "destination": "10.68.196.250",
+        "ports": "80,443"
+    }
+]
+```
+
+Create a security group called load-balancer-https:
+```
+cf create-security-group load-balancer-https load-balancer-https.json
+```
+
+### Assigned Network
+
+<p class="note"><strong>Note</strong>: If you decide to use external services, the IP addresses, ports, and protocols will be dependent on what you use.</p>
+
+Log into Ops Manager and click on the Pivotal Elastic Runtime Tile → Settings Tab → AZ and Network Assignments. Note the name of the network selected in the drop-down (e.g., "first-network"). Then click on the Ops Manager Director tile → Settings Tab → Create Networks → "first-network" and note the CIDR in the subnets section (e.g., 10.68.0.0/20). This should allow the space to access `p-mysql`, `p-rabbitmq`, and `p-redis` Then create a file assigned-network.json as follows:
+
+```
+[
+    {
+        "protocol": "tcp",
+        "destination": "10.68.0.0/20",
+        "ports": "3306,5672,6379"
+    }
+]
+```
+
+Create a security group called assigned-network:
+```
+cf create-security-group assigned-network assigned-network.json
+```
+
+## <a id="pre-installation-asg-binding"></a> Pre-installation ASG binding
+
+Log in as an administrator and create the above ASGs. Afterwards, create the space `notifications-with-ui` in the `system` org and bind each of them to the it :
+
+```
+cf target -o system
+cf create-space notifications-with-ui
+cf bind-security-group smtp-server system notifications-with-ui
+cf bind-security-group load-balancer-https system notifications-with-ui
+cf bind-security-group assigned-network system notifications-with-ui
+```
