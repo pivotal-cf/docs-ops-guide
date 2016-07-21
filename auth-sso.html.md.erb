@@ -15,7 +15,7 @@ Connecting Elastic Runtime to either the LDAP or SAML external user store allows
 If your enterprise user store is exposed as a SAML or LDAP Identity Provider for single sign-on (SSO), you can set up SSO to allow users to access
  the Apps Manager and Command Line Interface (cf CLI) without creating a new account or, if using SAML, without re-entering credentials.
 
-See [Adding Existing SAML or LDAP Users to a PCF Deployment](../customizing/external-user-management.html) for information about managing user identity and pre-provisioning user roles with SAML or LDAP in PCF.
+See [Adding Existing SAML or LDAP Users to a PCF Deployment](../opsguide/external-user-management.html) for information about managing user identity and pre-provisioning user roles with SAML or LDAP in PCF.
 
 ##<a id="configure-saml"></a>Configure PCF to Use a SAML Identity Provider
 
@@ -49,7 +49,7 @@ You must configure PCF so that your Identity Provider can recognize PCF as a Ser
 
 	<p class='note'><strong>Note</strong>: You only need to select one of the above configurations. If you configure both, your Identity Provider defaults to the <strong>(OR) Provider Metadata URL</strong>.</p>
 
-	<p class="note"><strong>Note</strong>: Refer to <a href="../customizing/external-user-management.html">Adding Existing SAML or 
+	<p class="note"><strong>Note</strong>: Refer to <a href="../opsguide/external-user-management.html">Adding Existing SAML or 
 LDAP Users to a PCF Deployment</a> for how to onboard SAML users and map them to PCF user roles.</p>
 
 1. By default, all SAML Authentication Request from PCF are signed. To change this, disable the **Sign Authentication Requests** checkbox and configure your Identity Provider to verify SAML authentication requests.
@@ -131,7 +131,7 @@ This must include one of the following protocols:
     For example, a domain named "cloud.example.com" typically uses the following LDAP Group Search Base: `ou=Groups,dc=example,dc=com`
 <br /><br />
 	Follow the instructions in [Granting Admin Permissions to an LDAP Group](../adminguide/uaa-user-management.html#ldap-group) in _Creating and Managing Users with the UAA CLI (UAAC)_ to map the groups under this search base to admin roles in PCF.
-	<p class="note"><strong>Note</strong>: Refer to <a href="../customizing/external-user-management.html">Adding Existing 
+	<p class="note"><strong>Note</strong>: Refer to <a href="../opsguide/external-user-management.html">Adding Existing 
 SAML or LDAP Users to a PCF Deployment</a> for on-boarding individual LDAP users and mapping them to PCF Roles.</p>
     * **Group Search Filter**: A string that defines LDAP Group search	criteria. The standard value is `member={0}`.
 <br /><br />

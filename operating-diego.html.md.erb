@@ -1,0 +1,65 @@
+---
+title: Operating Diego for Windows
+owner: Diego
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to operate a Diego deployment on Windows. For instructions on setting up a Windows Diego deployment, see the [Deploying Diego for Windows](deploying-diego.html) topic. 
+
+##<a id='customizing-cells'></a>Customize Cells
+
+Pivotal recommends that you keep customization of Windows cells to a minimum. If you do customize your cells, you must apply any software or configuration settings to every cell in your cluster. 
+
+<p class="note">The Cloud Foundry team tests against a clean Windows Server 2012 R2 installation, following the <a href ="https://github.com/cloudfoundry/diego-windows-release/blob/master/docs/INSTALL.md">standard install instructions</a>. Software and configuration not included in this clean install, such as those applied by Group Policy, can cause complex and unknown interactions with Cloud Foundry.</p>
+
+##<a id='rebooting-cells'></a>Reboot Cells
+
+Before rebooting a Windows cell, you must first trigger an [evacuation](../devguide/deploy-apps/app-lifecycle.html) to avoid application downtime.
+
+To trigger an evacuation, execute the following PowerShell script:
+
+```powershell
+Set-Service RepService -startuptype "Disabled"
+
+Invoke-WebRequest -Uri http://localhost:1800/evacuate -Method Post
+
+while ($true) {
+    try {
+        Get-WebRequest "http://localhost:1800/ping"
+    } catch {
+        [system.exception]
+        break;
+    }
+}
+
+Set-Service RepService -startuptype "Automatic"
+```
+
+##<a id='versions'></a>Retrieve Version Numbers
+
+To retrieve a version number for an executable or MSI, right-click the file and click **Properties**.
+
+To retrieve the version number for the `setup.ps1` script, pass the version flag on the command line:
+
+<pre class="terminal">> powershell .\setup.ps1 -version</pre>
+
+##<a id='custom-ca-certificates'></a>Custom CA Certificates
+
+If your applications require custom CA certificates in order to communicate
+with other components, install the certificates on the Windows cell. Applications running on the cell will trust certificates that the local machine or domain trust. 
+
+See the [Manage Trusted Root Certificates](https://technet.microsoft.com/en-us/library/cc754841.aspx) TechNet
+article for information.
+
+##<a id='upgrading'></a>Upgrade a Cell
+
+Diego retains backwards compatibility with Windows cells, which allows for rolling upgrades. Greenhouse/.NET implements a cell evacuation prior to new  releases to support upgrades.
+
+To upgrade a Windows cell, perform the following steps:
+
+1. Spin up a new cell.
+2. Trigger an evacuation on an old cell using the PowerShell script from the <a href="#rebooting-cells">Rebooting Cells</a> section above.
+3. Shut down the old cell when the evacuation completes.
+4. Repeat until all cells are updated.
+

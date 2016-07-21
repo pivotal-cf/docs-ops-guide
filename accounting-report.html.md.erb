@@ -5,54 +5,61 @@ owner: Apps Manager
 
 <strong><%= modified_date %></strong>
 
-_This page assumes you are using cf CLI v6._
-
-This topic describes how to retrieve app and service instance usage information. You can access the data using Apps Manager or from the command line using the cf CLI.
+This topic describes how to retrieve app and service instance usage information. You can access the data using Apps Manager or by calling the Apps Man API from the cf CLI.
 
 ## <a id='apps-man'></a>Monitoring Instance Usage from Apps Manager ##
 
-There are two ways to monitor app and service instance usage from Apps Manager. The Accounting Report provides a summarized report, and the Usage Report provides a more detailed view of the data. 
+There are two ways to monitor app and service instance usage from Apps Manager. The Accounting Report provides a summarized report, and the Usage Report provides a more detailed view of the data.
 
-To access these reports you must be [logged into the Apps Manager](../customizing/console-login.html).
+To access these reports you must be [logged into the Apps Manager](../customizing/console-login.html) as an admin.
 
-### <a id="accounting-report"></a>Accounting Report
+### <a id="accounting-report"></a>View the Accounting Report
 
-The Accounting Report displays instance usage information for all orgs in your [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) deployment except the <strong>system</strong> org. The Report provides a high-level overview of your usage by displaying your monthly count of app instances. 
+The Accounting Report displays instance usage information for all orgs in your [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) deployment except the <strong>system</strong> org. The Accounting Report provides a high-level overview of your usage by displaying your monthly count of app instances.
 
-Select **Accounting Report** from the left navigation of Apps Manager. View the average and maximum app instances in use per month under **App Instance Statistics**. The maximum is the largest number of app instances in use at any one time. The Accounting Report calculates these values from the `start`, `stop`, and `scale` app usage events in Cloud Controller.
+1. Select **Accounting Report** from the left navigation of Apps Manager.
+
+2. View the average and maximum app instances in use per month under **App Instance Statistics**.
+
+  The maximum is the largest number of app instances in use at any one time. The Accounting Report calculates these values from the `start`, `stop`, and `scale` app usage events in Cloud Controller.
 
 <%= image_tag("accounting-report.png") %>
 
-### <a id="usage-report"></a>Usage Report
+### <a id="usage-report"></a>View the Usage Report
 
 The Usage Report provides a more granular view of your usage by detailing app memory usage and service instance usage information for all spaces in a particular org, including the **system** org.
 
-From the **system** org, click **Usage Report**.
+1. From the **system** org, click **Usage Report**.
 
-<%= image_tag("usage-report-link.png") %>
+    <%= image_tag("usage-report-link.png") %>
 
-The top of the Usage Report displays total app memory usage and service instance usage by all spaces in your org.
+    The top of the Usage Report displays total app memory usage and service instance usage by all spaces in your org.
 
-<%= image_tag("usage-report.png") %>
+    <%= image_tag("usage-report.png") %>
 
-**Spaces Details** breaks down your app memory usage and service instance usage by spaces.
+    **Spaces Details** breaks down your app memory usage and service instance usage by spaces.
 
-<%= image_tag("service-details.png") %>
+    <%= image_tag("service-details.png") %>
 
-Click the name of an app to view its **Configuration History**.
+2. Click the name of an app to view its **Configuration History**.
 
-<%= image_tag("app-usage-service.png") %>
+    <%= image_tag("app-usage-service.png") %>
 
-## <a id='cf-cli'></a>Monitoring Instance Usage from the cf CLI ##
+## <a id='cf-cli'></a>Monitoring App and Service Usages from the cf CLI ##
 
-This section describes how to use the cf CLI to retrieve information about your app and service instances.
+This section describes how to use the cf CLI to retrieve information about your app and service instances via the Cloud Controller and Usage service APIs.
+
+### <a id="targetcc"></a>Obtain System Usage Information
+
+Before you can retrieve any app or service information, you must target the Cloud Controller and log in as admin, as follows:
 
 1. Target the endpoint of your Cloud Controller.
-<pre class="terminal">$ cf api api.YOUR-SYSTEM-DOMAIN</pre>
-1. Log in with your credentials.
+<pre class="terminal">$ cf api api.YOUR-DOMAIN</pre>
+
+2. Log in with your credentials.
 <pre class="terminal">
-$ cf login
-API endpoint:  api.YOUR-SYSTEM-DOMAIN
+$ cf login -u admin
+API endpoint:  api.YOUR-DOMAIN
 Email: user<span>@</span>domain.com
 Password:
 Authenticating...
@@ -60,12 +67,76 @@ OK
 ...
 Targeted org  YOUR-ORG
 Targeted space  development
- API endpoint:    https<span>://ap</span>i.YOUR-SYSTEM-DOMAIN (API version:  2.52.0)
+ API endpoint:    https<span>://ap</span>i.YOUR-DOMAIN (API version:  2.52.0)
  User:            us<span>er@do</span>main.com
  Org:             YOUR-ORG
  Space:           development
 </pre>
-1. Retrieve information about your apps using `cf curl`.
+
+3. Run `curl` for the `/system_usage_report` on the Usage service.
+
+<pre class="terminal">
+curl "https<span>:/</span>/app-usage.YOUR-DOMAIN/system\_usage\_report" -k -v -H "authorization:<span>`cf oauth-token`"</span>"
+</pre>
+
+### <a id="individual_org"></a> Obtain Usage Information about an Org ###
+
+To obtain individual org usage information, use the following procedure. You must log in as an admin or as an Org Manager or Org Auditor for the org you want to view.
+
+1. Run `cf login -u USERNAME`.
+
+2. Run `curl` for the `/app_usages` and/or `/service_usages` endpoints on the Usage service.
+
+<pre class="terminal">
+$ curl "https<span>:</span>//app-usage.YOUR-DOMAIN/organizations/`cf org YOUR-ORG --guid`/app_usages?start=YYYY-MM-DD&end=YYYY-MM-DD" -k -v -H "authorization: `cf oauth-token`"
+{
+   "organization_guid": "8d83362f-587a-4148-806b-4407428887b5",
+   "period_start": "2016-06-01T00:00:00Z",
+   "period_end": "2016-06-13T23:59:59Z",
+   "app_usages": [
+      {
+        app_guid: "00ecd7ce-1dd0-4b3f-63b9-744c9de42afc"
+        app_name: "your-app"
+        duration_in_seconds: 76730
+        instance_count: 6
+        memory_in_mb_per_instance: 64
+        space_guid: "44435fd6-fbac-5049-bbfc-92d1603a5e98"
+        space_name: "outer-space"
+      }
+   ]
+}
+</pre>
+    and/or
+<pre class="terminal">
+$ curl "<span>https:</span>//app-usage.YOUR-DOMAIN/organizations/\`cf org YOUR-ORG --guid\`/service\_usages?start=YYYY-MM-DD&end=YYYY-MM-DD" -k -v -H "authorization: \`cf oauth-token`"
+{
+   "organization\_guid": "8d83362f-587a-4148-806b-4407428887b5",
+   "period\_start": "2016-06-01T00:00:00Z",
+   "period\_end": "2016-06-13T23:59:59Z",
+   "service\_usages": [
+      {
+        deleted: false
+        duration\_in\_seconds: 1377982.52
+        service\_guid: "02802293-b769-44cc-807f-eee331ba9b2b"
+        service\_instance\_creation: "2016-01-20T18:48:16.000Z"
+        service\_instance\_deletion: null
+        service\_instance\_guid: "b25b4481-19aa-4504-82c9-f303e7e9ed6e"
+        service\_instance\_name: "something-usage-db"
+        service\_instance\_type: "managed_service_instance"
+        service\_name: "my-mysql-service"
+        service\_plan\_guid: "70915a70-7311-4f3e-ab0d-4a7dfd3ef2d9"
+        service\_plan\_name: "20gb"
+        space\_guid: "e6445eb3-fdac-4049-bafc-94d1703d5e78"
+        space\_name: "outer-space"
+      }
+   ]
+}
+
+</pre>
+
+### <a id="retrieve_apps"></a> Retrieve Apps Information ###
+
+1. The `apps` endpoint retrieves information about all of your apps.
 <pre class="terminal">$ cf curl /v2/apps
 {
    "total\_results": 2,
@@ -112,8 +183,9 @@ Targeted space  development
    ]
 }
 </pre>
-The output of this command provides the URL endpoints for your apps. In the example above the endpoints for the two apps are `/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba`, and `/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178`.
-1. Append `/summary` to the `url` listed for each app and `cf curl` it to get instance information. The result below shows the number of running instances and information about any bound services.
+The output of this command provides the URL endpoints for each app, under `metadata: url`. You can use these app-specific endpoints to retrieve more information about that app. In the example above, the endpoints for the two apps are `/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba` and `/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178`.
+
+1. The `summary` endpoint under each app-specific URL retrieves the instances and any bound services for that app.
 <pre class="terminal">$ cf curl /v2/apps/acf2ce75-ee92-4bb6-9adb-55a596a8dcba/summary
 {
    "guid": "acf2ce75-ee92-4bb6-9adb-55a596a8dcba",
@@ -153,7 +225,37 @@ The output of this command provides the URL endpoints for your apps. In the exam
                "version": null
 [...]
 </pre>
-1. If you have services that are not bound to your apps, you can retrieve details about both bound and unbound service instances by using `cf curl` with `/v2/service_instances?`:
+
+1. Use the `app_usages` endpoint to return a report covering app usage within an org or space during a period of time. Form the query as follows:
+   * The Cloud Controller API endpoint
+   * The string `/2/accounting_report/organizations`
+   * Your organization GUID. This is the identifier string that follows "organizations" in the URL to which your Apps Manager redirects.
+   * The string `app_usages`.
+   * `start=` followed by your start date in YYYY-MM-DD format.
+   * `end=` followed by your end date in YYYY-MM-DD format.
+
+      <pre class="terminal">$ cf curl /v2/apps/accounting\_report/organizations/8f88362f-547c-4158-808b-4605468387d5/app\_usages?start=2016-06-01&end=2016-06-13
+{
+   "organization\_guid": "<SOME\_ORGANIZATION\_GUID>",
+   "period\_start": "2016-06-01T00:00:00Z",
+   "period\_end": "2016-06-13T23:59:59Z",
+   "app\_usages": [
+      {
+         "space\_guid": "<SOME_SPACE_GUID>,
+         "space\_name": "<SOME_SPACE_NAME>",
+         "app\_name": "<SOME\_APP\_NAME>",
+         "app\_guid": "<SOME\_APP\_GUID>",
+         "instance\_count": 6,
+         "memory\_in\_mb\_per\_instance": 64,
+         "duration\_in\_seconds": 76730
+      }
+   ]
+}
+</pre>
+
+### <a id="retrieve_services"></a> Retrieve Services Information ###
+
+Use `cf curl` to rerieve service instance information. The `service_instances?` endpoint retrieves details about both bound and unbound service instances:
 <pre class="terminal">
 $ cf curl /v2/service\_instances?
 {
