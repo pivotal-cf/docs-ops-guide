@@ -5,13 +5,13 @@ owner: Ops Manager
 
 <strong><%= modified_date %></strong>
 
-To allow the Notifications Service to have network access you need to create [Application Security Groups](http://docs.pivotal.io/pivotalcf/adminguide/app-sec-groups.html) (ASGs).
+To allow the Notifications Service to have network access you need to create [Application Security Groups](../adminguide/app-sec-groups.html) (ASGs).
 
 <p class="note"><strong>Note</strong>: Without Application Security Groups the service is not usable.</p>
 
 ##<a id='notifications-service'></a>Prerequisite ##
 
-Review the [Getting Started with the Notifications Service](http://docs.pivotal.io/pivotalcf/adminguide/notifications.html) topic to ensure you have setup the service.
+Review the [Getting Started with the Notifications Service](../adminguide/notifications.html) topic to ensure you have setup the service.
 
 ## <a id="notifications-service-network-connections"></a> Configure Network Connections ##
 
@@ -53,7 +53,9 @@ The Notifications Service is deployed as a suite of applications to the `notific
 
 ### <a id="load-balancer"></a> Create a Load Balancer ASG
 
-If you are using the built-in HAProxy as your load balancer, follow this procedure. 
+<p class="note"><strong>Note</strong>: If you already have a ASG setup for a Load Balancer, you do not need to perform this step. Review your <a href="../adminguide/app-sec-groups.html">ASGs</a> to check which groups you have setup.</p>
+
+If you are using the built-in HAProxy as your load balancer, follow this procedure. If you are using an external load balancer, you must obtain your HAProxy IPs from the service you are using. 
 
 1. Record the **HAProxy IPs** in the **Pivotal Elastic Runtime Tile** > **Settings** > **Networking** tab. 
 
