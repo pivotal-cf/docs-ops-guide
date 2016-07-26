@@ -5,11 +5,11 @@ owner: RelEng
 
 <strong><%= modified_date %></strong>
 
-This topic describes the procedure for providing [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) Elastic Runtime with an SSL certificate, as part of the process of configuring Elastic Runtime for deployment. See [Getting Started with Pivotal Cloud Foundry&reg; ](../installing/index.html) for help installing PCF on your IaaS of choice.
+This topic describes the procedure for providing [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) Elastic Runtime with an SSL certificate, as part of the process of configuring Elastic Runtime for deployment. See [Getting Started with Pivotal Cloud Foundry ](../installing/index.html) for help installing PCF on your IaaS of choice.
 
-## <a id="navigate-to-networking"></a> Navigate to Elastic Runtime Networking Configuration 
+## <a id="navigate-to-networking"></a> Navigate to Elastic Runtime Networking Configuration
 
-1. Navigate to the Pivotal Cloud Foundry&reg; Operations Manager Installation
+1. Navigate to the Pivotal Cloud Foundry Operations Manager Installation
 Dashboard.
 
 1. Click the **Elastic Runtime** tile in the Installation Dashboard.
@@ -29,9 +29,9 @@ Dashboard.
 <%= image_tag 'ssl-termination.png' %>
     <p class="note"><strong>Note</strong>: Certificates generated in Elastic Runtime are signed by the Operations Manager Certificate Authority. They are not technically self-signed, but they are sometimes referred to as 'Self-Signed Certificates' in the Ops Manager GUI and throughout this documentation.</p>
 
-1. (HAProxy Only) Select **Disable HTTP traffic to HAProxy** if you want HAProxy to only allow HTTPS traffic. 
+1. (HAProxy Only) Select **Disable HTTP traffic to HAProxy** if you want HAProxy to only allow HTTPS traffic.
 
-1. Configure **SSL Ciphers**. Leave these fields blank unless you want to use a specific set of SSL ciphers for the Router or HAProxy. Enter a colon-separated list of custom SSL ciphers to pass to the Router or HAProxy. 
+1. Configure **SSL Ciphers**. Leave these fields blank unless you want to use a specific set of SSL ciphers for the Router or HAProxy. Enter a colon-separated list of custom SSL ciphers to pass to the Router or HAProxy.
 
 
 ### <a id="dev"></a>Configure for a Development or Testing Deployment
@@ -45,8 +45,8 @@ Dashboard.
 <p class="note"><strong>Note</strong>: SSL certificates generated for wildcard DNS records only work for a single domain name component or component fragment. For example, a certificate generated with <code>\*.YOUR-DOMAIN.com</code> does not work for <code>apps.YOUR-DOMAIN.com</code> and <code>system.YOUR-DOMAIN.com</code>. The certificate must have both <code>apps.YOUR-DOMAIN.com</code> and <code>system.YOUR-DOMAIN.com</code> attributed to it. </p>
 1. Click **Generate** to populate the **SSL Certificate** fields with RSA certificate and private key information.
 
-1. (HAProxy Only) Select **Disable HTTP traffic to HAProxy** if you want HAProxy to only allow HTTPS traffic. 
+1. (HAProxy Only) Select **Disable HTTP traffic to HAProxy** if you want HAProxy to only allow HTTPS traffic.
 
-1. Configure **SSL Ciphers**. Leave these fields blank unless you want to use a specific set of SSL ciphers for the Router or HAProxy. Enter a colon-separated list of custom SSL ciphers to pass to the Router or HAProxy. 
+1. Configure **SSL Ciphers**. Leave these fields blank unless you want to use a specific set of SSL ciphers for the Router or HAProxy. Enter a colon-separated list of custom SSL ciphers to pass to the Router or HAProxy.
 
 1. Click **Save**.

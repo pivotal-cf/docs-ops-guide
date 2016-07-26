@@ -5,7 +5,7 @@ owner: APM
 
 <strong><%= modified_date %></strong>
 
-This topic explains how to configure the Pivotal Cloud Foundry&reg; [Loggregator system](../loggregator/architecture.html) to scale its maximum throughput, and to forward logs to an external aggregator service.
+This topic explains how to configure the Pivotal Cloud Foundry [Loggregator system](../loggregator/architecture.html) to scale its maximum throughput, and to forward logs to an external aggregator service.
 
 ## <a id='scaling'></a> Scaling Loggregator ##
 
@@ -15,7 +15,7 @@ When the log and metrics data input to a Doppler exceeds its buffer size for a g
 
 ### Increase buffer size
 
-1. In the **Pivotal Cloud Foundry&reg; (PCF) Ops Manager Installation Dashboard**, click the **Elastic Runtime** tile.
+1. In the **Pivotal Cloud Foundry (PCF) Ops Manager Installation Dashboard**, click the **Elastic Runtime** tile.
 1. Select **System Logging**.
 1. Increase the drain buffer size to prevent loss of log data.
 1. Click **Save**.
@@ -42,7 +42,7 @@ When the log and metrics data input to a Doppler exceeds its buffer size for a g
 
 ## <a id='syslog-forward'></a> Enabling System Log Forwarding ##
 
-Elastic Runtime can forward log data to an external aggregator service instead of routing it to the Loggregator Firehose. System log forwarding for [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) is managed through the **PCF Ops Manager Installation Dashboard**. To enable syslog forwarding:
+Elastic Runtime can forward log data to an external aggregator service instead of routing it to the Loggregator Firehose. System log forwarding for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) is managed through the **PCF Ops Manager Installation Dashboard**. To enable syslog forwarding:
 
 1. Click the **Elastic Runtime** tile.
 1. Select **System Logging**.

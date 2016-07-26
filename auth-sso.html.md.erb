@@ -1,12 +1,12 @@
 ---
-breadcrumb: Pivotal Cloud Foundry&reg; Documentation
+breadcrumb: Pivotal Cloud Foundry Documentation
 title: Configuring Authentication and Enterprise SSO for Elastic Runtime
 owner: Identity
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) authentication and single sign-on configuration with Lightweight Directory Access Protocol (LDAP) and Security Assertion Markup Language (SAML).
+This topic describes [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) authentication and single sign-on configuration with Lightweight Directory Access Protocol (LDAP) and Security Assertion Markup Language (SAML).
 
 Refer to the instructions below to configure your deployment with SAML or LDAP.
 
@@ -49,12 +49,12 @@ You must configure PCF so that your Identity Provider can recognize PCF as a Ser
 
 	<p class='note'><strong>Note</strong>: You only need to select one of the above configurations. If you configure both, your Identity Provider defaults to the <strong>(OR) Provider Metadata URL</strong>.</p>
 
-	<p class="note"><strong>Note</strong>: Refer to <a href="../opsguide/external-user-management.html">Adding Existing SAML or 
+	<p class="note"><strong>Note</strong>: Refer to <a href="../opsguide/external-user-management.html">Adding Existing SAML or
 LDAP Users to a PCF Deployment</a> for how to onboard SAML users and map them to PCF user roles.</p>
 
 1. By default, all SAML Authentication Request from PCF are signed. To change this, disable the **Sign Authentication Requests** checkbox and configure your Identity Provider to verify SAML authentication requests.
 
-1. To validate the signature for the incoming SAML assertions, enable the **Required Signed Assertions** checkbox and configure your Identity Provider to send signed SAML Assertions. 
+1. To validate the signature for the incoming SAML assertions, enable the **Required Signed Assertions** checkbox and configure your Identity Provider to send signed SAML Assertions.
 
 1. Select the **Name ID Format** for your SAML Identity Provider. This translates to username on PCF Elastic Runtime. The default is Email Address.
 
@@ -131,7 +131,7 @@ This must include one of the following protocols:
     For example, a domain named "cloud.example.com" typically uses the following LDAP Group Search Base: `ou=Groups,dc=example,dc=com`
 <br /><br />
 	Follow the instructions in [Granting Admin Permissions to an LDAP Group](../adminguide/uaa-user-management.html#ldap-group) in _Creating and Managing Users with the UAA CLI (UAAC)_ to map the groups under this search base to admin roles in PCF.
-	<p class="note"><strong>Note</strong>: Refer to <a href="../opsguide/external-user-management.html">Adding Existing 
+	<p class="note"><strong>Note</strong>: Refer to <a href="../opsguide/external-user-management.html">Adding Existing
 SAML or LDAP Users to a PCF Deployment</a> for on-boarding individual LDAP users and mapping them to PCF Roles.</p>
     * **Group Search Filter**: A string that defines LDAP Group search	criteria. The standard value is `member={0}`.
 <br /><br />
