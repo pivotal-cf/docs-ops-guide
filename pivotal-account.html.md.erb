@@ -6,9 +6,21 @@ owner: Identity
 
 <strong><%= modified_date %></strong>
 
-Pivotal Account is a user management tool that allows users to create and manage their accounts. On the Pivotal Account dashboard, a user can launch applications, manage their user profile, manage their account security and manage their notifications.
+Pivotal Account is a user management tool that allow users to create and manage their accounts. In the Pivotal Account dashboard, a user can launch applications, manage their user profile, manage their account security and manage their notifications.
 
-<p class='note'><strong>Note</strong>: You must also install <a href="../console/index.html">the Apps Manager</a> and <a href="/adminguide/notifications.html">Notifications to use Pivotal Account.</a></p>.
+<p class='note'><strong>Note</strong>: You must have the <a href="../console/index.html">Apps Manager</a> and the <a href="../adminguide/notifications.html">Notifications Service </a> installed to use Pivotal Account.</p>.
+
+
+##<a id="installation"></a>Installation
+
+Pivotal Account is installed as an errand on Elastic Runtime. To enable Pivotal Account, follow the steps below.
+
+1. Navigate to the Ops Manager **Installation Dashboard**. 
+1. Click the **Pivotal Elastic Runtime** tile.
+1. Under **Settings**, click the **Errands** pane.
+1. Select **Push Pivotal Account**.
+1. Click **Save**.
+1. Return to the Ops Manager **Installation Dashboard** and click **Apply Changes**.
 
 ##<a id="launch-app"></a>Launch Applications
 
@@ -29,12 +41,6 @@ The Approvals tab shows the permissions that each application can do on behalf o
 ##<a id="manage-notifications"></a>Manage Notifications
 
 Users can navigate to the Notifications tab to manage their Pivotal Cloud Foundry notifications.
-Installation
-Pivotal Account is installed as an errand on Elastic Runtime. To enable Pivotal Account, follow the steps below.
 
-1. Navigate to Ops Manager. 
-1. Click on the Pivotal Elastic Runtime tile.
-1. Under the Settings tab, click Errands.
-1. Select Pivotal Account.
 
 
