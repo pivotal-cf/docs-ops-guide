@@ -5,7 +5,7 @@ owner: Identity
 
 <strong><%= modified_date %></strong>
 
-This topic describes connecting [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) Elastic Runtime to LDAP by integrating the Cloud Foundry User Account and Authentication server with LDAP.
+This topic describes connecting [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) Elastic Runtime to LDAP by integrating the Cloud Foundry User Account and Authentication server with LDAP.
 
 The Cloud Foundry User Account and Authentication
 ([UAA](https://github.com/cloudfoundry/uaa/tree/develop)) server provides
@@ -70,7 +70,7 @@ This must include one of the following protocols:
 	`mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
 <br /><br />
 	* **Admin Groups**: If you want to map LDAP groups to the Admin role, select **Enable Admin Groups** and complete the following fields. Otherwise, select **No Groups**.
-		* **Group Search Base**: Enter the location in the LDAP directory tree from which the LDAP Group search begins. For example, a domain named “cloud.example.com” typically uses the following Group Search Base: `ou=Groups,dc=example,dc=com`. Review the instructions in the Granting Admin Permissions to an LDAP Group section of the [Creating and Managing Users with the UAA CLI (UAAC)](../adminguide/uaa-user-management.html#ldap-group) topic for more information. 
+		* **Group Search Base**: Enter the location in the LDAP directory tree from which the LDAP Group search begins. For example, a domain named “cloud.example.com” typically uses the following Group Search Base: `ou=Groups,dc=example,dc=com`. Review the instructions in the Granting Admin Permissions to an LDAP Group section of the [Creating and Managing Users with the UAA CLI (UAAC)](../adminguide/uaa-user-management.html#ldap-group) topic for more information.
 		* **Group Search Filter**: Enter the string that defines LDAP Group search criteria by replacing the `0` in `member={0}` with the user DN.
     * **Server SSL Cert**: Paste in the root certificate from your CA certificate or your self-signed certificate. Required only for `ldaps://`.
     * **Server SSL AltName**: Enter a Subject Alternative Name for your certificate. Required only for `ldaps://`.
