@@ -3,7 +3,7 @@ Operating Elastic Runtime
 
 This is a guide to operating and troubleshooting Elastic Runtime Documentation
 for Cloud Foundry operators.
-It is just one of the guides associated with the [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF) release.
+It is just one of the guides associated with the [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) release.
 The full doc set is:
 
 *  [Getting Started](https://github.com/pivotal-cf/docs-pcf-gsg): "Quick Start"

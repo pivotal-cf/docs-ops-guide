@@ -5,15 +5,15 @@ owner: MySQL
 
 This topic describes how to safely scale down your MySQL cluster to a single node.
 
-By default MySQL is a single node. To take advantage of the high availability features of MySQL, you may have scaled the configuration up to three nodes. 
+By default MySQL is a single node. To take advantage of the high availability features of MySQL, you may have scaled the configuration up to three nodes.
 
-<p class="note"><strong>Note</strong>: If you are only running the MySQL cluster with a single node, you do not need to perform these steps.</p> 
+<p class="note"><strong>Note</strong>: If you are only running the MySQL cluster with a single node, you do not need to perform these steps.</p>
 
 ## <a id="check-health"></a>Check the Health of Your Cluster
 
-Before scaling down your MySQL cluster, perform the following actions to ensure the cluster is healthy. 
+Before scaling down your MySQL cluster, perform the following actions to ensure the cluster is healthy.
 
-1. Use the cf CLI to target the API endpoint of your Pivotal Cloud Foundry&reg; (PCF) deployment:
+1. Use the cf CLI to target the API endpoint of your Pivotal Cloud Foundry (PCF) deployment:
 	<pre class="terminal">
 	$ cf api api.YOUR-SYSTEM-DOMAIN
 	Setting api endpoint to api.YOUR-SYSTEM-DOMAIN...
