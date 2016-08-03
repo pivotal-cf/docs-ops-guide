@@ -5,9 +5,9 @@ owner: Ops Manager
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to configure your Docker Trusted Registries (DTR) with Pivotal Cloud Foundry (PCF).
+This topic describes how to configure your Docker Trusted Registries (DTRs) with Pivotal Cloud Foundry (PCF).
 To use private registries, you must choose either to submit your root certificate authority (CA) certificate
-or provide the IP address for your private DTR.
+or provide the IP address for your private DTRs.
 
 **Prerequisite**: Ensure that you have enabled Docker support in PCF with the `$ cf enable-feature-flag diego_docker` command, as described in the [Using Docker in Cloud Foundry](../concepts/docker.html) topic.
 
@@ -36,7 +36,7 @@ After configuration, BOSH propagates this CA certificate to all application cont
 
 If you choose not to provide a CA certificate, you must provide the IP address of your DTR.
 
-<p class="note"><strong>Note</strong>: Using a whitelist skips SSL validation. If you want to enforce SSL validation, enter the IP address of the Docker registry in the No proxy field <a href='#proxy'>below</a>.
+<p class="note"><strong>Note</strong>: Using a whitelist skips SSL validation. If you want to enforce SSL validation, enter the IP address of the DTR in the No proxy field <a href='#proxy'>below</a>.
 
 
 1. Navigate to the PCF Operations Manager **Installation Dashboard**.
@@ -49,7 +49,7 @@ If you choose not to provide a CA certificate, you must provide the IP address o
 
 1. Select **Allow SSH access to app containers** to enable app containers to accept SSH connections. If you are using a load balancer instead of HAProxy, you must open port 2222 on your load balancer to enable SSH traffic. In order to open an SSH connection to an app, a user must have Space Developer privileges for that app's space. Operators can grant those privileges in Apps Manager or via the cf CLI.
 
-1. For **Private Docker Insecure Registry Whitelist**, provide the hostname/IP address and port that point to your DTR. For example, enter `198.51.100.1:80` or `mydockerregistry.com:80`. Enter multiple entries in a comma-delimited sequence. SSL validation will be ignored for private Docker image registries secured with self-signed certificates at these locations.
+1. For **Private Docker Insecure Registry Whitelist**, provide the hostname/IP address and port that point to your DTR. For example, enter `198.51.100.1:80` or `mydockerregistry.com:80`. Enter multiple entries in a comma-delimited sequence. SSL validation is ignored for private Docker image registries secured with self-signed certificates at these locations.
 
 1. Under **Docker Images Disk-Cleanup Scheduling on Cell VMs**, choose one of the following:
 	* **Never Cleanup Cell Disk-space**
@@ -64,17 +64,19 @@ If you choose not to provide a CA certificate, you must provide the IP address o
 
 After configuration, Elastic Runtime allows Docker images to come through the specified IP address without checking certificates.
 
-## <a id='proxy'></a>Configure DTRs
+## <a id='proxy'></a>Set Proxies for DTRs
 
-Pivotal recommends that you use an HTTP or HTTPS proxy server if you have a private DTR.
+Pivotal recommends that you use an HTTP or HTTPS proxy server if you use private DTRs.
 
 1. On the Installation Dashboard, navigate to USERNAME > **Settings** > **Proxy Settings**.
 
      <%= image_tag("install-dash-settings.png") %>
 
 2. On the **Update Proxy Settings** pane, do one of the following:
-    + **Http proxy**: If you have a HTTP proxy server for your Docker hub or Docker Trusted Registry, enter its IP address.  
-    + **Https proxy**: If you have a HTTPS proxy server for your Docker hub or Docker Trusted Registry, enter its IP address.  
-    + **No proxy**: If you do not use a proxy server, enter the IP address for the Docker Trusted Registry. This field may already contain proxy settings for the BOSH director. Enter multiple IP addresses as a comma-separated list.
+    + **Http proxy**: If you have a HTTP proxy server for your DTR, enter its IP address.  
+    + **Https proxy**: If you have a HTTPS proxy server for your DTR, enter its IP address.  
+    + **No proxy**: If you do not use a proxy server, enter the IP address for the DTR. This field may already contain proxy settings for the BOSH director. Enter multiple IP addresses as a comma-separated list.
 
      <%= image_tag("update-proxy-settings.png") %>
+
+3. Click **Update**.
