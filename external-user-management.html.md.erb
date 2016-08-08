@@ -19,7 +19,7 @@ There are two ways to add existing SAML or LDAP users to your PCF deployment:
 - In bulk, using the UAA Bulk Import Tool. See [the README](https://github.com/pivotalservices/uaausersimport/blob/master/README.md) for instructions on installing and using the tool.
 
 - Individually, through the CF CLI, as described below:
-	1. Each existing SAML or LDAP user must log in to Apps Manager or to the cf CLI using their SAML (by entering `cf login --sso`) or LDAP credentials. Users will not have access to any org or space until these are granted by an Org Manager.
+	1. Each existing SAML or LDAP user must log in to Apps Manager or to the cf CLI using their SAML (by entering `cf login --sso`) or LDAP credentials. Users will not have access to any org or space until these are granted by an Org or Space Manager.
 	1. The PCF Admin must log in to the cf CLI and associate the user with the desired org and space roles. See [Org and App Space Roles](../adminguide/cli-user-management.html#orgs-spaces).
 
 ## <a id='enterprise'></a> <strong>(Advanced Option)</strong> Integrate with Enterprise Identity Management System ##
