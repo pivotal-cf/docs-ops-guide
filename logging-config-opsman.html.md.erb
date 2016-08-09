@@ -17,7 +17,7 @@ When the log and metrics data input to a Doppler exceeds its buffer size for a g
 
 1. In the **Pivotal Cloud Foundry (PCF) Ops Manager Installation Dashboard**, click the **Elastic Runtime** tile.
 1. Select **System Logging**.
-1. Increase the drain buffer size to prevent loss of log data.
+1. Increase the **Drain Buffer Size** to prevent loss of log data.
 1. Click **Save**.
 1. Click **Apply Changes**.
 <%= image_tag 'sys-logging.png' %>
@@ -42,13 +42,14 @@ When the log and metrics data input to a Doppler exceeds its buffer size for a g
 
 ## <a id='syslog-forward'></a> Enabling System Log Forwarding ##
 
-Elastic Runtime can forward log data to an external aggregator service instead of routing it to the Loggregator Firehose. System log forwarding for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) is managed through the **PCF Ops Manager Installation Dashboard**. To enable syslog forwarding:
+Elastic Runtime can forward log data to an external aggregator service instead of routing it to the Loggregator Firehose. System log forwarding for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) is managed through the **PCF Ops Manager Installation Dashboard**. Complete the steps below to enable syslog forwarding:
 
 1. Click the **Elastic Runtime** tile.
 1. Select **System Logging**.
-1. If you want to include security events in your log stream, enable the **Enable Cloud Controller security event logging** checkbox. The security log messages are in Common Event Format (CEF).
-1. Enter the Hostname, Port, and Protocol for your third-party log management service.
-1. (Optional) Increase the drain buffer size to prevent loss of log data.
+1. If you want to include security events in your log stream, select the **Enable Cloud Controller security event logging** checkbox. 
+The security log messages are in Common Event Format (CEF).
+1. Enter the **Aggregator Hostname**, **Aggregator Port**, and **Network Protocol** for your third-party log management service.
+1. (Optional) Increase the **Drain Buffer Size** to prevent loss of log data.
 1. Click **Save**.
 1. Click **Apply Changes**.
 <%= image_tag 'sys-logging.png' %>
