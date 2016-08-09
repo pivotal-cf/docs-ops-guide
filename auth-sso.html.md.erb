@@ -17,6 +17,8 @@ If your enterprise user store is exposed as a SAML or LDAP Identity Provider for
 
 See [Adding Existing SAML or LDAP Users to a PCF Deployment](../opsguide/external-user-management.html) for information about managing user identity and pre-provisioning user roles with SAML or LDAP in PCF.
 
+This [Knowledge Base article](https://discuss.zendesk.com/hc/en-us/articles/204140418-Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry-) explains the process that the UAA Server goes through when it attempts to authenticate a user through LDAP.
+
 ##<a id="configure-saml"></a>Configure PCF to Use a SAML Identity Provider
 
 To connect PCF Elastic Runtime with SAML, you must configure PCF to act as a service provider for SAML and integrate SAML as an identity provider for PCF.
@@ -125,7 +127,7 @@ This must include one of the following protocols:
 	name as the username.
 <br /><br />
     In addition to `cn`, other attributes commonly searched for and returned are `mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
-<br /><br />
+    <p class="note"><strong>Note</strong>: This [Knowledge Base article](https://discuss.zendesk.com/hc/en-us/articles/204140418-Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry-) provides instructions for testing and troubleshooting your LDAP search filters.</p>
     * **Group Search Base**: The location in the LDAP directory tree from which the LDAP Group search begins.
 <br /><br />
     For example, a domain named "cloud.example.com" typically uses the following LDAP Group Search Base: `ou=Groups,dc=example,dc=com`
