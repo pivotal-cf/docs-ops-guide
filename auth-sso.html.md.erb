@@ -58,11 +58,11 @@ LDAP Users to a PCF Deployment</a> for how to onboard SAML users and map them to
 
 1. For **Email Domain(s)**, enter a comma-separated list of the email domains for external users who will receive invitations to Apps Manager.
 
-1. For **First Name Attribute** and **Last Name Attribute**, enter the attribute names in your SAML database that correspond to the first and last names in each user record, for example `FirstNameID` and `LastNameID`.
+1. For **First Name Attribute** and **Last Name Attribute**, enter the attribute names in your SAML database that correspond to the first and last names in each user record, for example `first_name` and `last_name`.
 
-1. For **Email Attribute**, enter the attribute name in your SAML database that corresponds to email address in each user record, for example `EmailID`.
+1. For **Email Attribute**, enter the attribute name in your SAML assertion that corresponds to the email address in each user record, for example `EmailID`.
 
-1. For **External Groups Attribute**, enter the attribute name in your SAML database that defines the groups that a user belongs to, for example `memberOf`.
+1. For **External Groups Attribute**, enter the attribute name in your SAML database that defines the groups that a user belongs to, for example `group_memberships`. To map the groups from the SAML assertion to administrator roles in PCF, follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../adminguide/uaa-user-management.html#external-group) section of the Creating and Managing Users with the UAA CLI (UAAC) topic. 
 
 1. By default, all SAML Authentication Request from PCF are signed. To change this, disable the **Sign Authentication Requests** checkbox and configure your Identity Provider to verify SAML authentication requests.
 
@@ -149,9 +149,9 @@ SAML or LDAP Users to a PCF Deployment</a> for on-boarding individual LDAP users
 <br /><br />
     * If you are using `ldaps://` with a self-signed certificate, enter a Subject Alternative Name for your certificate under **Server SSL Cert AltName**. Otherwise, you can leave this field blank.
 
-1. For **First Name Attribute** and **Last Name Attribute**, enter the attribute names in your LDAP database that correspond to the first and last names in each user record, for example `FirstNameID` and `LastNameID`.
+1. For **First Name Attribute** and **Last Name Attribute**, enter the attribute names in your LDAP directory that correspond to the first and last names in each user record, for example `cn` and `sn`.
 
-1. For **Email Attribute**, enter the attribute name in your LDAP database that corresponds to email address in each user record, for example `EmailID`.
+1. For **Email Attribute**, enter the attribute name in your LDAP directory that corresponds to the email address in each user record, for example `mail`.
 
 1. For **Email Domain(s)**, enter a comma-separated list of the email domains for external users who will receive invitations to Apps Manager.
 
