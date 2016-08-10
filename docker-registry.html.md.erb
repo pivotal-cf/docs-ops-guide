@@ -51,9 +51,9 @@ If you want to enforce SSL validation, enter the IP address of the Docker Truste
 
 1. Select **Enable Custom Buildpacks** to enable custom-built application runtime buildpacks.
 
-1. Select **Allow SSH access to app containers** to enable app containers to accept SSH connections. If you are using a load balancer instead of HAProxy, you must open port 2222 on your load balancer to enable SSH traffic. In order to open an SSH connection to an app, a user must have Space Developer privileges for that app's space. Operators can grant those privileges in Apps Manager or via the cf CLI.
+1. Select **Allow SSH access to app containers** to enable app containers to accept SSH connections. If you are using a load balancer instead of HAProxy, you must open port 2222 on your load balancer to enable SSH traffic. To open an SSH connection to an app, a user must have Space Developer privileges for that app's space. Operators can grant those privileges in Apps Manager or via the cf CLI.
 
-1. For **Private Docker Insecure Registry Whitelist**, provide the hostname/IP address and port that point to your Docker Trusted Registry. For example, enter `198.51.100.1:80` or `mydockerregistry.com:80`. Enter multiple entries in a comma-delimited sequence. SSL validation is ignored for private Docker image registries secured with self-signed certificates at these locations.
+1. For **Private Docker Insecure Registry Whitelist**, provide the hostname or IP address and port that point to your Docker Trusted Registry. For example, enter `198.51.100.1:80` or `mydockerregistry.com:80`. Enter multiple entries in a comma-delimited sequence. SSL validation is ignored for private Docker image registries secured with self-signed certificates at these locations.
 
 1. Under **Docker Images Disk-Cleanup Scheduling on Cell VMs**, choose one of the following:
 	* **Never Cleanup Cell Disk-space**
@@ -74,10 +74,10 @@ After configuration, Elastic Runtime allows Docker images to come through the sp
 
      <%= image_tag("install-dash-settings.png") %>
 
-2. On the **Update Proxy Settings** pane, do one of the following:
-    + **Http proxy**: If you have a HTTP proxy server for your Docker Trusted Registry, enter its IP address.  
-    + **Https proxy**: If you have a HTTPS proxy server for your Docker Trusted Registry, enter its IP address.  
-    + **No proxy**: If you do not use a proxy server, enter the IP address for the Docker Trusted Registry. This field may already contain proxy settings for the BOSH director. Enter multiple IP addresses as a comma-separated list.
+2. On the **Update Proxy Settings** pane, complete one of the following fields:
+    + **Http proxy**: If you have an HTTP proxy server for your Docker Trusted Registry, enter its IP address.  
+    + **Https proxy**: If you have an HTTPS proxy server for your Docker Trusted Registry, enter its IP address.  
+    + **No proxy**: If you do not use a proxy server, enter the IP address for the Docker Trusted Registry. This field may already contain proxy settings for the BOSH Director. Enter multiple IP addresses as a comma-separated list.
 
      <%= image_tag("update-proxy-settings.png") %>
 
