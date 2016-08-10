@@ -72,7 +72,7 @@ The example below uses `*.YOUR-DOMAIN.com`.
   <%= image_tag("generate-cert.png") %>
     <p class="note"><strong>Note</strong>: SSL certificates generated for wildcard DNS records only work for a single domain name component or component fragment. For example, a certificate generated with <code>\*.YOUR-DOMAIN.com</code> does not work for <code>apps.YOUR-DOMAIN.com</code> and <code>system.YOUR-DOMAIN.com</code>. The certificate must have both <code>apps.YOUR-DOMAIN.com</code> and <code>system.YOUR-DOMAIN.com</code> attributed to it. </p>
   4. Configure **Router SSL Ciphers**. Leave these fields blank unless you want to use a specific set of SSL ciphers for the Router. Enter a colon-separated list of custom SSL ciphers to pass to the router.
-  5. Skip to [step 6](#save).
+  5. Skip to [step 6](#save2).
 
 1. If you use HAProxy and not your own load balancer as the first point-of-entry, do the following:
 
@@ -84,5 +84,5 @@ The example below uses `*.YOUR-DOMAIN.com`.
   1. Select **Disable HTTP traffic to HAProxy** if you want HAProxy to only allow HTTPS traffic.
   1. Configure **HAProxy SSL Ciphers**. Leave these fields blank unless you want to use a specific set of SSL ciphers for HAProxy. Enter a colon-separated list of custom SSL ciphers to pass to HAProxy.
 
-1. <a id="save"></a>Click **Save**.
+1. <a id="save2"></a>Click **Save**.
 
