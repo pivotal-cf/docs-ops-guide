@@ -141,6 +141,7 @@ This must include one of the following protocols:
     For example, a domain named "cloud.example.com" typically uses the following LDAP Group Search Base: `ou=Groups,dc=example,dc=com`
 <br /><br />
 	Follow the instructions in [Granting Admin Permissions to an LDAP Group](../adminguide/uaa-user-management.html#ldap-group) to map the groups under this search base to admin roles in PCF.
+
 	<p class="note"><strong>Note</strong>: Refer to <a href="../opsguide/external-user-management.html">Adding Existing
 SAML or LDAP Users to a PCF Deployment</a> for on-boarding individual LDAP users and mapping them to PCF Roles.</p>
     * **Group Search Filter**: A string that defines LDAP Group search	criteria. The standard value is `member={0}`.
