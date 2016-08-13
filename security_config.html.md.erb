@@ -14,7 +14,7 @@ This topic provides two procedures. Choose the correct procedure for your enviro
 * For a production environment, follow [Configure for a Production Deployment](#prod).
 * For a testing or development environment, follow [Configure for a Development or Testing Deployment](#dev). This procedure includes how to generate an RSA certificate suitable for a non-production environment.
 
-<p class="note"><strong>Note</strong>: Certificates generated in Elastic Runtime are signed by the Operations Manager Certificate Authority. They are not technically self-signed, but they are sometimes referred to as "Self-Signed Certificates" in the Ops Manager UI and throughout this documentation.</p>
+<p class="note"><strong>Note</strong>: Certificates generated in Elastic Runtime are signed by the Ops Manager Certificate Authority. They are not technically self-signed, but they are sometimes referred to as "Self-Signed Certificates" in the Ops Manager UI and throughout this documentation.</p>
 
 ## <a id="prod"></a>Configure for a Production Deployment
 
@@ -81,8 +81,8 @@ The example below uses `*.YOUR-DOMAIN.com`.
   If your deployment is on AWS, this certificate must match the one that you uploaded to AWS earlier in the
   [Upload an SSL Certificate](../customizing/cloudform-template.html#upload-cert) section of the 
   [Deploying the CloudFormation Template for PCF on AWS](../customizing/cloudform-template.html) topic.
-  1. Select **Disable HTTP traffic to HAProxy** if you want HAProxy to only allow HTTPS traffic.
   1. Configure **HAProxy SSL Ciphers**. Leave these fields blank unless you want to use a specific set of SSL ciphers for HAProxy. Enter a colon-separated list of custom SSL ciphers to pass to HAProxy.
+  1. Select **Disable HTTP traffic to HAProxy** if you want HAProxy to only allow HTTPS traffic.
 
 1. <a id="save2"></a>Click **Save**.
 
