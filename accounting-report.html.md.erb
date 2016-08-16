@@ -89,7 +89,7 @@ To obtain individual org usage information, use the following procedure. You mus
 
 1. Run `cf login -u USERNAME`.
 
-2. Run `curl` for the `/app_usages` and/or `/service_usages` endpoints on the Usage service.
+2. Run `curl` for the `/app_usages` or `/service_usages` endpoints on the Usage service.
 
 	<pre class="terminal">
 	$ curl "https://app-usage.YOUR-DOMAIN/organizations/`cf org YOUR-ORG --guid`/app_usages?start=YYYY-MM-DD&end=YYYY-MM-DD" -k -v -H "authorization: `cf oauth-token`"
@@ -191,7 +191,7 @@ To obtain individual org usage information, use the following procedure. You mus
     }
    </pre>
 
-	The output of this command provides the URL endpoints for each app, under `metadata: url`. You can use these app-specific endpoints to retrieve more information about that app. In the example above, the endpoints for the two apps are `/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba` and `/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178`.
+	The output of this command provides the URL endpoints for each app, within the `metadata: url` section. You can use these app-specific endpoints to retrieve more information about that app. In the example above, the endpoints for the two apps are `/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba` and `/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178`.
 
 1. The `summary` endpoint under each app-specific URL retrieves the instances and any bound services for that app.
 
