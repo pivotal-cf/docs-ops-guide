@@ -17,13 +17,13 @@ they often need to access other resources on PCF. Incorrect proxy settings can b
 To globally configure proxy settings for PCF applications, perform the following steps to set three environment variables for both 
 the staging environment variable group and the running environment variable group. 
 
-For more information about variable groups, see the [Environment Variable Groups](../../devguide/deploy-apps/environment-variable.html#evgroups) section in 
+For more information about variable groups, see the [Environment Variable Groups](../devguide/deploy-apps/environment-variable.html#evgroups) section in 
 the Cloud Foundry Environment Variables topic.
 
 This procedure explains how to set proxy information for both staging and running applications. However, you can set proxy settings for only staging or only running applications.
 
 1. Target your Cloud Controller with the cf CLI. 
-If you have not installed the cf CLI, see the [Installing the cf Command Line Interface](http://docs.pivotal.io/pivotalcf/1-7/cf-cli/install-go-cli.html) topic.
+If you have not installed the cf CLI, see the [Installing the cf Command Line Interface](../cf-cli/install-go-cli.html) topic.
     <pre class="terminal">
     $ cf api api.YOUR-SYSTEM-DOMAIN
     Setting api endpoint to api.YOUR-SYSTEM-DOMAIN...
