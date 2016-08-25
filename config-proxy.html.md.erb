@@ -5,7 +5,7 @@ owner: Routing
 
 This topic describes how to globally configure proxy settings for all applications in your Pivotal Cloud Foundry (PCF) deployment. 
 Some environments restrict access to the Internet by requiring traffic to pass through an HTTP or HTTPS proxy. 
-PCF operators can use the cf Command Line Interface (CLI) to provide the proxy settings to all applications, including system applications and service brokers.
+PCF operators can use the cf Command Line Interface (cf CLI) to provide the proxy settings to all applications, including system applications and service brokers.
 
 <p class="note"><strong>Note</strong>: Incorrectly configuring proxy settings can prevent applications from connecting to the Internet or accessing required resources. 
 They can also cause errands to fail and break system applications and service brokers. 
@@ -18,7 +18,7 @@ To globally configure proxy settings for PCF applications, perform the following
 the staging environment variable group and the running environment variable group. 
 
 For more information about variable groups, see the [Environment Variable Groups](../devguide/deploy-apps/environment-variable.html#evgroups) section in 
-the Cloud Foundry Environment Variables topic.
+the _Cloud Foundry Environment Variables_ topic.
 
 This procedure explains how to set proxy information for both staging and running applications. However, you can set proxy settings for only staging or only running applications.
 
@@ -64,19 +64,19 @@ If you have not installed the cf CLI, see the [Installing the cf Command Line In
 
 ##<a id='troubleshooting'></a> Troubleshooting ##
 
-If an application fails after you apply the global proxy settings, consider the following explanations. 
+If an application fails after you apply the global proxy settings, try the following solutions.
 
 ### Exclude an App From Global Proxy Settings
 
 If your application fails, try instructing the application to ignore the global proxy settings. 
 Perform the following commands to manually unset the proxy environment variables for the failing application:
 
-1. Unset the proxy environment variables for `http_proxy`:
-    <pre class="terminal">$ cf set-env YOUR-APP http_proxy "</pre>
-1. Unset the proxy environment variables for `https_proxy`:
-    <pre class="terminal">$ cf set-env YOUR-APP https_proxy "</pre>
-1. Unset the proxy environment variables for `no_proxy`:
-    <pre class="terminal">$ cf set-env YOUR-APP no_proxy "</pre>
+1. Set the proxy environment variables for `http_proxy` to an empty value:
+    <pre class="terminal">$ cf set-env YOUR-APP http_proxy ''</pre>
+1. Set the proxy environment variables for `https_proxy` to an empty value:
+    <pre class="terminal">$ cf set-env YOUR-APP https_proxy ''</pre>
+1. Set the proxy environment variables for `no_proxy` to an empty value:
+    <pre class="terminal">$ cf set-env YOUR-APP no_proxy ''</pre>
 
 ### Change Case of HTTP
 
@@ -91,7 +91,7 @@ If you have set up your proxy so that it can only send traffic to the Internet, 
 
 ### Verify Interpretation
 
-The intepretation of `no_proxy` depends on the application and the language runtime. Most support `no_proxy`, but the specific implementation may vary. 
+The interpretation of `no_proxy` depends on the application and the language runtime. Most support `no_proxy`, but the specific implementation may vary. 
 For example, some match DNS names that end with the value set in `no_proxy`: `example.com` would match `test.example.com`. 
 Others support the use of the asterisk as a wildcard to provide basic pattern matching in DNS names: `*.example.com` would match `test.example.com`. 
 Most applications and language runtimes do not support pattern matching and wildcards for IP addresses.
