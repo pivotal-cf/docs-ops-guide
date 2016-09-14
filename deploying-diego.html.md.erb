@@ -76,23 +76,17 @@ Follow the instructions below to download and configure the Windows cell.
 1. Right-click on the **setup.ps1** file and select **Run with PowerShell**.
 The **setup.ps1** script configures Windows features, DNS settings, and the firewall for your Windows cell.
 
-	![run setup script](images/greenhouse/run-setup-script.png)
-
-	![setup script running](images/greenhouse/setup-script-running.png)
-
 ###<a id='script-generator'></a>Step 3: Run Install Script Generator
 
 1. From a command prompt, run **generate.exe** with the following arguments:
     * **boshUrl**: Find your `boshUrl` in the [troubleshooting](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html) documentation.
     * **outputDir**: The directory that will contain the required certificates and a script to run the installers.
 
-	```
+	<pre class="terminal">
 	$ generate.exe ^
 	-boshUrl https://username:password@bosh-director.example.com:25555 ^
 	-outputDir C:\diego-windows
-	```
-
-	![run generate script](images/greenhouse/run-generate-script.png)
+	</pre>
 
 ###<a id='msi'></a>Step 4: Install MSI
 
