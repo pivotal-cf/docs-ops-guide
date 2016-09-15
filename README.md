@@ -7,8 +7,7 @@ It is just one of the guides associated with the [Pivotal Cloud Foundry](https:/
 The full doc set is:
 
 *  [Getting Started](https://github.com/pivotal-cf/docs-pcf-gsg): "Quick Start"
-guide for preparing your VMware vSphere or vCloud Air / vCloud environment and
-standing up Elastic Runtime using Pivotal Cloud Foundry
+guide for preparing your VMware vSphere environment and standing up Elastic Runtime using Pivotal Cloud Foundry
 *  [Pivotal Cloud Foundry Installation Guide](https://github.com/pivotal-cf/pcf-docs): How
 to use Pivotal Cloud Foundry to install and manage components
 *  [Operating Elastic Runtime](https://github.com/pivotal-cf/docs-ops-guide): A

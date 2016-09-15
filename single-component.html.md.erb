@@ -55,10 +55,10 @@ The table lists components in the order that Ops Manager upgrades each component
   <td></td>
 </tr>
 <tr>
-  <td>NFS Server</td>
+  <td>File Storage Server</td>
   <td></td>
   <td>&#10003;</td>
-  <td>You cannot push, stage, or restart an app when an upgrade affects the NFS Server.</td>
+  <td>You cannot push, stage, or restart an app when an upgrade affects the file storage server.</td>
 </tr>
 <tr>
   <td>Cloud Controller Database</td>
@@ -118,12 +118,6 @@ You can disable this component before an upgrade to reduce the overall system do
   <td></td>
 </tr>
 <tr>
-  <td>Apps Manager Database</td>
-  <td></td>
-  <td></td>
-  <td>You can disable this component before an upgrade to reduce the overall system downtime.</td>
-</tr>
-<tr>
   <td>MySQL Server</td>
   <td></td>
   <td></td>
@@ -165,12 +159,12 @@ If any of these components have only one instance, you may fail to push, stage, 
   <td>Ops Manager operators experience 2-5 minute gaps in logging.</td>
 </tr>
 <tr>
-  <td>Push Apps Manager and Push App Usage Service errands</td>
+  <td>Push Apps Manager errand</td>
   <td></td>
   <td></td>
-  <td>These errands run scripts that connect the Apps Manager app and the App Usage Service components to the Apps Manager Database.
+  <td>This errand runs the script to deploy the Apps Manager application.
 <br />
-The Apps Manager app and App Usage Service components run in a single Diego Cell instance and the Apps Manager Database is a single component. If there is an upgrade issue with either the Apps Manager Database instance or the Diego Cell instance, the upgrade fails and Ops Manager does not run the Apps Manager deployment errand again.</td>
+The Apps Manager application runs in a single Diego Cell.</td>
 </tr>
 </table>
 

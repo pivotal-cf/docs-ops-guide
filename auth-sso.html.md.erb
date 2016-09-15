@@ -72,11 +72,23 @@ your Pivotal login page, which you can access at `https://login.YOUR-SYSTEM-DOMA
 	<p class="note"><strong>Note</strong>: Refer to the <a href="../opsguide/external-user-management.html">Adding Existing SAML or
 LDAP Users to a PCF Deployment</a> topic for information on on-boarding SAML users and mapping them to PCF user roles.</p>
 
+1. Select the **Name ID Format** for your SAML Identity Provider. This translates to `username` on PCF Elastic Runtime. The default is `Email Address`.
+
+1. For **Email Domain(s)**, enter a comma-separated list of the email domains for external users who will receive invitations to Apps Manager.
+
+1. For **First Name Attribute** and **Last Name Attribute**, enter the attribute names in your SAML database that correspond to the first and last names in each user record, for example `first_name` and `last_name`.
+
+1. For **Email Attribute**, enter the attribute name in your SAML assertion that corresponds to the email address in each user record, for example `EmailID`.
+
+1. For **External Groups Attribute**, enter the attribute name in your SAML 
+database that defines the groups that a user belongs to, for example 
+`group_memberships`. To map the groups from the SAML assertion to admin roles 
+in PCF, follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../adminguide/uaa-user-management.html#external-group) 
+section of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic. 
+
 1. By default, all SAML Authentication Request from PCF are signed. To change this, disable the **Sign Authentication Requests** checkbox and configure your Identity Provider to verify SAML authentication requests.
 
-1. To validate the signature for the incoming SAML assertions, enable the **Required Signed Assertions** checkbox and configure your Identity Provider to send signed SAML Assertions.
-
-1. Select the **Name ID Format** for your SAML Identity Provider. This translates to username on PCF Elastic Runtime. The default is Email Address.
+1. To validate the signature for the incoming SAML assertions, enable the **Required Signed Assertions** checkbox and configure your Identity Provider to send signed SAML assertions.
 
 1. Click **Save**.
 
@@ -93,7 +105,8 @@ Download the Service Provider Metadata from
 Consult the documentation from your Identity Provider for configuration 
 instructions.
 
-Refer to the table below for information about certain industry-standard Identity Providers and how to integrate them with PCF:
+Refer to the table below for information about certain industry-standard 
+Identity Providers and how to integrate them with PCF:
 
 <table border="1">
 	<tr>
@@ -126,7 +139,7 @@ To integrate the UAA with LDAP, configure Elastic Runtime with your LDAP endpoin
 
     <%=image_tag("uaa/ldap-config.png")%>
 
-1. Under **Configure your UAA** select **LDAP Server**.
+1. Under **Configure your UAA**, select **LDAP Server**.
 
 1. Enter the **Server URL**, a URL pointing to the LDAP server. This URL must include one of the following protocols:
     * `ldap://`: This specifies that the LDAP server uses an unencrypted connection.
@@ -162,6 +175,14 @@ them to PCF Roles.</p>
 1. For **Group Search Filter**, enter string that defines LDAP Group search criteria. The standard value is `member={0}`.
 
 1. For **Server SSL Cert**, paste in the root certificate from your CA certificate or your self-signed certificate.
+
+1. If you are using `ldaps://` with a self-signed certificate, enter a Subject Alternative Name for your certificate under **Server SSL Cert AltName**. Otherwise, leave this field blank.
+
+1. For **First Name Attribute** and **Last Name Attribute**, enter the attribute names in your LDAP directory that correspond to the first and last names in each user record, for example `cn` and `sn`.
+
+1. For **Email Attribute**, enter the attribute name in your LDAP directory that corresponds to the email address in each user record, for example `mail`.
+
+1. For **Email Domain(s)**, enter a comma-separated list of the email domains for external users who will receive invitations to Apps Manager.
 
 1. Click **Save**.
 

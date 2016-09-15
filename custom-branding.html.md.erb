@@ -13,10 +13,10 @@ Operators customize Apps Manager by configuring the **Custom Branding** and **Ap
 1. Click **Pivotal Elastic Runtime**.
 1. Click the **Custom Branding** tab.
 
-	<%= image_tag 'custom-branding.png' %>
+	<%= image_tag 'custombranding.png' %>
 
 1. For **Company Name**, enter the name of your organization. If left blank, the name defaults to **Pivotal**.
-1. For **Accent Color**, enter the hexadecimal code for the color used to accent various visual elements. For example, `#71ffda`.
+1. For **Accent Color**, enter the hexadecimal code for the color used to accent various visual elements, such as the currently selected space in the sidebar. For example, `#71ffda`.
 1. For **Main Logo**, enter a Base64-encoded URL string for a PNG image to use as your main logo. The image can be square or wide. For example, `data:image/png;base64,iVBORw0...`. If left blank, the image defaults to the Pivotal Logo.
 1. For **Square Logo/Favicon**, enter a Base64-encoded URL string for a PNG image to use as your favicon, in the Apps Manager header, and in places that require a smaller logo. For example, `data:image/png;base64,iVBORw0...`. If left blank, the image defaults to the Pivotal Logo.
 1. For **Footer Text**, enter a string to be displayed as the footer. If left blank, the footer text defaults to **Pivotal Software Inc. All rights reserved.**.
@@ -24,6 +24,12 @@ Operators customize Apps Manager by configuring the **Custom Branding** and **Ap
 	* Click **Add**.
 	* For **Link text**, enter a label for the link.
 	* For **Url**, enter an external or relative URL. For example, `http://docs.pivotal.io` or `/tools.html`.
+	
+1. For special notification purposes such as governmental or restricted usage, use the Classification fields to create a special Header and Footer. Enter values in the following fields:
+    * For **Classification Header/Footer Background Color**, enter the hexadecimal code for the desired background color of the header and footer.
+	* For **Classification Header/Footer Text Color**, enter the hexadecimal code for the desired color of header and footer text.
+	* For **Classification Header Content**, enter content for the header in either plain text or HTML. If you do not provide any content, the custom header will not appear.
+	* For **Classification Footer Content**, enter content for the footer in either plain text or HTML. If you do not provide any content, the custom footer will not appear. The Classification footer appears below the normal footer, which you can customize in the **Footer Text** and  **Footer Links** fields.
 
 ## <a id='apps-man'></a>Apps Manager Config Page
 
@@ -36,4 +42,4 @@ Operators customize Apps Manager by configuring the **Custom Branding** and **Ap
 1. For **Product Name**, enter text to replace **Apps Manager** in the header and the title of Apps Manager. This text defaults to **Apps Manager** if left blank.
 1. For **Marketplace Name**, enter text to replace the header in the Marketplace pages. This text defaults to **Marketplace** if left blank.
 1. By default, Apps Manager includes three sidebar links: **Marketplace**, **Docs**, and **Tools**. You can edit existing sidebar links by clicking the name of the link and editing the **Link text** and **Url** fields. Or, you can remove the link by clicking the trash icon next to its name. If you want to add a new sidebar link, click **Add** and complete the **Link text** and **Url** fields.
-<p class="note"><strong>Note</strong>: Removing any of the default links will remove them from the sidebar for all users.</p>
+	<p class="note"><strong>Note</strong>: Removing any of the default links will remove them from the sidebar for all users.</p>
