@@ -67,11 +67,8 @@ This topic provides two procedures. Choose the correct procedure for your enviro
     <%= image_tag("generate-cert.png") %>
     <p class="note"><strong>Note</strong>: SSL certificates generated for wildcard DNS records only work for a single domain name component or component fragment. For example, a certificate generated with <code>\*.EXAMPLE.com</code> does not work for <code>apps.EXAMPLE.com</code> and <code>system.EXAMPLE.com</code>. The certificate must have both <code>apps.EXAMPLE.com</code> and <code>system.EXAMPLE.com</code> attributed to it. </p>
   4. If you want to use a specific set of SSL ciphers for the Router, configure **Router SSL Ciphers**. Enter a colon-separated list of custom SSL ciphers to pass to the router. Otherwise, leave this field blank.
-  4. Skip to [step 6](#save).
-
-      <%= image_tag("ssl-termination-router.png") %>
-
   5. Skip to [step 6](#disablessl).
+      <%= image_tag("ssl-termination-router.png") %>
 
 1. If you use HAProxy and not your own load balancer as the first point-of-entry, do the following:
 
