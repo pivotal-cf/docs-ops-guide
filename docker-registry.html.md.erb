@@ -7,8 +7,7 @@ owner: Ops Manager
 
 This topic describes how to configure your Docker Trusted Registries, such as Docker Hub, with Pivotal Cloud Foundry (PCF). 
 Docker Trusted Registries are private Docker Registries that have a valid SSL certificate. 
-To use Docker Trusted Registries, you must choose either to submit your root certificate authority (CA) certificate or 
-provide the IP address for your Docker Trusted Registry.
+To use Docker Trusted Registries, you must choose either to submit your root certificate authority (CA) certificate or provide the IP address for your Docker Trusted Registry.
 
 **Prerequisite**: Ensure that you have enabled Docker support in PCF with the `cf enable-feature-flag diego_docker` command, as described in the [Using Docker in Cloud Foundry](../adminguide/docker.html) topic.
 
@@ -39,8 +38,7 @@ You can then push and pull images from your Docker Trusted Registries.
 If you choose not to provide a CA certificate, you must provide the IP address of your Docker Trusted Registry.
 
 <p class="note"><strong>Note</strong>: Using a whitelist skips SSL validation. 
-If you want to enforce SSL validation, enter the IP address of the Docker Trusted Registry in the 
-<strong>No proxy</strong> field described <a href='#proxy'>below</a>.
+If you want to enforce SSL validation, enter the IP address of the Docker Trusted Registry in the <strong>No proxy</strong> field described <a href='#proxy'>below</a>.
 
 
 1. Navigate to the PCF Operations Manager **Installation Dashboard**.
