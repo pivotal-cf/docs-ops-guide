@@ -75,25 +75,15 @@ The **setup.ps1** script configures Windows features, DNS settings, and the fire
 
 ###<a id='script-generator'></a>Step 3: Run Install Script Generator
 
-* If the Windows instance is set up to access the BOSH director, from a command prompt, run **generate.exe** with the following arguments:
-    * **boshUrl**: Find your `boshUrl` in the [troubleshooting](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html) documentation.
+* Run **generate.exe** with the following arguments:
+    * **manifest**: Path to CF Manifest file downloaded from your Ops Manager BOSH director.
     * **outputDir**: The directory that will contain the required certificates and a script to run the installers.
 
 	<pre class="terminal">
 	$ generate.exe ^
-	-boshUrl https://username:password@bosh-director.example.com:25555 ^
+	-manifest /tmp/cf.yml ^
 	-outputDir C:\diego-windows
 	</pre>
-
-* If BOSH access is not set up, use the following:
-    * **manifest**: Path to CF Manifest file.
-    * **outputDir**
-
-  <pre class="terminal">
-  $ generate.exe ^
-  -manifest /tmp/cf.yml ^
-  -outputDir C:\diego-windows
-  </pre>
 
 	<p class="note"><strong>Note</strong>: The parameters for <code>generate.exe</code> are case-sensitive.</p>
 
