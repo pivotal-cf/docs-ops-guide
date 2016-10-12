@@ -73,6 +73,8 @@ Follow the instructions below to download and configure the Windows cell.
 1. Right-click on the **setup.ps1** file and select **Run with PowerShell**.
 The **setup.ps1** script configures Windows features, DNS settings, and the firewall for your Windows cell.
 
+   <p class='note'><strong>Note</strong>: Some IaaSes may require elevated Windows privileges to run the `setup.ps1` script. If you receive a <code>PSSecurity Unauthorized Access</code> error, use the `Set-ExecutionPolicy Unrestricted` PowerShell cmdlt before re-running the `setup.ps1` script.</p>
+
 ###<a id='script-generator'></a>Step 3: Run Install Script Generator
 
 * Run **generate.exe** with the following arguments:
