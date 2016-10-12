@@ -18,7 +18,8 @@ Diego for Windows does not yet support the following features:
 
 * Guaranteed binary compatibility with Diego BOSH releases
 * BOSH rolling updates for CF or core operating system updates in Windows
-* Fair sharing of CPU resources. Diego for Windows uses hard allocations instead.
+* Fair sharing of CPU resources 
+  <p class="note"><strong>Note</strong>: Diego for Windows does not enforce any CPU limits.</p>
 * Container SSH access from the Cloud Foundry Command Line Interface (cf CLI)
 * ICMP egress by default. You must explicitly enable ICMP through security groups.
 * Emitting firewall logs into the CF log pipeline
