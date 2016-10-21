@@ -8,41 +8,57 @@ owner: Diego
 This topic contains instructions for setting up a Windows cell in a Diego
 deployment. For more information about Diego, see the [Diego Architecture](../concepts/diego/diego-architecture.html) topic.
 
-A **cell** is a virtual machine (VM) that stages, hosts, and manages application lifecycles. You can install a Windows cell into your Cloud Foundry (CF) deployment by connecting directly to a Windows VM.
+A **cell** is a virtual machine (VM) that stages, hosts, and manages application lifecycles. You can install a Windows cell into your Cloud Foundry (CF) deployment through Amazon Web Services (AWS) [CloudFormation](#cloudformation) or by [manually](#manual) connecting directly to a Windows VM.
 
-##<a id="limitations"></a>Limitations
+##<a id='cloudformation'></a>Install through AWS CloudFormation
 
-###<a id="cf-features-not-supported"></a>Unsupported Features
+###Prerequisites
 
-Diego for Windows does not yet support the following features:
+* A working Diego deployment
 
-* Guaranteed binary compatibility with Diego BOSH releases
-* BOSH rolling updates for CF or core operating system updates in Windows
-* Fair sharing of CPU resources 
-  <p class="note"><strong>Note</strong>: Diego for Windows does not enforce any CPU limits.</p>
-* Container SSH access from the Cloud Foundry Command Line Interface (cf CLI)
-* ICMP egress by default. You must explicitly enable ICMP through security groups.
-* Emitting firewall logs into the CF log pipeline
+###<a id='download'></a>Step 1: Download CloudFormation Template
 
-###<a id="stability-scalability"></a>Stability and Scalability Expectations
+1. Navigate to the [Elastic Runtime product on Pivotal Network](https://network.pivotal.io/products/elastic-runtime). This points to the latest release of the **Elastic Runtime** product.
 
-Capacity planning for Windows instances of CF varies greatly based on the overhead caused by the components you add to the instance. 
+1. Select **DiegoWindows** from the list of Release Download Files.
 
-###<a id="supported-applications"></a>Supported Applications
+	![DiegoWindows file group](images/greenhouse/diego-windows-file-group.png)
 
-The following application types are known to run correctly on Diego Windows:
+1. Download the **DiegoWindows AWS CloudFormation.json** file.
 
-* [ASP.NET MVC](https://github.com/cloudfoundry-incubator/wats/tree/af669382b4639e7605afc23f1dc8d48d8bfa5dd1/assets/nora/NoraPublished)
+	![DiegoWindows CloudFormation](images/greenhouse/diego-windows-cloudformation.png)
 
-	<p class="note"><strong>Note</strong>: Twelve-factor ASP.NET MVC apps compiled against .NET 3.5+ were tested most extensively.</p>
+###<a id='upload'></a>Step 2: Upload Template to AWS
 
-* [Windows-compiled executables](https://github.com/cloudfoundry-incubator/wats/tree/af669382b4639e7605afc23f1dc8d48d8bfa5dd1/assets/webapp)
-* [Batch scripts with a manually specified start command](https://github.com/cloudfoundry-incubator/wats/tree/af669382b4639e7605afc23f1dc8d48d8bfa5dd1/assets/batch-script)
-* [WCF Applications](https://github.com/cloudfoundry/wats/tree/3709b49c4f29152752201c03ba146ead34bd50ae/assets/wcf/Hello.Service.IIS)
+1. Log in to the AWS [CloudFormation console](https://console.aws.amazon.com/cloudformation/home).
 
-##<a id="manual"></a>Install
+1. Choose **Create Stack** and upload the DiegoWindows AWS CloudFormation template to Amazon S3.
 
-###<a id="prereqs"></a>Prerequisites
+1. Provide the following information:
+  * **BoshHost**: BOSH director host
+  * **BoshPassword**: Password to use to access the BOSH director
+  * **BoshUserName**: User name to use to access the BOSH director
+  * **CellName**: Name for your cell
+  * **ContainerizerPassword**: Password for the containerizer user. Must be alphanumeric and contain at least one uppercase, one lowercase, and one numeric character.
+  * **DesiredCapacity**: Number of Windows cells to deploy
+  * **Keypair**: A keypair. You must have the private key to this keypair to retrieve the Administrator password to the Windows VMs that are created.
+  * **NATInstance**: The instance ID of the NAT box. To find this instance ID, search for `NAT` in the CloudFormation dropdown.
+  * **SecurityGroup**: Security group ID to use for the Windows cells
+  * **SubnetCIDR**: The IP range of the Windows cell subnet. For example, `10.0.100.0/24`. You should provide a range that does not collide with an existing subnet within the VPC.
+  * **VPCID**: The ID of the VPC where you want the cell and subnet to be created
+  ![DiegoWindows CloudFormation Form](images/greenhouse/cloud-formation-form.png)
+  <br>
+  The CloudFormation template performs the following functions:
+      1. Configures the Windows cell for the appropriate availability zone, based on the security group that you provide.
+      1. Installs the MSI.
+      1. Registers itself with Diego.
+
+  The CloudFormation template succeeds only if all services are up and running after installation. To debug a failed installation, navigate to Advanced Options and set **Rollback on failure** to `No`.
+  ![DiegoWindows CloudFormation Form](images/greenhouse/rollback-on-failure.png)
+
+##<a id="manual"></a>Install Manually
+
+###Prerequisites
 
 * A working Diego deployment
 * A Windows Server 2012R2 VM instance that is routable to your Diego deployment
@@ -74,21 +90,27 @@ Follow the instructions below to download and configure the Windows cell.
 1. Right-click on the **setup.ps1** file and select **Run with PowerShell**.
 The **setup.ps1** script configures Windows features, DNS settings, and the firewall for your Windows cell.
 
-   <p class='note'><strong>Note</strong>: Some IaaSes may require elevated Windows privileges to run the `setup.ps1` script. If you receive a <code>PSSecurity Unauthorized Access</code> error, use the `Set-ExecutionPolicy Unrestricted` PowerShell cmdlt before re-running the `setup.ps1` script.</p>
+	![run setup script](images/greenhouse/run-setup-script.png)
+
+	![setup script running](images/greenhouse/setup-script-running.png)
 
 ###<a id='script-generator'></a>Step 3: Run Install Script Generator
 
-* Run **generate.exe** with the following arguments:
-    * **manifest**: The path to the CF manifest file downloaded from your Ops Manager BOSH Director
-    * **outputDir**: The directory that will contain the required certificates and a script to run the installers
+1. From a command prompt, run **generate.exe** with the following arguments:
+    * **boshUrl**: Find your `boshUrl` in the [troubleshooting](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html) documentation.
+    * **windowsUsername**: Used to run Containerizer. The user provided must be a member of the Administrators group. All other services will run as the SYSTEM user.
+    * **windowsPassword**: The password for your specified Windows user.
+    * **outputDir**: The directory that will contain the required certificates and a script to run the installers.
 
-	<pre class="terminal">
+	```
 	$ generate.exe ^
-	-manifest /tmp/cf.yml ^
+	-boshUrl https://username:password@bosh-director.example.com:25555 ^
+	-windowsUsername=Administrator ^
+	-windowsPassword=Password123 ^
 	-outputDir C:\diego-windows
-	</pre>
+	```
 
-	<p class="note"><strong>Note</strong>: The parameters for <code>generate.exe</code> are case-sensitive.</p>
+	![run generate script](images/greenhouse/run-generate-script.png)
 
 ###<a id='msi'></a>Step 4: Install MSI
 
@@ -99,8 +121,6 @@ The **setup.ps1** script configures Windows features, DNS settings, and the fire
 	![downloading msis](images/greenhouse/downloading-msi-screen.png)
 
 1. From a command prompt, run **install.bat** from the **outputDir**.
-
-    <p class="note"><strong>Note</strong>: By default, Containerizer stores container files at <code>C:\containerizer</code>. To modify the default, open <code>install.bat</code> and set <code>CONTAINER_DIRECTORY</code> to the directory where you want Containerizer to store container files.</p>
 
 	![running install bat](images/greenhouse/running-install-bat.png)
 
