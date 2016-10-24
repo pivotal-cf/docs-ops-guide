@@ -43,6 +43,8 @@ authentication.
 
 	<p class='note'><strong>Note</strong>: You only need to select one of the above configurations. If you configure both, your Identity Provider defaults to the <strong>(OR) Provider Metadata URL</strong>.</p>
 
+1. (Optional) The **Proxy IPs Regular Expression** field contains a pipe delimited set of regular expressions that UAA considers to be reverse proxy IP addresses. UAA respects the `x-forwarded-for` and `x-forwarded-proto` headers coming from IP addresses that match these regular expressions.  To configure UAA to respond properly to Router or HAProxy requests coming from public IP address(es), append a regular expression or regular expressions to match the public IP address(es).
+
 1. Click **Save**.
 
 1. Click **Apply Changes** on the Ops Manager home page for the configuration to take effect.
