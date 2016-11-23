@@ -72,11 +72,13 @@ your Pivotal login page, which you can access at `https://login.YOUR-SYSTEM-DOMA
 	<p class="note"><strong>Note</strong>: Refer to the <a href="../opsguide/external-user-management.html">Adding Existing SAML or
 LDAP Users to a PCF Deployment</a> topic for information on on-boarding SAML users and mapping them to PCF user roles.</p>
 
+1. Select the **Name ID Format** for your SAML Identity Provider. This translates to username on PCF Elastic Runtime. The default is Email Address.
+
 1. By default, all SAML Authentication Request from PCF are signed. To change this, disable the **Sign Authentication Requests** checkbox and configure your Identity Provider to verify SAML authentication requests.
 
 1. To validate the signature for the incoming SAML assertions, enable the **Required Signed Assertions** checkbox and configure your Identity Provider to send signed SAML Assertions.
 
-1. Select the **Name ID Format** for your SAML Identity Provider. This translates to username on PCF Elastic Runtime. The default is Email Address.
+1. For the **Signature Algorithm** dropdown menu, choose an algorithm to use for signed requests and assertions. The default value is `SHA1`.
 
 1. Click **Save**.
 
