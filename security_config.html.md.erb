@@ -16,7 +16,145 @@ This topic provides two procedures. Choose the correct procedure for your enviro
 
 <p class="note"><strong>Note</strong>: Certificates generated in Elastic Runtime are signed by the Ops Manager Certificate Authority. They are not technically self-signed, but they are sometimes referred to as "Self-Signed Certificates" in the Ops Manager UI and throughout this documentation.</p>
 
-## <a id="prod"></a>Configure for a Production Deployment
+* You must obtain at least one SSL/TLS certificate for your environment. 
+  * In a production environment, use a signed SSL/TLS certificate (trusted) from a known certificate authority (CA).
+  * In a development or testing environment, you can use a trusted CA certificate or a self-signed certificate. You can generate a self-signed certificate with `openssl` or a similar tool, or use the Elastic Runtime Ops Manager interface to [generate a certificate](#ert_certgen) for you.
+   <p class="note"><strong>Note</strong>: Certificates generated in Elastic Runtime are signed by the Ops Manager Certificate Authority. They are not technically self-signed, but they are sometimes referred to as "Self-Signed Certificates" in the Ops Manager UI and throughout this documentation.</p>
+* Certificates used in PCF must be encoded in the PEM format.
+* When you generate a certificate, save the private key used to generate your certficate in a safe place. You must upload its contents to the Elastic Runtime networking configuration.
+* The certificate on the Gorouter must be associated with the correct hostname so that HTTPS can validate the request.
+* If wildcard certificates are not supported for some or all of your domains, then configure termination requests at the [load balancer only](#lb_term). In this type of deployment, the load balancer passes unencrypted traffic to the Gorouter. As a result, you avoid having to reissue and reinstall certificates on the Gorouter for every app or UAA security zone.
+* Extended Validation (EV) certificates support multiple hostnames, like SAN, but do not support wildcards. For this reason, if EV certs are required, then terminate TLS/SSL at the [load balancer only](#lb_term) for the same reason stated above. You can avoid having to reissue and reinstall certificates on the Gorouter for every app or UAA security zone.
+
+### <a id="aws_certs"></a> Certificate Requirements on AWS
+
+If you are deploying PCF on AWS, then the certificate that you configure in Elastic Runtime must match the certificate that you upload to AWS as a prerequisite to PCF deployment. For more information, see the [Upload an SSL Certificate](../customizing/cloudform-template.html#upload-cert) section of the [Deploying the CloudFormation Template for PCF on AWS](../customizing/cloudform-template.html) topic.
+
+### <a id="gcp_certs"></a> Certificate Requirements on GCP
+
+If you are deploying PCF on GCP, then you must add your certificate to both the frontend configuration of your HTTP Load Balancer and to the Gorouter (Elastic Runtime Router). For more information, see [Create Instance Groups and the HTTP(S) Load Balancer](../customizing/gcp-prepare-env.html#create-http-and-instance-group).
+
+GCP load balancers actually forward both encrypted (WebSockets) and unencrypted (HTTP and TLS-terminated HTTPS) traffic to the Gorouter. When configuring the point-of-entry for a GCP deployment, select <b>Forward SSL to Elastic Runtime Router</b> in your Elastic Runtime network configuration. This point-of-entry selection accommodates this special characteristic of GCP deployments.
+
+##<a id="create_or_obtain_certs"></a> Creating a Wildcard Certificate for PCF Deployments
+
+This section describes how to create or generate a certificate for your PCF Elastic Runtime environment. If you are deploying to a production environment, you should obtain a certificate from a trusted authority (CA).
+
+For internal development or testing environments, you have two options for creating a required SSL certificates. 
+
+* You can create a self-signed certificate, or 
+* You can have [Elastic Runtime generate the certificate](#ert_certgen) for you. 
+
+To create a certificate, you can use a wide variety of tools including OpenSSL, Java's keytool, Adobe Reader, and Apple's Keychain to generate a Certificate Signing Request (CSR). 
+
+In either case for either self-signed or trusted single certificates, apply the following rules when creating the CSR:
+
+* Specify your registered wildcard domain as the `Common Name`. For example, `*.yourdomain.com`.
+* If you are using a split domain setup that separates the domains for `apps` and `system` components (recommended), then enter the following values in the `Subject Alternative Name` of the certificate:
+    * *.apps.yourdomain.com
+    * *.system.yourdomain.com
+    * *.login.system.yourdomain.com
+    * *.uaa.system.yourdomain.com
+* If you are using a single domain setup, then use the following values as the `Subject Alternative Name` of the certificate:
+    * *.login.system.yourdomain.com
+    * *.uaa.system.yourdomain.com
+
+    <p class="note"><strong>Note</strong>: SSL certificates generated for wildcard DNS records only work for a single domain name component or component fragment. For example, a certificate generated for <code>*.EXAMPLE.com</code> does not work for <code>*.apps.EXAMPLE.com</code> and <code>*.system.EXAMPLE.com</code>. The certificate must have both <code>*.apps.EXAMPLE.com</code> and <code>*.system.EXAMPLE.com</code> attributed to it. </p>
+    
+### <a id="ert_certgen"></a> Generating a RSA Certificate in Elastic Runtime
+
+1. Navigate to the Ops Manager Installation Dashboard.
+
+1. Click the **Elastic Runtime** tile in the Installation Dashboard.
+
+1. Click **Networking**.
+ 
+1. Click **Generate RSA Certificate** to populate the **Router SSL Termination Certificate and Private Key** fields with RSA certificate and private key information.
+  
+1. If you are using a split domain setup that separates the domains for `apps` and `system` components (recommended), then enter the following domains for the certificate:
+    * *.yourdomain.com
+    * *.apps.yourdomain.com
+    * *.system.yourdomain.com
+    * *.login.system.yourdomain.com
+    * *.uaa.system.yourdomain.com
+    
+    For example, `*.example.com`, `*.apps.example.com`, `*.system.example.com`, `*.login.system.example.com`, `*.uaa.system.example.com`
+
+    <%= image_tag("generate-cert.png") %>
+
+## <a id="ssl_term"></a> About SSL/TLS Termination in PCF Elastic Runtime
+
+When you deploy PCF, you must configure the SSL/TLS termination for HTTP traffic in your Elastic Runtime configuration. You can terminate SSL/TLS at any one of the following entry points into PCF:
+
+* Gorouter
+* Load balancer and Gorouter
+* Load balancer
+* HAProxy
+
+The following table summarizes SSL/TLS termination options in PCF and provides guidance on which option to choose for your deployment.
+
+<table border="1" class="nice">
+<tr>
+  <th>If the following applies to you:</th>
+  <th>Then terminate SSL/TLS at:</th>
+  <th>Related configuration procedure:</th>
+  </tr>
+  <tr>
+  <td><ul>
+  <li>You want the most performant and recommended option, and </li>
+  <li>You can use a single SAN certificate for your deployment for your wildcard domains.</li>
+  </ul></td>
+  <td>
+   <b>Gorouter only</b>.<br/><br/>Select the <b>Forward SSL to Elastic Runtime Router</b> in your Elastic Runtime network configuration.
+  </td>
+  <td><a href="#gorouter">Procedure: Configuring SSL/TLS Termination at Gorouter</a>
+  </td>
+  </tr>
+  <tr>
+  <td>
+  <ul><li>You cannot use a single SAN certificate for all system and application domains for your deployment, or</li>
+  <li>You require Extended Validation (EV) certificates.</li>
+  </ul>
+  </td>
+  <td><b>Load balancer only</b>.<br/><br/>Select the <b>Forward unencrypted traffic to Elastic Runtime Router</b>
+  </td>
+  <td><a href="#unencrypted">Procedure: Configuring SSL/TLS Termination at the Load Balancer</a>
+  </td>
+  </tr>
+    <tr>
+    <td><ul>
+      <li>You want a higher level of security, and</li>
+      <li>You do not mind a slightly less performant deployment, and</li>
+	  <li>You can use a single SAN certificate on the Gorouter, either for all system and application domains (but with a different key than for the same certificates hosted on your load balancer) or for a single domain (but with hostname verification disabled on the load balancer).</li> </td>
+    <td><b>Load balancer and Gorouter</b>.<br/><br/>Select the <b>Forward SSL to Elastic Runtime Router</b> in your Elastic Runtime network configuration. 
+    </td>
+    <td><a href="#gorouter_lb">Procedure: Configuring SSL/TLS Termination at Gorouter and Load Balancer</a>
+    </td>
+  </tr>
+   <tr>
+  <td><ul>
+   <li>You can use a single SAN certificate for your deployment for your wildcard domains, and</li>
+   <li>You are deploying a test or development environment, or</li>
+   <li>You do not mind a slightly less performant deployment.</li>
+  </ul>
+  </td>
+  <td>
+  <b>HA Proxy</b>.<br/><br/>Select the <b>Forward SSL to HA Proxy</b>. 
+  </td>
+  <td><a href="#haproxy">Procedure: Configuring SSL/TLS Termination at HA Proxy</a>
+  </td>
+  </tr>
+</tr></table>
+
+## <a id="ssl_term_ert_config"></a> Procedures for Configuring SSL/TLS Termination
+
+This section describes the required steps for configuring SSL/TLS termination in PCF.
+
+### <a id="gorouter"></a>Procedure: Configuring Termination at the Gorouter
+
+Perform the following steps to configure SSL termination on the Gorouter:
+
+1. Configure your load balancer to pass through requests from the client to the Gorouter.
 
 1. Navigate to the Ops Manager Installation Dashboard.
 
@@ -34,6 +172,46 @@ This topic provides two procedures. Choose the correct procedure for your enviro
   3. If you want to use a specific set of SSL ciphers for the Router, configure **Router SSL Ciphers**. Enter a colon-separated list of custom SSL ciphers to pass to the router. Otherwise, leave this field blank.
   4. Skip to [step 6](#save).
     <%= image_tag("ssl-termination-router.png") %>
+    
+1. Click **Save**.
+
+### <a id="gorouter_lb"></a>Procedure: Configuring Termination at the External Load Balancer and Gorouter
+
+Perform the following steps to configure SSL termination on the Gorouter and load balancer:
+
+1. Navigate to the Ops Manager Installation Dashboard.
+
+1. Click the **Elastic Runtime** tile in the Installation Dashboard.
+
+1. Click **Networking**.
+
+1. Under **Select one of the following point-of-entry options**, select the first option, **Forward SSL to Elastic Runtime Router**.
+
+1. Enter your PEM encoded certificate and your PEM encoded private key in the fields under **Router SSL Termination Certificate and Private Key**. You can either upload your own certificate or generate a RSA certificate in ERT. See [Creating a Certificate for PCF Deployments](#create_or_obtain_certs) for options on adding a certificate to Gorouter.
+
+1. If you want to use a specific set of SSL ciphers for the Router, configure **Router SSL Ciphers**. Enter a colon-separated list of custom SSL ciphers to pass to the router. Otherwise, leave this field blank.
+
+1. If you are not using SSL encryption or if you are using self-signed certificates, you can select **Disable SSL certificate verification for this environment**. Selecting this checkbox also disables SSL verification for route services. 
+  <p class="note">Use this checkbox only for development and testing environments. Do not select it for production environments.</p>
+
+1. Click **Save**.
+
+1. Then, after you complete the configuration in PCF, add your certificate or certficates to your load balancer, and configure its listening port. The procedures vary depending on your IaaS.
+
+1. Configure your load balancer to append the `X-Forwarded-For` and `X-Forwarded-Proto` headers to client requests.
+
+    <br/>If the load balancer cannot be configured to provide the `X-Forwarded-For` header, the Gorouter appends it in requests forwarded to applications and system components, set to the IP address of the load balancer.
+
+    <p class='note'><strong>Note</strong>: If the load balancer accepts unencrypted requests, it <strong>must</strong> provide the <code>X-Forwarded-Proto</code> header. Conversely, if the load balancer cannot be configured to send the <code>X-Forwarded-Proto</code> header, it should not accept unencrypted requests. Otherwise, applications and platform system components that require encrypted client requests will accept unencrypted requests when they should not accept them.</p>
+
+
+### <a id="unencrypted"></a>Procedure: Configuring Termination at Load Balancer Only
+
+In PCF, perform the following steps to configure SSL termination on the load balancer only:
+
+1. Navigate to the Ops Manager Installation Dashboard.
+
+1. Click the **Elastic Runtime** tile in the Installation Dashboard.
 
 1. If you use HAProxy and not your own load balancer as the first point-of-entry, do the following:
 
@@ -47,7 +225,18 @@ This topic provides two procedures. Choose the correct procedure for your enviro
     <%= image_tag("ssl-termination.png") %>
 1. <a id="save"></a>Click **Save**.
 
-## <a id="dev"></a>Configure for a Development or Testing Deployment
+1. Then, after you complete the configuration in PCF, add your certificate or certificates to your load balancer, and configure its listening port. The procedures vary depending on your IaaS.
+
+1. Configure your load balancer to append the `X-Forwarded-For` and `X-Forwarded-Proto` headers to client requests.
+
+    <br/>If the load balancer cannot be configured to provide the `X-Forwarded-For` header, the Gorouter will append it in requests forwarded to applications and system components, set to the IP address of the load balancer.
+
+    <p class='note'><strong>Note</strong>: If the load balancer accepts unencrypted requests, it <strong>must</strong> provide the X-Forwarded-Proto header. Conversely, if the load balancer cannot be configured to send the X-Forwarded-Proto header, it should not accept unencrypted requests. Otherwise, applications and platform system components that require encrypted client requests will accept unencrypted requests when they should not accept them.</p>
+
+
+### <a id="haproxy"></a>Procedure: Configuring Termination at HAProxy
+
+In PCF, perform the following steps to configure SSL termination on HAProxy:
 
 1. Navigate to the Ops Manager Installation Dashboard.
 
@@ -72,16 +261,18 @@ This topic provides two procedures. Choose the correct procedure for your enviro
 
 1. If you use HAProxy and not your own load balancer as the first point-of-entry, do the following:
 
-  1. Under **Select one of the point-of-entry-options**, select the third option, **Forward SSL to HA Proxy**.
-  2. Enter your PEM encoded certificate and your PEM encoded private key in the fields under **SSL Termination Certificate and Private Key**.
-  If your deployment is on AWS, this certificate must match the one that you uploaded to AWS earlier in the
-  [Upload an SSL Certificate](../customizing/cloudform-template.html#upload-cert) section of the 
-  [Deploying the CloudFormation Template for PCF on AWS](../customizing/cloudform-template.html) topic.
-  3. If you want to use a specific set of SSL ciphers for HAProxy, configure **HAProxy SSL Ciphers**. Enter a colon-separated list of custom SSL ciphers to pass to HAProxy. Otherwise, leave this field blank.
-  1. If you want HAProxy to only allow HTTPS traffic, select **Disable HTTP traffic to HAProxy**.
+1. Under **Select one of the point-of-entry-options**, select the third option, **Forward SSL to HA Proxy**.
+ 
+1. Enter your PEM encoded certificate and your PEM encoded private key in the fields under **SSL Termination Certificate and Private Key**. You can either upload your own certificate or generate a RSA certificate in ERT. See [Creating a Certificate for PCF Deployments](#create_or_obtain_certs) for options on adding a certificate to HAProxy.
+  
+1. If you want to use a specific set of SSL ciphers for HAProxy, configure **HAProxy SSL Ciphers**. Enter a colon-separated list of custom SSL ciphers to pass to HAProxy. Otherwise, leave this field blank.
+
+1. If you want HAProxy to only allow HTTPS traffic, select **Disable HTTP traffic to HAProxy**.
     <%= image_tag("ssl-termination.png") %>
 
-1. <a id="disablessl"></a>If you are not using SSL encryption or if you are using self-signed certificates, you can select **Disable SSL certificate verification for this environment**. Selecting this checkbox also disables SSL verification for route services. Use this checkbox only for development and testing environments. Do not select it for production environments.
+1. If you are not using SSL encryption or if you are using self-signed certificates, you can select **Disable SSL certificate verification for this environment**. Selecting this checkbox also disables SSL verification for route services. 
+  <p class="note">Use this checkbox only for development and testing environments. Do not select it for production environments.</p>
+    
+1. Click **Save**.    
 
-1. Click **Save**.
 
