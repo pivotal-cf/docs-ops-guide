@@ -1,0 +1,46 @@
+---
+breadcrumb: Pivotal Cloud Foundry Documentation
+title: Enabling Pivotal Account
+owner: Identity
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes Pivotal Account, a user management tool that allows users to create and manage their accounts. In the Pivotal Account dashboard, users can perform the following tasks:
+
+* **Launch Applications**: Users can launch applications from the **Apps** tab of the Pivotal Account dashboard.
+* **Manage User Profiles**: The **Profile** tab allows a user to update their email address and account information.
+* **Manage Account Security**: The **Security** tab allows a user to update their password.
+* **Manage Notifications**: Users can navigate to the **Notifications** tab to manage their Pivotal Cloud Foundry notifications.
+* **Manage Approvals**: The **Approvals** tab shows the permissions that each user has for an application. The user can allow and revoke permissions for each application on this tab.
+
+##<a id="prereq"></a>Prerequisites
+
+You must have deployed the following in your PCF environment before using Pivotal Account:
+
+* [Apps Manager](../console/index.html)
+* [Notifications Service](../adminguide/notifications.html)
+
+
+##<a id="installation"></a>Enable Pivotal Account
+
+To enable Pivotal Account on Elastic Runtime as an errand, perform the following steps:
+
+1. Navigate to the Ops Manager **Installation Dashboard**.
+1. Click the **Pivotal Elastic Runtime** tile.
+1. Click the **Errands** pane, under **Settings**.
+1. Enable **Push Pivotal Account**.
+1. Click **Save**.
+1. Return to the Ops Manager **Installation Dashboard** and click **Apply Changes**.
+
+##<a id="access"></a>Access Pivotal Account
+
+To access Pivotal Account:
+
+1. Log in to Apps Manager.
+
+1. In the upper right side of the dashboard, select **USERNAME** > **My Account**.
+	<%= image_tag("./images/pivotal_account.png") %>
+
+1. You will land on the Pivotal Account page.
+	<%= image_tag("./images/logged_in_accounts.png") %>

@@ -8,57 +8,41 @@ owner: Diego
 This topic contains instructions for setting up a Windows cell in a Diego
 deployment. For more information about Diego, see the [Diego Architecture](../concepts/diego/diego-architecture.html) topic.
 
-A **cell** is a virtual machine (VM) that stages, hosts, and manages application lifecycles. You can install a Windows cell into your Cloud Foundry (CF) deployment through Amazon Web Services (AWS) [CloudFormation](#cloudformation) or by [manually](#manual) connecting directly to a Windows VM.
+A **cell** is a virtual machine (VM) that stages, hosts, and manages application lifecycles. You can install a Windows cell into your Pivotal Cloud Foundry (PCF) deployment by connecting directly to a Windows VM.
 
-##<a id='cloudformation'></a>Install through AWS CloudFormation
+##<a id="limitations"></a>Limitations
 
-###Prerequisites
+###<a id="cf-features-not-supported"></a>Unsupported Features
 
-* A working Diego deployment
+Diego for Windows does not yet support the following features:
 
-###<a id='download'></a>Step 1: Download CloudFormation Template
+* Guaranteed binary compatibility with Diego BOSH releases
+* BOSH rolling updates for PCF or core operating system updates in Windows
+* Fair sharing of CPU resources 
+  <p class="note"><strong>Note</strong>: Diego for Windows does not enforce any CPU limits.</p>
+* Container SSH access from the Cloud Foundry Command Line Interface (cf CLI)
+* ICMP egress by default. You must explicitly enable ICMP through security groups.
+* Emitting firewall logs into the CF log pipeline
 
-1. Navigate to the [Elastic Runtime product on Pivotal Network](https://network.pivotal.io/products/elastic-runtime). This points to the latest release of the **Elastic Runtime** product.
+###<a id="stability-scalability"></a>Stability and Scalability Expectations
 
-1. Select **DiegoWindows** from the list of Release Download Files.
+Capacity planning for Windows instances of PCF varies greatly based on the overhead caused by the components you add to the instance. 
 
-	![DiegoWindows file group](images/greenhouse/diego-windows-file-group.png)
+###<a id="supported-applications"></a>Supported Applications
 
-1. Download the **DiegoWindows AWS CloudFormation.json** file.
+The following application types are known to run correctly on Diego Windows:
 
-	![DiegoWindows CloudFormation](images/greenhouse/diego-windows-cloudformation.png)
+* [ASP.NET MVC](https://github.com/cloudfoundry-incubator/wats/tree/af669382b4639e7605afc23f1dc8d48d8bfa5dd1/assets/nora/NoraPublished)
 
-###<a id='upload'></a>Step 2: Upload Template to AWS
+	<p class="note"><strong>Note</strong>: Twelve-factor ASP.NET MVC apps compiled against .NET 3.5+ were tested most extensively.</p>
 
-1. Log in to the AWS [CloudFormation console](https://console.aws.amazon.com/cloudformation/home).
+* [Windows-compiled executables](https://github.com/cloudfoundry-incubator/wats/tree/af669382b4639e7605afc23f1dc8d48d8bfa5dd1/assets/webapp)
+* [Batch scripts with a manually specified start command](https://github.com/cloudfoundry-incubator/wats/tree/af669382b4639e7605afc23f1dc8d48d8bfa5dd1/assets/batch-script)
+* [WCF Applications](https://github.com/cloudfoundry/wats/tree/3709b49c4f29152752201c03ba146ead34bd50ae/assets/wcf/Hello.Service.IIS)
 
-1. Choose **Create Stack** and upload the DiegoWindows AWS CloudFormation template to Amazon S3.
+##<a id="manual"></a>Install
 
-1. Provide the following information:
-  * **BoshHost**: BOSH director host
-  * **BoshPassword**: Password to use to access the BOSH director
-  * **BoshUserName**: User name to use to access the BOSH director
-  * **CellName**: Name for your cell
-  * **ContainerizerPassword**: Password for the containerizer user. Must be alphanumeric and contain at least one uppercase, one lowercase, and one numeric character.
-  * **DesiredCapacity**: Number of Windows cells to deploy
-  * **Keypair**: A keypair. You must have the private key to this keypair to retrieve the Administrator password to the Windows VMs that are created.
-  * **NATInstance**: The instance ID of the NAT box. To find this instance ID, search for `NAT` in the CloudFormation dropdown.
-  * **SecurityGroup**: Security group ID to use for the Windows cells
-  * **SubnetCIDR**: The IP range of the Windows cell subnet. For example, `10.0.100.0/24`. You should provide a range that does not collide with an existing subnet within the VPC.
-  * **VPCID**: The ID of the VPC where you want the cell and subnet to be created
-  ![DiegoWindows CloudFormation Form](images/greenhouse/cloud-formation-form.png)
-  <br>
-  The CloudFormation template performs the following functions:
-      1. Configures the Windows cell for the appropriate availability zone, based on the security group that you provide.
-      1. Installs the MSI.
-      1. Registers itself with Diego.
-
-  The CloudFormation template succeeds only if all services are up and running after installation. To debug a failed installation, navigate to Advanced Options and set **Rollback on failure** to `No`.
-  ![DiegoWindows CloudFormation Form](images/greenhouse/rollback-on-failure.png)
-
-##<a id="manual"></a>Install Manually
-
-###Prerequisites
+###<a id="prereqs"></a>Prerequisites
 
 * A working Diego deployment
 * A Windows Server 2012R2 VM instance that is routable to your Diego deployment
@@ -72,7 +56,7 @@ point. You must have an MSDN account to download this ISO image.
 
 ###<a id='setup-files'></a>Step 1: Retrieve Setup Files
 
-Follow the instructions below to download and configure the Windows cell.
+Perform the following steps to download the necessary setup files:
 
 1. From your Windows cell, navigate to the [Elastic Runtime product on Pivotal Network](https://network.pivotal.io/products/elastic-runtime).
 
@@ -85,34 +69,81 @@ Follow the instructions below to download and configure the Windows cell.
 
 ###<a id='cell'></a>Step 2: Configure Windows Cell
 
+Perform the following steps to configure your Windows cell:
+
 1. Using **File Explorer**, navigate to the location where you downloaded the **setup.ps1** and **generate.exe** files.
 
 1. Right-click on the **setup.ps1** file and select **Run with PowerShell**.
 The **setup.ps1** script configures Windows features, DNS settings, and the firewall for your Windows cell.
 
-	![run setup script](images/greenhouse/run-setup-script.png)
+   <p class='note'><strong>Note</strong>: Some IaaSes may require elevated Windows privileges to run the `setup.ps1` script. If you receive a <code>PSSecurity Unauthorized Access</code> error, use the `Set-ExecutionPolicy Unrestricted` PowerShell cmdlt before re-running the `setup.ps1` script.</p>
 
-	![setup script running](images/greenhouse/setup-script-running.png)
+###<a id='download-manifest'></a>Step 3: Download Your Manifest
 
-###<a id='script-generator'></a>Step 3: Run Install Script Generator
+Perform the following steps to download your Cloud Foundry manifest:
 
-1. From a command prompt, run **generate.exe** with the following arguments:
-    * **boshUrl**: Find your `boshUrl` in the [troubleshooting](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html) documentation.
-    * **windowsUsername**: Used to run Containerizer. The user provided must be a member of the Administrators group. All other services will run as the SYSTEM user.
-    * **windowsPassword**: The password for your specified Windows user.
-    * **outputDir**: The directory that will contain the required certificates and a script to run the installers.
+1. SSH into your Ops Manager VM. The steps vary depending on your IaaS. For more information, see the [SSH into Ops Manager](../customizing/trouble-advanced.html#ssh) section of the _Advanced Troubleshooting with the BOSH CLI_ topic.
 
-	```
-	$ generate.exe ^
-	-boshUrl https://username:password@bosh-director.example.com:25555 ^
-	-windowsUsername=Administrator ^
-	-windowsPassword=Password123 ^
-	-outputDir C:\diego-windows
-	```
+1. From your Ops Manager VM, use the BOSH CLI to target and log in to your BOSH Director. The steps vary depending on whether your PCF deployment uses internal authentication or an external user store. For more information, see the [Log into BOSH](../customizing/trouble-advanced.html#log-in) section of the _Advanced Troubleshooting with the BOSH CLI_ topic.
 
-	![run generate script](images/greenhouse/run-generate-script.png)
+1. Use the `bosh deployments` command to list your deployments:
+  <pre class="terminal">
+  $ bosh deployments
+  Acting as user 'director' on 'p-bosh'
+  RSA 1024 bit CA certificates are loaded due to old openssl compatibility
+  +-------------------------+-------------------------------+-----------------------------------------------+--------------+
+  | Name                    | Release(s)                    | Stemcell(s)                                   | Cloud Config |
+  +-------------------------+-------------------------------+-----------------------------------------------+--------------+
+  | cf-222e11e11111111e1111 | cf-autoscaling/36             | bosh-google-kvm-ubuntu-trusty-go_agent/3263.7 | none         |
+  |                         | cf-mysql/26.6                 |                                               |              |
+  |                         | cf/239.0.26                   |                                               |              |
+  |                         | cflinuxfs2-rootfs/1.33.0      |                                               |              |
+  |                         | consul/108.0.2                |                                               |              |
+  |                         | diego/0.1485.1                |                                               |              |
+  |                         | etcd/60.0.1                   |                                               |              |
+  |                         | garden-runc/0.9.2             |                                               |              |
+  |                         | ipsec/1.5.37                  |                                               |              |
+  |                         | mysql-backup/1.25.0           |                                               |              |
+  |                         | mysql-monitoring/6            |                                               |              |
+  |                         | notifications-ui/17           |                                               |              |
+  |                         | notifications/24              |                                               |              |
+  |                         | pivotal-account/1             |                                               |              |
+  |                         | push-apps-manager-release/652 |                                               |              |
+  |                         | routing/0.138.6               |                                               |              |
+  |                         | service-backup/14             |                                               |              |
+  +-------------------------+-------------------------------+-----------------------------------------------+--------------+
+  </pre>
 
-###<a id='msi'></a>Step 4: Install MSI
+1. Review the output and identify the name of your Cloud Foundry deployment. In the above example, the name is `cf-222e11e11111111e1111`.
+
+1. Use the `bosh download` command to download the manifest of your Cloud Foundry deployment as `cf.yml`:
+  <pre class="terminal">
+  $ bosh download manifest cf-222e11e11111111e1111 cf.yml
+  Acting as user 'director' on deployment 'cf-222e11e11111111e1111' on 'p-bosh'
+  RSA 1024 bit CA certificates are loaded due to old openssl compatibility
+  Deployment manifest saved to 'cf.yml'
+  </pre>
+
+1. Copy the `cf.yml` file from the Ops Manager VM to your Windows cell in one of two ways:
+  * From your Windows cell, use [WinSCP](https://winscp.net/eng/download.php) to copy the manifest from the Ops Manager VM.
+  * From your local Mac or Linux machine, use `scp` to copy the manifest from the Ops Manager VM, then use a Remote Desktop Protocol (RDP) client like [Microsoft Remote Desktop](https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417?mt=12) to mount a directory containing the manifest on your local machine as a drive on the Windows cell. For more information, see the [Microsoft documentation](https://technet.microsoft.com/en-us/library/dn473012(v=ws.11).aspx). 
+
+###<a id='script-generator'></a>Step 4: Run Install Script Generator
+
+From your Windows cell, run **generate.exe** with the following arguments:
+
+* **manifest**: The path to the manifest file downloaded from your Ops Manager BOSH Director
+* **outputDir**: The directory that will contain the required certificates and a script to run the installers
+
+<pre class="terminal">
+$ generate.exe ^
+-manifest /tmp/cf.yml ^
+-outputDir C:\diego-windows
+</pre>
+
+<p class="note"><strong>Note</strong>: The parameters for <code>generate.exe</code> are case-sensitive.</p>
+
+###<a id='msi'></a>Step 5: Install MSI
 
 1. Download **DiegoWindows.msi** and **GardenWindows.msi** from the same Pivotal Network file group to the **outputDir** that you specified above.
 
@@ -122,9 +153,11 @@ The **setup.ps1** script configures Windows features, DNS settings, and the fire
 
 1. From a command prompt, run **install.bat** from the **outputDir**.
 
+    <p class="note"><strong>Note</strong>: By default, Containerizer stores container files at <code>C:\containerizer</code>. To modify the default, open <code>install.bat</code> and set <code>CONTAINER_DIRECTORY</code> to the directory where you want Containerizer to store container files.</p>
+
 	![running install bat](images/greenhouse/running-install-bat.png)
 
-###<a id='confirm-deployment'></a>Step 5: Confirm Successful Deployment
+###<a id='confirm-deployment'></a>Step 6: Confirm Successful Deployment
 
 Follow the steps below to deploy a sample .NET application to one of your Windows cells and exercise basic Elastic Runtime functionality to ensure that your deployment functions properly.
 

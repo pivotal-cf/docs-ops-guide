@@ -1,0 +1,84 @@
+---
+title: Scaling Down Your MySQL Cluster
+owner: MySQL
+---
+
+This topic describes how to safely scale down your MySQL cluster to a single node.
+
+By default MySQL is a single node. To take advantage of the high availability features of MySQL, you may have scaled the configuration up to three nodes.
+
+<p class="note"><strong>Note</strong>: If you are only running the MySQL cluster with a single node, you do not need to perform these steps.</p>
+
+## <a id="check-health"></a>Check the Health of Your Cluster
+
+Before scaling down your MySQL cluster, perform the following actions to ensure the cluster is healthy.
+
+1. Use the cf CLI to target the API endpoint of your Pivotal Cloud Foundry (PCF) deployment:
+	<pre class="terminal">
+	$ cf api api.YOUR-SYSTEM-DOMAIN
+	Setting api endpoint to api.YOUR-SYSTEM-DOMAIN...
+	OK
+
+	API endpoint:   http<span>s:</span>//api.YOUR-SYSTEM-DOMAIN... (API version: 2.54.0)
+	Not logged in. Use 'cf login' to log in.
+	</pre>
+
+1. Log in with your User Account and Authentication (UAA) Administrator user credentials. Obtain these credentials by clicking the **Credentials** tab of the Elastic Runtime tile, locating the **Admin Credentials** entry in the **UAA** section, and clicking **Link to Credential**.
+	<pre class="terminal">
+	$ cf login -u admin
+	API endpoint: http<span>s:</span>//api.YOUR-SYSTEM-DOMAIN
+
+	Password>
+	Authenticating...
+	OK
+	</pre>
+
+1. Create a test organization to verify the database across all nodes:
+	<pre class="terminal">
+	$ cf create-org validation-testing
+	Creating org validation-testing as admin...
+	OK
+
+	Assigning role OrgManager to user admin in org validation-testing ...
+	OK
+
+	TIP: Use 'cf target -o validation-testing' to target new org
+	</pre>
+
+1. Obtain the IP addresses of your MySQL server by performing the following steps:
+	1. From the PCF **Installation Dashboard**, click the **Pivotal Elastic Runtime** tile.
+	1. Click the **Status** tab.
+	1. Record the IP addresses for all instances of the **MySQL Server** job.
+
+1. Obtain the CCDB credentials for your MySQL server by performing the following steps:
+	1. From the Elastic Runtime tile, click the **Credentials** tab.
+	1. Locate the **Ccdb Credentials** entry in the **MySQL Server** section and click **Link to Credential**.
+	1. Record the values for `identity` and `password`.
+
+1. SSH into the Ops Manager VM. Because the procedures vary by IaaS, review the [SSH into Ops Manager](../customizing/trouble-advanced.html#ssh) section of the Advanced Troubleshooting with the BOSH CLI topic for specific instructions.
+
+1. For each of the MySQL server IP addresses recorded above, perform the following steps from the Ops Manager VM:
+	1. Query the new organization with the following command, replacing `YOUR-IP` with the IP address of the MySQL server and `YOUR-IDENTITY` with the `identity` value of the CCDB credentials obtained above:
+		<pre class="terminal">
+		$ mysql -h YOUR-IP -u YOUR-IDENTITY -D ccdb -p -e "select created_at, name from organizations where name = 'data-integrity-test-organization'"
+		</pre>
+	1. When prompted, provide the `password` value of the CCDB credentials obtained above.
+	1. Examine the output of the `mysql` command and verify the `created_at` date is recent.
+		<pre class="terminal">
+		+---------------------+----------------------------------+
+		| created_at          | name                             |
+		+---------------------+----------------------------------+
+		| 2016-05-28 01:11:42 | data-integrity-test-organization |
+		+---------------------+----------------------------------+
+		</pre>
+
+1. If each MySQL server instance does not return the same `created_at` result, contact [Pivotal Support](https://support.pivotal.io/) before proceeding further or making any changes to your deployment. If each MySQL server instance does return the same result, then you can safely proceed to scaling down your cluster to a single node by performing the steps in the following section.
+
+## <a id="scale-down"></a>Scale Down Your Cluster
+
+1. From the PCF **Installation Dashboard**, click the **Pivotal Elastic Runtime** tile.
+1. Select **Resource Config**.
+1. Use the drop-down menu to change the **Instances** count for **MySQL Server** to `1`.
+1. Click **Save** to apply the changes.
+1. Delete your test organization with the following cf CLI command:
+	<pre class="terminal">$ cf delete-org data-integrity-test-organization</pre>

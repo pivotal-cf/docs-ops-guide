@@ -1,11 +1,11 @@
 ---
-title: Configuring Pivotal Cloud Foundry&reg; SSL Termination for vSphere Deployments
+title: Configuring Pivotal Cloud Foundry SSL Termination for vSphere Deployments
 owner: Ops Manager
 ---
 
 <strong><%= modified_date %></strong>
 
-To use SSL termination in [Pivotal Cloud Foundry&reg;](https://network.pivotal.io/products/pivotal-cf) (PCF), you must
+To use SSL termination in [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF), you must
 configure the Pivotal-deployed HAProxy load balancer or your own load balancer.
 
 Pivotal recommends that you use HAProxy in lab and test environments only.
@@ -34,8 +34,8 @@ in the **Domains** section of the Elastic Runtime tile with the HAProxy IP addre
     <br />
     <br />
     For example, with `cf.example.com` as the main subdomain for your CF install
-	and an HAProxy IP address `172.16.1.1`, you must create an A record in your
-	DNS that serves `example.com` and points `*.cf` to `172.16.1.1`.
+	and an HAProxy IP address `203.0.113.1`, you must create an A record in your
+	DNS that serves `example.com` and points `*.cf` to `203.0.113.1`.
 
     <table >
         <tr>
@@ -47,7 +47,7 @@ in the **Domains** section of the Elastic Runtime tile with the HAProxy IP addre
 		<tr>
 		    <td>*.cf</td>
 		    <td>A</td>
-		    <td>176.16.1.1</td>
+		    <td>203.0.113.1</td>
 		    <td>example.com</td>
         </tr>
 	</table>
@@ -59,9 +59,9 @@ should return your HAProxy IP address.
 	Example:
 	<pre class='terminal'>
 	$ host cf.example.com
-    cf.example.com has address 172.16.1.1
+    cf.example.com has address 203.0.113.1
 	$ host anything.example.com
-    anything.cf.example.com has address 172.16.1.1
+    anything.cf.example.com has address 203.0.113.1
 	</pre>
 
 1. From the PCF Ops Manager Dashboard, click on the Elastic Runtime tile.
@@ -98,8 +98,8 @@ your load balancer.
     <br />
     <br />
     For example, with `cf.example.com` as the main subdomain for your CF install
-    and a load balancer IP address `10.10.1.1`, you must create an A record in
-	your DNS that serves `example.com` and points `*.cf` to `10.10.1.1`.
+    and a load balancer IP address `198.51.100.1`, you must create an A record in
+	your DNS that serves `example.com` and points `*.cf` to `198.51.100.1`.
 
     <table border="1" class="nice" >
       <tr>
@@ -111,7 +111,7 @@ your load balancer.
 		  <tr>
 		    <td>*.cf</td>
 		    <td>A</td>
-		    <td>10.10.1.1</td>
+		    <td>198.51.100.1</td>
 		    <td>example.com</td>
       </tr>
     </table>

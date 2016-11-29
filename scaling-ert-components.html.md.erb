@@ -1,24 +1,28 @@
 ---
-title: Scaling Instances in Elastic Runtime
+title: Scaling Elastic Runtime
 owner: RelEng
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic discusses how to scale instances in Elastic Runtime for different deployment scenarios. To increase the capacity and availability of the Pivotal Cloud Foundry&reg; (PCF) platform, and to decrease the chances of downtime, you can scale a deployment up using the instructions below.
+This topic discusses how to scale Elastic Runtime for different deployment scenarios. To increase the capacity and availability of the Pivotal Cloud Foundry (PCF) platform, and to decrease the chances of downtime, you can scale a deployment up using the instructions below.
 
 If you want to make a Diego or PCF configuration highly available, see the [Zero Downtime Deployment and Scaling in CF](./../concepts/high-availability.html) topic.
 
-##<a id='steps'></a>Steps for Scaling Instances##
+##<a id='steps'></a>Steps for Scaling Elastic Runtime##
 
-1. Navigate to the Pivotal Cloud Foundry® Operations Manager Installation Dashboard.
+1. Navigate to the Pivotal Cloud Foundry Operations Manager Installation Dashboard.
 
 1. Click the Elastic Runtime tile in the Installation Dashboard.
 
 1. Select **Resource Config**.
 <%= image_tag("images/scaling-ert.png") %>
 
-1. If you are using one of the following configurations in [Pivotal Elastic Runtime](./../customizing/cloudform-er-config.html), choose the values in the corresponding table to scale instances for your particular deployment: 
+1. You can scale your deployment horizontally, by increasing the number of **Instances** of a job. You can also scale your deployment vertically, by adjusting the **Persistent Disk Type** and **VM Type** of a job to allocate more disk space and memory. If you choose **Automatic** from the drop-down menu, Elastic Runtime uses the recommended amount of resources for the job.
+  <br><br>
+  If you scale down or delete a job that uses persistent disk, Elastic Runtime marks the disk as "orphaned." Orphaned disks are not attached to any job, and Elastic Runtime deletes them after five days. You can use the BOSH CLI to list and recover orphaned disks. Follow the instructions in the ["Prepare to Use the BOSH CLI"](../customizing/trouble-advanced.html#prepare) section of the "Advanced Troubleshooting with the BOSH CLI" topic to log in to the BOSH Director, and then follow the procedures in ["Orphaned Disks"](http://bosh.io/docs/persistent-disks.html#orphaned-disks) in the BOSH documentation.
+  <br><br>
+  If you are using one of the following configurations, choose the values in the corresponding table to scale instances for your particular deployment:
     * [External Databases](#external-databases)
     * [Internal MySQL] (#internal-mysql)
     * [Internal Databases (for Upgrades)] (#internal-databases)
@@ -43,11 +47,6 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
       </tr>
       <tr>
         <td>MySQL Proxy</td>
-        <td>0</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Apps Manager Database (Postgres)</td>
         <td>0</td>
         <td></td>
       </tr>
@@ -84,11 +83,6 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
         <td></td>
       </tr>
       <tr>
-        <td>Apps Manager Database (Postgres)</td>
-        <td>0</td>
-        <td></td>
-      </tr>
-      <tr>
         <td>Cloud Controller Database (Postgres)</td>
         <td>0</td>
         <td></td>
@@ -121,11 +115,6 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
         <td></td>
       </tr>
       <tr>
-        <td>Apps Manager Database (Postgres)</td>
-        <td>1</td>
-        <td></td>
-      </tr>
-      <tr>
         <td>Cloud Controller Database (Postgres)</td>
         <td>1</td>
         <td></td>
@@ -136,7 +125,7 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
         <td></td>
       </tr>
     </table>
-    
+
     ###<a id='external-blobstore'></a>External Blobstore   ###
 
     If you are using an external [Blobstore](./../customizing/cloudform-er-config.html#filestore), choose the following value in the Resource Config:
@@ -148,7 +137,7 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
         <th width=22%><strong>Notes</strong></th>
       </tr>
       <tr>
-        <td>NFS</td>
+        <td>File Storage</td>
         <td>0</td>
         <td></td>
       </tr>
@@ -183,7 +172,7 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
 
     ###<a id='jmx-bridge'></a>JMX Bridge    ###
 
-    If you are using [JMX Bridge](./../customizing/use-metrics.html), choose the following value in the Resource Config:
+    If you are using [JMX Bridge](http://docs.pivotal.io/jmx-bridge/use-metrics.html), choose the following value in the Resource Config:
 
     <table border="1" class="nice" >
       <tr>
@@ -193,8 +182,9 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
       </tr>
       <tr>
         <td>Collector</td>
-        <td>&ge; 1</td>
-        <td>Must have JMX Bridge tile added to PCF before you scale this instance count up. See <a href='./../customizing/add-delete.html'>Adding and Deleting Products topic.</td>
+        <td>0</td>
+        <td>This Collector job was deprecated in PCF v1.8.0. 
+            For more information, see <a href="https://docs.pivotal.io/pivotalcf/1-8/pcf-release-notes/runtime-rn.html#collectordeprecate">Collector Deprecation</a>.</td>
       </tr>
     </table>
 

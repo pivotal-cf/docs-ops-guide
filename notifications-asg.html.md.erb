@@ -1,0 +1,125 @@
+---
+title: Configuring Application Security Groups for Email Notifications
+owner: Ops Manager
+---
+
+<strong><%= modified_date %></strong>
+
+To allow the Notifications Service to have network access you need to create [Application Security Groups](../adminguide/app-sec-groups.html) (ASGs).
+
+<p class="note"><strong>Note</strong>: Without Application Security Groups the service is not usable.</p>
+
+##<a id='notifications-service'></a>Prerequisite ##
+
+Review the [Getting Started with the Notifications Service](../adminguide/notifications.html) topic to ensure you have setup the service.
+
+## <a id="notifications-service-network-connections"></a> Configure Network Connections ##
+
+The Notifications Service is deployed as a suite of applications to the `notifications-with-ui` space in the
+`system` org, and requires the following outbound network connections:
+
+|Destination		|Ports       	|Protocol   	|Reason
+|---			|---         	|---        	|---
+|`SMTP_SERVER`		|587 (default)	|tcp (default)	|This service is used to send out email notifications
+|`LOAD_BALANCER_IP`	|80, 443     	|tcp        	|This service will access the load balancer
+|`ASSIGNED_NETWORK`	|3306        	|tcp        	|This service requires access to internal services. `ASSIGNED_NETWORK` is the CIDR of the network assigned to this service.
+
+<p class="note"><strong>Note</strong>: The SMTP Server port and protocol are dependent on how you configure your server.</p>
+
+### <a id="smtp"></a> Create a SMTP Server ASG
+
+1. Navigate to the Ops Manager **Installation Dashboard** and click the **Pivotal Elastic Runtime** tile > **Settings** tab. 
+
+1. Record the information in the **Address of SMTP Server** and **Port of SMTP Server** fields. 
+
+1. Using the **Address of SMTP Server** information you obtained in the previous step, find the IP addresses and protocol of your SMTP Server from the service you are using. You might need to contact your service provider for this information.
+
+1. Create a `smtp-server.json` file. For `destination`, you must enter the IP address of your SMTP Server. 
+
+    ```
+    [
+        {
+            "protocol": "tcp",
+            "destination": SMTP_SERVER_IPS,
+            "ports": "587"
+        }
+    ]
+    ```
+
+1. Create a security group called `smtp-server`:
+    <pre class ="terminal">
+    cf create-security-group smtp-server smtp-server.json
+    </pre>
+
+### <a id="load-balancer"></a> Create a Load Balancer ASG
+
+<p class="note"><strong>Note</strong>: If you already have a ASG setup for a Load Balancer, you do not need to perform this step. Review your <a href="../adminguide/app-sec-groups.html">ASGs</a> to check which groups you have setup.</p>
+
+If you are using the built-in HAProxy as your load balancer, follow this procedure. If you are using an external load balancer, you must obtain your HAProxy IPs from the service you are using. 
+
+1. Record the **HAProxy IPs** in the **Pivotal Elastic Runtime Tile** > **Settings** > **Networking** tab. 
+
+1. Create a `load-balancer-https.json` file. For `destination`, use the **HAProxy IPs** you recorded above.
+
+    ```
+    [
+        {
+            "protocol": "tcp",
+            "destination": "10.68.196.250",
+            "ports": "80,443"
+        }
+    ]
+    ```
+
+1. Create a security group called `load-balancer-https`:
+    <pre class="terminal">
+    $ cf create-security-group load-balancer-https load-balancer-https.json
+    </pre>
+
+### <a id="assigned-network"></a> Create an Assigned Network ASG
+
+<p class="note"><strong>Note</strong>: If you use external services, the IP addresses, ports, and protocols depend on the service.</p>
+
+1. Navigate to the Ops Manager **Installation Dashboard** > **Pivotal Elastic Runtime** tile > **Settings** > **Assign AZs and Networks** section. 
+
+1. Navigate to the network selected in the dropdown.
+
+1. Record the **Ops Manager Director** tile > **Settings** tab > **Create Networks** > **CIDR** for the network identified in the previous step. Ensure the subnet mask allows the space to access `p-mysql`, `p-rabbitmq`, and `p-redis`.
+
+1. Create a file `assigned-network.json`. For the `destination`, enter the **CIDR** you recorded above. 
+
+    ```
+    [
+        {
+            "protocol": "tcp",
+            "destination": "10.68.0.0/20",
+            "ports": "3306,5672,6379"
+        }
+    ]
+    ```
+
+1. Create a security group called `assigned-network`:
+
+    <pre class="terminal">
+    $ cf create-security-group assigned-network assigned-network.json
+    </pre>
+
+## <a id="pre-installation-asg-binding"></a> Bind the ASGs 
+
+1. Target the `system` org: 
+
+    <pre class="terminal">
+    $ cf target -o system
+    </pre>
+
+1. Create a `notifications-with-ui` space:
+    <pre class="terminal">
+    $ cf create-space notifications-with-ui
+    </pre>
+
+1. Bind the ASGs you created in this topic to the`notifications-with-ui` space:
+    <pre class="terminal">
+    $ cf bind-security-group smtp-server system notifications-with-ui
+    $ cf bind-security-group load-balancer-https system notifications-with-ui
+    $ cf bind-security-group assigned-network system notifications-with-ui
+    </pre>
