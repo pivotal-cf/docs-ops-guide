@@ -5,7 +5,7 @@ owner: RelEng
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to configure TLS/SSL termination for HTTP traffic in [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) Elastic Runtime with an SSL certificate, as part of the process of configuring Elastic Runtime for deployment. 
+This topic describes how to configure SSL/TLS termination for HTTP traffic in [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) Elastic Runtime with an SSL certificate, as part of the process of configuring Elastic Runtime for deployment. 
 
 
 ##<a id="ssl_term"></a> Certificate Requirements for PCF
@@ -103,7 +103,7 @@ The following table summarizes SSL/TLS termination options in PCF and provides g
   <td>
    <b>Gorouter only</b>.<br/><br/>Select the <b>Forward SSL to Elastic Runtime Router</b> in your Elastic Runtime network configuration.
   </td>
-  <td><a href="../adminguide/securing-traffic.html#pass-through">Terminating SSL/TLS at the Gorouter Only</a>
+  <td><a href="../adminguide/securing-traffic.html#gorouter_term">Terminating SSL/TLS at the Gorouter Only</a>
   </td>
   </tr>
   <tr>
@@ -137,7 +137,7 @@ The following table summarizes SSL/TLS termination options in PCF and provides g
   <td>
   <b>HA Proxy</b>.<br/><br/>Select the <b>Forward SSL to HA Proxy</b>. 
   </td>
-  <td><a href="./ssl-term-haproxy.html">Terminating SSL/TLS at HA Proxy</a>
+  <td><a href="./ssl-term-haproxy.html#haproxy">Terminating SSL/TLS at HA Proxy</a>
   </td>
   </tr>
 </tr></table>
