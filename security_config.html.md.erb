@@ -10,13 +10,6 @@ This topic describes how to configure TLS/SSL termination for HTTP traffic in [P
 
 ##<a id="ssl_term"></a> Certificate Requirements for PCF
 
-This topic provides two procedures. Choose the correct procedure for your environment type:
-
-* For a production environment, follow [Configure for a Production Deployment](#prod).
-* For a testing or development environment, follow [Configure for a Development or Testing Deployment](#dev). This procedure includes how to generate an RSA certificate suitable for a non-production environment.
-
-<p class="note"><strong>Note</strong>: Certificates generated in Elastic Runtime are signed by the Ops Manager Certificate Authority. They are not technically self-signed, but they are sometimes referred to as "Self-Signed Certificates" in the Ops Manager UI and throughout this documentation.</p>
-
 * You must obtain at least one SSL/TLS certificate for your environment. 
   * In a production environment, use a signed SSL/TLS certificate (trusted) from a known certificate authority (CA).
   * In a development or testing environment, you can use a trusted CA certificate or a self-signed certificate. You can generate a self-signed certificate with `openssl` or a similar tool, or use the Elastic Runtime Ops Manager interface to [generate a certificate](#ert_certgen) for you.
