@@ -10,6 +10,8 @@ This topic describes how to configure TLS/SSL termination for HTTP traffic in [P
 
 ##<a id="ssl_term"></a> Certificate Requirements for PCF
 
+The following list describes the certificate requirements for deploying PCF.
+
 * You must obtain at least one SSL/TLS certificate for your environment. 
   * In a production environment, use a signed SSL/TLS certificate (trusted) from a known certificate authority (CA).
   * In a development or testing environment, you can use a trusted CA certificate or a self-signed certificate. You can generate a self-signed certificate with `openssl` or a similar tool, or use the Elastic Runtime Ops Manager interface to [generate a certificate](#ert_certgen) for you.
@@ -135,7 +137,7 @@ The following table summarizes SSL/TLS termination options in PCF and provides g
   <td>
   <b>HA Proxy</b>.<br/><br/>Select the <b>Forward SSL to HA Proxy</b>. 
   </td>
-  <td><a href="./ssl-term-haproxy.html#haproxy">Terminating SSL/TLS at HA Proxy</a>
+  <td><a href="./ssl-term-haproxy.html">Terminating SSL/TLS at HA Proxy</a>
   </td>
   </tr>
 </tr></table>
