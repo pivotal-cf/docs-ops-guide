@@ -25,54 +25,7 @@ HAProxy can generate a self-signed certificate if you do not want to obtain a
 signed certificate from a well-known certificate authority.
 <%= partial '../customizing/known-issue-self-signed-certs' %>
 
-To use the HAProxy load balancer, you must create a wildcard A record in your
-DNS and configure three fields in the Elastic Runtime product tile.
-
-1. Create an A record in your DNS that points to the HAProxy IP address. The A
-record associates the **System Domain** and **Apps Domain** that you configure
-in the **Domains** section of the Elastic Runtime tile with the HAProxy IP address.
-    <br />
-    <br />
-    For example, with `cf.example.com` as the main subdomain for your CF install
-	and an HAProxy IP address `203.0.113.1`, you must create an A record in your
-	DNS that serves `example.com` and points `*.cf` to `203.0.113.1`.
-
-    <table >
-        <tr>
-            <th>Name</th>
-			<th>Type</th>
-			<th>Data</th>
-			<th>Domain</th>
-		</tr>
-		<tr>
-		    <td>*.cf</td>
-		    <td>A</td>
-		    <td>203.0.113.1</td>
-		    <td>example.com</td>
-        </tr>
-	</table>
-
-1. Use the Linux `host` command to test your DNS entry. The `host` command
-should return your HAProxy IP address.
-	<br />
-	<br />
-	Example:
-	<pre class='terminal'>
-	$ host cf.example.com
-    cf.example.com has address 203.0.113.1
-	$ host anything.example.com
-    anything.cf.example.com has address 203.0.113.1
-	</pre>
-
-1. From the PCF Ops Manager Dashboard, click on the Elastic Runtime tile.
-
-1. Select **Networking**.
-
-1. Leave the **Router IPs** field blank. HAProxy assigns the router IPs internally.
-
-1. Enter the IP address for HAProxy in the **HAProxy IPs** field.
-
-1. Provide your SSL certificate in the **SSL Termination Certificate and Private Key** field. See [Providing a Certificate for your SSL Termination Point](./security_config.html#config) for details.
+<%= partial 'ssl_termin_haproxy_pcf' %>
 
 [Return to the Getting Started Guide](../installing/index.html)
 
