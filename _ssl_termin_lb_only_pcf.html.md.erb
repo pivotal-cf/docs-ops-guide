@@ -1,0 +1,50 @@
+
+Perform the following steps to configure SSL termination on the load balancer only in PCF:
+
+1. Create an A record in your DNS that points to your load balancer IP address.
+The A record associates the **System Domain** and **Apps Domain** that you
+configure in the **Domains** section of the Elastic Runtime tile with the IP address of
+your load balancer.
+    <br />
+    <br />
+    For example, with `cf.example.com` as the main subdomain for your CF install
+    and a load balancer IP address `198.51.100.1`, you must create an A record in
+	your DNS that serves `example.com` and points `*.cf` to `198.51.100.1`.
+
+    <table border="1" class="nice" >
+      <tr>
+        <th>Name</th>
+			  <th>Type</th>
+			  <th>Data</th>
+			  <th>Domain</th>
+		  </tr>
+		  <tr>
+		    <td>*.cf</td>
+		    <td>A</td>
+		    <td>198.51.100.1</td>
+		    <td>example.com</td>
+      </tr>
+    </table>
+
+1. Navigate to the Ops Manager Installation Dashboard.
+
+1. Click the **Elastic Runtime** tile in the Installation Dashboard.
+
+1. Click **Networking**.
+
+1. For PCF deployments on OpenStack or vSphere, enter the load balancer IP address that you used to set up a wildcard DNS record in the **Router IPs** field. For more information, see the Elastic Runtime networking configuration topic for [OpenStack](../customizing/openstack-er-config.html#networking) or [vSphere](../customizing/config-er-vmware.html#networking).  
+
+1. Under **Select one of the following point-of-entry-options**, select the second option, **Forward unencrypted traffic to Elastic Runtime Router**.
+
+1. If you are not using SSL encryption or if you are using self-signed certificates, you can select **Disable SSL certificate verification for this environment**. Selecting this checkbox also disables SSL verification for route services. 
+  <p class="note">Use this checkbox only for development and testing environments. Do not select it for production environments.</p> 
+
+1. Click **Save**.
+
+1. Then, after you complete the configuration in PCF, add your certificate or certificates to your load balancer, and configure its listening port. The procedures vary depending on your IaaS.
+
+1. Configure your load balancer to append the `X-Forwarded-For` and `X-Forwarded-Proto` headers to client requests.
+
+    <br/>If the load balancer cannot be configured to provide the `X-Forwarded-For` header, the Gorouter will append it in requests forwarded to applications and system components, set to the IP address of the load balancer.
+
+    <p class='note'><strong>Note</strong>: If the load balancer accepts unencrypted requests, it <strong>must</strong> provide the X-Forwarded-Proto header. Conversely, if the load balancer cannot be configured to send the X-Forwarded-Proto header, it should not accept unencrypted requests. Otherwise, applications and platform system components that require encrypted client requests will accept unencrypted requests when they should not accept them.</p>

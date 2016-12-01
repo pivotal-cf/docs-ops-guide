@@ -1,0 +1,20 @@
+Perform the following steps to configure SSL termination on the Gorouter in PCF:
+
+1. Configure your load balancer to pass through requests from the client to the Gorouter.
+
+1. Navigate to the Ops Manager Installation Dashboard.
+
+1. Click the **Elastic Runtime** tile in the Installation Dashboard.
+
+1. Click **Networking**.
+
+1. Under **Select one of the following point-of-entry options**, select the first option, **Forward SSL to Elastic Runtime Router**.
+
+1. Enter your PEM encoded certificate and your PEM encoded private key in the fields under **Router SSL Termination Certificate and Private Key**. You can either upload your own certificate or generate a RSA certificate in ERT. For options and instructions on creating a certificate for your wildcard domains, see [Creating a Wildcard Certificate for PCF Deployments](../opsguide/security_config.html#create_or_obtain_certs).
+
+1. If you want to use a specific set of SSL ciphers for the Router, configure **Router SSL Ciphers**. Enter a colon-separated list of custom SSL ciphers to pass to the router. Otherwise, leave this field blank.
+
+1. If you are not using SSL encryption or if you are using self-signed certificates, you can select **Disable SSL certificate verification for this environment**. Selecting this checkbox also disables SSL verification for route services. 
+  <p class="note">Use this checkbox only for development and testing environments. Do not select it for production environments.</p> 
+    
+1. Click **Save**.
