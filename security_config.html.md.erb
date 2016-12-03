@@ -49,4 +49,6 @@ Dashboard.
 
 1. Configure **SSL Ciphers**. Leave these fields blank unless you want to use a specific set of SSL ciphers for the Router or HAProxy. Enter a colon-separated list of custom SSL ciphers to pass to the Router or HAProxy.
 
+1. If you expect requests larger than the default maximum of 16 Kbytes, enter a new value (in bytes) for **Request Max Buffer Size**. You may need to do this, for example, to support apps that embed large cookie or query string values in headers.
+
 1. Click **Save**.
