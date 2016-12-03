@@ -8,7 +8,71 @@ owner: RelEng
 This topic describes how to configure SSL/TLS termination for HTTP traffic in [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) Elastic Runtime with an SSL certificate, as part of the process of configuring Elastic Runtime for deployment. 
 
 
-##<a id="ssl_term"></a> Certificate Requirements for PCF
+## <a id="ssl_term"></a> About SSL/TLS Termination in PCF Elastic Runtime
+
+When you deploy PCF, you must configure the SSL/TLS termination for HTTP traffic in your Elastic Runtime configuration. You can terminate SSL/TLS at any one of the following entry points into PCF:
+
+* Gorouter
+* Load balancer and Gorouter
+* Load balancer
+* HAProxy
+
+The following table summarizes SSL/TLS termination options in PCF and provides guidance on which option to choose for your deployment.
+
+<table border="1" class="nice">
+<tr>
+  <th>If the following applies to you:</th>
+  <th>Then terminate SSL/TLS at:</th>
+  <th>Related topic and configuration procedure:</th>
+  </tr>
+  <tr>
+  <td><ul>
+  <li>You want the most performant and recommended option, and </li>
+  <li>You can use a single SAN certificate for your deployment for your wildcard domains.</li>
+  </ul></td>
+  <td>
+   <b>Gorouter only</b>.<br/><br/>Select the <b>Forward SSL to Elastic Runtime Router</b> in your Elastic Runtime network configuration.
+  </td>
+  <td><a href="../adminguide/securing-traffic.html#gorouter_term">Terminating SSL/TLS at the Gorouter Only</a>
+  </td>
+  </tr>
+  <tr>
+  <td>
+  <ul><li>You cannot use a single SAN certificate for all system and application domains for your deployment, or</li>
+  <li>You require Extended Validation (EV) certificates.</li>
+  </ul>
+  </td>
+  <td><b>Load balancer only</b>.<br/><br/>Select the <b>Forward unencrypted traffic to Elastic Runtime Router</b>
+  </td>
+  <td><a href="../adminguide/securing-traffic.html#lb_term">Terminating SSL/TLS at the Load Balancer</a>
+  </td>
+  </tr>
+    <tr>
+    <td><ul>
+      <li>You want a higher level of security, and</li>
+      <li>You do not mind a slightly less performant deployment, and</li>
+    <li>You can use a single SAN certificate on the Gorouter, either for all system and application domains (but with a different key than for the same certificates hosted on your load balancer) or for a single domain (but with hostname verification disabled on the load balancer).</li> </td>
+    <td><b>Load balancer and Gorouter</b>.<br/><br/>Select the <b>Forward SSL to Elastic Runtime Router</b> in your Elastic Runtime network configuration. 
+    </td>
+    <td><a href="../adminguide/securing-traffic.html#lb_and_gorouter_term">Terminating SSL/TLS at Gorouter and Load Balancer</a>
+    </td>
+  </tr>
+   <tr>
+  <td><ul>
+   <li>You can use a single SAN certificate for your deployment for your wildcard domains, and</li>
+   <li>You are deploying a test or development environment, or</li>
+   <li>You do not mind a slightly less performant deployment.</li>
+  </ul>
+  </td>
+  <td>
+  <b>HA Proxy</b>.<br/><br/>Select the <b>Forward SSL to HA Proxy</b>. 
+  </td>
+  <td><a href="./ssl-term-haproxy.html#haproxy">Terminating SSL/TLS at HA Proxy</a>
+  </td>
+  </tr>
+</tr></table>
+
+##<a id="certs"></a> Certificate Requirements for PCF
 
 The following list describes the certificate requirements for deploying PCF.
 
@@ -77,67 +141,3 @@ In either case for either self-signed or trusted single certificates, apply the 
     For example, `*.example.com`, `*.apps.example.com`, `*.system.example.com`, `*.login.system.example.com`, `*.uaa.system.example.com`
 
     <%= image_tag("generate-cert.png") %>
-
-## <a id="ssl_term"></a> About SSL/TLS Termination in PCF Elastic Runtime
-
-When you deploy PCF, you must configure the SSL/TLS termination for HTTP traffic in your Elastic Runtime configuration. You can terminate SSL/TLS at any one of the following entry points into PCF:
-
-* Gorouter
-* Load balancer and Gorouter
-* Load balancer
-* HAProxy
-
-The following table summarizes SSL/TLS termination options in PCF and provides guidance on which option to choose for your deployment.
-
-<table border="1" class="nice">
-<tr>
-  <th>If the following applies to you:</th>
-  <th>Then terminate SSL/TLS at:</th>
-  <th>Related topic and configuration procedure:</th>
-  </tr>
-  <tr>
-  <td><ul>
-  <li>You want the most performant and recommended option, and </li>
-  <li>You can use a single SAN certificate for your deployment for your wildcard domains.</li>
-  </ul></td>
-  <td>
-   <b>Gorouter only</b>.<br/><br/>Select the <b>Forward SSL to Elastic Runtime Router</b> in your Elastic Runtime network configuration.
-  </td>
-  <td><a href="../adminguide/securing-traffic.html#gorouter_term">Terminating SSL/TLS at the Gorouter Only</a>
-  </td>
-  </tr>
-  <tr>
-  <td>
-  <ul><li>You cannot use a single SAN certificate for all system and application domains for your deployment, or</li>
-  <li>You require Extended Validation (EV) certificates.</li>
-  </ul>
-  </td>
-  <td><b>Load balancer only</b>.<br/><br/>Select the <b>Forward unencrypted traffic to Elastic Runtime Router</b>
-  </td>
-  <td><a href="../adminguide/securing-traffic.html#lb_term">Terminating SSL/TLS at the Load Balancer</a>
-  </td>
-  </tr>
-    <tr>
-    <td><ul>
-      <li>You want a higher level of security, and</li>
-      <li>You do not mind a slightly less performant deployment, and</li>
-	  <li>You can use a single SAN certificate on the Gorouter, either for all system and application domains (but with a different key than for the same certificates hosted on your load balancer) or for a single domain (but with hostname verification disabled on the load balancer).</li> </td>
-    <td><b>Load balancer and Gorouter</b>.<br/><br/>Select the <b>Forward SSL to Elastic Runtime Router</b> in your Elastic Runtime network configuration. 
-    </td>
-    <td><a href="../adminguide/securing-traffic.html#lb_and_gorouter_term">Terminating SSL/TLS at Gorouter and Load Balancer</a>
-    </td>
-  </tr>
-   <tr>
-  <td><ul>
-   <li>You can use a single SAN certificate for your deployment for your wildcard domains, and</li>
-   <li>You are deploying a test or development environment, or</li>
-   <li>You do not mind a slightly less performant deployment.</li>
-  </ul>
-  </td>
-  <td>
-  <b>HA Proxy</b>.<br/><br/>Select the <b>Forward SSL to HA Proxy</b>. 
-  </td>
-  <td><a href="./ssl-term-haproxy.html#haproxy">Terminating SSL/TLS at HA Proxy</a>
-  </td>
-  </tr>
-</tr></table>

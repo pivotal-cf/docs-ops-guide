@@ -54,6 +54,8 @@ In PCF, perform the following steps to configure SSL termination on HAProxy:
   
 1. If you want to use a specific set of SSL ciphers for HAProxy, configure **HAProxy SSL Ciphers**. Enter a colon-separated list of custom SSL ciphers to pass to HAProxy. Otherwise, leave this field blank.
 
+1. If you expect requests larger than the default maximum of 16 Kbytes, enter a new value (in bytes) for **Request Max Buffer Size**. You may need to do this, for example, to support apps that embed large cookie or query string values in headers.
+
 1. If you want HAProxy to only allow HTTPS traffic, select **Disable HTTP traffic to HAProxy**.
     <%= image_tag("ssl-termination.png") %>
 
