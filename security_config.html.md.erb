@@ -81,10 +81,10 @@ The following list describes the certificate requirements for deploying PCF.
   * In a development or testing environment, you can use a trusted CA certificate or a self-signed certificate. You can generate a self-signed certificate with `openssl` or a similar tool, or use the Elastic Runtime Ops Manager interface to [generate a certificate](#ert_certgen) for you.
    <p class="note"><strong>Note</strong>: Certificates generated in Elastic Runtime are signed by the Ops Manager Certificate Authority. They are not technically self-signed, but they are sometimes referred to as "Self-Signed Certificates" in the Ops Manager UI and throughout this documentation.</p>
 * Certificates used in PCF must be encoded in the PEM format.
-* When you generate a certificate, save the private key used to generate your certficate in a safe place. You must upload its contents to the Elastic Runtime networking configuration.
+* When you generate a certificate, save the private key used to generate your certificate in a safe place. You must upload its contents to the Elastic Runtime networking configuration.
 * The certificate on the Gorouter must be associated with the correct hostname so that HTTPS can validate the request.
 * If wildcard certificates are not supported for some or all of your domains, then configure termination requests at the [load balancer only](#lb_term). In this type of deployment, the load balancer passes unencrypted traffic to the Gorouter. As a result, you avoid having to reissue and reinstall certificates on the Gorouter for every app or UAA security zone.
-* Extended Validation (EV) certificates support multiple hostnames, like SAN, but do not support wildcards. For this reason, if EV certs are required, then terminate TLS/SSL at the [load balancer only](#lb_term) for the same reason stated above. You can avoid having to reissue and reinstall certificates on the Gorouter for every app or UAA security zone.
+* Extended Validation (EV) certificates support multiple hostnames, like SAN, but do not support wildcards. For this reason, if EV certificates are required, then terminate TLS/SSL at the [load balancer only](#lb_term) for the same reason stated above. You can avoid having to reissue and reinstall certificates on the Gorouter for every app or UAA security zone.
 
 ### <a id="aws_certs"></a> Certificate Requirements on AWS
 
