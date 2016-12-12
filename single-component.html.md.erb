@@ -37,10 +37,13 @@ The table lists components in the order that Ops Manager upgrades each component
   <th><strong>Other Limitations and Information</strong></th>
 </tr>
 <tr>
-  <td>HAProxy</td>
-  <td></td>
+  <td>Consul</td>
   <td>&#10003;</td>
-  <td></td>
+  <td>&#10003;</td>
+  <td>
+    Many components rely upon Consul for service discovery.
+    If Consul is unavailable, these components may fail in unexpected ways as they are not able to locate or communicate with other parts of the platform.
+  </td>
 </tr>
 <tr>
   <td>NATS</td>
@@ -49,29 +52,107 @@ The table lists components in the order that Ops Manager upgrades each component
   <td></td>
 </tr>
 <tr>
-  <td>etcd</td>
+  <td>etcd Server</td>
+  <td>&#10003;</td>
+  <td>&#10003;</td>
+  <td>
+    Several components rely upon etcd for configuration and persistence.
+    If etcd is unavailable, these components may fail in expected ways as they are not able to access their configuration or persisted data.
+  </td>
+</tr>
+<tr>
+  <td>etcd Proxy</td>
+  <td>&#10003;</td>
+  <td></td>
+  <td>
+    The etcd Proxy is responsible to ensuring legacy connections to etcd from external components remain open.
+    If the Proxy becomes unavailable, external components that use etcd could become unresponsive.
+  </td>
+</tr>
+<tr>
+  <td>File Storage</td>
+  <td></td>
+  <td>&#10003;</td>
+  <td>
+    You cannot push, stage, or restart an app when an upgrade affects the file storage server.
+  </td>
+</tr>
+<tr>
+  <td>MySQL Proxy</td>
+  <td>&#10003;</td>
+  <td>&#10003;</td>
+  <td>
+    The MySQL Proxy is responsible for managing failover of the MySQL Servers.
+    If the Proxy becomes unavailable, then access to the MySQL Server could be broken.
+  </td>
+</tr>
+<tr>
+  <td>MySQL Server</td>
+  <td>&#10003;</td>
+  <td>&#10003;</td>
+  <td>
+    The MySQL Server is responsible for persisting internal databases for the platform.
+    If the MySQL Server becomes unavailable, then platform services that rely upon a database (Cloud Controller, UAA) will also become unavailable.
+  </td>
+</tr>
+<tr>
+  <td>Backup Prepare Node</td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>Cloud Controller Database (Postgres)</td>
   <td></td>
   <td>&#10003;</td>
   <td></td>
 </tr>
 <tr>
-  <td>File Storage Server</td>
+  <td>UAA Database (Postgres)</td>
   <td></td>
   <td>&#10003;</td>
-  <td>You cannot push, stage, or restart an app when an upgrade affects the file storage server.</td>
+  <td></td>
 </tr>
 <tr>
-  <td>Cloud Controller Database</td>
-  <td></td>
+  <td>UAA</td>
   <td>&#10003;</td>
   <td></td>
+  <td>
+    If a user has an active authorization token prior to performing an upgrade, the user can still log in using either a UI or the CLI.
+  </td>
 </tr>
 <tr>
   <td>Cloud Controller</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
-  <td>Your ability to manage an app when an upgrade affects the Cloud Controller depends on the number of instances that you specify for the Cloud Controller and Diego components.
-If either of these components are single components, you cannot push, stage, or restart an app during the upgrade.</td>
+  <td>
+    Your ability to manage an app when an upgrade affects the Cloud Controller depends on the number of instances that you specify for the Cloud Controller and Diego components.
+    If either of these components are single components, you cannot push, stage, or restart an app during the upgrade.
+  </td>
+</tr>
+<tr>
+  <td>HAProxy</td>
+  <td>&#10003;</td>
+  <td>&#10003;</td>
+  <td>
+    HAProxy is used to load-balance incoming requests to the Router.
+    If HAProxy is unavailable, you may lose the ability to make requests to applications unless their is another routing path from your load balancer to the Router.
+  </td>
+</tr>
+<tr>
+  <td>Router</td>
+  <td>&#10003;</td>
+  <td>&#10003;</td>
+  <td>
+    The Router is responsible for routing requests to their application containers.
+    If the Router is not available, then applications cannot receive requests.
+  </td>
+</tr>
+<tr>
+  <td>MySQL Monitor</td>
+  <td></td>
+  <td></td>
+  <td></td>
 </tr>
 <tr>
   <td>Clock Global</td>
@@ -86,78 +167,121 @@ If either of these components are single components, you cannot push, stage, or 
   <td></td>
 </tr>
 <tr>
-  <td>Router</td>
-  <td>&#10003;</td>
-  <td>&#10003;</td>
-  <td></td>
-</tr>
-<tr>
-  <td>UAA Database</td>
-  <td></td>
-  <td></td>
-  <td></td>
-</tr>
-<tr>
-  <td>UAA</td>
-  <td>&#10003;</td>
-  <td></td>
-  <td>If a user has an active authorization token prior to performing an upgrade, the user can still log in using either a UI or the CLI.</td>
-</tr>
-<tr>
-  <td>Login</td>
-  <td>&#10003;</td>
-  <td>&#10003;</td>
-  <td></td>
-</tr>
-<tr>
-  <td>MySQL Server</td>
-  <td></td>
-  <td></td>
-  <td></td>
-</tr>
-<tr>
-  <td>Diego Cells</td>
-  <td>&#10003;</td>
-  <td>&#10003;</td>
-  <td>Your ability to manage an app when an upgrade affects Diego Cells depends on the number of instances that you specify for the Diego Cells, Cloud Controller, and other Diego components.
-If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
-<br/>
-If you only have one Diego Cell, upgrading it causes downtime for the apps that run on it, including the Apps Manager app and the App Usage Service.</td>
-</tr>
-<tr>
   <td>Diego BBS</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
-  <td>Your ability to manage an app when an upgrade affects the Diego BBS depends on the number of instances that you specify for the Diego BBS, Cloud Controller, and other Diego components.
-If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
+  <td>
+    Your ability to manage an app when an upgrade affects the Diego BBS depends on the number of instances that you specify for the Diego BBS, Cloud Controller, and other Diego components.
+    If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
+  </td>
 </tr>
 <tr>
   <td>Diego Brain</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
-  <td>Your ability to manage an app when an upgrade affects the Diego Brain depends on the number of instances that you specify for the Diego Brain, Cloud Controller, and other Diego components.
-If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
+  <td>
+    Your ability to manage an app when an upgrade affects the Diego Brain depends on the number of instances that you specify for the Diego Brain, Cloud Controller, and other Diego components.
+    If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
+  </td>
+</tr>
+<tr>
+  <td>Diego Cell</td>
+  <td>&#10003;</td>
+  <td>&#10003;</td>
+  <td>
+    Your ability to manage an app when an upgrade affects Diego Cells depends on the number of instances that you specify for the Diego Cells, Cloud Controller, and other Diego components.
+    If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
+    <br/>
+    If you only have one Diego Cell, upgrading it causes downtime for the apps that run on it, including the Apps Manager app and the App Usage Service.
+  </td>
 </tr>
 <tr>
   <td>Doppler Server</td>
+  <td>&#10003;</td>
   <td></td>
-  <td></td>
-  <td>Ops Manager operators experience 2-5 minute gaps in logging.</td>
+  <td>
+    Ops Manager operators experience 2-5 minute gaps in logging.
+  </td>
 </tr>
 <tr>
-  <td>Loggregator Traffic Controller</td>
+  <td>Loggregator Trafficcontroller</td>
+  <td>&#10003;</td>
+  <td></td>
+  <td>
+    Ops Manager operators experience 2-5 minute gaps in logging.
+  </td>
+</tr>
+<tr>
+  <td>TCP Router</td>
+  <td>&#10003;</td>
   <td></td>
   <td></td>
-  <td>Ops Manager operators experience 2-5 minute gaps in logging.</td>
 </tr>
 <tr>
   <td>Push Apps Manager errand</td>
   <td></td>
   <td></td>
-  <td>This errand runs the script to deploy the Apps Manager application.
-<br />
-The Apps Manager application runs in a single Diego Cell.</td>
+  <td>
+    This errand runs the script to deploy the Apps Manager application.
+    <br />
+    The Apps Manager application runs in a single Diego Cell.
+  </td>
+</tr>
+<tr>
+  <td>Run Smoke Tests</td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>Push Notifications</td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>Push Notifications UI</td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>Push Autoscaling</td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>Register Autoscaling Service Broker</td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>Destroy autoscaling service broker</td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>Bootstrap</td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>Push Pivotal Account</td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>MySQL Rejoin Unsafe Errand</td>
+  <td></td>
+  <td></td>
+  <td></td>
 </tr>
 </table>
+
 
 
