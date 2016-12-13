@@ -1,6 +1,6 @@
 ---
 title: Understanding the Effects of Single Components on a Pivotal Cloud Foundry Upgrade
-owner: Ops Manager
+owner: Release Engineering
 ---
 
 <strong><%= modified_date %></strong>
@@ -31,12 +31,14 @@ The table lists components in the order that Ops Manager upgrades each component
 
 <table border="1" class="nice" >
 <tr>
+  <th><strong>Upgrade Order</strong></th>
   <th><strong>Component</strong></th>
   <th><strong>Scalable?</strong></th>
   <th><strong>Extended Downtime?</strong></th>
   <th><strong>Other Limitations and Information</strong></th>
 </tr>
 <tr>
+  <td>1</td>
   <td>Consul</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -46,12 +48,14 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
+  <td>2</td>
   <td>NATS</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
   <td></td>
 </tr>
 <tr>
+  <td>3</td>
   <td>etcd Server</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -61,6 +65,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
+  <td>4</td>
   <td>etcd Proxy</td>
   <td>&#10003;</td>
   <td></td>
@@ -70,6 +75,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
+  <td>5</td>
   <td>File Storage</td>
   <td></td>
   <td>&#10003;</td>
@@ -78,6 +84,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
+  <td>6</td>
   <td>MySQL Proxy</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -87,6 +94,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
+  <td>7</td>
   <td>MySQL Server</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -96,24 +104,28 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
+  <td>8</td>
   <td>Backup Prepare Node</td>
   <td></td>
   <td></td>
   <td></td>
 </tr>
 <tr>
+  <td>8</td>
   <td>Cloud Controller Database (Postgres)</td>
   <td></td>
   <td>&#10003;</td>
   <td></td>
 </tr>
 <tr>
+  <td>9</td>
   <td>UAA Database (Postgres)</td>
   <td></td>
   <td>&#10003;</td>
   <td></td>
 </tr>
 <tr>
+  <td>10</td>
   <td>UAA</td>
   <td>&#10003;</td>
   <td></td>
@@ -122,6 +134,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
+  <td>11</td>
   <td>Cloud Controller</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -131,42 +144,48 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
+  <td>12</td>
   <td>HAProxy</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
   <td>
     HAProxy is used to load-balance incoming requests to the Router.
-    If HAProxy is unavailable, you may lose the ability to make requests to applications unless their is another routing path from your load balancer to the Router.
+    If HAProxy is unavailable, you may lose the ability to make requests to applications unless there is another routing path from your load balancer to the Router.
   </td>
 </tr>
 <tr>
+  <td>13</td>
   <td>Router</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
   <td>
     The Router is responsible for routing requests to their application containers.
-    If the Router is not available, then applications cannot receive requests.
+    If no Routers are available, then applications cannot receive requests.
   </td>
 </tr>
 <tr>
+  <td>14</td>
   <td>MySQL Monitor</td>
   <td></td>
   <td></td>
   <td></td>
 </tr>
 <tr>
+  <td>15</td>
   <td>Clock Global</td>
   <td></td>
   <td></td>
   <td></td>
 </tr>
 <tr>
+  <td>16</td>
   <td>Cloud Controller Worker</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
   <td></td>
 </tr>
 <tr>
+  <td>17</td>
   <td>Diego BBS</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -176,6 +195,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
+  <td>18</td>
   <td>Diego Brain</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -185,6 +205,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
+  <td>19</td>
   <td>Diego Cell</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -196,6 +217,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
+  <td>20</td>
   <td>Doppler Server</td>
   <td>&#10003;</td>
   <td></td>
@@ -204,6 +226,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
+  <td>21</td>
   <td>Loggregator Trafficcontroller</td>
   <td>&#10003;</td>
   <td></td>
@@ -212,12 +235,14 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
+  <td>22</td>
   <td>TCP Router</td>
   <td>&#10003;</td>
   <td></td>
   <td></td>
 </tr>
 <tr>
+  <td>23</td>
   <td>Push Apps Manager errand</td>
   <td></td>
   <td></td>
@@ -228,54 +253,63 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
+  <td>24</td>
   <td>Run Smoke Tests</td>
   <td></td>
   <td></td>
   <td></td>
 </tr>
 <tr>
+  <td>25</td>
   <td>Push Notifications</td>
   <td></td>
   <td></td>
   <td></td>
 </tr>
 <tr>
+  <td>26</td>
   <td>Push Notifications UI</td>
   <td></td>
   <td></td>
   <td></td>
 </tr>
 <tr>
+  <td>27</td>
   <td>Push Autoscaling</td>
   <td></td>
   <td></td>
   <td></td>
 </tr>
 <tr>
+  <td>28</td>
   <td>Register Autoscaling Service Broker</td>
   <td></td>
   <td></td>
   <td></td>
 </tr>
 <tr>
-  <td>Destroy autoscaling service broker</td>
+  <td>29</td>
+  <td>Destroy Autoscaling Service Broker</td>
   <td></td>
   <td></td>
   <td></td>
 </tr>
 <tr>
+  <td>30</td>
   <td>Bootstrap</td>
   <td></td>
   <td></td>
   <td></td>
 </tr>
 <tr>
+  <td>31</td>
   <td>Push Pivotal Account</td>
   <td></td>
   <td></td>
   <td></td>
 </tr>
 <tr>
+  <td>32</td>
   <td>MySQL Rejoin Unsafe Errand</td>
   <td></td>
   <td></td>
