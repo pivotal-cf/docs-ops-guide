@@ -52,12 +52,12 @@ In PCF, perform the following steps to configure SSL termination on HAProxy:
 1. Under **Select one of the point-of-entry-options**, select the third option, **Forward SSL to HA Proxy**.
  
 1. Enter your PEM-encoded certificate and your PEM-encoded private key in the fields under **SSL Termination Certificate and Private Key**. You can either upload your own certificate or generate a RSA certificate in Elastic Runtime. For options and instructions on creating a certificate for your wildcard domains, see [Creating a Wildcard Certificate for PCF Deployments](../opsguide/security_config.html#create_or_obtain_certs).
+
+1. If you want HAProxy to only allow HTTPS traffic, select **Disable HTTP traffic to HAProxy**.
   
 1. If you want to use a specific set of SSL ciphers for HAProxy, configure **HAProxy SSL Ciphers**. Enter a colon-separated list of custom SSL ciphers to pass to HAProxy. Otherwise, leave this field blank.
 
 1. If you expect requests larger than the default maximum of 16 Kbytes, enter a new value (in bytes) for **Request Max Buffer Size**. You may need to do this, for example, to support apps that embed large cookie or query string values in headers.
-
-1. If you want HAProxy to only allow HTTPS traffic, select **Disable HTTP traffic to HAProxy**.
 
 1. If you are not using SSL encryption or if you are using self-signed certificates, you can select **Disable SSL certificate verification for this environment**. Selecting this checkbox also disables SSL verification for route services. 
   <p class="note">Use this checkbox only for development and testing environments. Do not select it for production environments.</p>
