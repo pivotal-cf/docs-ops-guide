@@ -1,59 +1,15 @@
 ---
-title: Monitoring Instance Usage
-owner: Apps Manager
+title: Monitoring App and Service Instance Usage
+owner: CAPI
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to retrieve app and service instance usage information. You can access the data using Apps Manager, the Usage service API, or the [Cloud Foundry API](http://apidocs.cloudfoundry.org/) from the cf CLI.
+This topic describes how to use the cf CLI to retrieve usage information about your app and service instances via the Cloud Controller and Usage service APIs.
 
-## <a id='apps-man'></a>Monitoring Instance Usage from Apps Manager ##
+You can also access usage information by using Apps Manager. For more information, see [Monitoring Instance Usage with Apps Manager](accounting-report-apps-man.html).
 
-There are two ways to monitor app and service instance usage from Apps Manager. The Accounting Report provides a summarized report, and the Usage Report provides a more detailed view of the data.
-
-### <a id="accounting-report"></a>View the Accounting Report
-
-The Accounting Report displays instance usage information for all orgs in your [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) deployment except the <strong>system</strong> org. The Accounting Report provides a high-level overview of your usage by displaying your monthly count of app instances.
-
-To access the Accounting Report, you must be [logged into the Apps Manager](../customizing/console-login.html) as an admin.
-
-1. Select **Accounting Report** from the left navigation of Apps Manager.
-
-2. View the average and maximum app instances in use per month under **App Instance Statistics**.
-
-  The maximum is the largest number of app instances in use at any one time. The Accounting Report calculates these values from the `start`, `stop`, and `scale` app usage events in Cloud Controller.
-
-<%= image_tag("accounting-report.png") %>
-
-### <a id="usage-report"></a>View the Usage Report
-
-The Usage Report provides a more granular view of your usage by detailing app memory usage and service instance usage information for all spaces in a particular org, excluding the **system** org.
-
-To access the Usage Report, you must be [logged into the Apps Manager](../customizing/console-login.html) as an admin or have an Org Manager or Org Auditor role. For more information on managing roles, see the [Managing User Accounts and Permissions Using the Apps Manager](../console/console-roles.html) topic.
-
-1. From the dropdown on the left, select the org for which you want to view a usage report. 
-
-1. Next the org **QUOTA**, click **Usage Report**.
-
-    <%= image_tag("usage-report-link.png") %>
-
-    The top of the Usage Report displays total app memory usage and service instance usage by all spaces in your org.
-
-    <%= image_tag("usage-report.png") %>
-
-    **Spaces Details** breaks down your app memory usage and service instance usage by spaces.
-
-    <%= image_tag("service-details.png") %>
-
-2. Click the name of an app to view its **Configuration History**.
-
-    <%= image_tag("app-usage-service.png") %>
-
-## <a id='cf-cli'></a>Monitoring App and Service Usage from the cf CLI ##
-
-This section describes how to use the cf CLI to retrieve usage information about your app and service instances via the Cloud Controller and Usage service APIs.
-
-### <a id="targetcc"></a>Obtain System Usage Information
+## <a id="targetcc"></a>Obtain System Usage Information
 
 Before you can retrieve any app or service information, you must target the Cloud Controller and log in as admin, as follows:
 
@@ -85,7 +41,7 @@ Before you can retrieve any app or service information, you must target the Clou
 	$ curl "https://app-usage.YOUR-DOMAIN/system_usage_report" -k -v -H "authorization:`cf oauth-token`"
 	</pre>
 
-### <a id="individual_org"></a> Obtain Usage Information about an Org ###
+## <a id="individual_org"></a> Obtain Usage Information about an Org ###
 
 To obtain individual org usage information, use the following procedure. You must log in as an admin or as an Org Manager or Org Auditor for the org you want to view.
 
@@ -141,7 +97,7 @@ To obtain individual org usage information, use the following procedure. You mus
    }
    </pre>
 
-### <a id="retrieve_apps"></a> Retrieve Apps Information ###
+## <a id="retrieve_apps"></a> Retrieve Apps Information ###
 
 1. The `apps` endpoint retrieves information about all of your apps.
 
@@ -241,7 +197,7 @@ To obtain individual org usage information, use the following procedure. You mus
 1. To view the `app_usages` report that covers app usage within an org during a period of time, see [Obtain Usage Information about an Org](#individual_org).
 
 	  	
-### <a id="retrieve_services"></a> Retrieve Services Information ###
+## <a id="retrieve_services"></a> Retrieve Services Information ###
 
 Use `cf curl` to retrieve service instance information. The `service_instances?` endpoint retrieves details about both bound and unbound service instances:
 
