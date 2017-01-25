@@ -7,7 +7,7 @@ owner: Apps Manager
 
 This topic describes how to retrieve app and service instance usage information using Apps Manager. 
 
-You can also access the data using the Usage service API, or the [Cloud Foundry API](http://apidocs.cloudfoundry.org/) from the cf CLI. For more information, see [Monitoring App and Service Instance Usage](../opsguide/accounting-report.html).
+You can also retrieve app and service instance usage information using the Usage service API, or the [Cloud Foundry API](http://apidocs.cloudfoundry.org/) from the Cloud Foundry Command Line Interface (cf CLI). For more information, see the [Monitoring App and Service Instance Usage](../opsguide/accounting-report.html) topic.
 
 There are two ways to monitor app and service instance usage from Apps Manager. The Accounting Report provides a summarized report, and the Usage Report provides a more detailed view of the data.
 
@@ -15,13 +15,15 @@ There are two ways to monitor app and service instance usage from Apps Manager. 
 
 The Accounting Report displays instance usage information for all orgs in your [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) deployment except the <strong>system</strong> org. The Accounting Report provides a high-level overview of your usage by displaying your monthly count of app instances.
 
-To access the Accounting Report, you must be [logged into the Apps Manager](../customizing/console-login.html) as an admin.
+Follow the steps below to access the Accounting Report.
 
-1. Select **Accounting Report** from the left navigation of Apps Manager.
+1. [Log into the Apps Manager](../customizing/console-login.html) as an admin.
 
-2. View the average and maximum app instances in use per month under **App Instance Statistics**.
+1. From the left navigation of Apps Manager, select **Accounting Report**.
 
-  The maximum is the largest number of app instances in use at any one time. The Accounting Report calculates these values from the `start`, `stop`, and `scale` app usage events in Cloud Controller.
+2. Under **App Instance Statistics**, view the average and maximum app instances in use per month .
+
+**Max Instances** shows the largest number of app instances in use at any one time over the indicated time period. The Accounting Report calculates these values from the `start`, `stop`, and `scale` app usage events in Cloud Controller.
 
 <%= image_tag("accounting-report.png") %>
 
@@ -29,9 +31,9 @@ To access the Accounting Report, you must be [logged into the Apps Manager](../c
 
 The Usage Report provides a more granular view of your usage by detailing app memory usage and service instance usage information for all spaces in a particular org, excluding the **system** org.
 
-To access the Usage Report, you must be [logged into Apps Manager](../customizing/console-login.html) as an admin or have an Org Manager or Org Auditor role. 
+Follow the steps below to access the Usage Report.
 
-For more information about managing roles, see the [Managing User Accounts and Permissions Using the Apps Manager](../console/console-roles.html) topic.
+1. [Log into the Apps Manager](../customizing/console-login.html) as an admin, or as an account with the **Org Manager** or **Org Auditor** role. For more information about managing roles, see the [Managing User Accounts and Permissions Using the Apps Manager](../console/console-roles.html) topic.
 
 1. From the dropdown on the left, select the org for which you want to view a usage report. 
 
@@ -43,7 +45,7 @@ For more information about managing roles, see the [Managing User Accounts and P
 
     <%= image_tag("usage-report.png") %>
 
-    **Spaces Details** breaks down your app memory usage and service instance usage by spaces.
+    **Spaces Details** displays your app memory usage and service instance usage by spaces.
 
     <%= image_tag("service-details.png") %>
 
