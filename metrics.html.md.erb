@@ -29,7 +29,7 @@ To set up PCF monitoring, you then configure PCF and your monitoring platform as
 
 ## <a id='sources'></a>Metrics Sources
 
-In PCF, the Loggregator [Firehose](../loggregator/architecture.html#firehose) endpoint streams metrics and logs aggregated from all Elastic Runtime component VMs, both system components and hosts. These metrics come from two sources: the BOSH health monitor and Cloud Foundry components. In addition, a build pipeline can create custom metrics such as smoke tests.
+In PCF, the Loggregator [Firehose](../loggregator/architecture.html#firehose) endpoint streams metrics and logs aggregated from all Elastic Runtime component VMs, both system components and hosts. These metrics come from two sources: the BOSH health monitor and Cloud Foundry components. In addition, a build pipeline creates custom metrics such as smoke tests that are important for monitoring.
 
 ### <a id='bosh'></a> BOSH Health Monitor
 
@@ -114,9 +114,9 @@ In Datadog, for example, you can define a `screen_template` query that watches t
 
 ### <a id='alerts'></a>Create Alerts
 
-You create alerts by defining boolean conditions based on operations over one or more metrics, and an action that the platform takes when an alert triggers. The booleans typically check whether metric values exceed or fall below thresholds, or compare metric values against each other.
+You create alerts by defining boolean conditions based on operations over one or more metrics, and an action that the platform takes when an alert triggers. The booleans might check whether metric values exceed or fall below thresholds, for example, or compare metric values against each other.
 
-[In Datadog, for example,](https://github.com/pivotal-cf-experimental/datadog-config-oss/blob/master/alert_templates/shared/diego/LRPs_auction_failure_per_min_too_high.json.erb) you can define an `alert_template` condition that triggers when the `auctioneer.AuctioneerLRPAuctionsFailed` metric indicates an average of more than one failed auction per minute for the past 15 minutes:
+[In Datadog,](https://github.com/pivotal-cf-experimental/datadog-config-oss/blob/master/alert_templates/shared/diego/LRPs_auction_failure_per_min_too_high.json.erb) you can define an `alert_template` condition that triggers when the `auctioneer.AuctioneerLRPAuctionsFailed` metric indicates an average of more than one failed auction per minute for the past 15 minutes:
 
 <pre><code>
 	{
@@ -128,7 +128,7 @@ You create alerts by defining boolean conditions based on operations over one or
     }
 </code></pre>
 
-Actions that an alert triggers can include sending a pager or SMS message, sending an email, generating a support ticket, or passing the alert to a alerting system such as [PagerDuty](https://www.pagerduty.com/).
+Actions triggered by an alert can include sending a pager or SMS message, sending an email, generating a support ticket, or passing the alert to a alerting system such as [PagerDuty](https://www.pagerduty.com/).
 
 ## <a id='platforms'></a>Monitoring Platforms
 
