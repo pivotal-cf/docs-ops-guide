@@ -9,13 +9,13 @@ This topic describes how to set up Pivotal Cloud Foundry (PCF) with third-party 
 
 To perform a manual, one-time check of current PCF system status from Ops Manager, see [Monitoring Virtual Machines in Pivotal Cloud Foundry](../customizing/monitoring.html).
 
-Pivotal recommends that operators experiment with different combinations of metrics and alerts appropriate to their specific requirements. As an example, the [Datadog Config repository](https://github.com/pivotal-cf-experimental/datadog-config-oss/blob/master/cloud-ops-example-doc.md) shows how the Pivotal Cloud Ops team monitors the health of its Cloud Foundry deployments using a customized Datadog dashboard.
+Pivotal recommends that operators experiment with different combinations of metrics and alerts appropriate to their specific requirements.
+
+As a prerequisite to PCF monitoring, you need an account with a monitoring platform, such as [OpenTDSB](http://opentsdb.net/) or similar platforms. This topic uses examples from Datadog, and the [Datadog Config repository](https://github.com/pivotal-cf-experimental/datadog-config-oss/blob/master/cloud-ops-example-doc.md) shows how the Pivotal Cloud Ops team monitors the health of its Cloud Foundry deployments using a customized Datadog dashboard.
 
 <p class='note'><strong>Note</strong>: Pivotal does not officially support Datadog.</p>
 
 ## <a id='overview'></a>Overview
-
-As a prerequisite to PCF monitoring, you need an account with a monitoring platform such as [Datadog](https://www.datadoghq.com/) or [OpenTDSB](http://opentsdb.net/).
 
 To set up PCF monitoring, you then configure PCF and your monitoring platform as follows:
 
@@ -29,7 +29,7 @@ To set up PCF monitoring, you then configure PCF and your monitoring platform as
 
 ## <a id='sources'></a>Metrics Sources
 
-In PCF, the Loggregator [Firehose](../loggregator/architecture.html#firehose) endpoint streams metrics and logs aggregated from all Elastic Runtime component VMs, both system components and hosts. These metrics come from three sources: the BOSH health monitor, Cloud Foundry components, and custom metrics such as smoke tests.
+In PCF, the Loggregator [Firehose](../loggregator/architecture.html#firehose) endpoint streams metrics and logs aggregated from all Elastic Runtime component VMs, both system components and hosts. These metrics come from two sources: the BOSH health monitor and Cloud Foundry components. In addition, a build pipeline can create custom metrics such as smoke tests.
 
 ### <a id='bosh'></a> BOSH Health Monitor
 
@@ -64,17 +64,17 @@ Component metrics that are often useful to monitor include:
 * `rep.RepBulkSyncDuration`
 * `route_emitter.RouteEmitterSyncDuration`
 
-It may also be useful to monitor some IaaS-specific component metrics.
+CF components specific to your IaaS also generate key metrics for health monitoring.
 
 ### <a id='smoke-tests'></a> Smoke Tests and Other Custom Metrics
 
 Many deployments use a continuous integration (CI) tool such as [Concourse](http://concourse.ci) to automate updates and maintenance. Operators typically configure these pipelines to run _smoke tests_, which are functional unit and integration tests on all major system components. This testing produces custom smoke test metrics that quantify system health.
 
-Smoke tests are the most valuable metrics overall for monitoring a PCF deployment, but operators can create other custom metrics monitoring healthbased on multi-component test results for . An example is average outbound latency between components.
+Smoke tests are the most valuable metrics overall for monitoring a PCF deployment, but operators can create other custom metrics monitoring health based on multi-component test results. An example is average outbound latency between components.
 
 ## <a id='send'></a>Send Metrics to a Monitoring Platform
 
-To send metrics to a monitoring platform, you configure your deployment in two places: you create a nozzle for the BOSH and CF component metrics, and you configure your build pipeline to send the custom metrics. This split reflects different paths that metrics take depending on their source.
+To send metrics to a monitoring platform, you configure your deployment in two places: create a nozzle to direct the BOSH and CF component metrics, and configure your build pipeline to send the custom metrics.
 
 ### <a id='nozzle'></a>Create a Nozzle for BOSH and CF Metrics
 
@@ -82,7 +82,7 @@ Metrics originate from the Metron agents on their source components, then travel
 
 To include BOSH Health Monitor metrics, you must have a BOSH HM Forwarder job running on the VM that runs the BOSH Health Monitor and its Metron agent.
 
-To send BOSH and CF metrics to your logging platform you need to deploy a nozzle](../loggregator/architecture.html#nozzles) process that takes the Firehose output, ignores the logs, and sends the metrics to your monitoring platform.
+To send BOSH and CF metrics to your logging platform you need to deploy a [nozzle](../loggregator/architecture.html#nozzles) process that takes the Firehose output, ignores the logs, and sends the metrics to your monitoring platform.
 
 See an example nozzle for sending metrics to Datadog [here](https://github.com/cloudfoundry-incubator/datadog-firehose-nozzle). You configure the Datadog account credentials, API location, and other fields and options in the `config/datadog-firehose-nozzle.json` file.
 
@@ -130,7 +130,7 @@ You create alerts by defining boolean conditions based on operations over one or
 
 Actions that an alert triggers can include sending a pager or SMS message, sending an email, generating a support ticket, or passing the alert to a alerting system such as [PagerDuty](https://www.pagerduty.com/).
 
-## <a id='platforms'></a>Configure your Monitoring Platform
+## <a id='platforms'></a>Monitoring Platforms
 
 Metrics monitoring platforms you can use with Cloud Foundry include:
 
