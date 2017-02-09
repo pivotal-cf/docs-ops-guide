@@ -1,339 +1,140 @@
 ---
-title: The Pivotal Cloud Ops Approach to Monitoring a Pivotal Cloud Foundry Deployment
+title: Monitoring a Pivotal Cloud Foundry Deployment
 owner: Cloud Ops
 ---
 
 <strong><%= modified_date %></strong>
 
-The Pivotal Cloud Ops team monitors the health of its Cloud Foundry deployments using a customized Datadog dashboard. This topic describes each of the key metrics as they are rendered in the custom dashboard, and why the Cloud Ops team uses them for monitoring the health of a Cloud Foundry deployment.
+This topic describes how to set up Pivotal Cloud Foundry (PCF) with third-party monitoring platforms to continuously monitor system metrics and trigger health alerts.
+
+To perform a manual, one-time check of current PCF system status from Ops Manager, see [Monitoring Virtual Machines in Pivotal Cloud Foundry](../customizing/monitoring.html).
+
+Pivotal recommends that operators experiment with different combinations of metrics and alerts appropriate to their specific requirements. As an example, the [Datadog Config repository](https://github.com/pivotal-cf-experimental/datadog-config-oss/blob/master/cloud-ops-example-doc.md) shows how the Pivotal Cloud Ops team monitors the health of its Cloud Foundry deployments using a customized Datadog dashboard.
 
 <p class='note'><strong>Note</strong>: Pivotal does not officially support Datadog.</p>
 
-Cloud Ops' practices are tailored to the specific details of the Cloud Foundry deployments they operate. Therefore, the descriptions here are meant to be informative examples rather than general prescriptions. Pivotal recommends that operators experiment with different combinations of metrics and alerts appropriate to their specific requirements.
+## <a id='overview'></a>Overview
 
-The Cloud Ops team's custom configuration of Datadog's dashboards, alerts, and screenboards can be found in the [Datadog Config repository](https://github.com/pivotal-cf-experimental/datadog-config-oss).
+As a prerequisite to PCF monitoring, you need an account with a monitoring platform such as [Datadog](https://www.datadoghq.com/) or [OpenTDSB](http://opentsdb.net/).
 
-<%= image_tag 'metrics/dashboard.png' %>
+To set up PCF monitoring, you then configure PCF and your monitoring platform as follows:
 
-## <a id='bosh-health'></a>BOSH Health Monitor
+* In PCF:
+	- Install a [nozzle](../loggregator/architecture.html#nozzles) that extracts BOSH and CF metrics from the Firehose and sends them to the monitoring platform.
+	- Configure your build pipeline, if you have one, to send its custom metrics to the monitoring platform.
 
-<%= image_tag 'metrics/bosh_health_combined.png'%>
+* In your monitoring platform:
+  - Customize a dashboard that lets you check and diagnose system health.
+  - Create alerts that generate communications regarding attention-worthy conditions.
 
-<table border='1' class='nice'>
-<tr>
-  <th width="22%">What we monitor</th>
-  <td>Health, broken down by component. Each row displays the average percentage of healthy instances for the relevant component over the last 5 minutes, and over the last 24 hours.
-    <br><br>For example, suppose that your Router has ten instances. If one instance becomes unhealthy, the stoplight turns red and shows 90%.
-    <br><br>We monitor health for the following components:<br><br>
-    <ul>
-      <li>NATS</li>
-      <li>Doppler</li>
-      <li>Stats</li>
-      <li>HM9000</li>
-      <li>BOSH</li>
-      <li>NAT Box</li>
-      <li>ETCD</li>
-      <li>Router</li>
-      <li>API</li>
-      <li>UAA</li>
-    </ul>
-  </td>
-</tr>
-<tr>
-  <th>Why we monitor it</th>
-  <td>To ensure that all VMs are functioning properly.</td>
-</tr>
-<tr>
-  <th>System metric</th>
-  <td><code>bosh.healthmonitor.system.healthy</code></td>
-</tr>
-<tr>
-  <th>Alerts triggered</th>
-  <td>None</td>
-</tr>
-<tr>
-  <th>Notes</th>
-  <td>
-Alerts generated from this metric are passed to a buffer queue in our alerting system, Pagerduty. Because BOSH restores systems quickly if they fail, we wait two minutes before forwarding any unresolved alerts to our operators.
-  </td>
-</tr>
-</table>
+## <a id='sources'></a>Metrics Sources
 
-### <a id='req-per-sec'></a>Requests per Second
+In PCF, the Loggregator [Firehose](../loggregator/architecture.html#firehose) endpoint streams metrics and logs aggregated from all Elastic Runtime component VMs, both system components and hosts. These metrics come from three sources: the BOSH health monitor, Cloud Foundry components, and custom metrics such as smoke tests.
 
-<table border='1' class='nice'>
-<tr>
-  <th width="22%">What we monitor</th>
-  <td>
-    Requests per second for each of the following components:<br><br>
-    <ul>
-      <li>Router</li>
-      <li>API</li>
-      <li>UAA</li>
-    </ul>
-  </td>
-</tr>
-<tr>
-  <th>Why we monitor it</th>
-  <td>To track the flow of traffic through the components in the system.</td>
-</tr>
-<tr>
-  <th>System metric</th>
-  <td>
-    <code>cf.collector.router.requests(component: app/cloudcontroller/uaa)</code>
-  </td>
-</tr>
-<tr>
-  <th>Alerts triggered</th>
-  <td>None</td>
-</tr>
-<tr>
-  <th>Notes</th>
-  <td>None</td>
-</tr>
-</table>
+### <a id='bosh'></a> BOSH Health Monitor
 
-### <a id='nats-traffic-delta'></a>NATS Traffic Delta
+The BOSH layer that underlies PCF generates `healthmonitor` metrics for all virtual machines (VMs) in the deployment. For monitoring system health, the most important of these are:
 
-<% image_tag 'metrics/nats_delta.png' %>
+* `bosh.healthmonitor.system.cpu`: CPU usage, percent of total available on VM
+* `bosh.healthmonitor.system.mem`: Memory usage, percent of total available on VM
+* `bosh.healthmonitor.system.disk`: Disk usage, percent of total available on VM
+* `bosh.healthmonitor.system.healthy`: `1` if VM is healthy, `0` otherwise
 
-<table border='1' class='nice'>
-<tr>
-  <th width="22%">What we monitor</th>
-  <td>Delta of average NATS traffic over the last hour.
-    <br><br>
-    The displayed metric is the difference between the average NATS traffic
-    over the last 30 minutes and the average NATS traffic over the interval
-    from 90 to 60 minutes prior.
-  </td>
-</tr>
-<tr>
-  <th>Why we monitor it</th>
-  <td>To detect significant drops in NATS traffic. A sudden drop might indicate a problem with the health of the NATS VMs.</td>
-</tr>
-<tr>
-  <th>System metric</th>
-  <td><code>aws.ec2.network_in</code></td>
-</tr>
-<tr>
-  <th>Alerts triggered</th>
-  <td>None</td>
-</tr>
-<tr>
-  <th>Notes</th>
-  <td>None</td>
-</tr>
-</table>
+### <a id='cf'></a>Cloud Foundry Components
 
-### <a id='etcd-uptime'></a>ETCD Leader Uptime
+Cloud Foundry component VMs for executive control, hosting, routing, traffic control, authentication, and other internal functions generate metrics. See [Cloud Foundry Component Metrics](../loggregator/all_metrics.html) for a detailed listing of metrics generated by Cloud Foundry.
 
-<% image_tag 'metrics/etcd_uptime.png' %>
+Component metrics that are often useful to monitor include:
 
-<table border='1' class='nice'>
-<tr>
-  <th width="22%">What we monitor</th>
-  <td>
-    Time since the ETCD leader last was down.
-  </td>
-</tr>
-<tr>
-  <th>Why we monitor it</th>
-  <td>When the ETCD leader goes down, it usually indicates a push failure.</td>
-</tr>
-<tr>
-  <th>System metric</th>
-  <td><code>cloudops_tools.etcd_leader_health</code></td>
-</tr>
-<tr>
-  <th>Alerts triggered</th>
-  <td>None</td>
-</tr>
-<tr>
-  <th>Notes</th>
-  <td>The <code>cloudops_tools</code> metrics are generated by an internal app that the Pivotal Cloud Ops team developed. These metrics are not available on other Cloud Foundry deployments.</td>
-</tr>
-</table>
+* `auctioneer.AuctioneerFetchStatesDuration`
+* `auctioneer.AuctioneerLRPAuctionsFailed`
+* `bbs.Domain.cf_apps`
+* `bbs.CrashedActualLRPs`
+* `bbs.LRPsMissing`
+* `bbs.ConvergenceLRPDuration`
+* `bbs.RequestLatency`
+* `DopplerServer.listeners.receivedEnvelopes`
+* `DopplerServer.TruncatingBuffer.totalDroppedMessages`
+* `gorouter.total_routes`
+* `gorouter.ms_since_last_registry_update`
+* `MetronAgent.dropsondeMarshaller.sentEnvelopes`
+* `nsync_bulker.DesiredLRPSyncDuration`
+* `rep.CapacityRemainingMemory`
+* `rep.CapacityTotalMemory`
+* `rep.RepBulkSyncDuration`
+* `route_emitter.RouteEmitterSyncDuration`
 
-### <a id='ssh-attempts'></a>SSH Attempts
+It may also be useful to monitor some IaaS-specific component metrics.
 
-<% image_tag 'metrics/ssh_attempts.png' %>
+### <a id='smoke-tests'></a> Smoke Tests and Other Custom Metrics
 
-<table border='1' class='nice'>
-<tr>
-  <th width="22%">What we monitor</th>
-  <td>
-    Total SSH attempts. We log the count of connection attempts to our systems on the SSH port (port 22).
-  </td>
-</tr>
-<tr>
-  <th>Why we monitor it</th>
-  <td>A spike in SSH attempts is a good indicator of SSH-cracker attacks.</td>
-</tr>
-<tr>
-  <th>System metric</th>
-  <td><code>cloudops_tools.ssh-abuse-monitor</code></td>
-</tr>
-<tr>
-  <th>Alerts triggered</th>
-  <td>None</td>
-</tr>
-<tr>
-  <th>Notes</th>
-  <td>
-    <ul>
-      <li>Diego cells send their iptables logs to Logsearch. A Cloud Ops internal app polls Logsearch for first packets and pushes the count to Datadog.</li>
-      <li>The <code>cloudops_tools</code> metrics are generated by an internal app that the Pivotal Cloud Ops team developed. These metrics are not available on other Cloud Foundry deployments.</li>
-    </ul>
-  </td>
-</tr>
-</table>
+Many deployments use a continuous integration (CI) tool such as [Concourse](http://concourse.ci) to automate updates and maintenance. Operators typically configure these pipelines to run _smoke tests_, which are functional unit and integration tests on all major system components. This testing produces custom smoke test metrics that quantify system health.
 
-## <a id='router-column'></a>The Router Status Column
+Smoke tests are the most valuable metrics overall for monitoring a PCF deployment, but operators can create other custom metrics monitoring healthbased on multi-component test results for . An example is average outbound latency between components.
 
-<%= image_tag 'metrics/router-column.png' %>
+## <a id='send'></a>Send Metrics to a Monitoring Platform
 
-### <a id='app-instance-count'></a>App Instance Count
+To send metrics to a monitoring platform, you configure your deployment in two places: you create a nozzle for the BOSH and CF component metrics, and you configure your build pipeline to send the custom metrics. This split reflects different paths that metrics take depending on their source.
 
-<table border='1' class='nice'>
-<tr>
-  <th width="22%">What we monitor</th>
-  <td>Count of running app instances.</td>
-</tr>
-<tr>
-  <th>Why we monitor it</th>
-  <td>Unexpected large fluctuations in app count can indicate malicious user behavior or Cloud Foundry component issues.</td>
-</tr>
-<tr>
-  <th>System metric</th>
-  <td>
-    <code>avg:cf.collector.HM9000.HM9000.NumberOfAppsWithAllInstancesReporting</code>
-  </td>
-</tr>
-<tr>
-  <th>Alerts triggered</th>
-  <td>running app number change rate</td>
-</tr>
-<tr>
-  <th>Notes</th>
-  <td>Spikes in this metric might indicate the need to add more resources. </td>
-  </tr>
-</table>
+### <a id='nozzle'></a>Create a Nozzle for BOSH and CF Metrics
 
-### <a id='total-routes'></a>Total Routes
+Metrics originate from the Metron agents on their source components, then travel through Dopplers to the Traffic Controller. The Traffic Controller aggregates the metrics system-wide from the BOSH Health Monitor and CF Components, along with log messages from the same VMs, and emits them all from its Firehose endpoint.
 
-<table border='1' class='nice'>
-<tr>
-  <th width="22%">What we monitor</th>
-  <td>Route count from the router, indicated as a delta over the last N minutes.</td>
-</tr>
-<tr>
-  <th>Why we monitor it</th>
-  <td>The count on all routers should be the same. If this count differs between routers, it usually indicates a NATS problem.
-  </td>
-</tr>
-<tr>
-  <th>System metric</th>
-  <td><code>cf.collector.router.total_routes</code></td>
-</tr>
-<tr>
-  <th>Alerts triggered</th>
-  <td>prod CF: Number of routes in the router's routing table is too low</td>
-</tr>
-<tr>
-  <th>Notes</th>
-  <td>
-  The router is the only point of access into all Cloud Foundry components and customer apps. Large spikes in this graph typically indicate a problem, and could indicate a denial of service attack. For example, if the router goes down or does not have routes, the system is down and a large dip appears in the graph. However, some large spikes, such as those that would occur during a marketing event, are expected. Small fluctuations are not reflected on the graph.
-  </td>
-</tr>
-</table>
+To include BOSH Health Monitor metrics, you must have a BOSH HM Forwarder job running on the VM that runs the BOSH Health Monitor and its Metron agent.
 
-### <a id='router-dial-errors'></a>Router Dial Errors
+To send BOSH and CF metrics to your logging platform you need to deploy a nozzle](../loggregator/architecture.html#nozzles) process that takes the Firehose output, ignores the logs, and sends the metrics to your monitoring platform.
 
-<table border='1' class='nice'>
-<tr>
-  <th width="22%">What we monitor</th>
-  <td>Separate indicators monitor 5xx codes from the routers to backend CF components and user apps, respectively.
-</td>
-</tr>
-<tr>
-  <th>Why we monitor it</th>
-  <td>Indicates failures connecting to components.</td>
-</tr>
-<tr>
-  <th>System metric</th>
-  <td><code>avg:cloudops_tools.app_instance_monitor.router.dial.errors{domain:run.pivotal.io} / avg:cloudops_tools.app_instance_monitor.router.dial.errors{cf_component:false}</code></td>
-</tr>
-<tr>
-  <th>Alerts triggered</th>
-  <td>
-    <ul>
-      <li>No data for router dial errors</li>
-      <li>Router dial errors for console.run.pivotal.io</li>
-      <li>Too many router dial errors for cf components</li>
-    </ul>
-  </td>
-</tr>
-<tr>
-  <th>Notes</th>
-  <td>
-    <ul>
-      <li>
-        We investigate dial errors to admin domain apps, the Cloud Controller, UAA, Dopplers, and any other BOSH-deployed Cloud Foundry component. We expect dial errors from our large population of customer apps (4000+). 502s occur when customers push flawed apps, or are running dev iterations. 5xx messages in the 500/10 min range are normal. If we saw this number to jump to 1000+/10 min, we would investigate.
-      </li>
-      <li>
-        The <code>cloudops_tools</code> metrics are generated by an internal app that the Pivotal Cloud Ops team developed. These metrics are not available on other Cloud Foundry deployments.
-       </li>
-    </ul>
-  </td>
-</tr>
-</table>
+See an example nozzle for sending metrics to Datadog [here](https://github.com/cloudfoundry-incubator/datadog-firehose-nozzle). You configure the Datadog account credentials, API location, and other fields and options in the `config/datadog-firehose-nozzle.json` file.
 
-### <a id='rotuer-cpu'></a>Router CPU
+### <a id='concourse'></a>Configure Concourse for Custom Metrics
 
-<table border='1' class='nice'>
-<tr>
-  <th width="22%">What we monitor</th>
-  <td>OS-level CPU usage.</td>
-</tr>
-<tr>
-  <th>Why we monitor it</th>
-  <td>Routers are multi-threaded and consume a large number of CPU cycles. If the routers are using too much CPU, we use BOSH to scale them.</td>
-</tr>
-<tr>
-  <th>System metric</th>
-  <td><code>bosh.healthmonitor.system.cpu.user{deployment:cf-cfapps-io2,job:<router_job>}</code></td>
-</tr>
-<tr>
-  <th>Alerts triggered</th>
-  <td>None</td>
-</tr>
-<tr>
-  <th>Notes</th>
-  <td>In general, we add routers whenever doing so may resolve issues.</td>
-</tr>
-</table>
+Concourse sends custom metrics to the monitoring platform directly. Concourse VMs do not run Metron agents, and the Firehose does not carry custom metrics from pipeline builds.
 
-### <a id="aws-events"></a>AWS Events
+To send custom metrics from Concourse to a monitoring platform, you include your platform endpoint and account information in your pipeline configuration. See the [Metrics]
+(https://concourse.ci/metrics.html) topic in the Concourse documentation for how to emit Concourse metrics to a monitoring platform.
 
-<table border='1' class='nice'>
-<tr>
-  <th width="22%">What we monitor</th>
-  <td>The feed from <code>aws ec2 events</code>. </td>
-</tr>
-<tr>
-  <th>Why we monitor it</th>
-  <td>Contains important or critical information from our IaaS about virtual machines, RDS, etc.</td>
-</tr>
-<tr>
-  <th>System metric</th>
-  <td>N/A</td>
-</tr>
-<tr>
-  <th>Alerts triggered</th>
-  <td>None</td>
-</tr>
-<tr>
-  <th>Notes</th>
-  <td>Only applies to Cloud Foundry deployments on AWS.</td>
-</tr>
-</table>
+## <a id='config-mon'></a>Configure your Monitoring Platform
+
+Monitoring platforms support two types of monitoring:
+
+* A _dashboard_ for active monitoring when you are at a keyboard and screen
+* Automated _alerts_ for when your attention is elsewhere
+
+Some monitoring solutions offer both in one package. Others require putting the two pieces together.
+
+See the [Datadog Config repository](https://github.com/pivotal-cf-experimental/datadog-config-oss/blob/master/cloud-ops-example-doc.md) for an example of how to configure a dashboard and alerts for Cloud Foundry in Datadog.
+
+### <a id='dashboard'></a>Customize Your Dashboard
+
+You customize a dashboard by defining elements on the screen that show values derived from one or more metrics. These dashboard elements typically use simple formulas, such as averaging metric values over the past 60 seconds or summing them up over related instances. They are also often normalized to display with 3 or fewer digits for easy reading and color-coded red, yellow, or green to indicate health conditions.
+
+![Datadog dashboard](./metrics/dashboard.png)
+
+In Datadog, for example, you can define a `screen_template` query that watches the `auctioneer.AuctioneerLRPAuctionsFailed` metric and displays its current average over the past minute.
+
+### <a id='alerts'></a>Create Alerts
+
+You create alerts by defining boolean conditions based on operations over one or more metrics, and an action that the platform takes when an alert triggers. The booleans typically check whether metric values exceed or fall below thresholds, or compare metric values against each other.
+
+[In Datadog, for example,](https://github.com/pivotal-cf-experimental/datadog-config-oss/blob/master/alert_templates/shared/diego/LRPs_auction_failure_per_min_too_high.json.erb) you can define an `alert_template` condition that triggers when the `auctioneer.AuctioneerLRPAuctionsFailed` metric indicates an average of more than one failed auction per minute for the past 15 minutes:
+
+<pre><code>
+	{
+		"query": "min(last_15m):per_minute(avg:datadog.nozzle.auctioneer.AuctioneerLRPAuctionsFailed{deployment:&lt;%= metron_agent_diego_deployment %>}) > 1",
+		"message": "##Description:\nDiego internal metrics \n\n## Escalation Path:\nDiego \n\n## Possible Causes:\nThose alerts were a pretty strong signal for us to look at the BBS, which was locked up\n\n## Potential Solutions:\nEscalate to Diego team\n>&lt;%= cloudops_pagerduty %> &lt;%= diego_oncall %>",
+		"name": "&lt;%= environment %> Diego: LRP Auction Failure per min is too high",
+		"no_data_timeframe": 30,
+		"notify_no_data": false
+    }
+</code></pre>
+
+Actions that an alert triggers can include sending a pager or SMS message, sending an email, generating a support ticket, or passing the alert to a alerting system such as [PagerDuty](https://www.pagerduty.com/).
+
+## <a id='platforms'></a>Configure your Monitoring Platform
+
+Metrics monitoring platforms you can use with Cloud Foundry include:
+
+* [Datadog](https://www.datadoghq.com/)
+* [OpenTSDB](http://opentsdb.net/) alerts and [Grafana](http://grafana.org/) dashboard
+
+
