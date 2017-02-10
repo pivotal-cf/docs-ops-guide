@@ -21,7 +21,7 @@ To set up PCF monitoring, you then configure PCF and your monitoring platform as
 
 * In PCF:
 	- Install a [nozzle](../loggregator/architecture.html#nozzles) that extracts BOSH and CF metrics from the Firehose and sends them to the monitoring platform.
-	- Configure your build pipeline, if you have one, to send its custom metrics to the monitoring platform.
+	- Create a mechanism that periodically generates smoke tests and other custom metrics. (Recommended for production systems)
 
 * In your monitoring platform:
   - Customize a dashboard that lets you check and diagnose system health.
@@ -29,7 +29,7 @@ To set up PCF monitoring, you then configure PCF and your monitoring platform as
 
 ## <a id='sources'></a>Metrics Sources
 
-In PCF, the Loggregator [Firehose](../loggregator/architecture.html#firehose) endpoint streams metrics and logs aggregated from all Elastic Runtime component VMs, both system components and hosts. These metrics come from two sources: the BOSH health monitor and Cloud Foundry components. In addition, a build pipeline creates custom metrics such as smoke tests that are important for monitoring.
+In PCF, the Loggregator [Firehose](../loggregator/architecture.html#firehose) endpoint streams metrics and logs aggregated from all Elastic Runtime component VMs, both system components and hosts. These metrics come from two sources: the BOSH health monitor and Cloud Foundry components. In addition, you can deploy an app to run regular smoke tests and generate test result metrics other custom metrics that are important for monitoring.
 
 ### <a id='bosh'></a> BOSH Health Monitor
 
@@ -68,13 +68,15 @@ CF components specific to your IaaS also generate key metrics for health monitor
 
 ### <a id='smoke-tests'></a> Smoke Tests and Other Custom Metrics
 
-Many deployments use a continuous integration (CI) tool such as [Concourse](http://concourse.ci) to automate updates and maintenance. Operators typically configure these pipelines to run _smoke tests_, which are functional unit and integration tests on all major system components. This testing produces custom smoke test metrics that quantify system health.
+PCF includes [smoke tests](https://github.com/pivotal-cloudops/cf-smoke-tests/tree/Dockerfile), which are functional unit and integration tests on all major system components. By default, whenever an operator upgrades to a new version of Elastic Runtime, these smoke tests run as a post-deploy errand.
 
-Smoke tests are the most valuable metrics overall for monitoring a PCF deployment, but operators can create other custom metrics monitoring health based on multi-component test results. An example is average outbound latency between components.
+Production systems typically also have an app that runs smoke tests periodically, for example every five minutes, and generate pass/fail metrics from the results.
+
+Smoke tests are the most valuable metrics overall for monitoring a PCF deployment, but operators can also generate other custom metrics based on multi-component tests. An example is average outbound latency between components.
 
 ## <a id='send'></a>Send Metrics to a Monitoring Platform
 
-To send metrics to a monitoring platform, you configure your deployment in two places: create a nozzle to direct the BOSH and CF component metrics, and configure your build pipeline to send the custom metrics.
+To send metrics to a monitoring platform, you configure your deployment in two places: create a nozzle that directs the BOSH and CF component metrics from the Firehose, and configure any custom metrics app to send metrics to your monitoring platform directly.
 
 ### <a id='nozzle'></a>Create a Nozzle for BOSH and CF Metrics
 
@@ -86,12 +88,18 @@ To send BOSH and CF metrics to your logging platform you need to deploy a [nozzl
 
 See an example nozzle for sending metrics to Datadog [here](https://github.com/cloudfoundry-incubator/datadog-firehose-nozzle). You configure the Datadog account credentials, API location, and other fields and options in the `config/datadog-firehose-nozzle.json` file.
 
-### <a id='concourse'></a>Configure Concourse for Custom Metrics
+### <a id='custom'></a>Configure Custom Metrics
 
-Concourse sends custom metrics to the monitoring platform directly. Concourse VMs do not run Metron agents, and the Firehose does not carry custom metrics from pipeline builds.
+For production systems, Pivotal recommends deploying an app that runs regular smoke tests and other custom tests and generates metrics from the results.
 
-To send custom metrics from Concourse to a monitoring platform, you include your platform endpoint and account information in your pipeline configuration. See the [Metrics]
-(https://concourse.ci/metrics.html) topic in the Concourse documentation for how to emit Concourse metrics to a monitoring platform.
+The app can run in own Docker container, on a [Concourse](http://concourse.ci) VM, or elsewhere.
+
+A custom metrics app sends metrics to the monitoring platform directly, so you need to configure it with your platform endpoint and account information. A custom metrics app does not run a Metron agent, and the Firehose does not carry custom metrics.
+
+See the Pivotal Cloud Ops [CF Smoke Tests](https://github.com/pivotal-cloudops/cf-smoke-tests/tree/Dockerfile) repo for more information and examples of smoke test and custom metrics apps.
+
+See the [Metrics]
+(https://concourse.ci/metrics.html) topic in the Concourse documentation for how to set up Concourse to generate custom metrics.
 
 ## <a id='config-mon'></a>Configure your Monitoring Platform
 
