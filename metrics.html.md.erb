@@ -92,7 +92,7 @@ To set up PCF monitoring, you:
 
 To monitor BOSH and CF component metrics, you install a [nozzle](../loggregator/architecture.html#nozzles) that directs the metrics from the Firehose to your monitoring platform. The nozzle process takes the Firehose output, ignores the logs, and sends the metrics.
 
-If you do not use the [JMX Bridge](docs.pivotal.io/jmx-bridge) OpenTSDB Firehose Nozzle, you must install a BOSH HM Forwarder job on the VM that runs the BOSH Health Monitor and its Metron agent.
+If you do not use the [JMX Bridge](http://docs.pivotal.io/jmx-bridge) OpenTSDB Firehose Nozzle, you must install a BOSH HM Forwarder job on the VM that runs the BOSH Health Monitor and its Metron agent.
 
 See an example nozzle for sending metrics to Datadog [here](https://github.com/cloudfoundry-incubator/datadog-firehose-nozzle). You configure the Datadog account credentials, API location, and other fields and options in the `config/datadog-firehose-nozzle.json` file.
 
