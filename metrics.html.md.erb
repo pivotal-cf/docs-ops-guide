@@ -66,8 +66,6 @@ PCF components specific to your IaaS also generate key metrics for health monito
 
 PCF component metrics originate from the Metron agents on their source components, then travel through Dopplers to the Traffic Controller.
 
-To follow this same path, BOSH health metrics require an HM Forwarder process to run on the Health Monitor VMs. But the HM Forwarder is not needed if you use the JMX Bridge nozzle, which queries the Health Monitor directly.
-
 The Traffic Controller aggregates both metrics and log messages system-wide from all Dopplers, and emits them from its Firehose endpoint.
 
 ## <a id='smoke-tests'></a> Smoke Tests and Custom System Metrics
@@ -83,6 +81,8 @@ Operators can also generate other custom system metrics based on multi-component
 To set up PCF monitoring, you:
 
 * Install a [nozzle](../loggregator/architecture.html#nozzles) that extracts BOSH and CF metrics from the Loggregator Firehose and sends them to the monitoring platform.
+
+* If you are not using the JMX Bridge nozzle, install the [HM Forwarder](https://github.com/cloudfoundry/bosh-hm-forwarder) process to run on the BOSH Health Monitor VM. This process routes health metrics to the local Metron agent, and it does not install automatically as part of PCF. You do not need the HM Forwarder with the JMX Bridge nozzle, which queries the Health Monitor directly.
 
 * Install a custom app to generate smoke test or other custom system metrics.
 
