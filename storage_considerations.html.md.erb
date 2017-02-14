@@ -1,0 +1,85 @@
+---
+title: Considerations for Selecting File Storage in Pivotal Cloud Foundry
+owner: Ops Manager
+---
+
+<strong><%= modified_date %></strong>
+<html class="list-style-none"></html>
+
+This topic describes the critical factors to consider when evaluating the type of file storage to configure and use as the [Elastic Runtime blobstore](../concepts/architecture/cloud-controller.html#blob-store) in your Pivotal Cloud Foundry (PCF) deployment. 
+
+File storage with insufficient IOPs can negatively impact the performance and stability of your PCF deployment. However, the minimum number of required IOPs depends upon a number of deployment factors and configuration choices. 
+
+Consider the following factors of your specific deployment when making file storage decisions.
+
+## <a id="types"></a> Selecting Internal or External File Storage
+
+When you deploy PCF, you can select internal file storage, external file storage or IaaS-provided file storage as an option in the Elastic Runtime tile. 
+
+Selecting internal storage causes PCF to deploy a dedicated VM that uses either NFS or WebDAV for file storage. Selecting external storage allows you to configure an external S3 or Ceph compatible file storage, or select external storage provided by the IaaS, such as Google Cloud Storage or Azure Storage. 
+
+If you are using internal file storage, the network bandwidth available to the single VM acting as the filestore may also impact PCF performance.
+
+Whenever possible, Pivotal recommends using external file storage or file storage provided by the IaaS where you are deploying PCF. 
+
+As a guiding principle, if your deployment uses more than 20 Diego cells, you should use always select external or IaaS-provided file storage and avoid the use of internal file storage.
+
+## <a id="load"></a> Calculating Potential Disk Load Requirements
+
+The best effort calculation to figure out how performant (IOPS) your file storage needs is to determine roughly how many total bits need to move around at a single time. 
+
+### <a id="num_cells"></a> Number of Diego Cells
+
+As a first calculation, determine the number of Diego cells that your deployment is currently using and that you **expect** to use in your deployment.
+
+To view the number of Diego cell instances currently running in your deployment, see the **Resource Config** section of your Elastic Runtime tile.
+
+### <a id="max_in_flight"></a> Maximum In-Flight Load for Diego Cells
+
+As a second determination, find out the maximum in-flight load for each Diego cells.
+
+The maximum in-flight configuration allows operators to throttle the number of instances that Diego shuffles around during an upgrade. If no limit is imposed, then file storage may endure heavy load during events such as upgrade. 
+
+The value of this configuration depends on the version of PCF that you have have deployed. In addition, some later versions of PCF allow operators to override this value.
+
+To determine this value, refer to the following table and then, if necessary, determine the override value in your deployment.
+
+<table class="nice">
+<tr>
+ <th>PCF Version</th>
+ <th>Default Config Value</th>
+ <th>Overrideable?</th>
+</tr>
+<tr>
+<td>PCF 1.7.x and earlier</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>PCF 1.8.x and later</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>PCF 1.9.x and later</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>PCF 1.10.0 and later</td>
+<td></td>
+<td></td>
+</tr>
+ </table>
+
+### <a id="instances"></a> Number of App Instances and Droplet Size
+
+Lastly, based on the above factors, determine overall expected load by multiplying the expected number of app instances are on each cell with the size of the instance droplets.
+
+For example, if you start up 10 cells that each host 20 instances, which is controlled by the maximum in-flight load, and each instances droplet is an avg of 100 MB in size, then you potentially have 20 GB of data hitting the disk at the same time. 
+
+Depending on the IOPS capacity of your disk, this 20 GB of data will take a set amount of time to reassemble on a new disk. If this disk processing time takes too long, then Diego cells may take too long to start up and result in a cascading failure.
+
+## <a id="rel_links"></a> Related Links
+
+* [How to use Elastic Runtime blob storage data](https://discuss.pivotal.io/hc/en-us/articles/217982188-How-to-use-Elastic-Runtime-blob-storage-data-)
