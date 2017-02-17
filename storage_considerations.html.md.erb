@@ -39,70 +39,92 @@ Next, find out the maximum in-flight load for each Diego cell.
 
 This load is affected by two possible throttle configurations:
 
-- Starting container count maximum, or the overall limit to the number of containers that Diego can start in Elastic Runtime. This is a deployment-wide limit. The default value and ability to override this configuration depends on the version of PCF deployed.
-- The `max_in_flight` setting for the Diego cell job as configured in Ops Manager Director. This configuration, expressed as a percentage, sets the maximum number of in-flight instances that can be started simulataneously. For example, if your deployment is running 10 Diego cell instances and the configured `max_in_flight` value is `20%`, then only 2 Diego cell instances can start up at a single time. Operators can override this configuration setting by using the Ops Manager API.
+- The starting container count maximum, or the overall limit to the number of containers that Diego can start in Elastic Runtime. This is a deployment-wide limit. The default value and ability to override this configuration depends on the version of PCF deployed.
+- The `max_in_flight` setting for the Diego cell job as configured in Ops Manager Director. This configuration, expressed as a percentage, sets the maximum number of job instances that can be started simultaneously. For example, if your deployment is running 10 Diego cell job instances and the configured `max_in_flight` value is `20%`, then only 2 Diego cell job instances can start up at a single time. Operators can override this configuration setting by using the Ops Manager API.
 
-These configurations allow operators to throttle the number of containers that Diego starts concurrently. If no limits are imposed, then your file storage may undergo exceptionally heavy load during events such as upgrade. 
+These configurations allow operators to throttle the number of containers and Diego cell instances that Diego starts concurrently. If no limits for either are imposed, then your file storage may undergo exceptionally heavy load during events such as upgrade. 
 
-The value of both configurations depend on the version of PCF that you have have deployed and whether you have overridde the default value.
+The value of the above configurations depend on the version of PCF that you have have deployed and whether you have overridden the default value.
 
 Refer to the following table for existing defaults and if necessary, determine the override value in your deployment.
-
 
 <table class="nice">
 <tr>
  <th>PCF Version</th>
  <th>Starting Container Count Maximum</th>
- <th>Overridable?</th>
- <th>Maximum In Flight Instances</th>
- <th>Overridable?</th>
+ <th>Starting Container Count Overridable?</th>
+ <th>Maximum In Flight Diego Cell Instances</th>
+ <th>Maximum In Flight Diego Cell Instances Overridable?</th>
 </tr>
 <tr>
 <td>PCF 1.7.43 and earlier</td>
 <td>No limit set</td>
 <td>No</td>
-<td>100%</td>
+<td>1 instance</td>
 <td>No</td>
 </tr>
 <tr>
-<td>PCF 1.7.44+</td>
+<td>PCF 1.7.44 to 1.7.49</td>
 <td>200</td>
 <td>No</td>
-<td>100%</td>
+<td>1 instance</td>
 <td>No</td>
 </tr>
 <tr>
-<td>PCF 1.8.0</td>
+<td>PCF 1.7.50 +</td>
 <td>200</td>
 <td>No</td>
-<td>10%</td>
+<td>1 instance</td>
 <td>No</td>
 </tr>
 <tr>
-<td>PCF 1.9.0 and later</td>
-<td>200</td>
+<td>PCF 1.8.0 to 1.8.29</td>
+<td>No limit set</td>
 <td>No</td>
-<td>10%</td>
+<td>10% of total instances</td>
+<td>No</td>
+</tr>
+<tr>
+<td>PCF 1.8.30 +</td>
+<td>200</td>
+<td>Yes</td>
+<td>10% of total instances</td>
+<td>No</td>
+</tr>
+<tr>
+<td>PCF 1.9.0 to 1.9.7</td>
+<td>No limit set</td>
+<td>No</td>
+<td>10% of total instances</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>PCF 1.9.8 +</td>
+<td>200</td>
+<td>Yes</td>
+<td>10% of total instances</td>
 <td>Yes</td>
 </tr>
 <tr>
 <td>PCF 1.10.0 and later</td>
 <td>200</td>
 <td>Yes</td>
-<td>10%</td>
+<td>10% of total instances</td>
 <td>Yes</td>
 </tr>
  </table>
 
 To retrieve or override the existing `max_in_flight` value in Ops Manager Director, use the Ops Manager API. See the Ops Manager API documentation provided with your Ops Manager installation at `https://YOUR-OPSMAN-FQDN/docs/`.
 
+To update the starting container count maximum, see the _Deploying Elastic Runtime_ topic for your IaaS. For example, if you are configuring PCF on GCP, see [Deploying Elastic Runtime on GCP](../customizing/gcp)
+
 ### <a id="instances"></a> Calculating Load Based on Number of App Instances and Droplet Size
 
-Lastly, using the above numbers, you can determine a rough estimate of the expected load by multiplying the expected number of app instances are on each cell with the size of the instance droplets.
+Using the above numbers, you can determine a rough estimate of the expected load by multiplying the total number of expected app instances for all cells with the size of the instance droplets.
 
-For example, if you start up 10 cells that each host 20 app instances, which is controlled by the maximum in-flight load, and each instance droplet is an avg of 100 MB in size, then you potentially have 20 GB of data hitting the disk at the same time. 
+For example, if your deployment starts up 10 cells that each host 20 app instances and each app instance droplet is an avg of 100 MB in size, then you potentially have 20 GB of data hitting the disk at the same time. 
 
-Depending on the IOPS capacity of your disk, this 20 GB of data will take a set amount of time to reassemble on a new disk. If this disk processing time takes too long, then Diego cells may take too long to start up and result in a cascading failure.
+Depending on the IOPS capacity of your disk, this 20 GB of data will take a set amount of time to reassemble on a new disk. If this disk processing time takes too long, then Diego cells and app instances may take too long to start up, resulting in a cascading failure.
 
 ## <a id="rel_links"></a> Related Links
 
