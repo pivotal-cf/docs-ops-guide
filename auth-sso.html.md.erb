@@ -131,9 +131,9 @@ Identity Providers and how to integrate them with PCF:
 
 <p class="note"><strong>Note</strong>: Some Identity Providers allow uploads of Service Provider Metadata. Other providers require you to manually enter the Service Provider Metadata into a form.</p>
 
-## <a id="configure-ldap"></a>Configure PCF to Use an LDAP Identity Provider
+## <a id="configure-ldap"></a>Configure LDAP as an Identity Provider for PCF
 
-To integrate the UAA with LDAP, configure Elastic Runtime with your LDAP endpoint information as follows:
+To integrate the UAA with one or more LDAP servers, configure Elastic Runtime with your LDAP endpoint information as follows:
 
 1. Log into the Operations Manager web interface.
 
@@ -147,7 +147,7 @@ To integrate the UAA with LDAP, configure Elastic Runtime with your LDAP endpoin
 
 1. Under **Configure your UAA**, select **LDAP Server**.
 
-1. Enter the **Server URL**, a URL pointing to the LDAP server. This URL must include one of the following protocols:
+1. For **Server URL**, enter the URL(s) that point your LDAP server(s). With multiple LDAP servers, separate their URLs with spaces. Each URL must include one of the following protocols:
     * `ldap://`: This specifies that the LDAP server uses an unencrypted connection.
     * `ldaps://`: This specifies that the LDAP server uses SSL for an encrypted connection and requires that the LDAP server holds a trusted certificate or that you import a trusted certificate to the JVM truststore.
 
@@ -189,6 +189,8 @@ them to PCF Roles.</p>
 1. For **Email Attribute**, enter the attribute name in your LDAP directory that corresponds to the email address in each user record, for example `mail`.
 
 1. For **Email Domain(s)**, enter a comma-separated list of the email domains for external users who will receive invitations to Apps Manager.
+
+1. For **LDAP Referrals**, choose how the UAA handles LDAP server referrals out to other external user stores. The UAA can follow the external referrals, ignore them without returning errors, or throw an error for each external referral and abort the authentication.
 
 1. Click **Save**.
 

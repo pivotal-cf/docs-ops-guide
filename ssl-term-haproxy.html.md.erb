@@ -1,0 +1,22 @@
+---
+title: Configuring SSL/TLS Termination at HAProxy
+owner: Ops Manager
+---
+
+<strong><%= modified_date %></strong>
+
+Pivotal recommends that you use HAProxy in lab and test environments only. 
+Production environments should instead use a highly-available customer-provided
+load balancing solution.
+
+CF deploys with a single instance of HAProxy for use in lab and test
+environments.
+You can use this HAProxy instance for SSL termination and load balancing to the
+PCF Routers.
+
+You can generate a self-signed certificate for HAProxy if you do not want to 
+obtain a signed certificate from a well-known certificate authority.
+
+##<a id="haproxy"></a>Terminate SSL/TLS at HAProxy
+
+<%= partial 'ssl_termin_haproxy_pcf' %>
