@@ -1,0 +1,29 @@
+---
+title: Enabling NFS Volume Services
+owner: Diego Persistence
+---
+
+This topic describes how Pivotal Cloud Foundry (PCF) operators can deploy NFS volume services. 
+
+## <a id='overview'></a>Overview
+
+A volume service gives apps access to an ephemeral filesystem, such as NFS. By performing the procedures in this topic, operators can add a volume service to the [Marketplace](../devguide/services/index.html) that provides an NFSv3 filesystem. 
+
+Developers can then use the [Cloud Foundry Command Line Interface](../cf-cli/index.html) (cf CLI) to create service instances of the volume service and bind them to their apps. For more information, see the [Using an External File System (Volume Services)](../devguide/services/using-vol-services.html) topic.
+
+## <a id='enable'></a>Enable Volume Services
+
+To enable NFS volume services in PCF, perform the following steps:
+
+1. Navigate to the Ops Manager Installation Dashboard.
+1. Click the **Elastic Runtime** tile.
+1. Click **Advanced Features**.
+1. Under **Enabling NFSv3 volume services**, select **Enable**.
+	<%= image_tag('enable-nfs.png') %>
+1. Click **Save**.
+1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to redeploy.
+1. Using the cf CLI, enable access to the service:
+	<pre class="terminal">$ cf enable-service-access nfs</pre>
+	To limit access to a specific org, use the `-o` flag, followed by the name of the org where you want to enable access. For more information, see the [Access Control](../services/access-control.html) topic.
+
+After completing these steps, developers can use the cf CLI to create service instances of the `nfs` service and bind them to their apps.
