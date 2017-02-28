@@ -32,7 +32,9 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. Select an availability zone for your singleton jobs, and one or more availability zone(s) to balance other jobs in. 
 
-1. Select a network.
+1. Select a network. This network does not need to be the same network into which you have deployed the Elastic Runtime.
+   In fact, for most deployments, operators will want to create unique networks into which they can deploy the Isolation Segment tile.
+   These networks should make sure to maintain network reachability for the Diego components, meaning the Cells should be able to reach the Diego Brain and Diego Database VMs.
 
 1. Click **Save**.
 
