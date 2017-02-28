@@ -9,7 +9,17 @@ This topic describes how to install the PCF Isolation Segment tile, which allows
 
 For more information about how isolation segments work, see the [Isolation Segments](../concepts/security.html#isolation-segments) section of the <Em>Understanding Cloud Foundry Security</em> topic. After installing the PCF Isolation Segment tile, see the [Managing Isolation Segments](../adminguide/isolation-segments.html) topic for more information about managing an isolation segment.
 
-##<a id='install'></a> Step 1: Install the Tile
+##<a id='routing'></a> Step 1: Configure Routing (Optional)
+
+By default, the Elastic Runtime Router handles traffic for your isolation segment. However, you can deploy a dedicated router for your isolation segment instead.
+
+To deploy a dedicated router, perform the following steps:
+
+1. Stand up a load balancer in front of the Elastic Runtime Router. The steps will vary depending on your IaaS.
+1. Create a wildcard DNS entry for traffic routed to any app in the isolation segment. For example, `*.iso.example.com`.
+1. Attach the wildcard DNS entry to the load balancer you created.
+
+##<a id='install'></a> Step 2: Install the Tile
 
 Perform the following steps to install the PCF Isolation Segment tile:
 
@@ -22,7 +32,7 @@ Perform the following steps to install the PCF Isolation Segment tile:
 1. Click the orange **PCF Isolation Segment** tile.<br>
 	<%= image_tag('isolation-segment/pcf-isolation-segment.png') %> 
 
-##<a id='config'></a> Step 2: Configure the Tile
+##<a id='config'></a> Step 3: Configure the Tile
 
 Perform the following steps to configure the PCF Isolation Segment tile: 
 
@@ -63,7 +73,12 @@ available IP addresses to be assigned to your app containers. This must be diffe
 
 1. Click **Save**.
 
-1. Optionally edit the configurations in **Advanced Features**, **Resource Config**, and **Stemcell** as desired.
+1. Optionally edit the configurations in **Advanced Features** as desired.
+
+1. If you are using a dedicated router for your isolation segment, click **Resource Config** and enter the wildcard DNS entry attached to your load balancer into the **Router** row under **Load Balancers**.
+	<%= image_tag('isolation-segment/resource-config.png') %>
+
+1. Optionally edit the **Stemcell** configuration as desired.
 
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to deploy the tile.
 
