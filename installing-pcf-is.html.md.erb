@@ -5,7 +5,7 @@ owner: RelEng
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to install the PCF Isolation Segment tile, which allows operators to isolate deployment workloads into dedicated resource pools called isolation segments. Installing the tile creates a single isolation segment.
+This topic describes how to install the PCF Isolation Segment tile, which allows operators to isolate deployment workloads into dedicated resource pools called _isolation segments_. Installing the tile creates a single isolation segment.
 
 For more information about how isolation segments work, see the [Isolation Segments](../concepts/security.html#isolation-segments) section of the <Em>Understanding Cloud Foundry Security</em> topic. After installing the PCF Isolation Segment tile, see the [Managing Isolation Segments](../adminguide/isolation-segments.html) topic for more information about managing an isolation segment.
 
@@ -15,7 +15,7 @@ By default, the Elastic Runtime Router handles traffic for your isolation segmen
 
 To deploy a dedicated router, perform the following steps:
 
-1. Stand up a load balancer in front of the Elastic Runtime Router. The steps will vary depending on your IaaS.
+1. Add a load balancer in front of the Elastic Runtime Router. The steps to do this depend on your IaaS.
 1. Create a wildcard DNS entry for traffic routed to any app in the isolation segment. For example, `*.iso.example.com`.
 1. Attach the wildcard DNS entry to the load balancer you created.
 
@@ -29,20 +29,20 @@ Perform the following steps to install the PCF Isolation Segment tile:
 
 1. Under **PCF Isolation Segment** in the left column, click the plus sign.
 
-1. Click the orange **PCF Isolation Segment** tile.<br>
-	<%= image_tag('isolation-segment/pcf-isolation-segment.png') %> 
-
 ##<a id='config'></a> Step 3: Configure the Tile
 
 Perform the following steps to configure the PCF Isolation Segment tile: 
+
+1. Click the orange **PCF Isolation Segment** tile to start the configuration process.<br>
+	<%= image_tag('isolation-segment/pcf-isolation-segment.png') %> 
 
 1. Click **Assign AZs and Networks**.
 
 	<%= image_tag('isolation-segment/az-network.png') %>
 
-1. Select an availability zone for your singleton jobs, and one or more availability zone(s) to balance other jobs in. 
+1. Select an availability zone for your singleton jobs, and one or more availability zones to balance other jobs in. 
 
-1. Select a network. This network does not need to be the same network into which you have deployed the Elastic Runtime. For most deployments, operators will want to create unique networks into which they can deploy the Isolation Segment tile. These networks should make sure to maintain network reachability for the Diego components, meaning the cells should be able to reach the Diego Brain and Diego Database VMs.
+1. Select a network. This network does not need to be the same network where you deployed Elastic Runtime. For most deployments, operators should create  unique networks in which to deploy the Isolation Segment tile. These networks should maintain network reachability with the Diego components so that the cells can reach the Diego Brain and Diego Database VMs.
 
 1. Click **Save**.
 
@@ -50,20 +50,19 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 	<%= image_tag('isolation-segment/app-containers.png') %>
 
-1. Under **Private Docker Insecure Registry Whitelist**, optionally enter one or more private Docker image registries that are secured with self-signed certificates. Use a comma-delimited list in the format `IP:Port` or `Hostname:Port`.
+1. (Optional): Under **Private Docker Insecure Registry Whitelist**, enter one or more private Docker image registries that are secured with self-signed certificates. Use a comma-delimited list in the format `IP:Port` or `Hostname:Port`.
 
-1. Under **Segment Name**, enter the name of your isolation segment. This name must be unique across your PCF deployment. You will use it when managing the segment.
+1. Under **Segment Name**, enter the name of your isolation segment. This name must be unique across your PCF deployment. You use this name when managing the isolation segment.
 
 1. Click **Networking**.
 
 	<%= image_tag('isolation-segment/networking1.png') %>
 
-1. Under **Router IPs**, optionally enter one or more static IP address(es) for the router(s) that handles this isolation segment. These must be within the subnet CIDR block that you defined in the Ops Manager network configuration. If you have a load balancer, configure it to point to these IPs.
+1. (Optional): Under **Router IPs**, enter one or more static IP addresses for the routers that handles this isolation segment. These IP addresses must be within the subnet CIDR block that you defined in the Ops Manager network configuration. If you have a load balancer, configure it to point to these IP addresses.
 
-1. Under **Applications Subnet**, optionally enter a CIDR subnet mask specifying the range of
-available IP addresses to be assigned to your app containers. This must be different from the network used by the system VMs. Only modify the default value if you need to avoid address collision with a third-party service on the same subnet.
+1. (Optional): Under **Applications Subnet**, enter a CIDR subnet mask specifying the range of available IP addresses to assign to your app containers. This must be different from the network used by the system VMs. Only modify the default value if you need to avoid address collision with a third-party service on the same subnet.
 
-1. Under **Applications Network Maximum Transmission Unit**, optionally change the Maximum Transmission Unit (MTU). The default is 1454 bytes. 
+1. (Optional): Under **Applications Network Maximum Transmission Unit**, change the Maximum Transmission Unit (MTU). The default is `1454` bytes. 
 
 1. Under **TLS Termination Certificates**, select one of the following options:
 	* **Forward SSL to Isolation Segment Router with provided certificates**: Select this option if your deployment uses an external load balancer that can forward encrypted traffic to the Elastic Runtime Router for the isolation segment, or if you are running a development environment that does not require load balancing. Complete the fields for the **Router SSL Termination Certificate and Private Key** and **Router SSL Ciphers**. 
@@ -73,13 +72,13 @@ available IP addresses to be assigned to your app containers. This must be diffe
 
 1. Click **Save**.
 
-1. Optionally edit the configurations in **Advanced Features** as desired.
+1. (Optional): Edit the configurations in **Advanced Features** as desired.
 
 1. If you are using a dedicated router for your isolation segment, click **Resource Config** and enter the wildcard DNS entry attached to your load balancer into the **Router** row under **Load Balancers**.
 	<%= image_tag('isolation-segment/resource-config.png') %>
 
-1. Optionally edit the **Stemcell** configuration as desired.
+1. (Optional): Edit the **Stemcell** configuration as desired.
 
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to deploy the tile.
 
-After the tile has finished deploying, see the [Managing Isolation Segments](../adminguide/isolation-segments.html) topic for more information about managing an isolation segment.
+After the tile finishes deploying, see the [Managing Isolation Segments](../adminguide/isolation-segments.html) topic for more information about managing an isolation segment.
