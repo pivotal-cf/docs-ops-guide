@@ -13,7 +13,7 @@ There are two ways to monitor app and service instance usage from Apps Manager. 
 
 ## <a id="accounting-report"></a>View the Accounting Report
 
-The Accounting Report displays instance usage information for all orgs in your [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) deployment except the **system** org. The Accounting Report provides a high-level overview of your usage by displaying your monthly count of app instances.
+The Accounting Report displays instance usage information for all orgs in your [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) deployment except the **system** org. The Accounting Report provides a high-level overview of your usage by displaying your monthly count of app, task, and service instances.
 
 Follow the steps below to access the Accounting Report.
 
@@ -21,11 +21,11 @@ Follow the steps below to access the Accounting Report.
 
 1. From the left navigation of Apps Manager, select **Accounting Report**.
 
-2. Under **App Instance Statistics**, view the average and maximum app instances in use per month.
+2. Under **App Statistics** and **Service Usage**, view the average and maximum instances in use per month.
+	<br><br>
+	**Max Concurrent** shows the largest number of instances in use at any one time over the indicated time period. The Accounting Report calculates these values from the `start`, `stop`, and `scale` app usage events in Cloud Controller.
 
-**Max Instances** shows the largest number of app instances in use at any one time over the indicated time period. The Accounting Report calculates these values from the `start`, `stop`, and `scale` app usage events in Cloud Controller.
-
-<%= image_tag("accounting-report.png") %>
+	<%= image_tag("accounting-report.png") %>
 
 ## <a id="usage-report"></a>View the Usage Report
 
@@ -45,10 +45,6 @@ Follow the steps below to access the Usage Report.
 
     <%= image_tag("usage-report.png") %>
 
-    **Spaces Details** displays your app memory usage and service instance usage by spaces.
+    The report displays your app memory usage and service instance usage by spaces.
 
     <%= image_tag("service-details.png") %>
-
-2. Click the name of an app to view its **Configuration History**.
-
-    <%= image_tag("app-usage-service.png") %>
