@@ -39,7 +39,7 @@ Next, find out the maximum in-flight load for each Diego cell.
 
 This load is affected by two possible throttle configurations:
 
-- The starting container count maximum, or the overall limit to the number of containers that Diego can start in Elastic Runtime. This is a deployment-wide limit. The default value and ability to override this configuration depends on the version of PCF deployed.
+- The starting container count maximum, or the overall limit to the number of containers that Diego can start in Elastic Runtime. This is a deployment-wide limit. The default value and ability to override this configuration depends on the version of PCF deployed. 
 - The `max_in_flight` setting for the Diego cell job as configured in Ops Manager Director. This configuration, expressed as a percentage or an integer, sets the maximum number of job instances that can be started simultaneously. For example, if your deployment is running 10 Diego cell job instances and the configured `max_in_flight` value is `20%`, then only 2 Diego cell job instances can start up at a single time. Operators can override this configuration setting by using the Ops Manager API.
 
 These configurations allow operators to throttle the number of containers and Diego cell instances that Diego starts concurrently. If no limits for either are imposed, then your file storage may undergo exceptionally heavy load during an upgrade. 
@@ -124,8 +124,12 @@ Using the above numbers, you can determine a rough estimate of the expected upgr
 
 For example, if your deployment starts up 10 cells that each host 20 app instances and each app instance droplet is an average of 100 MB in size, then you potentially have 20 GB of data hitting the disk at the same time. 
 
-Depending on the IOPS capacity of your disk, this 20 GB of data will take a set amount of time to reassemble on a new disk. If this disk processing time takes too long, then Diego cells and app instances may take too long to start up, resulting in a cascading failure.
+Depending on the IOPS capacity of your disk, this 20 GB of data will take a set amount of time to reassemble on a new disk. If this disk processing time takes too longer than the evacuation timeout for Diego cells, then Diego cells and app instances may take too long to start up, resulting in a cascading failure. 
+
+For more information on how Diego cells are upgraded, see [Managing Diego Cell Limits During an Upgrade](../adminguide/diego-cell-upgrade.html).
 
 ## <a id="rel_links"></a> Related Links
 
 * [How to use Elastic Runtime blob storage data](https://discuss.pivotal.io/hc/en-us/articles/217982188-How-to-use-Elastic-Runtime-blob-storage-data-)
+* [Upgrading Pivotal Cloud Foundry](../customizing/upgrading-pcf.html)
+* [Managing Diego Cell Limits During an Upgrade](../adminguide/diego-cell-upgrade.html)
