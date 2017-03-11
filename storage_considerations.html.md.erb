@@ -35,88 +35,11 @@ If you expect to scale up the number of instances, use the anticipated scaled nu
 
 ### <a id="max_in_flight"></a> Maximum In-Flight Load and Container Starts for Diego Cells
 
-Next, find out the maximum in-flight load for each Diego cell.
+Operators can limit the number of containers and Diego cell instances that Diego starts concurrently. If no limits are imposed, then your file storage may undergo exceptionally heavy load during an upgrade. 
 
-This load is affected by two possible throttle configurations:
+<%= partial '../adminguide/diego-upgrade-limits' %>
 
-- The starting container count maximum, or the overall limit to the number of containers that Diego can start in Elastic Runtime. This is a deployment-wide limit. The default value and ability to override this configuration depends on the version of PCF deployed. 
-- The `max_in_flight` setting for the Diego cell job as configured in Ops Manager Director. This configuration, expressed as a percentage or an integer, sets the maximum number of job instances that can be started simultaneously. For example, if your deployment is running 10 Diego cell job instances and the configured `max_in_flight` value is `20%`, then only 2 Diego cell job instances can start up at a single time. Operators can override this configuration setting by using the Ops Manager API.
-
-These configurations allow operators to throttle the number of containers and Diego cell instances that Diego starts concurrently. If no limits for either are imposed, then your file storage may undergo exceptionally heavy load during an upgrade. 
-
-The value of the above configurations depend on the version of PCF that you have have deployed and whether you have overridden the default value.
-
-Refer to the following table for existing defaults and if necessary, determine the override value in your deployment.
-
-<table class="nice">
-<tr>
- <th>PCF Version</th>
- <th>Starting Container Count Maximum</th>
- <th>Starting Container Count Overridable?</th>
- <th>Maximum In Flight Diego Cell Instances</th>
- <th>Maximum In Flight Diego Cell Instances Overridable?</th>
-</tr>
-<tr>
-<td>PCF 1.7.43 and earlier</td>
-<td>No limit set</td>
-<td>No</td>
-<td>1 instance</td>
-<td>No</td>
-</tr>
-<tr>
-<td>PCF 1.7.44 to 1.7.49</td>
-<td>200</td>
-<td>No</td>
-<td>1 instance</td>
-<td>No</td>
-</tr>
-<tr>
-<td>PCF 1.7.50 +</td>
-<td>200</td>
-<td>No</td>
-<td>1 instance</td>
-<td>No</td>
-</tr>
-<tr>
-<td>PCF 1.8.0 to 1.8.29</td>
-<td>No limit set</td>
-<td>No</td>
-<td>10% of total instances</td>
-<td>No</td>
-</tr>
-<tr>
-<td>PCF 1.8.30 +</td>
-<td>200</td>
-<td>Yes</td>
-<td>10% of total instances</td>
-<td>No</td>
-</tr>
-<tr>
-<td>PCF 1.9.0 to 1.9.7</td>
-<td>No limit set</td>
-<td>No</td>
-<td>10% of total instances</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>PCF 1.9.8 +</td>
-<td>200</td>
-<td>Yes</td>
-<td>10% of total instances</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>PCF 1.10.0 and later</td>
-<td>200</td>
-<td>Yes</td>
-<td>10% of total instances</td>
-<td>Yes</td>
-</tr>
- </table>
-
-To retrieve or override the existing `max_in_flight` value in Ops Manager Director, use the Ops Manager API. See the Ops Manager API documentation provided with your Ops Manager installation at `https://YOUR-OPSMAN-FQDN/docs/`.
-
-To update the starting container count maximum, see the _Deploying Elastic Runtime_ topic for your IaaS. For example, if you are configuring PCF on GCP, see [Deploying Elastic Runtime on GCP](../customizing/gcp-er-config.html).
+<%= partial 'diego-upgrade-limits-table' %>
 
 ### <a id="instances"></a> Calculating Upgrade Load Based on Number of App Instances and Droplet Size
 
