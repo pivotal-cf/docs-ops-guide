@@ -1,71 +1,70 @@
 
-The value of the above configurations depend on the version of PCF that you have have deployed and whether you have overridden the default value.
+The values of the above throttle configurations depend on the version of PCF that you have deployed and whether you have overridden the default values.
 
-Refer to the following table for existing defaults and if necessary, determine the override value in your deployment.
+Refer to the following table for existing defaults and, if necessary, determine the override values in your deployment.
 
 <table class="nice">
-<tr>
- <th>PCF Version</th>
- <th>Starting Container Count Maximum</th>
- <th>Starting Container Count Overridable?</th>
- <th>Maximum In Flight Diego Cell Instances</th>
- <th>Maximum In Flight Diego Cell Instances Overridable?</th>
-</tr>
-<tr>
-<td>PCF 1.7.43 and earlier</td>
-<td>No limit set</td>
-<td>No</td>
-<td>1 instance</td>
-<td>No</td>
-</tr>
-<tr>
-<td>PCF 1.7.44 to 1.7.49</td>
-<td>200</td>
-<td>No</td>
-<td>1 instance</td>
-<td>No</td>
-</tr>
-<tr>
-<td>PCF 1.7.50 +</td>
-<td>200</td>
-<td>No</td>
-<td>1 instance</td>
-<td>No</td>
-</tr>
-<tr>
-<td>PCF 1.8.0 to 1.8.29</td>
-<td>No limit set</td>
-<td>No</td>
-<td>10% of total instances</td>
-<td>No</td>
-</tr>
-<tr>
-<td>PCF 1.8.30 +</td>
-<td>200</td>
-<td>Yes</td>
-<td>10% of total instances</td>
-<td>No</td>
-</tr>
-<tr>
-<td>PCF 1.9.0 to 1.9.7</td>
-<td>No limit set</td>
-<td>No</td>
-<td>10% of total instances</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>PCF 1.9.8 +</td>
-<td>200</td>
-<td>Yes</td>
-<td>10% of total instances</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>PCF 1.10.0 and later</td>
-<td>200</td>
-<td>Yes</td>
-<td>10% of total instances</td>
-<td>Yes</td>
-</tr>
- </table>
-
+  <tr>
+    <th>PCF Version</th>
+    <th>Starting Container Count Maximum</th>
+    <th>Starting Container Count Overridable?</th>
+    <th>Maximum In Flight Diego Cell Instances</th>
+    <th>Maximum In Flight Diego Cell Instances Overridable?</th>
+  </tr>
+  <tr>
+    <td>PCF 1.7.43 and earlier</td>
+    <td>No limit set</td>
+    <td>No</td>
+    <td>1 instance</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>PCF 1.7.44 to 1.7.49</td>
+    <td>200</td>
+    <td>No</td>
+    <td>1 instance</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>PCF 1.7.50 +</td>
+    <td>200</td>
+    <td>No</td>
+    <td>1 instance</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>PCF 1.8.0 to 1.8.29</td>
+    <td>No limit set</td>
+    <td>No</td>
+    <td>10% of total instances</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>PCF 1.8.30 +</td>
+    <td>200</td>
+    <td>Yes</td>
+    <td>10% of total instances</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>PCF 1.9.0 to 1.9.7</td>
+    <td>No limit set</td>
+    <td>No</td>
+    <td>10% of total instances</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>PCF 1.9.8 +</td>
+    <td>200</td>
+    <td>Yes</td>
+    <td>10% of total instances</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>PCF 1.10.0 and later</td>
+    <td>200</td>
+    <td>Yes</td>
+    <td>10% of total instances</td>
+    <td>Yes</td>
+  </tr>
+</table>
