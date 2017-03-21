@@ -15,7 +15,7 @@ By default, the Elastic Runtime Router handles traffic for your isolation segmen
 
 To deploy a dedicated router, perform the following steps:
 
-1. Add a load balancer in front of the Elastic Runtime Router. The steps to do this depend on your IaaS.
+1. Add a load balancer in front of the Elastic Runtime Router. The steps to do this depend on your IaaS, but the setup of the load balancer should mirror the setup of the load balancer for the Elastic Runtime Router that you configured in the Elastic Runtime tile.
 1. Create a wildcard DNS entry for traffic routed to any app in the isolation segment. For example, `*.iso.example.com`.
 1. Attach the wildcard DNS entry to the load balancer you created.
 
