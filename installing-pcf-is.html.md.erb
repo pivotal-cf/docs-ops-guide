@@ -5,11 +5,11 @@ owner: RelEng
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to install the PCF Isolation Segment tile, which allows operators to isolate deployment workloads into dedicated resource pools called _isolation segments_. 
+This topic describes how to install the PCF Isolation Segment tile, which allows operators to isolate deployment workloads into dedicated resource pools called _isolation segments_. Installing the tile installs a single isolation segment.
 
-Installing the tile creates a single isolation segment.
+After installing the tile, you must perform the steps in the [Create an Isolation Segment](../adminguide/isolation-segments.html#create-an-is) section of the <em>Managing Isolation Segments</em> topic to create the isolation segment in the Cloud Controller Database (CCDB). The topic also includes information about managing an isolation segment.
 
-For more information about how isolation segments work, see the [Isolation Segments](../concepts/security.html#isolation-segments) section of the <Em>Understanding Cloud Foundry Security</em> topic. After creating an isolation segment by installing the PCF Isolation Segment tile, see the [Managing Isolation Segments](../adminguide/isolation-segments.html) topic for more information about managing an isolation segment.
+For more information about how isolation segments work, see the [Isolation Segments](../concepts/security.html#isolation-segments) section of the <Em>Understanding Cloud Foundry Security</em> topic. 
 
 ##<a id='routing'></a> Step 1: (Optional) Configure Routing
 
@@ -54,7 +54,7 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. (Optional): Under **Private Docker Insecure Registry Whitelist**, enter one or more private Docker image registries that are secured with self-signed certificates. Use a comma-delimited list in the format `IP:Port` or `Hostname:Port`.
 
-1. Under **Segment Name**, enter the name of your isolation segment. This name must be unique across your PCF deployment. You use this name when managing the isolation segment.
+1. Under **Segment Name**, enter the name of your isolation segment. This name must be unique across your PCF deployment. You use this name when performing the steps in the [Create an Isolation Segment](../adminguide/isolation-segments.html#create-an-is) section of the <em>Managing Isolation Segments</em> topic to create the isolation segment in the Cloud Controller Database (CCDB).
 
 1. Click **Networking**.
 
@@ -80,6 +80,8 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 	<%= image_tag('isolation-segment/resource-config.png') %>
 
 1. (Optional): Edit the **Stemcell** configuration as desired.
+
+1. Perform the steps in the [Create an Isolation Segment](../adminguide/isolation-segments.html#create-an-is) section of the <em>Managing Isolation Segments</em> topic to create the isolation segment in the Cloud Controller Database (CCDB).
 
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to deploy the tile.
 
