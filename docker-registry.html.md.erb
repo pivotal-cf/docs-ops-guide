@@ -1,13 +1,13 @@
 ---
-title: Using Docker Trusted Registries
+title: Using Docker Registries
 owner: Ops Manager
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to configure your Docker Trusted Registries, such as Docker Hub, with Pivotal Cloud Foundry (PCF). 
-Docker Trusted Registries are private Docker Registries that have a valid SSL certificate. 
-To use Docker Trusted Registries, you must choose either to submit your root certificate authority (CA) certificate or provide the IP address for your Docker Trusted Registry.
+This topic describes how to configure your Docker registries, such as Docker Hub, with Pivotal Cloud Foundry (PCF). 
+To use Docker registries, you must choose either to submit your root certificate authority (CA) certificate or provide the IP address for your Docker registry. 
+PCF does not support using Docker registries that require user credentials.
 
 **Prerequisite**: Ensure that you have enabled Docker support in PCF with the `cf enable-feature-flag diego_docker` command, as described in the [Using Docker in Cloud Foundry](../adminguide/docker.html) topic.
 
@@ -22,7 +22,7 @@ If you provide your root CA certificate in the Ops Manager configuration, follow
     <%= image_tag("images/docker-registry-ops-man.png") %>
 
 1. In the **Trusted Certificates** field paste one or more root CA certificates.
-The Docker Trusted Registry does not use the CA certificate itself but uses a certificate that is signed by the CA certificate.
+The Docker registry does not use the CA certificate itself but uses a certificate that is signed by the CA certificate.
 
 1. Click **Save**.
 
@@ -31,14 +31,14 @@ The Docker Trusted Registry does not use the CA certificate itself but uses a ce
   - Modifying an existing Ops Manager installation, return to the **PCF Ops Manager Installation Dashboard** and click **Apply Changes**.
 
 After configuration, BOSH propagates this CA certificate to all application containers in your deployment. 
-You can then push and pull images from your Docker Trusted Registries.
+You can then push and pull images from your Docker registries.
 
 ## <a id='ert'></a> Use an IP Address Whitelist
 
-If you choose not to provide a CA certificate, you must provide the IP address of your Docker Trusted Registry.
+If you choose not to provide a CA certificate, you must provide the IP address of your Docker registry.
 
 <p class="note"><strong>Note</strong>: Using a whitelist skips SSL validation. 
-If you want to enforce SSL validation, enter the IP address of the Docker Trusted Registry in the <strong>No proxy</strong> field described <a href='#proxy'>below</a>.
+If you want to enforce SSL validation, enter the IP address of the Docker registry in the <strong>No proxy</strong> field described <a href='#proxy'>below</a>.
 
 
 1. Navigate to the PCF Operations Manager **Installation Dashboard**.
@@ -51,7 +51,7 @@ If you want to enforce SSL validation, enter the IP address of the Docker Truste
 
 1. Select **Allow SSH access to app containers** to enable app containers to accept SSH connections. If you are using a load balancer instead of HAProxy, you must open port 2222 on your load balancer to enable SSH traffic. To open an SSH connection to an app, a user must have Space Developer privileges for that app's space. Operators can grant those privileges in Apps Manager or via the cf CLI.
 
-1. For **Private Docker Insecure Registry Whitelist**, provide the hostname or IP address and port that point to your Docker Trusted Registry. For example, enter `198.51.100.1:80` or `mydockerregistry.com:80`. Enter multiple entries in a comma-delimited sequence. SSL validation is ignored for private Docker image registries secured with self-signed certificates at these locations.
+1. For **Private Docker Insecure Registry Whitelist**, provide the hostname or IP address and port that point to your private Docker registry. For example, enter `198.51.100.1:80` or `mydockerregistry.com:80`. Enter multiple entries in a comma-delimited sequence. SSL validation is ignored for private Docker image registries secured with self-signed certificates at these locations.
 
 1. Under **Docker Images Disk-Cleanup Scheduling on Cell VMs**, choose one of the following:
 	* **Never Cleanup Cell Disk-space**
@@ -66,16 +66,16 @@ If you want to enforce SSL validation, enter the IP address of the Docker Truste
 
 After configuration, Elastic Runtime allows Docker images to come through the specified IP address without checking certificates.
 
-## <a id='proxy'></a>Set Proxies for Docker Trusted Registries
+## <a id='proxy'></a>Set Proxies for Docker Registries
 
 1. On the Installation Dashboard, navigate to USERNAME > **Settings** > **Proxy Settings**.
 
      <%= image_tag("install-dash-settings.png") %>
 
 2. On the **Update Proxy Settings** pane, complete one of the following fields:
-    + **Http proxy**: If you have an HTTP proxy server for your Docker Trusted Registry, enter its IP address.  
-    + **Https proxy**: If you have an HTTPS proxy server for your Docker Trusted Registry, enter its IP address.  
-    + **No proxy**: If you do not use a proxy server, enter the IP address for the Docker Trusted Registry. This field may already contain proxy settings for the BOSH Director. Enter multiple IP addresses as a comma-separated list.
+    + **Http proxy**: If you have an HTTP proxy server for your Docker registry, enter its IP address.  
+    + **Https proxy**: If you have an HTTPS proxy server for your Docker registry, enter its IP address.  
+    + **No proxy**: If you do not use a proxy server, enter the IP address for the Docker registry. This field may already contain proxy settings for the BOSH Director. Enter multiple IP addresses as a comma-separated list.
 
      <%= image_tag("update-proxy-settings.png") %>
 
