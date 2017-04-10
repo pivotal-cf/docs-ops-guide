@@ -5,7 +5,9 @@ owner: RelEng
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to install the PCF Isolation Segment tile, which allows operators to isolate deployment workloads into dedicated resource pools called _isolation segments_. Installing the tile installs a single isolation segment.
+This topic describes how to install the PCF Isolation Segment tile, which allows operators to isolate deployment workloads into dedicated resource pools called _isolation segments_. 
+
+Installing the tile installs a single isolation segment. However, you can install multiple isolation segments using the Replicator tool documented in [Step 4](#copy).
 
 After installing the tile, you must perform the steps in the [Create an Isolation Segment](../adminguide/isolation-segments.html#create-an-is) section of the <em>Managing Isolation Segments</em> topic to create the isolation segment in the Cloud Controller Database (CCDB). The topic also includes information about managing an isolation segment.
 
@@ -86,3 +88,26 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to deploy the tile.
 
 After the tile finishes deploying, see the [Managing Isolation Segments](../adminguide/isolation-segments.html) topic for more information about managing an isolation segment.
+
+##<a id='copy'></a> Step 4: (Optional) Copy the Tile
+
+If you want to create multiple isolation segments, perform the following steps to copy the PCF Isolation Segment tile with the Replicator tool:
+
+1. Download the Replicator tool from the **Pivotal Cloud Foundry Isolation Segment** section of [Pivotal Network](https://network.pivotal.io/products/isolation-segment).
+
+1. Navigate to the directory where you downloaded the Replicator tool.
+
+1. Replicate the tile:
+	<pre class="terminal">
+	./replicator \
+    	-name "YOUR-NAME" \
+    	-path /PATH/TO/ORIGINAL.pivotal \
+    	-output /PATH/TO/COPY.pivotal
+	</pre>
+
+	Replace the values above with the following:
+	* `YOUR-NAME`: Provide a unique name for the new PCF Isolation Segment tile. The name must be ten characters or less and only contain alphanumeric characters, dashes, underscores, and spaces.
+	* `/PATH/TO/ORIGINAL`: Provide the absolute path to the original PCF Isolation Segment tile you downloaded from Pivotal Network.
+	* `/PATH/TO/COPY`: Provide the absolute path for the copy that the Replicator tool produces.
+
+1. Follow the procedures in this topic using the new `.pivotal` file, starting with [Step 1](#routing).
