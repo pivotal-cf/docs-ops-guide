@@ -7,9 +7,11 @@ owner: Ops Manager
 
 This topic describes critical factors to consider when evaluating the type of file storage to use in your Pivotal Cloud Foundry (PCF) deployment. The [Elastic Runtime blobstore](../concepts/architecture/cloud-controller.html#blob-store) relies on the file storage system to read and write resources, app packages, and droplets.
 
-During an upgrade of PCF, file storage with insufficient IOPS numbers can negatively impact the performance and stability of your PCF deployment. However, the minimum required IOPS depends upon a number of deployment-specific factors and configuration choices. 
+During an upgrade of PCF, file storage with insufficient IOPS numbers can negatively impact the performance and stability of your PCF deployment. 
 
-Use this topic as a guide when deciding on the file storage configuration for your deployment.
+If disk processing time takes longer than the evacuation timeout for Diego cells, then Diego cells and app instances may take too long to start up, resulting in a cascading failure. 
+
+However, the minimum required IOPS depends upon a number of deployment-specific factors and configuration choices. Use this topic as a guide when deciding on the file storage configuration for your deployment.
 
 ## <a id="types"></a> Selecting Internal or External File Storage
 
@@ -45,9 +47,11 @@ Operators can limit the number of containers and Diego cell instances that Diego
 
 Using the above numbers, you can determine a rough estimate of the expected upgrade load by multiplying the total number of expected app instances for all cells with the size of the instance droplets.
 
-For example, if your deployment starts 10 cells that each host 20 app instances, and each app instance droplet is an average of 100 MB in size, then you potentially have 20 GB of data hitting the disk at the same time. 
+For example, if your deployment starts 10 cells that each host 20 app instances, and each app instance droplet is an average of 100 MB in size, then you potentially have 20 GB of data hitting the disk at the same time. Depending on the IOPS capacity of your disk, this 20 GB of data will take a set amount of time to reassemble on a new disk. 
 
-Depending on the IOPS capacity of your disk, this 20 GB of data will take a set amount of time to reassemble on a new disk. If this disk processing time takes longer than the evacuation timeout for Diego cells, then Diego cells and app instances may take too long to start up, resulting in a cascading failure. 
+Calculate the amount of time needed to process your potential upgrade load, and verify that the number falls under the evacuation timeout (default is 10 minutes) for Diego cells.
+
+If the calculated processing time is longer than the evacuation timeout, you should upgrade your file storage to use disk with higher IOPS capacity.
 
 For more information about how Diego cells are upgraded, see the [Managing Diego Cell Limits During an Upgrade](../adminguide/diego-cell-upgrade.html) topic.
 
