@@ -14,7 +14,7 @@ owner: Security
      }
 </style>
 
-This topic describes how to secure the component VMs of your Pivotal Cloud Foundry (PCF) deployment from being accessed by apps. 
+This topic describes how to secure the component virtual machines (VMs) of your Pivotal Cloud Foundry (PCF) deployment from being accessed by apps. 
 
 ## <a id='overview'></a> Introduction ##
 
@@ -131,7 +131,7 @@ Gather the CIDRs for each network in your deployment:
 
 #### <a name='initial-asgs'></a> Part B: Create and Bind ASGs that Block Network Access
 
-Create ASGs that block apps from sending traffic to the networks that host Ops Manager, Elastic Runtime, and (optional) any services installed. 
+Create ASGs that block apps from sending traffic to the networks that host Ops Manager, Elastic Runtime, and, optionally, any installed services. 
 
 1. Create a `config.yml` containing the appropriate content for your network layout and replace the indicated values with the CIDRs you gathered:
   * **Two Network Layout**:
@@ -182,7 +182,7 @@ Create ASGs that block apps from sending traffic to the networks that host Ops M
 <p class="note"><strong>Note</strong>: This part is only necessary if you blocked apps from a network that hosts services in the previous part. If you did not block apps from a network that hosts services, proceed to <a href="#unbind-default">Step 4: Remove the Default ASG</a>.
 </p>
 
-<p class="note warning"><strong>WARNING</strong>: In the two network layout, Elastic Runtime and services share the same network. This means that each time you create an ASG that allows apps to access a new port/protocol within the network, you further expose the Elastic Runtime component VMs. This is a limitation of a two network layout. For guidance on network topology, see <a href="../refarch/index.html">Reference Architectures</a>.</p>
+<p class="note warning"><strong>WARNING</strong>: In the two network layout, Elastic Runtime and services share the same network. This means that each time you create an ASG that allows apps to access a new port and protocol within the network, you further expose the Elastic Runtime component VMs. This is a limitation of a two network layout. For guidance on network topology, see <a href="../refarch/index.html">Reference Architectures</a>.</p>
 
 Now that you have created ASGs to secure the Ops Man, Elastic Runtime, and service components, work with developers to create additional ASGs that give apps access to the services they need. 
   
@@ -197,7 +197,7 @@ For more information on creating and binding ASGs, see the following:
 
 ### <a name='unbind-default'></a> Step 4: Remove the Default ASG
 
-Now that you have bound new ASGs to determine outbound traffic rules, you no longer need the default ASG bindings that allow apps to send traffic to any IP.
+Now that you have bound new ASGs to determine outbound traffic rules, you no longer need the default ASG bindings that allow apps to send traffic to any IP address.
 
 1. Unbind the default ASG from the staging set:
     <pre class="terminal">$ cf unbind-staging-security-group default\_security\_group</pre>
