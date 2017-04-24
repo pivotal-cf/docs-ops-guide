@@ -11,6 +11,8 @@ A volume service gives apps access to a persistent filesystem, such as NFS. By p
 
 Developers can then use the [Cloud Foundry Command Line Interface](../cf-cli/index.html) (cf CLI) to create service instances of the volume service and bind them to their apps. For more information, see the [Using an External File System (Volume Services)](../devguide/services/using-vol-services.html) topic.
 
+<p class="note"><strong>Note</strong>: You must have a NFS server running to enable NFS volume services. If you want to use NFS and do not currently have a server available, you can <a href="https://github.com/cloudfoundry-incubator/nfs-volume-release#deploying-the-test-nfs-server-optional">deploy the test NFS server</a> bundled with the NFS Volume release.</p>
+
 ## <a id='enable'></a>Enable Volume Services
 
 To enable NFS volume services in PCF, perform the following steps:
