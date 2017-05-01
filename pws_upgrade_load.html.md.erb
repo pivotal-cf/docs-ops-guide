@@ -72,7 +72,11 @@ The following table details the starting parameters and configuration of PWS.
 
 ## <a id="during_upgrade"></a> System Performance Measurements During Cell Repave
 
-This table presents performance measurements taken during the Diego cell repave. Use these measurements as a baseline for expected system load during Diego cell upgrade.
+This table presents performance measurements taken during the Diego cell repave. 
+
+<p class="note"><b>Note</b>: These measurements indicate the peak cumulative values of the entire system (250 Diego cells, ~15,000 application instances, and 2 AZs.)</p>
+
+Use these measurements as a baseline for expected system load during Diego cell upgrade.
 
  <table border="1" class="nice">
     <tr>
@@ -91,25 +95,25 @@ This table presents performance measurements taken during the Diego cell repave.
      <td><code>bosh.healthmonitor.system.mem.percent</code></td>
     </tr>
      <tr>
-     <td><b>Cell IO Consumption (Read Ops) During Normal Operations</b></td>
-     <td>43 Read Ops per second
+     <td><b>Cell I/O Consumption (Read) During Normal Operations</b></td>
+     <td>43 Read I/O Operations per second
      </td>
      <td><code>aws.ebs.volume\_read\_ops</code></td>
     </tr>
     <tr>
-     <td><b>Cell IO Consumption (Read Ops) During Upgrade</b></td>
-     <td>1,943 Read Ops per second
+     <td><b>Cell I/O Consumption (Read) During Upgrade</b></td>
+     <td>1,943 Read I/O Operations per second
      </td>
      <td><code>aws.ebs.volume\_read\_ops</code></td>
     </tr>
     <tr>
-     <td><b>Cell IO Consumption (Write Ops) During Normal Operations</b></td>
-     <td>2,166 Write Ops per second</td>
+     <td><b>Cell IO Consumption (Write) During Normal Operations</b></td>
+     <td>2,166 Write I/O Operations per second</td>
      <td><code>aws.ebs.volume\_write\_ops</code></td>
     </tr>
     <tr>
-     <td><b>Cell IO Consumption (Write Ops) During Upgrade</b></td>
-     <td>21,000 Write Ops per second</td>
+     <td><b>Cell IO Consumption (Write) During Upgrade</b></td>
+     <td>21,000 Write I/O Operations per second</td>
      <td><code>aws.ebs.volume\_write\_ops</code></td>
     </tr>
     <tr>
@@ -136,19 +140,20 @@ This table presents performance measurements taken during the Diego cell repave.
     </tr>
  </table>
 
+
 ## <a id="graph"></a> Sample Performance Graphs
 
 These DataDog graphs represent a timeline visualization of read and write operations during the repave event. 
 
-### <a id="graph_readops"></a> Read Operations
+### <a id="graph_readops"></a> Read I/O Operations
 
-The read operations sample was taken over 115 VMs and represent the number of read operations over 300 seconds for a single Diego cell.
+The read I/O operations sample was taken over 115 VMs and represent the number of read operations over 300 seconds for a single Diego cell.
 
 <%= image_tag("pws_read_ops_upgrade.png") %>
 
-### <a id="graph_writeops"></a> Write Operations
+### <a id="graph_writeops"></a> Write I/O Operations
 
-The write operations sample was taken over 115 VMs and represent the number of read operations over 300 seconds for a single Diego cell.
+The write I/O operations sample was taken over 115 VMs and represent the number of read I/O operations over 300 seconds for a single Diego cell.
 
 <%= image_tag("pws_write_ops_upgrade.png") %>
 
