@@ -60,6 +60,8 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. Under **Segment Name**, enter the name of your isolation segment. This name must be unique across your PCF deployment. You use this name when performing the steps in the [Create an Isolation Segment](../adminguide/isolation-segments.html#create-an-is) section of the <em>Managing Isolation Segments</em> topic to create the isolation segment in the Cloud Controller Database (CCDB).
 
+1. By default, containers use the same DNS servers as the host. If you want to override the DNS servers to be used in the containers in the isolation segment, enter a comma-separated list of servers in **DNS Servers**.
+
 1. Click **Networking**.
 
 	<%= image_tag('isolation-segment/networking1.png') %>
