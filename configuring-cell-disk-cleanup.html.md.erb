@@ -1,0 +1,97 @@
+---
+title: Configuring Cell Disk-Cleanup
+owner: Ops Manager
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to configure Disk-Cleanup, with Pivotal Cloud Foundry
+(PCF).
+
+**Prerequisite**: Ensure that you have enabled Docker support in PCF with the
+`cf enable-feature-flag diego_docker` command, as described in the [Using
+Docker in Cloud Foundry](../adminguide/docker.html) topic.
+
+PCF provides with three options for scheduling the Disk-Cleanup.
+
+* _Never clean up Cell Disk-space_: This option is mainly **not recommended**.
+  Never cleaning up Cell's Disk-space can lead to Cells that run out of Disk
+  space.
+* _Routinely clean up Cell Disk-space_: Using this option will force a clean up
+  every time a container image layer stops being used.
+* _Clean up Disk-space once threshold is reached_: This option makes Disk-space
+  Cleanup run only when a Disk-space threshold is reached or exceeded.
+  Configuring the threshold is discussed in the next section.
+
+# <a id='recommendations'></a> Recommendations
+
+In most cases, we recommend using the second option: **routinely clean up Cell
+Disk-space**. This option will ensure that once a new stack becomes available
+on the Cell, the old one gets immediately dropped from the cache.  If your PCF
+runs Docker-based applications as well, unused Docker image layers will also be
+cleaned up shortly after the stop being used.
+
+The routinely clean up option is adding the performance overhead of frequently
+deleting images and layers. Additionally, it can cause more cache hits when
+using Docker images as their layers quickly get evicted from the cache, even if
+they are only temporarily unused. The impact on the greater PCF installation
+usually goes unnoticed.
+
+In cases where operators want to optimize cache management and Disk-Cleanup,
+the third option (**clean up Disk-space once threshold is reached**) can be
+used. See next section for instructions on how to configure the threshold.
+
+## <a id='choosing-a-threshold'></a> Advanced: Choosing a threshold
+
+In order to choose a sensible value to configure the Disk-space cleanup
+threshold against, you will need to identify some of the most frequently used
+Docker images in your PCF installation.
+
+Docker images are usually created incrementally (in layers) starting from a
+base image. It may be easier to instead identify which base Docker images are
+most frequently used.
+
+Consider the following steps for configuring the Disk-space cleanup threshold:
+
+1. Identify the most frequently used Docker images or base Docker images. __For
+   example,__ let's assume that the answer to this question is `openjdk:7`,
+   `nginx:1.13` and `php:7-apache`.
+
+1. Measure the size of those images. For that, you'll need to use a Docker CLI:
+
+  ```bash
+  # Pull identified images locally
+  $> docker pull openjdk:7
+  $> docker pull nginx:1.13
+  $> docker pull php:7-apache
+
+  # Measure their sizes
+  $> docker images
+  REPOSITORY                       TAG                 IMAGE ID            CREATED             SIZE
+  php                              7-apache            2720c02fc079        2 days ago          391 MB
+  openjdk                          7                   f45207c01009        5 days ago          586 MB
+  nginx                            1.13                3448f27c273f        5 days ago          109 MB
+  ...
+  ```
+
+1. Choose the threshold to be the sum of the image sizes (391 MB + 586 MB + 109
+  MB = 1086 MB) and considerable (>= 20% - 1303.2 MB) breathing space.
+
+1. Navigate to the PCF Operations Manager **Installation Dashboard**.
+
+1. Click the **Pivotal Elastic Runtime** tile, and navigate to the **Application Containers** tab.
+
+  <%= image_tag("images/docker-registry-ert.png") %>
+
+1. Under **Docker Images Disk-Cleanup Scheduling on Cell VMs**, choose
+   **Cleanup Disk-space once threshold is reached**. Enter the amount of Disk
+   space the Cell must reach before Disk Cleanup initiates under **Threshold of
+   Disk-Used (MB)** (1303 MB).
+
+1. Click **Save**.
+
+
+- Configuring Elastic Runtime for the first time, return to your specific IaaS
+configuration to continue the installation process.
+- Modifying an existing Elastic Runtime installation, return to the PCF Ops
+Manager Installation Dashboard and click **Apply Changes**.
