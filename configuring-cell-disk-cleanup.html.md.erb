@@ -8,7 +8,7 @@ owner: Ops Manager
 This topic describes how to configure disk cleanup related to Docker image usage in 
 Pivotal Cloud Foundry (PCF).
 
-## <a href="prereq"></a> Prerequisite
+## <a id="prereq"></a> Prerequisite
 
 Ensure that you have enabled Docker support in PCF with the
 `cf enable-feature-flag diego_docker` command, as described in the [Using
@@ -28,7 +28,7 @@ are listed:
   every time a container image layer stops being used.
 * **Clean up disk-space once threshold is reached**: This option results in disk space
   cleanup being run only when the disk space threshold is reached or exceeded. See 
-  <a href="choosing-a-threshold">Advanced: Choosing a Threshold"</a> for more 
+  <a href="#choosing-a-threshold">Advanced: Choosing a Threshold"</a> for more 
   information.
 
 ## <a id='recommendations'></a> Recommendations
@@ -49,7 +49,7 @@ The impact on the greater PCF installation's performance is usually insignifican
 
 In cases where operators want to optimize cache management and disk cleanup,
 then Pivotal recommends selecting the third option (**Clean up disk-space once threshold is reached**). 
-See <a href="choosing-a-threshold">Advanced: Choosing a Threshold</a> for instructions on how to 
+See <a href="#choosing-a-threshold">Advanced: Choosing a Threshold</a> for instructions on how to 
 configure the threshold.
 
 ## <a id='choosing-a-threshold'></a> Advanced: Choosing a Threshold
