@@ -78,30 +78,3 @@ After configuration, Elastic Runtime allows Docker images to pass through the sp
 
 3. Click **Update**.
 
-## <a id='docker-auth'></a> Push a Docker Image with Authentication
-
-In PCF 1.11, developers can push Docker images from registries that require authentication with `cf curl`.
-
-Perform the following steps to push a Docker image from a registry that requires authentication:
-
-1. Target the endpoint of your Cloud Controller.
-  <pre class='terminal'>$ cf api api.YOUR-DOMAIN</a>
-1. Log in with your credentials.
-  <pre class="terminal">$ cf login -u YOUR-USERNAME</pre>
-1. Push your Docker image with `curl`:
-  <pre class='terminal'>
-  $ cf curl /v2/apps -d '{ \
-    "name": "APP-NAME", \
-    "space\_guid": "YOUR-SPACE-GUID", \
-    "docker\_image": "YOUR-DOCKER-IMAGE", \
-    "docker\_credentials": { \
-      "username": "YOUR-REGISTRY-USERNAME", \
-      "password": "YOUR-REGISTRY-PASSWORD" \
-      } \
-    }
-  </pre>
-  Replace the placeholders as follows:
-  * `APP-NAME`: This is the name of your application in PCF.
-  * `YOUR-SPACE-GUID`: This is the GUID of the space where you want to push your application. To retrieve the GUID of a space, run `cf space YOUR-SPACE --guid`.
-  * `YOUR-DOCKER-IMAGE`: This is the location of your Docker image, in the format `MY-PRIVATE-REGISTRY.DOMAIN:PORT/REPO/IMAGE:TAG`.
-  * `YOUR-REGISTRY-USERNAME` and `YOUR-REGISTRY-PASSWORD`: These are the credentials to authenticate with your Docker registry.
