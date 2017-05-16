@@ -16,22 +16,16 @@ If your Pivotal Cloud Foundry (PCF) deployment uses the internal user store for 
 
 1. Select **Authentication and Enterprise SSO** on the **Settings** tab.
 
-	<%= image_tag("er17-config-authsso-pw.png") %>
+	<%= image_tag("er-config-auth-enterprise-sso-uaa.png") %>
 
 1. Confirm that the **Internal UAA** option is selected.
 
-##<a id="pw-requirements"></a>Set Password Requirements
+##<a id="pw-requirements"></a>Set Password Requirements and Entry Attempts
 
 1. For **Minimum Password Length**, enter the minimum number of characters for a valid password.
 1. For **Minimum Uppercase Characters Required for Password**, enter the minimum number of uppercase characters required for a valid password.
 1. For **Minimum Lowercase Characters Required for Password**, enter the minimum number of lowercase characters required for a valid password.
 1. For **Minimum Numerical Digits Required for Password**, enter the minimum number of digits required for a valid password.
 1. For **Minimum Special Characters Required for Password**, enter the minimum number of special characters required for a valid password.
-
-##<a id="pw-expire-attempts"></a>Set Password Expiration and Entry Attempts
-
-1. For **Number of Months Before Password Expires**, enter the number of months a password remains valid. Enter `0` if you want passwords to never expire.
 1. For **Maximum Password Entry Attempts Allowed**, enter the maximum number of failures allowed to enter a password within a five-minute timespan before the account is locked.
-
-
 
