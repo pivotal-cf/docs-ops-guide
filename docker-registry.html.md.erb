@@ -50,7 +50,7 @@ If you want to enforce SSL validation, enter the IP address of the Docker regist
 
 1. For **Private Docker Insecure Registry Whitelist**, provide the hostname or IP address and port that point to your private Docker registry. For example, enter `198.51.100.1:80` or `mydockerregistry.com:80`. Enter multiple entries in a comma-delimited sequence. SSL validation is ignored for private Docker image registries secured with self-signed certificates at these locations.
 
-1. Under **Docker Images Disk-Cleanup Scheduling on Cell VMs**, choose one of the options listed below. For more information about these options, see [Configuring Docker Images Disk-Cleanup Scheduling](./configuring-cell-disk-cleanup.html).	
+1. Under **Docker Images Disk-Cleanup Scheduling on Cell VMs**, choose one of the options listed below. For more information about these options, see [Configuring Docker Images Disk-Cleanup Scheduling](./config-cell-cleanup.html).	
 	* **Never clean up Cell disk-space**
 	* **Routinely clean up Cell disk-space**
 	* **Clean up disk-space once threshold is reached**. If you choose this option, enter the amount of disk space limit the Cell must reach before disk cleanup initiates under **Threshold of Disk-Used&nbsp;(MB)**.
