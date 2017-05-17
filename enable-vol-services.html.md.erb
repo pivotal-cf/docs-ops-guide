@@ -22,6 +22,7 @@ To enable NFS volume services in PCF, perform the following steps:
 1. Click **Application Containers**.
 1. Under **Enabling NFSv3 volume services**, select **Enable**.
 	<%= image_tag('enable-nfs.png') %>
+	<p class="note"><strong>Note</strong>: In a clean install, NFSv3 volume services will be enabled by default. In an upgrade, NFSv3 volume services will be set to the same setting as it was in the previous deployment.</p>
 1. Click **Save**.
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to redeploy.
 1. Using the cf CLI, enable access to the service:
