@@ -38,16 +38,24 @@ If your organization uses an Enterprise Identity Management System for centraliz
  	$ uaac curl -H "Content-Type: application/json" -k /Users -X POST -d '{"userName":"EXAMPLE-USERNAME", "emails":[{"value":"EXAMPLE-USERNAME<span>@</span>test.com"}], "origin":"YOUR-SAML-PROVIDER","externalId":"EXAMPLE-USERNAME"}'
 	</pre>
 
+1. Target the API endpoint for your PCF deployment:
+    <pre class="terminal">$ cf target http<span>s</span>://api.YOUR-SYSTEM-DOMAIN</pre>
 
-1. Use the [Users API](http://apidocs.cloudfoundry.org/<%= vars.api_version %>/users/creating_a_user.html) to create a User record in the Cloud Controller Database with the existing user's SAML or LDAP GUID.
+1. Log in to the cf CLI: 
+    <pre class="terminal">$ cf login</pre>
+
+1. Create an environment variable for your OAuth token to use in the next step:
+    <pre class="terminal">$ export OAUTH-TOKEN=$(cf oauth-token|cut -d ' ' -f 2)</pre>
+
+1. Create a User record in the Cloud Controller Database with the SAML or LDAP GUID you created by running the following curl command. The command uses the [Users API](http://apidocs.cloudfoundry.org/<%= vars.api_version %>/users/creating_a_user.html).
 <pre class='terminal'>
-$ curl "<span>https:</span>//api.YOUR-DOMAIN/v2/users" -d '{
+$ curl "<span>https:</span>//api.YOUR-SYSTEM-DOMAIN/v2/users" -d '{
   "guid": "YOUR-USER-GUID"
 }' -X POST \
-	-H "Authorization: bearer YOUR-BEARER-TOKEN" \
-	-H "Host: YOUR-HOST-URL" \
-	-H "Content-Type: application/x-www-form-urlencoded" \
-	-H "Cookie: "
+    -H "Authorization: bearer $OAUTH-TOKEN" \
+    -H "Host: api.YOUR-SYSTEM-DOMAIN" \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -H "Cookie: "
 </pre>
 
 ### <a id='prov-user'></a>Step 3: Provide User Access to Orgs ##
