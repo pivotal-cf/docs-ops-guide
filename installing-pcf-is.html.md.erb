@@ -78,6 +78,20 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 	* **Forward unencrypted traffic to Elastic Runtime Router**: Select this option if your deployment uses an external load balancer that cannot forward encrypted traffic to the Elastic Runtime Router, or for a development environment that does not require load balancing.
 	<%= image_tag('isolation-segment/networking2.png') %>
 
+1. Container-to-container networking is disabled by default. To enable this feature, perform the following steps:
+<%= image_tag('isolation-segment/ert-c2c-enable.png') %>
+  1. Select the **Enable** button.
+  1. (Optional) Enter an IP range for the overlay network in the **Network CIDR** box. If you do not set a custom range, PCF Isolation Segment uses <code>10.255.0.0/16</code>.
+  	<%= image_tag('isolation-segment/ert-c2c-vxlan-port.png') %>
+  1. (Optional) Enter a UDP port number in the **VXLAN Tunnel Endpoint Port** box. If you do not set a custom port, PCF Isolation Segment uses 4789.
+  <br><br>
+  For more information about configuring container-to-container networking rules, see the <a href="../devguide/deploy-apps/cf-networking.html#create-policies">Create Policies for Container-to-Container Networking</a> section of the <em>Administering Container-to-Container Networking</em> topic.
+1. To disable container-to-container networking, perform the following steps:
+  1. Select the **Disable** button.
+	<%= image_tag('isolation-segment/disablec2c.png') %>
+  1. (Optional) Enter an IP range in the **Applications Subnet** box. If you do not
+set a custom range, PCF Isolation Segment uses <code>10.254.0.0/22</code>.
+
 1. Click **Save**.
 
 1. (Optional): Edit the configurations in **Advanced Features** as desired.
