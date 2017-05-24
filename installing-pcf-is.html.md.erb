@@ -62,6 +62,11 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. By default, containers use the same DNS servers as the host. If you want to override the DNS servers to be used in the containers in the isolation segment, enter a comma-separated list of servers in **DNS Servers**.
 
+1. Under **Enabling NFSv3 volume services**, select **Enable** or **Disable**. NFS volume services allow application developers to bind existing NFS volumes to their applications for shared file access. For more information, see the [Enabling NFS Volume Services](../opsguide/enable-vol-services.html) topic.
+	<p class="note"><strong>Note</strong>: In a clean install of the PCF Isolation Segment tile, NFSv3 volume services will be enabled by default. In an upgrade, NFSv3 volume services will be set to the same setting as it was in the previous tile.</p>
+
+1. Click **Save**.
+
 1. Click **Networking**.
 
 	<%= image_tag('isolation-segment/networking1.png') %>
