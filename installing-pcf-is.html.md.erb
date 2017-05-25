@@ -97,6 +97,29 @@ Perform the following steps to configure the PCF Isolation Segment tile:
   1. (Optional) Enter an IP range in the **Applications Subnet** box. If you do not
 set a custom range, PCF Isolation Segment uses <code>10.254.0.0/22</code>.
 
+1. Review the **Only route traffic for this Isolation Segment** checkbox, which is selected by default. 
+	
+	![Sharing Checkbox](router-sharing.png)
+
+	The table below describes what the checkbox does depending on whether you added a dedicated router in [Step 1: (Optional) Configure Routing](#routing). 
+	<table>
+	<tr>
+	<th width="15%"></th>
+	<th width="35%">Checkbox selected</th>
+	<th width="35%">Checkbox not selected</th>
+	</tr>
+	<tr>
+	<th>Dedicated router</th>
+	<td>Secures your isolation segment by ensuring the dedicated router only processes requests for apps that run in the isolation segment and not apps that run in Elastic Runtime.</td>
+	<td>Enables using the dedicated router to process requests for apps running in Elastic Runtime. In this case, the router will not process requests for apps running in the isolation segment. The use case for deselecting this checkbox is if you are installing the PCF Isolation Segment tile only to add a router separate from the Elastic Runtime Gorouter. Some operators may want to use a dedicated router with the PCF Isolation Segment tile so they can configure their deployment to handle management plane requests in a private network.</td>
+	</tr>
+	<tr>
+	<th>No dedicated router</th>
+	<td>Does nothing.</td>
+	<td>Does nothing.</td>
+	</tr>
+	</table>
+
 1. Click **Save**.
 
 1. (Optional): Edit the configurations in **Advanced Features** as desired.
