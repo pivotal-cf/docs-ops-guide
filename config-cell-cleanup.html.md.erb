@@ -1,0 +1,84 @@
+---
+title: Configuring Docker Images Disk-Cleanup Scheduling
+owner: Ops Manager
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to configure Docker images disk cleanup scheduling on Cell virtual machines (VMs) in Pivotal Cloud Foundry (PCF).
+
+## <a id="prereq"></a> Prerequisite
+
+To configure Docker images disk cleanup scheduling, you must enable Docker support in PCF with the `cf enable-feature-flag diego_docker` command, as described in the [Using Docker in Cloud Foundry](../adminguide/docker.html) topic.
+
+## <a id='disk-cleanup'></a> Options for Disk Cleanup
+
+PCF provides the following three options for scheduling Docker images disk cleanup: 
+
+* **Never clean up Cell disk-space**: Choosing this option can result in Cells that run out of disk space. In general, Pivotal does not recommend choosing this option.
+* **Routinely clean up Cell disk-space**: Choosing this option forces a cleanup every time a container image layer stops being used.
+* **Clean up disk-space once threshold is reached**: Choosing this option results in disk space cleanup only when the disk space threshold is reached or exceeded. See the [Advanced: Choosing a Threshold](#choosing-a-threshold) section of this topic for more information.
+
+## <a id='recommendations'></a> Recommendations
+
+In most cases, Pivotal recommends selecting the second option, **Routinely clean up Cell disk-space**. 
+
+The **Routinely clean up Cell disk-space** option ensures that when a new stack becomes available on a Cell, the old stack is dropped immediately from the cache. If your Elastic Runtime deployment runs Docker-based applications as well, unused Docker image layers are also cleaned up shortly after they stop being used.
+
+This option adds performance overhead from the frequent deletion of images and layers. Additionally, when using Docker images, selecting this option can result in more cache hits because Docker image layers are quickly evicted from the cache, even if the image layers are only temporarily unused. Despite this additional overhead, the overall performance impact from using this option is usually insignificant.
+
+In cases where operators want to optimize cache management and disk cleanup,
+Pivotal recommends selecting the third option, **Clean up disk-space once threshold is reached**. See the [Advanced: Choosing a Threshold](#choosing-a-threshold) section of this topic for instructions about configuring the threshold.
+
+## <a id='choosing-a-threshold'></a> Advanced: Choosing a Threshold
+
+To choose a realistic value when configuring the disk space cleanup threshold, you must identify some of the most frequently used Docker images in your PCF installation.
+
+Docker images are usually created incrementally, in layers, starting from a
+base image. In some cases, you may find it easier to identify which base Docker images are most frequently used.
+
+Follow the steps below to configure the disk space cleanup threshold:
+
+1. Identify the most frequently used Docker images or base Docker images. 
+<br><br>Example: The most frequently used images in a test deployment are `openjdk:7`, `nginx:1.13`, and `php:7-apache`.
+
+1. Using the Docker CLI, measure the size of those images.
+<br><br>
+Example:
+    <pre class="terminal">
+    \# Pull identified images locally
+    $> docker pull openjdk:7
+    $> docker pull nginx:1.13
+    $> docker pull php:7-apache
+
+    \# Measure their sizes
+    $> docker images
+    REPOSITORY       TAG          IMAGE ID          CREATED             SIZE
+    php              7-apache     2720c02fc079      2 days ago          391 MB
+    openjdk          7            f45207c01009      5 days ago          586 MB
+    nginx            1.13         3448f27c273f      5 days ago          109 MB
+    ...
+    </pre>
+
+1. Calculate the threshold as the sum of the frequently used image sizes plus a reasonable buffer such as 15-20%.
+<br><br>
+Example: Using the output above, the sample threshold calculation is (&nbsp;391&nbsp;MB&nbsp;+&nbsp;586&nbsp;MB&nbsp;+&nbsp;109&nbsp;MB&nbsp;)&nbsp;*&nbsp;1.2&nbsp;=&nbsp;1303.2&nbsp;MB
+
+1. To configure this threshold amount, navigate to the PCF Operations Manager **Installation Dashboard**.
+
+1. Click the **Pivotal Elastic Runtime** tile, and navigate to the **Application Containers** tab.
+    <%= image_tag("images/docker-registry-ert.png") %>
+
+1. Under **Docker Images Disk-Cleanup Scheduling on Cell VMs**, select the
+   **Clean up disk-space once threshold is reached** option. 
+
+1. In the **Threshold of Disk-Used (MB)** field, enter the disk space threshold amount, in MB, that you calculated for your deployment as described in **Step 3** above. The disk space used by the Cell must reach this threshold before initiating disk cleanup.
+<br><br>Example: As calculated in the previous step, you would enter **1303**. 
+
+1. Click **Save**.
+
+## <a id="next"></a> Next Steps
+
+If you are configuring Elastic Runtime for the first time, then return to your specific IaaS configuration to continue the installation process.
+
+If you are modifying an existing Elastic Runtime installation, return to the **PCF Ops Manager Installation Dashboard** and click **Apply Changes**.

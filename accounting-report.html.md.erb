@@ -1,205 +1,423 @@
 ---
-title: Monitoring App and Service Instance Usage
-owner: CAPI
+title: Monitoring App, Task, and Service Instance Usage
+owner: BAM
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to use the Cloud Foundry Command Line Interface (cf CLI) to retrieve usage information about your app and service instances through the Cloud Controller and Usage service APIs.
+This topic describes how to use the Cloud Foundry Command Line Interface (cf CLI) to retrieve usage information about your app, task, and service instances through the Cloud Controller and Usage Service APIs.
 
 You can also access usage information by using Apps Manager. For more information, see the [Monitoring Instance Usage with Apps Manager](accounting-report-apps-man.html) topic.
 
+## <a id='target'></a>Target and Log In
+
+To perform the procedures in this topic, you must target the endpoint of your Cloud Controller and log in. If you do not have the cf CLI installed, see the [Installing the cf CLI](../cf-cli/install-go-cli.html) topic.
+
+ 1. Target the endpoint of your Cloud Controller:
+  <pre class="terminal">$ cf api api.YOUR-SYSTEM-DOMAIN</pre>
+
+ 2. Log in as admin or as an Org Manager or Org Auditor for the org you want to obtain information about.
+  <pre class="terminal">
+  $ cf login -u admin
+  API endpoint:  api.YOUR-SYSTEM-DOMAIN
+  Email: user<span>@</span>example.com
+  Password:
+  Authenticating...
+  OK
+  ...
+  Targeted org  YOUR-ORG
+  Targeted space  development
+  API endpoint:    http<span>s:</span>//api.YOUR-SYSTEM-DOMAIN (API version:  2.52.0)
+  User:            user<span>@</span>example.com
+  Org:             YOUR-ORG
+  Space:           development
+  </pre>
+
 ## <a id="targetcc"></a>Obtain System Usage Information
 
-Before you can retrieve any app or service information, you must target the Cloud Controller and log in as admin, as follows:
+You can obtain the following system-wide usage information:
 
-1. Target the endpoint of your Cloud Controller.
+* [App Usage](#app-usage)
+* [Task Usage](#task-usage)
+* [Service Usage](#service-usage)
 
-	<pre class="terminal">$ cf api api.YOUR-DOMAIN</pre>
+### <a id='app-usage'></a> App Usage
 
-2. Log in with your credentials.
+Use `curl` to make a request to `/system_report/app_usages` on the Usage Service endpoint to show system-wide app usage data:
 
-	<pre class="terminal">
-	$ cf login -u admin
-	API endpoint:  api.YOUR-DOMAIN
-	Email: user<span>@</span>example.com
-	Password:
-	Authenticating...
-	OK
-	...
-	Targeted org  YOUR-ORG
-	Targeted space  development
- 	API endpoint:    https://api.YOUR-DOMAIN (API version:  2.52.0)
- 	User:            user@example.com
- 	Org:             YOUR-ORG
- 	Space:           development
-	</pre>
-
-3. Run `curl` for the `/system_usage_report` on the Usage service.
-
-	<pre class="terminal">
-	$ curl "https://app-usage.YOUR-DOMAIN/system_usage_report" -k -v -H "authorization:`cf oauth-token`"
-	</pre>
-
-## <a id="individual_org"></a> Obtain Usage Information about an Org ###
-
-To obtain individual org usage information, use the following procedure. You must log in as an admin or as an Org Manager or Org Auditor for the org you want to view.
-
-1. Run `cf login -u USERNAME`.
-
-2. Run `curl` for the `/app_usages` or `/service_usages` endpoints on the Usage service.
-
-	<pre class="terminal">
-	$ curl "https://app-usage.YOUR-DOMAIN/organizations/`cf org YOUR-ORG --guid`/app_usages?start=YYYY-MM-DD&end=YYYY-MM-DD" -k -v -H "authorization: `cf oauth-token`"
-	{
-   	   "organization_guid": "8d83362f-587a-4148-806b-4407428887b5",
-       "period_start": "2016-06-01T00:00:00Z",
-       "period_end": "2016-06-13T23:59:59Z",
-       "app_usages": [
-          {
-            app_guid: "00ecd7ce-1dd0-4b3f-63b9-744c9de42afc"
-            app_name: "your-app"
-            duration_in_seconds: 76730
-            instance_count: 6
-            memory_in_mb_per_instance: 64
-            space_guid: "44435fd6-fbac-5049-bbfc-92d1603a5e98"
-            space_name: "outer-space"
-          }
-        ]
-     }
-	</pre>
- 
-	Or run the following:
-
-	<pre class="terminal">
-	$ curl "https://app-usage.YOUR-DOMAIN/organizations/`cf org YOUR-ORG --guid`/service_usages?start=YYYY-MM-DD&end=YYYY-MM-DD" -k -v -H "authorization: `cf oauth-token`"
+<pre class="terminal">
+$ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/system_report/app_usages" -k -v \
+-H "authorization: `cf oauth-token`"
+{
+"report_time": "2017-04-11 22:28:24 UTC",
+"monthly_reports": [
     {
-       "organization_guid": "8d83362f-587a-4148-806b-4407428887b5",
-       "period_start": "2016-06-01T00:00:00Z",
-       "period_end": "2016-06-13T23:59:59Z",
-       "service_usages": [
-          {
-            deleted: false
-            duration_in_seconds: 1377982.52
-            service_guid: "02802293-b769-44cc-807f-eee331ba9b2b"
-            service_instance_creation: "2016-01-20T18:48:16.000Z"
-            service_instance_deletion: null
-            service_instance_guid: "b25b4481-19aa-4504-82c9-f303e7e9ed6e"
-            service_instance_name: "something-usage-db"
-            service_instance_type: "managed_service_instance"
-            service_name: "my-mysql-service"
-            service_plan_guid: "70915a70-7311-4f3e-ab0d-4a7dfd3ef2d9"
-            service_plan_name: "20gb"
-            space_guid: "e6445eb3-fdac-4049-bafc-94d1703d5e78"
-            space_name: "outer-space"
-          }
+      "month": 4,
+      "year": 2017,
+      "average_app_instances": 17855.256153713308,
+      "maximum_app_instances": 18145,
+      "app_instance_hours": 4686533.080277303
+    }
+  ]
+"yearly_reports": [
+    {
+      "year": 2017,
+      "average_app_instances": 16184.9,
+      "maximum_app_instances": 18145,
+      "app_instance_hours": 39207433.0802773
+    }
+  ]
+}
+</pre>
+
+### <a id='task-usage'></a> Task Usage
+
+Use `curl` to make a request to `/system_report/task_usages` on the Usage Service endpoint to show system-wide task usage data:
+
+<pre class="terminal">
+$ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/system_report/task_usages" -k -v \
+-H "authorization: `cf oauth-token`"
+{
+"report_time": "2017-04-11T22:33:48.971Z",
+"monthly_reports": [
+    {
+      "month": 4,
+      "year": 2017,
+      "total_task_runs": 235,
+      "maximum_concurrent_tasks": 7,
+      "task_hours": 43045.201944444445
+    }
+  ]
+"yearly_reports": [
+    {
+      "year": 2017,
+      "total_task_runs": 2894,
+      "maximum_concurrent_tasks": 184,
+      "task_hours": 45361.26694444445
+    }
+  ]
+}
+</pre>
+
+### <a id='service-usage'></a> Service Usage
+
+Use `curl` to make a request to `/system_report/service_usages` on the Usage Service endpoint to show system-wide service usage data:
+
+<pre class="terminal">
+$ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/system_report/service_usages" -k -v \
+-H "authorization: `cf oauth-token`"
+{
+  "report_time": "2017-05-11 18:29:14 UTC",
+  "monthly_service_reports": [
+    {
+      "service_name": "fake-service-0507f1fd-2340-49a6-9d43-a347a5f5f6be",
+      "service_guid": "177dcfde-cd51-4058-bd86-b98015c295f5",
+      "usages": [
+        {
+          "month": 1,
+          "year": 2017,
+          "duration_in_hours": 0,
+          "average_instances": 0,
+          "maximum_instances": 0
+        },
+        {
+          "month": 2,
+          "year": 2017,
+          "duration_in_hours": 0,
+          "average_instances": 0,
+          "maximum_instances": 0
+        },
+        {
+          "month": 3,
+          "year": 2017,
+          "duration_in_hours": 4.182222222222227,
+          "average_instances": 0,
+          "maximum_instances": 2
+        },
+        {
+          "month": 4,
+          "year": 2017,
+          "duration_in_hours": 2176.962222222186,
+          "average_instances": 3,
+          "maximum_instances": 7
+        },
+        {
+          "month": 5,
+          "year": 2017,
+          "duration_in_hours": 385.61388888888854,
+          "average_instances": 1.5,
+          "maximum_instances": 3
+        }
+      ],
+      "plans": [
+        {
+          "usages": [
+            {
+              "month": 1,
+              "year": 2017,
+              "duration_in_hours": 0,
+              "average_instances": 0,
+              "maximum_instances": 0
+            },
+            {
+              "month": 2,
+              "year": 2017,
+              "duration_in_hours": 0,
+              "average_instances": 0,
+              "maximum_instances": 0
+            },
+            {
+              "month": 3,
+              "year": 2017,
+              "duration_in_hours": 4.182222222222227,
+              "average_instances": 0,
+              "maximum_instances": 2
+            },
+            {
+              "month": 4,
+              "year": 2017,
+              "duration_in_hours": 1465.6388888888941,
+              "average_instances": 2,
+              "maximum_instances": 5
+            },
+            {
+              "month": 5,
+              "year": 2017,
+              "duration_in_hours": 385.61388888888854,
+              "average_instances": 1.5,
+              "maximum_instances": 3
+            }
+          ],
+          "service_plan_name": "fake-plan",
+          "service_plan_guid": "ac09f607-f4e5-4807-af16-e95856061bd7"
+        }
+</pre>
+ 
+## <a id="individual_org"></a> Obtain Usage Information About an Org ###
+
+You can obtain the following org usage information:
+
+* [App Usage](#org-app-usage)
+* [Task Usage](#org-task-usage)
+* [Service Usage](#org-service-usage)
+
+You must have the GUID of the org you want to obtain information about in order to perform the procedures in this section. To retrieve your org GUID, run the `cf org` command:
+<pre class="terminal">
+$ cf org YOUR-ORG --guid
+</pre>
+
+### <a id='org-app-usage'></a>App Usage
+
+Use `curl` to make a request to `/app_usages` on the Usage Service endpoint to show app usage in an org. You must complete the placeholders in `start=YYYY-MM-DD&end=YYYY-MM-DD` to define a date range.
+
+<pre class="terminal">
+$ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/organizations/YOUR-ORG-GUID/app_usages?start=YYYY-MM-DD&end=YYYY-MM-DD" \
+-k -v \
+-H "authorization: `cf oauth-token`"
+{
+ 	   "organization_guid": "8d83362f-587a-4148-806b-4407428887b5",
+     "period_start": "2016-06-01T00:00:00Z",
+     "period_end": "2016-06-13T23:59:59Z",
+     "app_usages": [
+        {
+          space_guid: "44435fd6-fbac-5049-bbfc-92d1603a5e98"
+          space_name: "outer-space"
+          app_guid: "00ecd7ce-1dd0-4b3f-63b9-744c9de42afc"
+          app_name: "your-app"
+          instance_count: 6
+          memory_in_mb_per_instance: 64
+          duration_in_seconds: 76730
+        }
       ]
    }
-   </pre>
+</pre>
 
-## <a id="retrieve_apps"></a> Retrieve Apps Information ###
+### <a id='org-task-usage'></a>Task Usage
 
-1. The `apps` endpoint retrieves information about all of your apps.
+Use `curl` to make a request to `/task_usages` on the Usage Service endpoint to show task usage in an org. You must complete the placeholders in `start=YYYY-MM-DD&end=YYYY-MM-DD` to define a date range.
 
-	<pre class="terminal">
-	$ cf curl /v2/apps
+<pre class="terminal">
+$ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/organizations/YOUR-ORG-GUID/task_usages?start=YYYY-MM-DD&end=YYYY-MM-DD" \
+-k -v \
+-H "authorization: `cf oauth-token`"
+{
+     "organization_guid": "8f88362f-547c-4158-808b-4605468387d5",
+     "period_start": "2014-01-01",
+     "period_end": "2017-04-04",
+     "spaces": {
+       "e6445eb3-fdac-4049-bafc-94d1703d5e78": {
+         "space_name": "smoketest",
+         "task_summaries": [
+           {
+             "parent_application_guid": "04cd29d5-1f9e-4900-ac13-2e903f6582a9",
+             "parent_application_name": "task-dummy-app",
+             "memory_in_mb_per_instance": 256,
+             "task_count_for_range": 54084,
+             "concurrent_task_count_for_range": 5
+             "total_duration_in_seconds_for_range": 37651415
+           },
+          ]
+       },
+       "b66665e4-873f-4482-acf1-89307ba9c6e4": {
+         "space_name": "smoketest-experimental",
+         "task_summaries": [
+         {
+             "parent_application_guid": "d941b689-4a27-44ec-91d3-1f97434dbed9",
+             "parent_application_name": "console-blue",
+             "memory_in_mb_per_instance": 256,
+             "task_count_for_range": 14,
+             "concurrent_task_count_for_range": 2
+             "total_duration_in_seconds_for_range": 20583
+           }
+          ]
+       }
+     }
+}
+</pre>
+
+<p class="note"><strong>Note</strong>: In the <code>/task_usages</code> endpoint, <code>memory_in_mb_per_instance</code> is the memory of the task.</p> 
+
+### <a id='org-service-usage'></a>Service Usage
+
+Use `curl` to make a request to `/service_usages` on the Usage Service endpoint to show service usage in an org. You must complete the placeholders in `start=YYYY-MM-DD&end=YYYY-MM-DD` to define a date range.
+
+<pre class="terminal">
+$ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/organizations/`cf org YOUR-ORG --guid`/service_usages?start=YYYY-MM-DD&end=YYYY-MM-DD" -k -v -H "authorization: `cf oauth-token`"
+  {
+     "organization_guid": "8d83362f-587a-4148-806b-4407428887b5",
+     "period_start": "2016-06-01T00:00:00Z",
+     "period_end": "2016-06-13T23:59:59Z",
+     "service_usages": [
+        {
+          deleted: false
+          duration_in_seconds: 1377982.52
+          service_guid: "02802293-b769-44cc-807f-eee331ba9b2b"
+          service_instance_creation: "2016-01-20T18:48:16.000Z"
+          service_instance_deletion: null
+          service_instance_guid: "b25b4481-19aa-4504-82c9-f303e7e9ed6e"
+          service_instance_name: "something-usage-db"
+          service_instance_type: "managed_service_instance"
+          service_name: "my-mysql-service"
+          service_plan_guid: "70915a70-7311-4f3e-ab0d-4a7dfd3ef2d9"
+          service_plan_name: "20gb"
+          space_guid: "e6445eb3-fdac-4049-bafc-94d1703d5e78"
+          space_name: "outer-space"
+        }
+    ]
+ }
+</pre>
+
+## <a id="obtain_apps"></a> Obtain App Information ###
+
+You can obtain the following app information:
+
+* [All Apps](#all-apps)
+* [App Summary](#app-summary)
+
+### <a id="all-apps"></a> All Apps
+
+Use the `apps` endpoint to retrieve information about all of your apps:
+
+<pre class="terminal">
+$ cf curl /v2/apps
+{
+ "total_results": 2,
+ "total_pages": 1,
+ "prev_url": null,
+ "next_url": null,
+ "resources": [
     {
-     "total_results": 2,
-     "total_pages": 1,
-     "prev_url": null,
-     "next_url": null,
-     "resources": [
-        {
-            "metadata": {
-               "guid": "acf2ce33-ee92-54TY-9adb-55a596a8dcba",
-               "url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba",
-               "created_at": "2016-02-06T17:40:31Z",
-               "updated_at": "2016-02-06T18:09:17Z"
-            },
-            "entity": {
-               "name": "YOUR-APP",
-     [...]
-               "space_url": "/v2/spaces/a0205ae0-a691-4667-92bc-0d0dd712b6d3",
-               "stack_url": "/v2/stacks/86205f38-84fc-4bc2-b2b8-af7f55669f04",
-               "routes_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/routes",
-               "events_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/events",
-               "service_bindings_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/service_bindings",
-	            "route_mappings_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/route_mappings"
-               }
-            },
-        {
-            "metadata": {
-               "guid": "79bb58cc-3737-43be-ac70-39a2843b5178",
-               "url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178",
-               "created_at": "2016-02-15T23:25:47Z",
-               "updated_at": "2016-03-12T21:54:59Z"
-            },
-            "entity": {
-               "name": "ANOTHER-APP",
-    [...]
-               "space_url": "/v2/spaces/a0205ae0-a691-4667-92bc-0d0dd712b6d3",
-               "stack_url": "/v2/stacks/86205f38-84fc-4bc2-b2b8-af7f55669f04",
-               "routes_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/routes",
-               "events_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/events",
-               "service_bindings_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/service_bindings",
-               "route_mappings_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/route_mappings"
-             }
-          }
-       ]
-    }
-   </pre>
-
-	The output of this command provides the URL endpoints for each app, within the `metadata: url` section. You can use these app-specific endpoints to retrieve more information about that app. In the example above, the endpoints for the two apps are `/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba` and `/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178`.
-
-1. The `summary` endpoint under each app-specific URL retrieves the instances and any bound services for that app.
-
-	<pre class="terminal">
-	$ cf curl /v2/apps/acf2ce75-ee92-4bb6-9adb-55a596a8dcba/summary
-	{
-   	   "guid": "acf2ce75-ee92-4bb6-9adb-55a596a8dcba",
-       "name": "YOUR-APP",
-       "routes": [
-       {
-          "guid": "7421b6af-75cb-4334-a862-bc5e1ababfe6",
-          "host": "YOUR-APP",
-          "path": "",
-          "domain": {
-             "guid": "fb6bd89f-2ed9-49d4-9ad1-97951a573135",
-             "name": "YOUR-DOMAIN.io"
+        "metadata": {
+           "guid": "acf2ce33-ee92-54TY-9adb-55a596a8dcba",
+           "url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba",
+           "created_at": "2016-02-06T17:40:31Z",
+           "updated_at": "2016-02-06T18:09:17Z"
+        },
+        "entity": {
+           "name": "YOUR-APP",
+ [...]
+           "space_url": "/v2/spaces/a0205ae0-a691-4667-92bc-0d0dd712b6d3",
+           "stack_url": "/v2/stacks/86205f38-84fc-4bc2-b2b8-af7f55669f04",
+           "routes_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/routes",
+           "events_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/events",
+           "service_bindings_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/service_bindings",
+          "route_mappings_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/route_mappings"
+           }
+        },
+    {
+        "metadata": {
+           "guid": "79bb58cc-3737-43be-ac70-39a2843b5178",
+           "url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178",
+           "created_at": "2016-02-15T23:25:47Z",
+           "updated_at": "2016-03-12T21:54:59Z"
+        },
+        "entity": {
+           "name": "ANOTHER-APP",
+[...]
+           "space_url": "/v2/spaces/a0205ae0-a691-4667-92bc-0d0dd712b6d3",
+           "stack_url": "/v2/stacks/86205f38-84fc-4bc2-b2b8-af7f55669f04",
+           "routes_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/routes",
+           "events_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/events",
+           "service_bindings_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/service_bindings",
+           "route_mappings_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/route_mappings"
          }
       }
-   ],
-      "running_instances": 5,
-      "services": [
-         {
-            "guid": "b9cdr456-3c61-4f8a-a307-9b4ty836fb2e",
-            "name": "YOUR-APP-db",
-            "bound_app_count": 1,
-            "last_operation": {
-               "type": "create",
-               "state": "succeeded",
-               "description": "",
-               "updated_at": null,
-               "created_at": "2016-02-05T04:58:46Z"
-         },
-            "dashboard_url": "https://cloudfoundry.appdirect.com/api/custom/cloudfoundry/v2/sso/start?serviceUuid=b5cASDF-3c61-4f8a-a307-9bf85j45fb2e",
-            "service_plan": {
-               "guid": "fbcec3af-3e8d-4ee7-adfe-3f12a137ed66",
-               "name": "turtle",
-               "service": {
-                  "guid": "34dbc753-34ed-4cf1-9a87-a255dfca5339b",
-                  "label": "elephantsql",
-                  "provider": null,
-                  "version": null
-   [...]
-   </pre>
+   ]
+}
+</pre>
+
+The output of this command provides the URL endpoints for each app, within the `metadata: url` section. You can use these app-specific endpoints to retrieve more information about that app. In the example above, the endpoints for the two apps are `/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba` and `/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178`.
+
+### <a id="app-summary"></a> App Summary
+
+Use the `summary` endpoint under each app-specific URL to retrieve the instances and any bound services for that app:
+
+<pre class="terminal">
+$ cf curl /v2/apps/acf2ce75-ee92-4bb6-9adb-55a596a8dcba/summary
+{
+	   "guid": "acf2ce75-ee92-4bb6-9adb-55a596a8dcba",
+   "name": "YOUR-APP",
+   "routes": [
+   {
+      "guid": "7421b6af-75cb-4334-a862-bc5e1ababfe6",
+      "host": "YOUR-APP",
+      "path": "",
+      "domain": {
+         "guid": "fb6bd89f-2ed9-49d4-9ad1-97951a573135",
+         "name": "YOUR-SYSTEM-DOMAIN.io"
+     }
+  }
+],
+  "running_instances": 5,
+  "services": [
+     {
+        "guid": "b9cdr456-3c61-4f8a-a307-9b4ty836fb2e",
+        "name": "YOUR-APP-db",
+        "bound_app_count": 1,
+        "last_operation": {
+           "type": "create",
+           "state": "succeeded",
+           "description": "",
+           "updated_at": null,
+           "created_at": "2016-02-05T04:58:46Z"
+     },
+        "dashboard_url": "https://cloudfoundry.appdirect.com/api/custom/cloudfoundry/v2/sso/start?serviceUuid=b5cASDF-3c61-4f8a-a307-9bf85j45fb2e",
+        "service_plan": {
+           "guid": "fbcec3af-3e8d-4ee7-adfe-3f12a137ed66",
+           "name": "turtle",
+           "service": {
+              "guid": "34dbc753-34ed-4cf1-9a87-a255dfca5339b",
+              "label": "elephantsql",
+              "provider": null,
+              "version": null
+[...]
+</pre>
    
-1. To view the `app_usages` report that covers app usage within an org during a period of time, see [Obtain Usage Information about an Org](#individual_org).
+To view the `app_usages` report that covers app usage within an org during a period of time, see [Obtain Usage Information About an Org](#individual_org).
 
-	  	
-## <a id="retrieve_services"></a> Retrieve Services Information ###
+## <a id="obtain_services"></a> Obtain Services Information ###
 
-Use `cf curl` to retrieve service instance information. The `service_instances?` endpoint retrieves details about both bound and unbound service instances:
+Use the `service_instances?` endpoint to retrieve information about both bound and unbound service instances:
 
 <pre class="terminal">
 $ cf curl /v2/service_instances?
@@ -272,6 +490,9 @@ $ cf curl /v2/service_instances?
       ]
    }
 </pre>
+
+
+
 
 
 
