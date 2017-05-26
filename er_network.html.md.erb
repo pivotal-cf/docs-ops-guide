@@ -12,6 +12,8 @@ The diagram below shows the key [Pivotal Cloud Foundry](https://network.pivotal.
 
 Elastic Runtime includes an HAProxy load balancer for terminating SSL. If you do not want to serve SSL certificates for Elastic Runtime on your own load balancer use the HAProxy. If you do choose to manage SSL yourself, omit the HAProxy by setting the number of instances to zero in Ops Manager.
 
+Refer to the [Configuring Pivotal Cloud Foundry SSL Termination](ssl-term.html) topic for more information.
+
 # <a id='router'></a>Router #
 
 The routers in Elastic Runtime are responsible for routing HTTP requests from web clients to application instances in a load balanced fashion. The routers are dynamically configured based on users mapping of applications to location URLs called routes, and updated by the runtime service as application instances are dynamically distributed.

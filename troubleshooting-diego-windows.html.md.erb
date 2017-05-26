@@ -9,17 +9,17 @@ This topic describes how to troubleshoot a Windows cell in a Diego deployment.
 
 ##<a id='application-errors'></a>Resolve Application Errors
 
-Ensure that your .NET app is ready for deployment. You usually see the following errors only after pushing an app. 
+Ensure that your .NET app is ready for deployment. You usually see the following errors after pushing an app. 
 
 #### Error
 
-`NoCompatibleCell`: This error usually indicates that the RepService has not yet registered your Windows cell with the rest of your Pivotal Cloud Foundry (PCF) deployment. The RepService attempts to reconnect on an interval, and can sometimes resolve itself within a few minutes. 
+`NoCompatibleCell` This error usually indicates that the RepService has not yet registered your Windows cell with the rest of your Pivotal Cloud Foundry (PCF) deployment. The RepService attempts to reconnect on an interval, and can sometimes resolve itself within a few minutes. 
 
 ![diegoWindows-no-compatible-cell](images/greenhouse/no-compatible-cell.png)
 
 #### Resolution
 
-Restart the RepService within your cell to trigger an immediate reconnection. 
+Restart the RepService within your cell to trigger an  immediate reconnection. 
 
 ![diegoWindows-no-compatible-cell](images/greenhouse/restart-rep.png)
 
@@ -27,7 +27,7 @@ Restart the RepService within your cell to trigger an immediate reconnection.
 
 #### Error
 
-`Start Unsuccessful`: This error usually indicates that your app is misconfigured for your PCF Windows environment, but can also indicate your app does not contain the required DLL files and dependencies. 
+`Start Unsuccessful` This error usually indicates that your app is misconfigured for your PCF Windows environment, but can also indicate your app does not contain the required `.dll`s and dependencies. 
 
 ![diegoWindows-no-compatible-cell](images/greenhouse/start-unsucessful.png
 )
@@ -39,7 +39,7 @@ Restart the RepService within your cell to trigger an immediate reconnection.
 
 Push your app from a directory containing either a `.exe` binary or a valid `Web.config` file for .NET apps. Alternatively, add the `-p` flag to your `cf push` command and specify the path to the directory that contains the `.exe` or `Web.config` file.
 
-Ensure that your pushed app contains your app dependencies.
+Ensure that your app dependencies are contained in your pushed app.
 
 ##<a id='find-errors-hakim'></a>Find Errors Using Hakim
 
@@ -69,7 +69,7 @@ Hakim only outputs to the console if it detects errors. Here are some common err
 
 ####Error
 
-`The following processes are not running`: This usually indicates a failed deployment. 
+`The following processes are not running` This usually indicates a failed deployment. 
 
 #### Resolution
 
@@ -79,11 +79,11 @@ Re-provision your Windows components. If this does not fix this issue, contact s
 
 #### Error
 
-`Failed to resolve consul host`: This usually indicates interference with DNS resolution on your Windows cell. 
+`Failed to resolve consul host` This usually indicates interference with DNS resolution on your Windows cell. 
 
 #### Resolution
 
-To resolve this error, set `localhost 127.0.0.1` as the primary DNS server for the active network adapter.
+To resolve this error, set localhost 127.0.0.1 as the primary DNS server for the active network adapter.
 
 <hr>
 
@@ -99,7 +99,7 @@ You must disable this setting for your Windows cell to function properly. Turn t
 
 #### Error
 
-`Windows firewall service is not enabled`: Diego for Windows enforces PCF security group settings for apps running on the cell through the Windows firewall. Apps can run without this, but security groups do not work correctly and apps have unrestricted network access.
+`Windows firewall service is not enabled` Diego for Windows enforces PCF security group settings for apps running on the cell through the Windows firewall. Apps can run without this, but security groups do not work correctly and apps have unrestricted network access.
 
 #### Resolution
 
@@ -109,7 +109,7 @@ Enable the Windows firewall service.
 
 #### Error
 
-`There was an error detecting ntp synchronization on your machine`: Clock skew with other PCF components can occur if NTP is not configured. Clock skew can result in odd errors. For example, clock skew can result in not receiving any application metrics for apps running on the affected machine.
+`There was an error detecting ntp synchronization on your machine` Clock skew with other PCF components can occur if NTP is not configured. Clock skew can result in odd errors: for example, not receiving any application metrics for apps running on the affected machine.
 
 #### Resolution
 
@@ -119,7 +119,7 @@ For your Windows cell, use the same NTP server as the rest of your PCF deploymen
 
 ####Error
 
-`Failed to create container`: This usually indicates an issue with the Windows containerization service. 
+`Failed to create container` This usually indicates an issue with the Windows containerization service. 
 
 #### Resolution
 

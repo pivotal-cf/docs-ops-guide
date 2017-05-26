@@ -5,7 +5,7 @@ owner: Ops Manager
 
 <strong><%= modified_date %></strong>
 
-To allow the Notifications Service to have network access you need to create [Application Security Groups](../concepts/asg.html) (ASGs).
+To allow the Notifications Service to have network access you need to create [Application Security Groups](../adminguide/app-sec-groups.html) (ASGs).
 
 <p class="note"><strong>Note</strong>: Without Application Security Groups the service is not usable.</p>
 
@@ -53,7 +53,7 @@ The Notifications Service is deployed as a suite of applications to the `notific
 
 ### <a id="load-balancer"></a> Create a Load Balancer ASG
 
-<p class="note"><strong>Note</strong>: If you already have a ASG setup for a Load Balancer, you do not need to perform this step. Review your <a href="../concepts/asg.html">ASGs</a> to check which groups you have setup.</p>
+<p class="note"><strong>Note</strong>: If you already have a ASG setup for a Load Balancer, you do not need to perform this step. Review your <a href="../adminguide/app-sec-groups.html">ASGs</a> to check which groups you have setup.</p>
 
 If you are using the built-in HAProxy as your load balancer, follow this procedure. If you are using an external load balancer, you must obtain your HAProxy IPs from the service you are using. 
 

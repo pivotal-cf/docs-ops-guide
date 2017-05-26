@@ -1,64 +1,109 @@
 ---
-title: Upgrade Considerations for Selecting File Storage in Pivotal Cloud Foundry
+title: Considerations for Selecting File Storage in Pivotal Cloud Foundry
 owner: Ops Manager
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes critical factors to consider when evaluating the type of file storage to use in your Pivotal Cloud Foundry (PCF) deployment. The [Elastic Runtime blobstore](../concepts/architecture/cloud-controller.html#blob-store) relies on the file storage system to read and write resources, app packages, and droplets.
+This topic describes critical factors to consider when evaluating the type of file storage to use in your Pivotal Cloud Foundry (PCF) deployment. The [Elastic Runtime blobstore](../concepts/architecture/cloud-controller.html#blob-store) relies on the file storage system to read and write resources, app packages and droplets.
 
-During an upgrade of PCF, file storage with insufficient IOPS numbers can negatively impact the performance and stability of your PCF deployment. 
+File storage with insufficient IOPs numbers can negatively impact the performance and stability of your PCF deployment. However, the minimum required IOPs depends upon a number of deployment-specific factors and configuration choices. 
 
-If disk processing time takes longer than the evacuation timeout for Diego cells, then Diego cells and app instances may take too long to start up, resulting in a cascading failure. 
-
-However, the minimum required IOPS depends upon a number of deployment-specific factors and configuration choices. Use this topic as a guide when deciding on the file storage configuration for your deployment.
-
-To see an example of system performance and IOPS load during an upgrade, refer to [Pivotal Web Services Performance During Upgrade](./pws_upgrade_load.html).
+Use this topic as a guide when making file storage configuration decisions for your deployment.
 
 ## <a id="types"></a> Selecting Internal or External File Storage
 
-When you deploy PCF, you can select internal file storage or external file storage, either network-accessible or IaaS-provided, as an option in the Elastic Runtime tile. 
+When you deploy PCF, you can select internal file storage, external file storage or IaaS-provided file storage as an option in the Elastic Runtime tile. 
 
-Selecting internal storage causes PCF to deploy a dedicated virtual machine (VM) that uses either NFS or WebDAV for file storage. Selecting external storage allows you to configure file storage provided in network-accessible location or by an IaaS, such as Amazon S3, Google Cloud Storage, or Azure Storage. 
+Selecting internal storage causes PCF to deploy a dedicated VM that uses either NFS or WebDAV for file storage. Selecting external storage allows you to configure an external S3 or Ceph compatible file storage, or select external storage provided by the IaaS, such as Google Cloud Storage or Azure Storage. 
 
-Whenever possible, Pivotal recommends using external file storage. 
+Whenever possible, Pivotal recommends using external file storage or file storage provided by the IaaS where you are deploying PCF. 
 
 ## <a id="load"></a> Calculating Potential Disk Load Requirements
 
-As a best-effort calculation, estimate the total number of bits needed to move during a system upgrade to determine how IOPS-performant your file storage needs to be.  
+The best effort calculation to figure out how performant (IOPS) your file storage needs is to determine a rough estimate of how many total bits need to move around at a single time. 
 
 ### <a id="num_cells"></a> Number of Diego Cells
 
-As a first calculation, determine the number of Diego cells that your deployment currently uses.  
+As a first calculation, determine the number of Diego cells that your deployment is currently using.  
 
 To view the number of Diego cell instances currently running in your deployment, see the **Resource Config** section of your Elastic Runtime tile.
 
 If you expect to scale up the number of instances, use the anticipated scaled number.
 
-<p class="note"><b>Note</b>: If your deployment uses more than 20 Diego cells, you should avoid using internal file storage. Instead, you should always select external or IaaS-provided file storage.</p>
+<p class="note"><b>Note</b>: If your deployment uses more than 20 Diego cells, you should avoid the use of internal file storage and always select external or IaaS-provided file storage.</p>
 
 ### <a id="max_in_flight"></a> Maximum In-Flight Load and Container Starts for Diego Cells
 
-Operators can limit the number of containers and Diego cell instances that Diego starts concurrently. If operators impose no limits, your file storage may experience exceptionally heavy load during an upgrade. 
+Next, find out the maximum in-flight load for each Diego cell.
 
-<%= partial '../adminguide/diego-upgrade-limits' %>
+This load is affected by two possible throttle configurations:
 
-<%= partial 'diego-upgrade-limits-table' %>
+- Starting container count maximum, or the overall limit to the number of containers that Diego can start in Elastic Runtime. This is a deployment-wide limit. The default value and ability to override this configuration depends on the version of PCF deployed.
+- The `max_in_flight` setting for the Diego cell job as configured in Ops Manager Director. This configuration, expressed as a percentage, sets the maximum number of in-flight instances that can be started simulataneously. For example, if your deployment is running 10 Diego cell instances and the configured `max_in_flight` value is `20%`, then only 2 Diego cell instances can start up at a single time. Operators can override this configuration setting by using the Ops Manager API.
 
-### <a id="instances"></a> Calculating Upgrade Load Based on Number of App Instances and Droplet Size
+These configurations allow operators to throttle the number of containers that Diego starts concurrently. If no limits are imposed, then your file storage may undergo exceptionally heavy load during events such as upgrade. 
 
-Using the above numbers, you can determine a rough estimate of the expected upgrade load by multiplying the total number of expected app instances for all cells with the size of the instance droplets.
+The value of both configurations depend on the version of PCF that you have have deployed and whether you have overridde the default value.
 
-For example, if your deployment starts 10 cells that each host 20 app instances, and each app instance droplet is an average of 100 MB in size, then you potentially have 20 GB of data hitting the disk at the same time. Depending on the IOPS capacity of your disk, this 20 GB of data will take a set amount of time to reassemble on a new disk. 
+Refer to the following table for existing defaults and if necessary, determine the override value in your deployment.
 
-Calculate the amount of time needed to process your potential upgrade load, and verify that the number falls under the evacuation timeout (default is 10 minutes) for Diego cells.
 
-If the calculated processing time is longer than the evacuation timeout, you should upgrade your file storage to use disk with higher IOPS capacity.
+<table class="nice">
+<tr>
+ <th>PCF Version</th>
+ <th>Starting Container Count Maximum</th>
+ <th>Overridable?</th>
+ <th>Maximum In Flight Instances</th>
+ <th>Overridable?</th>
+</tr>
+<tr>
+<td>PCF 1.7.43 and earlier</td>
+<td>No limit set</td>
+<td>No</td>
+<td>100%</td>
+<td>No</td>
+</tr>
+<tr>
+<td>PCF 1.7.44+</td>
+<td>200</td>
+<td>No</td>
+<td>100%</td>
+<td>No</td>
+</tr>
+<tr>
+<td>PCF 1.8.0</td>
+<td>200</td>
+<td>No</td>
+<td>10%</td>
+<td>No</td>
+</tr>
+<tr>
+<td>PCF 1.9.0 and later</td>
+<td>200</td>
+<td>No</td>
+<td>10%</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>PCF 1.10.0 and later</td>
+<td>200</td>
+<td>Yes</td>
+<td>10%</td>
+<td>Yes</td>
+</tr>
+ </table>
 
-For more information about how Diego cells are upgraded, see the [Managing Diego Cell Limits During an Upgrade](../adminguide/diego-cell-upgrade.html) topic.
+To retrieve or override the existing `max_in_flight` value in Ops Manager Director, use the Ops Manager API. See the Ops Manager API documentation provided with your Ops Manager installation at `https://YOUR-OPSMAN-FQDN/docs/`.
+
+### <a id="instances"></a> Calculating Load Based on Number of App Instances and Droplet Size
+
+Lastly, using the above numbers, you can determine a rough estimate of the expected load by multiplying the expected number of app instances are on each cell with the size of the instance droplets.
+
+For example, if you start up 10 cells that each host 20 app instances, which is controlled by the maximum in-flight load, and each instance droplet is an avg of 100 MB in size, then you potentially have 20 GB of data hitting the disk at the same time. 
+
+Depending on the IOPS capacity of your disk, this 20 GB of data will take a set amount of time to reassemble on a new disk. If this disk processing time takes too long, then Diego cells may take too long to start up and result in a cascading failure.
 
 ## <a id="rel_links"></a> Related Links
 
 * [How to use Elastic Runtime blob storage data](https://discuss.pivotal.io/hc/en-us/articles/217982188-How-to-use-Elastic-Runtime-blob-storage-data-)
-* [Upgrading Pivotal Cloud Foundry](../customizing/upgrading-pcf.html)
-* [Managing Diego Cell Limits During an Upgrade](../adminguide/diego-cell-upgrade.html)
