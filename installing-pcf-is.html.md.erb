@@ -97,26 +97,25 @@ Perform the following steps to configure the PCF Isolation Segment tile:
   1. (Optional) Enter an IP range in the **Applications Subnet** box. If you do not
 set a custom range, PCF Isolation Segment uses <code>10.254.0.0/22</code>.
 
-1. Review the **Only route traffic for this Isolation Segment** checkbox, which is selected by default. 
-	
+1. If you added a dedicated router in [Step 1: (Optional) Configure Routing](#routing), select or deselect the **Only route traffic for this Isolation Segment** checkbox as needed. See the table below. Otherwise, skip this step.  
 	![Sharing Checkbox](router-sharing.png)
-
-	The table below describes what the checkbox does depending on whether you added a dedicated router in [Step 1: (Optional) Configure Routing](#routing). 
 	<table>
 	<tr>
-	<th width="15%"></th>
-	<th width="35%">Checkbox selected</th>
-	<th width="35%">Checkbox not selected</th>
+		<th width="50%">If selected</th>
+		<th>If deselected</th>
 	</tr>
 	<tr>
-	<th>Dedicated router</th>
-	<td>Secures your isolation segment by ensuring the dedicated router only processes requests for apps that run in the isolation segment and not apps that run in Elastic Runtime.</td>
-	<td>Enables using the dedicated router to process requests for apps running in Elastic Runtime. In this case, the router will not process requests for apps running in the isolation segment. The use case for deselecting this checkbox is if you are installing the PCF Isolation Segment tile only to add a router separate from the Elastic Runtime Gorouter. Some operators may want to use a dedicated router with the PCF Isolation Segment tile so they can configure their deployment to handle management plane requests in a private network.</td>
-	</tr>
-	<tr>
-	<th>No dedicated router</th>
-	<td>Does nothing.</td>
-	<td>Does nothing.</td>
+	<td style="vertical-align:top">
+	The dedicated router only processes requests for apps that run in the isolation segment.<br><br>
+	<b>Use case</b>:
+	You want to secure the apps running in your isolation segment.	
+	</td>
+	<td>
+	The dedicated router only processes requests for apps that run in Elastic Runtime. It rejects requests for apps in any isolation segment.<br><br>
+	<b>Use case</b>: You are installing the Isolation Segment tile not to host apps, but to deploy an additional group of routers for the Elastic Runtime tile.<br><br>
+
+	In a PCF deployment, the system domain receives management plane requests, such as requests from the cf CLI and Apps Manager. If you want only users on a private network to send these requests successfully, you can configure a private load balancer. However, some load balancers cannot share the same pool of backends. To overcome this limitation, you can configure the Elastic Runtime tile routers to handle requests for the system domain, and the Isolation Segment tile routers handle requests for the app domains.
+	</td>
 	</tr>
 	</table>
 	<p class="note"><strong>Note</strong>: If you select the checkbox and use a dedicated router, you must have secured the communication path between the Cloud Controller and Diego. In a fresh install of PCF, no action is required. In an upgrade, you must have completed the <a href="../customizing/upgrading-pcf.html#consul-cc">Disable Consul Locks and Secure the Cloud Controller</a> section of the <em>Upgrading Pivotal Cloud Foundry</em> topic.</p>
