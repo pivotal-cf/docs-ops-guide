@@ -5,51 +5,47 @@ owner: APM
 
 <strong><%= modified_date %></strong>
 
-This topic explains how to configure the Pivotal Cloud Foundry [Loggregator system](../loggregator/architecture.html) to scale its maximum throughput, and to forward logs to an external aggregator service.
+This topic explains how to scale the Pivotal Cloud Foundry (PCF) [Loggregator](../loggregator/architecture.html) component VMs, and to forward logs to an external aggregator service.
 
-## <a id='scaling'></a> Scaling Loggregator ##
+## <a id='syslog-forward'></a> Enable Syslog Forwarding ##
 
-Elastic Runtime system components and apps constantly generate log and metrics data. The [Metron](../loggregator/architecture.html#metron) agent running on each component or application VM collects and sends this data out to [Doppler](../loggregator/architecture.html#doppler) components, which temporarily buffer the data before periodically forwarding it to the [Traffic Controller](../loggregator/architecture.html#traffic-controller). The Traffic Controller then serves the aggregated data stream through the Firehose WebSocket endpoint.
+To forward log messages to an external Reliable Event Logging Protocol (RELP) server, complete the following steps:
 
-When the log and metrics data input to a Doppler exceeds its buffer size for a given interval, data can be lost. You can take several actions to minimize this loss.
+1. From the Elastic Runtime tile, Select **System Logging**.
+	<%= image_tag 'sys-logging.png' %>
+1. If you want to include security events in your log stream, select the **Enable Cloud Controller security event logging** checkbox.
+This logs all API requests, including the endpoint, user, source IP, and request result, in the Common Event Format (CEF).
+1. Enter the IP address of your syslog server in **External Syslog Aggregator Hostname** and its port in **External Syslog Aggregator Port**. The default port for a syslog server is `514`.
+<p class="note"><strong>Note</strong>: The host must be reachable from the Elastic Runtime network, accept TCP connections, and use the RELP protocol. Ensure your syslog server listens on external interfaces.</p>
+1. Select an **External Syslog Network Protocol** to use when forwarding logs.
+1. For the **Syslog Drain Buffer Size**, enter the number of messages the Doppler server can hold from Metron agents before the server starts to drop them. See the [Loggregator Guide for Cloud Foundry Operators](../loggregator/log-ops-guide.html) topic for more details.
+1. Click **Save**.
 
-### Increase buffer size
+## <a id='scaling'></a> Scale Loggregator ##
 
-1. In the **Pivotal Cloud Foundry (PCF) Ops Manager Installation Dashboard**, click the **Elastic Runtime** tile.
-1. Select **System Logging**.
+Apps and PCF system components constantly generate log and metrics data. The Loggregator system handles this data as follows. See [Overview of the Loggregator System](../loggregator/architecture.html) for more information. 
+
+* The [Metron](../loggregator/architecture.html#metron) agent running on each component or application VM collects and sends this data out to Doppler components. 
+* [Doppler](../loggregator/architecture.html#doppler) components temporarily buffer the data before periodically forwarding it to the Traffic Controller. When the log and metrics data input to a Doppler exceeds its buffer size for a given interval, data can be lost. 
+* The [Traffic Controller](../loggregator/architecture.html#traffic-controller) serves the aggregated data stream through the Firehose WebSocket endpoint.
+
+Follow the instructions below to scale the Loggregator system. For guidance on monitoring and capacity planning, see [Monitoring Pivotal Cloud Foundry](../monitoring/).
+
+### <a id="buffer"></a> Increase buffer size
+
+1. From the Elastic Runtime tile, select **System Logging**.
 1. Increase the **Drain Buffer Size** to prevent loss of log data.
 1. Click **Save**.
 1. Click **Apply Changes**.
-<%= image_tag 'sys-logging.png' %>
 
-### Add Additional Doppler Instances
+### <a id="instances"></a> Add Component VM Instances
 
-1. In the **PCF Ops Manager Installation Dashboard**, click the **Elastic Runtime** tile.
-1. Select **Resource Config**.
-1. Increase the number in the **Instances** column and the **Doppler Server** row.
-  <%= image_tag 'loggregator_config.png' %>
+1. From the **Elastic Runtime** tile, select **Resource Config**.
+1. Increase the number in the **Instances** column of the component you want to scale. You can add instances for the following Loggregator components: 
+	* **Loggregator Traffic Controller**
+		<p class="note"><strong>Note</strong>: The Reverse Log Proxy (RLP) BOSH job is colocated with the Traffic Controller VM. If you want to scale Loggregator to handle more logs for syslog drains, you can add instances of this component.</p>
+	* **Syslog Adapter**
+	* **Doppler Server**
+  <%= image_tag 'loggregator-vms.png' %>
 1. Click **Save**.
 1. Click **Apply Changes**.
-
-### Add Additional Traffic Controller Instances
-
-1. In the **PCF Ops Manager Installation Dashboard**, click the **Elastic Runtime** tile.
-1. Select **Resource Config**.
-1. Increase the number in the **Instances** column and the **Loggregator Trafficcontroller** row.
-  <%= image_tag 'loggregator_config.png' %>
-1. Click **Save**.
-1. Click **Apply Changes**.
-
-## <a id='syslog-forward'></a> Enabling System Log Forwarding ##
-
-Elastic Runtime can forward log data to an external aggregator service instead of routing it to the Loggregator Firehose. System log forwarding for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) is managed through the **PCF Ops Manager Installation Dashboard**. Complete the steps below to enable syslog forwarding:
-
-1. Click the **Elastic Runtime** tile.
-1. Select **System Logging**.
-1. If you want to include security events in your log stream, select the **Enable Cloud Controller security event logging** checkbox. 
-The security log messages are in Common Event Format (CEF).
-1. Enter the **Aggregator Hostname**, **Aggregator Port**, and **Network Protocol** for your third-party log management service.
-1. (Optional) Increase the **Drain Buffer Size** to prevent loss of log data.
-1. Click **Save**.
-1. Click **Apply Changes**.
-<%= image_tag 'sys-logging.png' %>
