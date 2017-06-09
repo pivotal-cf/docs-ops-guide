@@ -118,6 +118,23 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. (Optional): Edit the configurations in **Advanced Features** as desired.
 
+1. In the **System Logging** menu, select an option from the  **Do you want to configure syslog for system components?** menu. **No** is selected by default. 
+<%= image_tag('./images/iso-logging-no.png') %>
+
+1. If you want to use syslog, select **Yes.**
+<%= image_tag('./images/iso-logging-yes.png') %>
+
+1. Enter the address of your external syslog aggregation service in the **Address** field. The address can be a hostname or IP address.
+
+1. Enter a port number in the **Port** field. 
+
+1. Select a protocol from the **Transport Protocol** menu. This is the protocol the sytem uses to transmit logs to syslog.
+
+ 1. (Optional) Select the **Enable TLS** option if you want to transmit logs over TLS.
+ 1. Enter a **Permitted Peer.** 
+ 1. Paste the certificate for your TLS certificate authority (CA) in the **TLS CA Certificate** field. 
+ 1. Click **Save.**
+
 1. If you are using a dedicated router for your isolation segment, click **Resource Config** and enter the wildcard DNS entry attached to your load balancer into the **Router** row under **Load Balancers**.
 	<%= image_tag('isolation-segment/resource-config.png') %>
 
