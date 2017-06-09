@@ -69,11 +69,9 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. Click **Networking**.
 
-	<%= image_tag('isolation-segment/networking1.png') %>
+	<%= image_tag('isolation-segment/isolation-segment-networking.png') %>
 
-1. (Optional): Under **Router IPs**, enter one or more static IP addresses for the routers that handles this isolation segment. These IP addresses must be within the subnet CIDR block that you defined in the Ops Manager network configuration. If you have a load balancer, configure it to point to these IP addresses.
-
-1. (Optional): Under **Applications Subnet**, enter a CIDR subnet mask specifying the range of available IP addresses to assign to your app containers. This must be different from the network used by the system VMs. Only modify the default value if you need to avoid address collision with a third-party service on the same subnet.
+1. (Optional): Under **Router IPs**, enter one or more static IP addresses for the routers that handle this isolation segment. These IP addresses must be within the subnet CIDR block that you defined in the Ops Manager network configuration. If you have a load balancer, configure it to point to these IP addresses.
 
 1. (Optional): Under **Applications Network Maximum Transmission Unit**, change the Maximum Transmission Unit (MTU). The default is `1454` bytes. 
 
@@ -83,19 +81,21 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 	* **Forward unencrypted traffic to Elastic Runtime Router**: Select this option if your deployment uses an external load balancer that cannot forward encrypted traffic to the Elastic Runtime Router, or for a development environment that does not require load balancing.
 	<%= image_tag('isolation-segment/networking2.png') %>
 
-1. Container-to-container networking is disabled by default. To enable this feature, perform the following steps:
-<%= image_tag('isolation-segment/ert-c2c-enable.png') %>
+1. To enable container-to-container networking, perform the following steps:
+
   1. Select the **Enable** button.
-  1. (Optional) Enter an IP range for the overlay network in the **Network CIDR** box. If you do not set a custom range, PCF Isolation Segment uses <code>10.255.0.0/16</code>.
+  <%= image_tag('isolation-segment/ert-c2c-enable.png') %>
+  1. (Optional): Enter an IP range for the overlay network in the **Network CIDR** box. If you do not set a custom range, PCF Isolation Segment uses <code>10.255.0.0/16</code>.
+  1. (Optional): Enter a UDP port number in the **VXLAN Tunnel Endpoint Port** box. If you do not set a custom port, PCF Isolation Segment uses 4789.
   	<%= image_tag('isolation-segment/ert-c2c-vxlan-port.png') %>
-  1. (Optional) Enter a UDP port number in the **VXLAN Tunnel Endpoint Port** box. If you do not set a custom port, PCF Isolation Segment uses 4789.
-  <br><br>
   For more information about configuring container-to-container networking rules, see the <a href="../devguide/deploy-apps/cf-networking.html#create-policies">Create Policies for Container-to-Container Networking</a> section of the <em>Administering Container-to-Container Networking</em> topic.
+
 1. To disable container-to-container networking, perform the following steps:
+
   1. Select the **Disable** button.
 	<%= image_tag('isolation-segment/disablec2c.png') %>
-  1. (Optional) Enter an IP range in the **Applications Subnet** box. If you do not
-set a custom range, PCF Isolation Segment uses <code>10.254.0.0/22</code>.
+
+  1. (Optional): Under **Applications Subnet**, enter a CIDR subnet mask specifying the range of available IP addresses to assign to your app containers. This must be different from the network used by the system VMs. Modify the default value only if you need to avoid address collision with a third-party service on the same subnet. If you do not set a custom range, PCF Isolation Segment uses <code>10.254.0.0/22</code>.
 
 1. If you added a dedicated router in [Step 1: (Optional) Configure Routing](#routing), select or deselect the **Only route traffic for this Isolation Segment** button as needed. See the table below. Otherwise, skip this step.  
 
@@ -110,7 +110,7 @@ set a custom range, PCF Isolation Segment uses <code>10.254.0.0/22</code>.
 	</tr>
 	<tr>
 		<td>No Isolation Segment</td>
-		<td>When 'No Isolation Segments' is selected, the tile's routers will reject requests for any isolation segment. Choose 'No Isolation Segments' to add a group of routers for the Elastic Runtime tile, such as when a private point of entry for the system domain is desired</td>
+		<td>When 'No Isolation Segments' is selected, the tile's routers will reject requests for any isolation segment. Choose 'No Isolation Segments' to add a group of routers for the Elastic Runtime tile, such as when a private point of entry for the system domain is desired.</td>
 	</tr>
 	</table>
 
