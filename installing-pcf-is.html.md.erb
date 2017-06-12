@@ -86,7 +86,7 @@ Perform the following steps to configure the PCF Isolation Segment tile:
   1. Select the **Enable** button.
 	<%= image_tag('isolation-segment/ert-c2c-enable.png') %>
   1. (Optional): Enter an IP range for the overlay network in the **Network CIDR** box. If you do not set a custom range, PCF Isolation Segment uses <code>10.255.0.0/16</code>.
-  1. (Optional): Enter a UDP port number in the **VXLAN Tunnel Endpoint Port** box. If you do not set a custom port, PCF Isolation Segment uses 4789.
+  1. (Optional): Enter a UDP port number in the **VXLAN Tunnel Endpoint Port** box. If you do not set a custom port, PCF Isolation Segment uses <code>4789</code>.
   	<%= image_tag('isolation-segment/ert-c2c-vxlan-port.png') %>
   For more information about configuring container-to-container networking rules, see the <a href="../devguide/deploy-apps/cf-networking.html#create-policies">Create Policies for Container-to-Container Networking</a> section of the <em>Administering Container-to-Container Networking</em> topic.
 
