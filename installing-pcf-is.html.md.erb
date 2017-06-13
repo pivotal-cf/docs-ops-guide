@@ -97,21 +97,6 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
   1. (Optional): Under **Applications Subnet**, enter a CIDR subnet mask specifying the range of available IP addresses to assign to your app containers. This must be different from the network used by the system VMs. Modify the default value only if you need to avoid address collision with a third-party service on the same subnet. If you do not set a custom range, PCF Isolation Segment uses <code>10.254.0.0/22</code>.
 
-1. Select a sharding mode in the **Router Sharding Mode** field. The options are explained below.
-	![Sharding options](router-sharding-options.png)
-	<table>
-	<th>Option Name</th>
-	<th>Description</th>
-	<tr>
-		<td>Isolation Segment Only</td>
-		<td>The tile's routers will acknowledge requests from applications deployed within the tile's Cells exclusively. All other requests will fail.</td>
-	</tr>
-	<tr>
-		<td>No Isolation Segment</td>
-		<td>When 'No Isolation Segments' is selected, the tile's routers will reject requests for any isolation segment. Choose 'No Isolation Segments' to add a group of routers for the Elastic Runtime tile, such as when a private point of entry for the system domain is desired.</td>
-	</tr>
-	</table>
-
 1. Click **Save**.
 
 1. (Optional): Edit the configurations in **Advanced Features** as desired.
