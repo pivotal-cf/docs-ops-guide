@@ -37,11 +37,11 @@ If your organization uses an Enterprise Identity Management System for centraliz
 1. Run the command below to create the user in UAA. Replace `EXAMPLE-USERNAME` with the username of the SAML or LDAP user you wish to add.
     - For LDAP, run the following command:
     <pre class='terminal'>
-    $ cf create-user j.smith@example.com --origin ldap
+    $ cf create-user j.smith<span>@</span>example.com --origin ldap
     </pre>
     - For SAML, run the following command, replacing `YOUR-PROVIDER-NAME` with the name of the SAML provider you provided when configuring Ops Manager:
     <pre class='terminal'>
-    $ cf create-user j.smith@example.com --origin YOUR-PROVIDER-NAME
+    $ cf create-user j.smith<span>@</span>example.com --origin YOUR-PROVIDER-NAME
     </pre>
 
 ## <a id='prov-user'></a>Step 3: Provide User Access to Orgs ##
