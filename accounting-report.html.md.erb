@@ -35,11 +35,137 @@ Before you can retrieve any app or service information, you must target the Clou
  	Space:           development
 	</pre>
 
-3. Run `curl` for the `/system_usage_report` on the Usage service.
+## <a id="targetcc"></a>Obtain System Usage Information
 
-	<pre class="terminal">
-	$ curl "https://app-usage.YOUR-DOMAIN/system_usage_report" -k -v -H "authorization:`cf oauth-token`"
-	</pre>
+You can obtain the following system-wide usage information:
+
+* [App Usage](#app-usage)
+* [Task Usage](#task-usage)
+* [Service Usage](#service-usage)
+
+### <a id='app-usage'></a> App Usage
+
+Use `curl` to make a request to `/system_report/app_usages` on the Usage Service endpoint to show system-wide app usage data:
+
+<pre class="terminal">
+$ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/system_report/app_usages" -k -v \
+-H "authorization: `cf oauth-token`"
+{
+"report_time": "2017-04-11 22:28:24 UTC",
+"monthly_reports": [
+    {
+      "month": 4,
+      "year": 2017,
+      "average_app_instances": 17855.256153713308,
+      "maximum_app_instances": 18145,
+      "app_instance_hours": 4686533.080277303
+    }
+  ]
+"yearly_reports": [
+    {
+      "year": 2017,
+      "average_app_instances": 16184.9,
+      "maximum_app_instances": 18145,
+      "app_instance_hours": 39207433.0802773
+    }
+  ]
+}
+</pre>
+
+### <a id='service-usage'></a> Service Usage
+
+Use `curl` to make a request to `/system_report/service_usages` on the Usage Service endpoint to show system-wide service usage data:
+
+<pre class="terminal">
+$ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/system_report/service_usages" -k -v \
+-H "authorization: `cf oauth-token`"
+{
+  "report_time": "2017-05-11 18:29:14 UTC",
+  "monthly_service_reports": [
+    {
+      "service_name": "fake-service-0507f1fd-2340-49a6-9d43-a347a5f5f6be",
+      "service_guid": "177dcfde-cd51-4058-bd86-b98015c295f5",
+      "usages": [
+        {
+          "month": 1,
+          "year": 2017,
+          "duration_in_hours": 0,
+          "average_instances": 0,
+          "maximum_instances": 0
+        },
+        {
+          "month": 2,
+          "year": 2017,
+          "duration_in_hours": 0,
+          "average_instances": 0,
+          "maximum_instances": 0
+        },
+        {
+          "month": 3,
+          "year": 2017,
+          "duration_in_hours": 4.182222222222227,
+          "average_instances": 0,
+          "maximum_instances": 2
+        },
+        {
+          "month": 4,
+          "year": 2017,
+          "duration_in_hours": 2176.962222222186,
+          "average_instances": 3,
+          "maximum_instances": 7
+        },
+        {
+          "month": 5,
+          "year": 2017,
+          "duration_in_hours": 385.61388888888854,
+          "average_instances": 1.5,
+          "maximum_instances": 3
+        }
+      ],
+      "plans": [
+        {
+          "usages": [
+            {
+              "month": 1,
+              "year": 2017,
+              "duration_in_hours": 0,
+              "average_instances": 0,
+              "maximum_instances": 0
+            },
+            {
+              "month": 2,
+              "year": 2017,
+              "duration_in_hours": 0,
+              "average_instances": 0,
+              "maximum_instances": 0
+            },
+            {
+              "month": 3,
+              "year": 2017,
+              "duration_in_hours": 4.182222222222227,
+              "average_instances": 0,
+              "maximum_instances": 2
+            },
+            {
+              "month": 4,
+              "year": 2017,
+              "duration_in_hours": 1465.6388888888941,
+              "average_instances": 2,
+              "maximum_instances": 5
+            },
+            {
+              "month": 5,
+              "year": 2017,
+              "duration_in_hours": 385.61388888888854,
+              "average_instances": 1.5,
+              "maximum_instances": 3
+            }
+          ],
+          "service_plan_name": "fake-plan",
+          "service_plan_guid": "ac09f607-f4e5-4807-af16-e95856061bd7"
+        }
+</pre>
+
 
 ## <a id="individual_org"></a> Obtain Usage Information about an Org ###
 
