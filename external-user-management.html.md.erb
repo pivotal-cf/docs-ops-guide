@@ -7,6 +7,11 @@ owner: Identity
 
 This topic describes the procedure for adding existing SAML or LDAP users to a [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) deployment enabled with SAML or LDAP.
 
+There are two ways exist to add existing SAML or LDAP users to your PCF deployment:
+
+* [Option 1: Import Users in Bulk](#bulk-import)
+* [Option 2: Add Users Manually](#manual)
+
 ## <a id='prereqs'></a>Prerequisites
 
 You must have the following in order to perform the procedures in this topic:
@@ -14,25 +19,21 @@ You must have the following in order to perform the procedures in this topic:
 * Admin access to the Ops Manager Installation Dashboard for your PCF deployment
 * The [Cloud Foundry Command Line Interface](../cf-cli/install-go-cli.html) (cf CLI) v6.23.0 or later
 
-## <a id='add-users'></a>Step 1: Add SAML or LDAP Users ##
+## <a id='bulk-import'></a>Option 1: Import Users in Bulk ##
 
-There are two ways exist to add existing SAML or LDAP users to your PCF deployment:
+You can import SAML or LDAP users in bulk by using the UAA Bulk Import Tool. See [the UAA Users Import README](https://github.com/pivotalservices/uaausersimport/blob/master/README.md) for instructions on installing and using the tool.
 
-- In bulk, using the UAA Bulk Import Tool. See [the UAA Users Import README](https://github.com/pivotalservices/uaausersimport/blob/master/README.md) for instructions on installing and using the tool.
+## <a id='manual'></a>Option 2: Add Users Manually ##
 
-- Individually, through the cf CLI, as described below:
-    1. Each existing SAML or LDAP user must log in to Apps Manager or to the cf CLI using their SAML (by entering `cf login --sso`) or LDAP credentials. Users will not have access to any org or space until these are granted by an Org or Space Manager.
-    1. The PCF Admin must log in to the cf CLI and associate the user with the desired org and space roles. See the [Org and App Space Roles](../adminguide/cli-user-management.html#orgs-spaces) topic.
+Perform the procedures below to add existing SAML or LDAP users to your PCF deployment manually.
 
-### <a id='enterprise'></a> <strong>(Advanced Option)</strong> Integrate with Enterprise Identity Management System ###
+### <a id='step-id'></a>Step 1: Create User ##
 
-If your organization uses an Enterprise Identity Management System for centralized provisioning and deprovisioning of users, you can use the [Users API](http://apidocs.cloudfoundry.org/<%= vars.api_version %>/users/creating_a_user.html) and [Organizations API](http://apidocs.cloudfoundry.org/<%= vars.api_version %>/organizations/associate_user_with_the_organization.html) to write a connector to manage users and permissions in <%= vars.product_full %>.
-
-## <a id='step-id'></a>Step 2: Create User ##
+Perform the following steps to add a SAML or LDAP user:
 
 1. Target the API endpoint for your PCF deployment:
     <pre class="terminal">$ cf target http<span>s</span>://api.YOUR-SYSTEM-DOMAIN</pre>
-1. Log in to the cf CLI: 
+1. Log in with the [Admin user role](../concepts/roles.html#roles): 
     <pre class="terminal">$ cf login</pre>
 1. Run the command below to create the user in UAA. Replace `EXAMPLE-USERNAME` with the username of the SAML or LDAP user you wish to add.
     - For LDAP, run the following command:
@@ -44,21 +45,33 @@ If your organization uses an Enterprise Identity Management System for centraliz
     $ cf create-user j.smith<span>@</span>example.com --origin YOUR-PROVIDER-NAME
     </pre>
 
-## <a id='prov-user'></a>Step 3: Provide User Access to Orgs ##
+### <a id='user-role'></a>Step 2: Associate User with Org or Space Role ##
 
-Use the [Organizations API](http://apidocs.cloudfoundry.org/<%= vars.api_version %>/organizations/associate_user_with_the_organization.html) to associate the user with the appropriate orgs in your <%= vars.product_full %> deployment.
+After creating the SAML or LDAP user, you must associate the user with either an Org or Space role.
 
-## <a id='user-role'></a>Step 4: Associate User with Space or Org Role ##
+For more information about roles, see the [Roles and Permissions](../concepts/roles.html#roles) section of the <em>Orgs, Spaces, Roles, and Permissions</em> topic.
 
-You can grant Space and Org roles to users using the following API calls:
+#### <a id='org-role'></a>Associate User with Org Role
 
-- [Associate an Auditor with a Space](http://apidocs.cloudfoundry.org/<%= vars.api_version %>/spaces/associate_auditor_with_the_space.html)
+Associate the SAML or LDAP user with an Org or a Space role with the following commands:
 
-- [Associate a Developer with a Space](http://apidocs.cloudfoundry.org/<%= vars.api_version %>/spaces/associate_developer_with_the_space.html)
+<pre class="terminal">
+$ cf set-org-role USERNAME YOUR-ORG ROLE
+</pre> 
+For `ROLE`, enter one of the following:
 
-- [Associate a Manager with a Space](http://apidocs.cloudfoundry.org/<%= vars.api_version %>/spaces/associate_manager_with_the_space.html)
+* `OrgManager`: Org Managers can invite and manage users, select and change plans, and set spending limits.
+* `BillingManager`: Billing Managers can create and manage the billing account and payment information.
+* `OrgAuditor`: Org Auditors have read-only access to Org information and reports.
 
-- [Associate an Auditor with a Organization](http://apidocs.cloudfoundry.org/<%= vars.api_version %>/organizations/associate_auditor_with_the_organization.html)
+#### <a id='space-role'></a>Associate User with Space Role
 
-- [Associate a Manager with a Organization](http://apidocs.cloudfoundry.org/<%= vars.api_version %>/organizations/associate_manager_with_the_organization.html)
+<pre class="terminal">
+$ cf set-space-role USERNAME YOUR-ORG YOUR-SPACE ROLE
+</pre> 
+For `ROLE`, enter one of the following:
+
+* `SpaceManager`: Space Managers can invite and manage users, and enable features for a given Space.
+* `SpaceDeveloper`: Space Developers can create and manage apps and services, and see logs and reports.
+* `SpaceAuditor`: Space Auditors can view logs, reports, and settings on this Space.
 
