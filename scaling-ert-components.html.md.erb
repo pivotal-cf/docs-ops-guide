@@ -7,9 +7,15 @@ owner: RelEng
 
 This topic discusses how to scale Elastic Runtime for different deployment scenarios. To increase the capacity and availability of the Pivotal Cloud Foundry (PCF) platform, and to decrease the chances of downtime, you can scale a deployment up using the instructions below.
 
-If you want to make a Diego or PCF configuration highly available, see the [Zero Downtime Deployment and Scaling in CF](./../concepts/high-availability.html) topic.
+If you want to make a PCF configuration highly available, see the [High Availability in CF](./../concepts/high-availability.html) topic.
 
-##<a id='steps'></a>Steps for Scaling Elastic Runtime##
+##<a id='scalingtable'></a> Scaling Recommendations
+
+<%= partial vars.scale_table %>
+
+##<a id='scaleup'></a>Scaling Up Elastic Runtime##
+
+To scale up Elastic Runtime instances, perform the following steps:
 
 1. Navigate to the Pivotal Cloud Foundry Operations Manager Installation Dashboard.
 
@@ -18,158 +24,176 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
 1. Select **Resource Config**.
 <%= image_tag("images/scaling-ert.png") %>
 
-1. You can scale your deployment horizontally, by increasing the number of **Instances** of a job. You can also scale your deployment vertically, by adjusting the **Persistent Disk Type** and **VM Type** of a job to allocate more disk space and memory. If you choose **Automatic** from the drop-down menu, Elastic Runtime uses the recommended amount of resources for the job.
-  <br><br>
-  If you scale down or delete a job that uses persistent disk, Elastic Runtime marks the disk as "orphaned." Orphaned disks are not attached to any job, and Elastic Runtime deletes them after five days. You can use the BOSH CLI to list and recover orphaned disks. Follow the instructions in the ["Prepare to Use the BOSH CLI"](../customizing/trouble-advanced.html#prepare) section of the "Advanced Troubleshooting with the BOSH CLI" topic to log in to the BOSH Director, and then follow the procedures in ["Orphaned Disks"](http://bosh.io/docs/persistent-disks.html#orphaned-disks) in the BOSH documentation.
-  <br><br>
-  If you are using one of the following configurations, choose the values in the corresponding table to scale instances for your particular deployment:
-    * [External Databases](#external-databases)
-    * [Internal MySQL] (#internal-mysql)
-    * [Internal Databases (for Upgrades)] (#internal-databases)
-    * [External Blobstore](#external-blobstore)
-    * [External Load Balancer](#external-lb)
-    * [JMX Bridge](#jmx-bridge)
+1. To scale your deployment horizontally, increase the number of **Instances** of a job.  See <a href="#scalingtable">Scaling Recommendations</a> for guidance on the number of job instances required to ensure high availability.
 
-    ###<a id='external-databases'></a>External Databases  ###
+1. To scale your deployment vertically, adjust the **Persistent Disk Type** and **VM Type** of a job to allocate more disk space and memory. If you choose **Automatic** from the drop-down menu, Elastic Runtime uses the recommended amount of resources for the job.
 
-    If you are using an [external database](./../customizing/cloudform-er-config.html#sys-db), choose the following values in the Resource Config:
+1. Click **Save**.
 
-    <table border="1" class="nice" >
+1. Return to the **Installation Dashboard** and click **Apply Changes**.
+  
+##<a id='scaledown'></a>Scaling Down Elastic Runtime##
+ 
+If you are deploying a PCF configuration that does not need to be highly available, Pivotal recommends scaling down job instances to the minimum number required for a functional deployment.
+
+To scale down your deployment, perform the following steps: 
+
+1. Navigate to the Pivotal Cloud Foundry Operations Manager Installation Dashboard.
+
+1. Click the Elastic Runtime tile in the Installation Dashboard.
+
+1. Select **Resource Config**.
+<%= image_tag("images/scaling-ert.png") %>
+
+1. In  the **Resource Config** screen, decrease the number of **Instances** for each job. Choose the suggested values outlined in <a href="#scalingtable">Scaling Recommendations</a>, or in the <a href="#deployscenarios">Scaling Recommendations for Specific Deployment Configurations</a> and click **Save**.
+
+1. Return to the **Installation Dashboard** and click **Apply Changes**.
+
+### <a id="diskscale"></a>Scaling Down Jobs with Persistent Disk
+
+If you scale down or delete a job that uses persistent disk, Elastic Runtime marks the disk as "orphaned." Orphaned disks are not attached to any job, and Elastic Runtime deletes them after five days. 
+
+Use the BOSH CLI to list and recover orphaned disks. Follow the instructions in the ["Prepare to Use the BOSH CLI"](../customizing/trouble-advanced.html#prepare) section of the "Advanced Troubleshooting with the BOSH CLI" topic to log in to the BOSH Director, and then follow the procedures in ["Orphaned Disks"](http://bosh.io/docs/persistent-disks.html#orphaned-disks) in the BOSH documentation.
+
+## <a id="deployscenarios"></a> Scaling Recommendations for Specific Deployment Configurations
+ 
+If you are using one of the following configurations, choose the values in the corresponding table to scale instances for your particular deployment:
+
+* [Deployments Using External Databases](#external-databases)
+* [Deployments Using Internal MySQL] (#internal-mysql)
+* [Deployments Using Internal Postgres and MySQL Databases] (#internal-databases)
+* [Deployments Using an External Blobstore](#external-blobstore)
+* [Deployments Using External Load Balancers](#external-lb)
+
+###<a id='external-databases'></a>Deployments Using External Databases  ###
+
+If you are using an [external database](./../customizing/cloudform-er-config.html#sys-db), you can scale down the instance counts for internal MySQl jobs.
+
+Select the following values in the Resource Config:
+
+<table border="1" class="nice" >
       <tr>
         <th width=8%><strong>Job</strong></th>
         <th width=8%><strong>Instance Count</strong></th>
-        <th width=22%><strong>Notes</strong></th>
       </tr>
       <tr>
         <td>MySQL Server</td>
         <td>0</td>
-        <td></td>
       </tr>
       <tr>
         <td>MySQL Proxy</td>
         <td>0</td>
-        <td></td>
       </tr>
       <tr>
         <td>Cloud Controller Database (Postgres)</td>
         <td>0</td>
-        <td></td>
       </tr>
       <tr>
         <td>UAA Database (Postgres)</td>
         <td>0</td>
-        <td></td>
       </tr>
-    </table>
+</table>
 
-    ###<a id='internal-mysql'></a>Internal MySQL  ###
+###<a id='internal-mysql'></a>Deployments Using Internal MySQL  ###
 
-    If you are using the internal MySQL database on a clean install, or on an upgrade from a configuration that previously used internal MySQL databases, you do not need to change the default values shown below. If you need to change back to this configuration, choose the values shown below in the Resource Config. <p class="note"><strong>Note</strong>: Changing back to this configuration deletes any data written to your other database option.</p>
+If you are using the internal MySQL database on a clean install, or on an upgrade from a configuration that previously used internal MySQL databases, you do not need to change the default values shown in the table below. 
+    
+If you need to change back to this configuration, choose the values shown below in the Resource Config. <p class="note"><strong>Note</strong>: Changing back to this configuration deletes any data written to your other database option.</p>
 
-    <table border="1" class="nice" >
+<table border="1" class="nice" >
       <tr>
         <th width=8%><strong>Job</strong></th>
         <th width=8%><strong>Instance Count</strong></th>
-        <th width=22%><strong>Notes</strong></th>
-      </tr>
-      <tr>
-        <td>MySQL Server</td>
-        <td>3</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>MySQL Proxy</td>
-        <td>1</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Cloud Controller Database (Postgres)</td>
-        <td>0</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>UAA Database (Postgres)</td>
-        <td>0</td>
-        <td></td>
-      </tr>
-    </table>
-
-    ###<a id='internal-databases'></a>Internal Databases (for Upgrades)  ###
-
-    If you are upgrading from a previous installation that used both Postgres and MySQL databases, you must maintain this configuration to avoid data loss.
-
-    <table border="1" class="nice" >
-      <tr>
-        <th width=8%><strong>Job</strong></th>
-        <th width=8%><strong>Instance Count</strong></th>
-        <th width=22%><strong>Notes</strong></th>
       </tr>
       <tr>
         <td>MySQL Server</td>
         <td>3</td>
-        <td></td>
       </tr>
       <tr>
         <td>MySQL Proxy</td>
         <td>1</td>
-        <td></td>
+      </tr>
+      <tr>
+        <td>Cloud Controller Database (Postgres)</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>UAA Database (Postgres)</td>
+        <td>0</td>
+      </tr>
+</table>
+
+###<a id='internal-databases'></a>Deployments Using Internal Postgres and MySQL Databases  ###
+
+If you are upgrading from a previous installation that used both Postgres and MySQL databases, you must maintain this configuration to avoid data loss.
+
+<table border="1" class="nice" >
+      <tr>
+        <th width=8%><strong>Job</strong></th>
+        <th width=8%><strong>Instance Count</strong></th>
+      </tr>
+      <tr>
+        <td>MySQL Server</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td>MySQL Proxy</td>
+        <td>1</td>
       </tr>
       <tr>
         <td>Cloud Controller Database (Postgres)</td>
         <td>1</td>
-        <td></td>
       </tr>
       <tr>
         <td>UAA Database (Postgres)</td>
         <td>1</td>
-        <td></td>
       </tr>
-    </table>
+</table>
 
-    ###<a id='external-blobstore'></a>External Blobstore   ###
+###<a id='external-blobstore'></a>Deployments Using an External Blobstore ###
 
-    If you are using an external [Blobstore](./../customizing/cloudform-er-config.html#filestore), choose the following value in the Resource Config:
+If you are using an external [Blobstore](./../customizing/cloudform-er-config.html#filestore), choose the following value in the Resource Config:
 
-    <table border="1" class="nice" >
+<table border="1" class="nice" >
       <tr>
         <th width=8%><strong>Job</strong></th>
         <th width=8%><strong>Instance Count</strong></th>
-        <th width=22%><strong>Notes</strong></th>
       </tr>
       <tr>
         <td>File Storage</td>
         <td>0</td>
-        <td></td>
       </tr>
-    </table>
+</table>
 
-    ###<a id='external-lb'></a>External Load Balancer    ###
+###<a id='external-lb'></a>Deployments Using External Load Balancers ###
 
-    If you are using an external load balancer, choose the following values in the Resource Config:
+If you are using an external load balancer, choose the following values in the Resource Config:
 
-    <table border="1" class="nice" >
+<table border="1" class="nice" >
       <tr>
         <th width=8%><strong>Job</strong></th>
         <th width=8%><strong>Instance Count</strong></th>
-        <th width=22%><strong>Notes</strong></th>
       </tr>
       <tr>
         <td>HAProxy</td>
         <td>0</td>
-        <td></td>
       </tr>
       <tr>
         <td>Router</td>
         <td>&ge; 1</td>
-        <td>For Amazon Web Services, set the Elastic Load Balancer name in the Router's "External Load Balancer" field.</td>
       </tr>
       <tr>
         <td>Diego Brain</td>
         <td>&ge; 1</td>
-        <td>For AWS, if you have the Diego SSH feature enabled, set the SSH ELB name in the Router's "External Load Balancer" field.</td>
       </tr>
-    </table>
+</table>
 
-1. Choose the suggested values outlined in each scenario above, and click **Save**.
+For more information on how to configure load balancers in the Resource Config section of Elastic Runtime, see the "Deploying Elastic Runtime" topic for your IaaS. For example:
 
-1. Return to the **Installation Dashboard** and click **Apply Changes**.
+* [Deploying Elastic Runtime on AWS](../customizing/pcf-aws-manual-er-config.html)
+* [Deploying Elastic Runtime on Azure](../customizing/azure-er-config.html)
+* [Deploying Elastic Runtime on GCP](../customizing/gcp-er-config.html)
+* [Installing Elastic Runtime after Deploying Pivotal Cloud Foundry on OpenStack](../customizing/customizing/openstack-er-config.html)
+* [Configuring Elastic Runtime for vSphere](../customizing/config-er-vmware.html)
+
+
