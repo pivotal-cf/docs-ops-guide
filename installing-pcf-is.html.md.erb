@@ -121,6 +121,8 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 1. If you are using a dedicated router for your isolation segment, click **Resource Config** and enter the wildcard DNS entry attached to your load balancer into the **Router** row under **Load Balancers**.
 	<%= image_tag('isolation-segment/resource-config.png') %>
 
+	<p class="note"><strong>Note</strong>: Configuration settings available in the <strong>Resource Config</strong> section vary depending on your IaaS. For example, vSphere users do not have the <strong>Load Balancers</strong> column mentioned above in their <strong>Resource Config</strong>.</p>
+
 1. (Optional): Edit the **Stemcell** configuration as desired.
 
 1. Perform the steps in the [Create an Isolation Segment](../adminguide/isolation-segments.html#create-an-is) section of the <em>Managing Isolation Segments</em> topic to create the isolation segment in the Cloud Controller Database (CCDB).
