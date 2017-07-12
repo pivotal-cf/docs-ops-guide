@@ -66,7 +66,7 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. (Optional): Under **Router IPs**, enter one or more static IP addresses for the routers that handle this isolation segment. These IP addresses must be within the subnet CIDR block that you defined in the Ops Manager network configuration. If you have a load balancer, configure it to point to these IP addresses.
 
-    <p class="note"><strong>Note</strong>: This step is necessary if you are deploying your isolation segment on private cloud infrastructure, such as vSphere. Entering the static IPs is not necessary for deployments running on a public IaaS. However, public IaaS users should attach the IaaS load balancer in the <strong>Resource Config</strong> section of the <strong>PCF Isolation Segment</strong> tile.</p>
+    <p class="note"><strong>Note</strong>: This step is necessary if you are deploying your isolation segment on private cloud infrastructure, such as vSphere. Entering the static IPs is not necessary for deployments running on a public IaaS because users specify the IaaS load balancer in the <strong>Resource Config</strong> section of the <strong>PCF Isolation Segment</strong> tile.</p>
 
 1. (Optional): Under **Applications Subnet**, enter a CIDR subnet mask specifying the range of available IP addresses to assign to your app containers. This must be different from the network used by the system VMs. Only modify the default value if you need to avoid address collision with a third-party service on the same subnet.
 
