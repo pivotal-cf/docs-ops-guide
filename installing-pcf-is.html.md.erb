@@ -73,6 +73,8 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. (Optional): Under **Router IPs**, enter one or more static IP addresses for the routers that handle this isolation segment. These IP addresses must be within the subnet CIDR block that you defined in the Ops Manager network configuration. If you have a load balancer, configure it to point to these IP addresses.
 
+    <p class="note"><strong>Note</strong>: Entering the static IPs is not necessary for deployments running on a public IaaS because PCF users specify the IaaS load balancer in the <strong>Resource Config</strong> section of the <strong>PCF Isolation Segment</strong> tile.</p>
+
 1. (Optional): Under **Applications Network Maximum Transmission Unit**, change the Maximum Transmission Unit (MTU). The default is `1454` bytes. 
 
 1. Under **TLS Termination Certificates**, select one of the following options:
@@ -118,10 +120,15 @@ Perform the following steps to configure the PCF Isolation Segment tile:
  1. Paste the certificate for your TLS certificate authority (CA) in the **TLS CA Certificate** field. 
  1. Click **Save.**
 
-1. If you are using a dedicated router for your isolation segment, click **Resource Config** and enter the wildcard DNS entry attached to your load balancer into the **Router** row under **Load Balancers**.
+1. (Optional): If you are using a dedicated router for your isolation segment, click **Resource Config** and enter the wildcard DNS entry attached to your load balancer into the **Router** row under **Load Balancers**.
 	<%= image_tag('isolation-segment/resource-config.png') %>
 
-	<p class="note"><strong>Note</strong>: Configuration settings available in the <strong>Resource Config</strong> section vary depending on your IaaS. For example, vSphere users do not have the <strong>Load Balancers</strong> column mentioned above in their <strong>Resource Config</strong>.</p>
+    <p class="note"><strong>Note</strong>: Configuration settings available in <strong>Resource Config</strong> vary depending on your IaaS.</p>
+
+	If you do not have the **Load Balancers** column in your **Resource Config**, perform the following steps:
+	1. Navigate to the **Networking** section of the **PCF Isolation Segment** tile.
+	1. Specify **Router IPs**.
+	1. Attach the IPs to your load balancer manually.
 
 1. (Optional): Edit the **Stemcell** configuration as desired.
 
