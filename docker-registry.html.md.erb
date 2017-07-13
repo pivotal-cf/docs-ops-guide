@@ -5,17 +5,16 @@ owner: Ops Manager
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to configure your Docker registries, such as Docker 
-Hub, with Pivotal Cloud Foundry (PCF). 
-To use Docker registries, you must choose to either submit your root 
-certificate authority (CA) certificate or provide the IP address for your 
-Docker registry. 
-PCF does not support using Docker registries that require user credentials.
+This topic describes how to configure Pivotal Cloud Foundry (PCF) to access Docker registries such as [Docker Hub](http://hub.docker.com) using either a root 
+certificate authority (CA) certificate or an IP address. PCF uses Docker registries to retrieve Docker images for creating Docker containers to run apps in.
 
-Developers can push an application with a Docker image using the Cloud Foundry 
-Command Line Interface (cf CLI). For more information, see the [Using Docker in Cloud Foundry](../adminguide/docker.html) topic. For information about pushing Docker images from registries that require authentication, see the [Push a Docker Image with Authentication](#docker-auth) section below.
+PCF supports Docker registries that require user credentials.
 
-**Prerequisite**: Ensure that you have enabled Docker support in PCF with the `cf enable-feature-flag diego_docker` command, as described in the [Using Docker in Cloud Foundry](../adminguide/docker.html) topic.
+## <a id='prerequisite'></a> Prerequisite: Enable Docker Support
+
+PCF can only access Docker registries if an operator has enabled Docker support enabled with the `cf enable-feature-flag diego_docker` command, as described in the [Using Docker in Cloud Foundry](../adminguide/docker.html#enable) topic.
+
+With Docker enabled, developers can push an app with a Docker image using the Cloud Foundry Command Line Interface (cf CLI). For more information, see the [Deploy an App with Docker](../devguide/deploy-apps/push-docker.html) topic.
 
 ## <a id='ops-man'></a> Use a CA Certificate
 
@@ -43,7 +42,7 @@ After configuration, BOSH propagates your CA certificate to all application cont
 If you choose not to provide a CA certificate, you must provide the IP address of your Docker registry.
 
 <p class="note"><strong>Note</strong>: Using a whitelist skips SSL validation. 
-If you want to enforce SSL validation, enter the IP address of the Docker registry in the <strong>No proxy</strong> field described <a href='#proxy'>below</a>.
+If you want to enforce SSL validation, enter the IP address of the Docker registry in the <strong>No proxy</strong> field described <a href='#proxy'>below</a>.</p>
 
 1. Navigate to the PCF Operations Manager **Installation Dashboard**.
 
@@ -84,30 +83,4 @@ After configuration, Elastic Runtime allows Docker images to pass through the sp
 
 3. Click **Update**.
 
-## <a id='docker-auth'></a> Push a Docker Image with Authentication
-
-In PCF 1.11, developers can push Docker images from registries that require authentication with `cf curl`.
-
-Perform the following steps to push a Docker image from a registry that requires authentication:
-
-1. Target the endpoint of your Cloud Controller.
-  <pre class='terminal'>$ cf api api.YOUR-DOMAIN</a>
-1. Log in with your credentials.
-  <pre class="terminal">$ cf login -u YOUR-USERNAME</pre>
-1. Push your Docker image with `curl`:
-  <pre class='terminal'>
-  $ cf curl /v2/apps -d '{ \
-    "name": "APP-NAME", \
-    "space\_guid": "YOUR-SPACE-GUID", \
-    "docker\_image": "YOUR-DOCKER-IMAGE", \
-    "docker\_credentials": { \
-      "username": "YOUR-REGISTRY-USERNAME", \
-      "password": "YOUR-REGISTRY-PASSWORD" \
-      } \
-    }
-  </pre>
-  Replace the placeholders as follows:
-  * `APP-NAME`: This is the name of your application in PCF.
-  * `YOUR-SPACE-GUID`: This is the GUID of the space where you want to push your application. To retrieve the GUID of a space, run `cf space YOUR-SPACE --guid`.
-  * `YOUR-DOCKER-IMAGE`: This is the location of your Docker image, in the format `MY-PRIVATE-REGISTRY.DOMAIN:PORT/REPO/IMAGE:TAG`.
-  * `YOUR-REGISTRY-USERNAME` and `YOUR-REGISTRY-PASSWORD`: These are the credentials to authenticate with your Docker registry.
+<%= partial 'push_docker_auth' %>
