@@ -5,10 +5,9 @@ owner: Ops Manager
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to configure Pivotal Cloud Foundry (PCF) to access Docker registries such as [Docker Hub](http://hub.docker.com) using either a root 
-certificate authority (CA) certificate or an IP address. PCF uses Docker registries to retrieve Docker images for creating Docker containers to run apps in.
+This topic describes how to configure Pivotal Cloud Foundry (PCF) to access Docker registries such as [Docker Hub](http://hub.docker.com), by either using either a root certificate authority (CA) certificate or by adding its IP address to a whitelist. It also explains how to configure PCF to access Docker registries through a proxy.
 
-PCF supports Docker registries that require user credentials.
+PCF uses Docker registries to retrieve Docker images for creating Docker containers to run apps in.
 
 ## <a id='prerequisite'></a> Prerequisite: Enable Docker Support
 
@@ -71,13 +70,17 @@ After configuration, Elastic Runtime allows Docker images to pass through the sp
 
 ## <a id='proxy'></a>Set Proxies for Docker Registries
 
+To configure PCF to access a Docker registry through a proxy:
+
 1. On the Installation Dashboard, navigate to USERNAME > **Settings** > **Proxy Settings**.
   <%= image_tag("install-dash-settings.png") %>
 
 2. On the **Update Proxy Settings** pane, complete one of the following fields:
-    + **Http proxy**: If you have an HTTP proxy server for your Docker registry, enter its IP address.  
-    + **Https proxy**: If you have an HTTPS proxy server for your Docker registry, enter its IP address.  
-    + **No proxy**: If you do not use a proxy server, enter the IP address for the Docker registry. This field may already contain proxy settings for the BOSH Director. Enter multiple IP addresses as a comma-separated list.
+    + **HTTP proxy**: If you have an HTTP proxy server for your Docker registry, enter its IP address.  
+    + **HTTPS proxy**: If you have an HTTPS proxy server for your Docker registry, enter its IP address.  
+    + **No proxy**: If you do not use a proxy server, enter the IP address for the Docker registry. This field may already contain proxy settings for the BOSH Director.
+
+    Enter multiple IP addresses as a comma-separated list.
 
      <%= image_tag("update-proxy-settings.png") %>
 
