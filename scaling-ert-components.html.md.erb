@@ -63,7 +63,7 @@ If you are using one of the following configurations, choose the values in the c
 
 * [Deployments Using External Databases](#external-databases)
 * [Deployments Using Internal MySQL] (#internal-mysql)
-* [Deployments Using Internal Postgres and MySQL Databases] (#internal-databases)
+* [Deployments Using Internal MySQL Databases] (#internal-databases)
 * [Deployments Using an External Blobstore](#external-blobstore)
 * [Deployments Using External Load Balancers](#external-lb)
 
@@ -86,14 +86,6 @@ Select the following values in the Resource Config:
         <td>MySQL Proxy</td>
         <td>0</td>
       </tr>
-      <tr>
-        <td>Cloud Controller Database (Postgres)</td>
-        <td>0</td>
-      </tr>
-      <tr>
-        <td>UAA Database (Postgres)</td>
-        <td>0</td>
-      </tr>
 </table>
 
 ###<a id='internal-mysql'></a>Deployments Using Internal MySQL  ###
@@ -113,41 +105,6 @@ If you need to change back to this configuration, choose the values shown below 
       </tr>
       <tr>
         <td>MySQL Proxy</td>
-        <td>1</td>
-      </tr>
-      <tr>
-        <td>Cloud Controller Database (Postgres)</td>
-        <td>0</td>
-      </tr>
-      <tr>
-        <td>UAA Database (Postgres)</td>
-        <td>0</td>
-      </tr>
-</table>
-
-###<a id='internal-databases'></a>Deployments Using Internal Postgres and MySQL Databases  ###
-
-If you are upgrading from a previous installation that used both Postgres and MySQL databases, you must maintain this configuration to avoid data loss.
-
-<table border="1" class="nice" >
-      <tr>
-        <th width=8%><strong>Job</strong></th>
-        <th width=8%><strong>Instance Count</strong></th>
-      </tr>
-      <tr>
-        <td>MySQL Server</td>
-        <td>3</td>
-      </tr>
-      <tr>
-        <td>MySQL Proxy</td>
-        <td>1</td>
-      </tr>
-      <tr>
-        <td>Cloud Controller Database (Postgres)</td>
-        <td>1</td>
-      </tr>
-      <tr>
-        <td>UAA Database (Postgres)</td>
         <td>1</td>
       </tr>
 </table>
