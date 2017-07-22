@@ -15,6 +15,43 @@ PCF can only access Docker registries if an operator has enabled Docker support 
 
 With Docker enabled, developers can push an app with a Docker image using the Cloud Foundry Command Line Interface (cf CLI). For more information, see the [Deploy an App with Docker](../devguide/deploy-apps/push-docker.html) topic.
 
+## <a id='registry-support'></a> Docker Registry Support
+
+PCF can use private Docker repositories from various different Docker registries:
+
+<table border="1" class="nice" >
+  <tr>
+    <th>Registry</th>
+    <th>Version</th>
+  </tr>
+  <tr>
+    <td>DockerHub and Docker Trusted Registry</td>
+    <td>1.11.0</td>
+  </tr>
+  <tr>
+    <td>Sonatype Nexus</td>
+    <td>1.11.0</td>
+  </tr>
+  <tr>
+    <td>VMWare Harbour</td>
+    <td>1.11.0</td>
+  </tr>
+  <tr>
+    <td>JFrog Artifactor</td>
+    <td>1.11.3</td>
+  </tr>
+  <tr>
+    <td>Google Container Registry (GCR)</td>
+    <td>1.11.3 (*)</td>
+  </tr>
+  <tr>
+    <td>EC2 Container Registry (ECR)</td>
+    <td>Not Supported</td>
+  </tr>
+</table>
+
+\* GCR can be used to host private Docker images for PCF. However, the passwords GCR issues are essentially access tokens which expire within an hour. This means that the initial application push will be successful but the application may later crash as PCF will not be able to contact GCR.
+
 ## <a id='ops-man'></a> Use a CA Certificate
 
 If you provide your root CA certificate in the Ops Manager configuration, follow this procedure:
