@@ -2,7 +2,9 @@
 Elastic Runtime defines one default ASG, `default\_security\_group`. 
 This group allows all outbound traffic from application containers on public and private networks except for the link-local range, `169.254.0.0/16`, which is blocked.
 
-<p class="note warning"><strong>WARNING</strong>: For security, Elastic Runtime administrators must modify the default ASGs so that outbound network traffic cannot access internal components.</p>
+<p class="note warning"><strong>WARNING</strong>: For security, Elastic Runtime administrators must <a href="../opsguide/app-sec-groups.html">modify the default ASGs</a> so that outbound network traffic cannot access internal components.
+</p>
+
 
 The ASG is defined in the Cloud Controller configuration as follows:
 
