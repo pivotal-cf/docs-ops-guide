@@ -152,7 +152,7 @@ To integrate the UAA with one or more LDAP servers, configure Elastic Runtime wi
     * `ldaps://`: This specifies that the LDAP server uses SSL for an encrypted connection and requires that the LDAP server holds a trusted certificate or that you import a trusted certificate to the JVM truststore.
 
 1. For **LDAP Credentials**, enter the LDAP Distinguished Name (DN) and password for binding to the LDAP Server. Example DN: `cn=administrator,ou=Users,dc=example,dc=com`
-    <p class="note"><strong>Note</strong>: Pivotal recommends that you provide LDAP credentials that grant read-only permissions on the LDAP Search Base and the LDAP Group Search Base.</p>
+    <p class="note"><strong>Note</strong>: Pivotal recommends that you provide LDAP credentials that grant read-only permissions on the LDAP Search Base and the LDAP Group Search Base. In addition to this, if the bind user belongs to a different search base, you must use the full DN.</p>
 
 1. For **User Search Base**, enter the location in the LDAP directory tree from which any LDAP User search begins. The typical LDAP Search Base matches your domain name.
 <br><br>
