@@ -5,13 +5,13 @@ owner: Ops Manager
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to configure Pivotal Cloud Foundry (PCF) to access Docker registries such as [Docker Hub](http://hub.docker.com), by either using either a root certificate authority (CA) certificate or by adding its IP address to a whitelist. It also explains how to configure PCF to access Docker registries through a proxy.
+This topic describes how to configure Pivotal Cloud Foundry (PCF) to access Docker registries such as [Docker Hub](http://hub.docker.com), by using either a root certificate authority (CA) certificate or by adding its IP address to a whitelist. It also explains how to configure PCF to access Docker registries through a proxy.
 
-PCF uses Docker registries to retrieve Docker images for creating Docker containers to run apps in.
+Docker registries store Docker container images. PCF uses these images to create the Docker containers that it runs apps in.
 
 ## <a id='prerequisite'></a> Prerequisite: Enable Docker Support
 
-PCF can only access Docker registries if an operator has enabled Docker support enabled with the `cf enable-feature-flag diego_docker` command, as described in the [Using Docker in Cloud Foundry](../adminguide/docker.html#enable) topic.
+PCF can only access Docker registries if an operator has enabled Docker support with the `cf enable-feature-flag diego_docker` command, as described in the [Using Docker in Cloud Foundry](../adminguide/docker.html#enable) topic.
 
 With Docker enabled, developers can push an app with a Docker image using the Cloud Foundry Command Line Interface (cf CLI). For more information, see the [Deploy an App with Docker](../devguide/deploy-apps/push-docker.html) topic.
 
@@ -19,7 +19,7 @@ With Docker enabled, developers can push an app with a Docker image using the Cl
 
 If you provide your root CA certificate in the Ops Manager configuration, follow this procedure:
 
-1. In the **PCF Ops Manager Installation Dashboard**, click the **Ops Manager Director** tile.
+1. In the Ops Manager Installation Dashboard, click the **Ops Manager Director** tile.
 
 1. Click **Security**.
 
@@ -31,8 +31,8 @@ The Docker registry does not use the CA certificate itself but uses a certificat
 1. Click **Save**.
 
 1. Choose one of the following:
-  - If you are configuring Ops Manager Installation for the first time, return to your specific IAAS configuration to continue the installation process.
-  - If you are modifying an existing Ops Manager installation, return to the **PCF Ops Manager Installation Dashboard** and click **Apply Changes**.
+  - If you are configuring Ops Manager for the first time, return to your specific IaaS installation instructions ([AWS](../customizing/aws.html), [Azure](../customizing/azure.html), [GCP](../customizing/gcp.html), [OpenStack](../customizing/openstack.html), [vSphere](../customizing/vsphere.html)) to continue the installation process.
+  - If you are modifying an existing Ops Manager installation, return to the Ops Manager Installation Dashboard and click **Apply Changes**.
 
 After configuration, BOSH propagates your CA certificate to all application containers in your deployment. You can then push and pull images from your Docker registries.
 
@@ -43,7 +43,7 @@ If you choose not to provide a CA certificate, you must provide the IP address o
 <p class="note"><strong>Note</strong>: Using a whitelist skips SSL validation. 
 If you want to enforce SSL validation, enter the IP address of the Docker registry in the <strong>No proxy</strong> field described <a href='#proxy'>below</a>.</p>
 
-1. Navigate to the PCF Operations Manager **Installation Dashboard**.
+1. Navigate to the Ops Manager Installation Dashboard.
 
 1. Click the **Pivotal Elastic Runtime** tile, and navigate to the **Application Containers** tab.
   <%= image_tag("images/docker-registry-ert.png") %>
@@ -63,14 +63,14 @@ If you want to enforce SSL validation, enter the IP address of the Docker regist
 1. Click **Save**.
 
 1. Choose one of the following:
-	- If you are configuring Elastic Runtime for the first time, return to your specific IaaS configuration to continue the installation process.
-	- If you are modifying an existing Elastic Runtime installation, return to the PCF Ops Manager Installation Dashboard and click **Apply Changes**.
+	- If you are configuring Elastic Runtime for the first time, return to your specific IaaS installation instructions ([AWS](../customizing/aws.html), [Azure](../customizing/azure.html), [GCP](../customizing/gcp.html), [OpenStack](../customizing/openstack.html), [vSphere](../customizing/vsphere.html)) to continue the installation process.
+	- If you are modifying an existing Elastic Runtime installation, return to the Ops Manager Installation Dashboard and click **Apply Changes**.
 
 After configuration, Elastic Runtime allows Docker images to pass through the specified IP address without checking certificates.
 
 ## <a id='proxy'></a>Set Proxies for Docker Registries
 
-To configure PCF to access a Docker registry through a proxy:
+To configure PCF to access a Docker registry through a proxy, do the following:
 
 1. On the Installation Dashboard, navigate to USERNAME > **Settings** > **Proxy Settings**.
   <%= image_tag("install-dash-settings.png") %>
