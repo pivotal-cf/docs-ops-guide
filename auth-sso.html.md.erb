@@ -83,7 +83,7 @@ LDAP Users to a PCF Deployment</a> topic for information about on-boarding SAML 
 1. For **External Groups Attribute**, enter the attribute name in your SAML 
 database that defines the groups that a user belongs to, for example 
 `group_memberships`. To map the groups from the SAML assertion to admin roles 
-in PCF, follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../adminguide/uaa-user-management.html#external-group) 
+in PCF, follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) 
 section of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic. 
 
 1. By default, all SAML Authentication Request from PCF are signed. To change this, disable the **Sign Authentication Requests** checkbox and configure your Identity Provider to verify SAML authentication requests.
@@ -172,7 +172,7 @@ from which the LDAP Group search begins.
 <br><br>
 For example, a domain named "cloud.example.com" typically uses the following LDAP Group Search Base: `ou=Groups,dc=example,dc=com`
 <br><br>
-Follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../adminguide/uaa-user-management.html#external-group) section 
+Follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) section 
 of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic to map the 
 groups under this search base to admin roles in PCF.
 <p class="note"><strong>Note</strong>: Refer to the <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a PCF Deployment</a> topic to on-board individual LDAP users and map 
