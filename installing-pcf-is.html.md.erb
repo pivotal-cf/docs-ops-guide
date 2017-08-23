@@ -83,6 +83,8 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 	* **Forward unencrypted traffic to Elastic Runtime Router**: Select this option if your deployment uses an external load balancer that cannot forward encrypted traffic to the Elastic Runtime Router, or for a development environment that does not require load balancing.
 	<%= image_tag('isolation-segment/networking2.png') %>
 
+1. <%= partial '../customizing/xforwarded_client_cert_xfcc' %>
+
 1. To enable container-to-container networking, perform the following steps:
 
   1. Select the **Enable** button.
