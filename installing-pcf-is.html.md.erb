@@ -37,10 +37,13 @@ Perform the following steps to install the PCF Isolation Segment tile:
 
 ##<a id='config'></a> Step 3: Configure the Tile
 
-Perform the following steps to configure the PCF Isolation Segment tile: 
+Click the orange **PCF Isolation Segment** tile to start the configuration process.<br>
 
-1. Click the orange **PCF Isolation Segment** tile to start the configuration process.<br>
-	<%= image_tag('isolation-segment/pcf-isolation-segment.png') %> 
+<%= image_tag('isolation-segment/pcf-isolation-segment.png') %> 
+
+### <a id='az_networks'></a> Assign AZs and Networks
+
+Perform the following steps to configure the PCF Isolation Segment tile: 
 
 1. Click **Assign AZs and Networks**.
 
@@ -51,6 +54,10 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 1. Select a network. This network does not need to be the same network where you deployed Elastic Runtime. For most deployments, operators should create  unique networks in which to deploy the Isolation Segment tile. These networks should maintain network reachability with the Diego components so that the cells can reach the Diego Brain and Diego Database VMs.
 
 1. Click **Save**.
+
+### <a id='application_containers'></a> Application Containers
+
+Perform the following steps to configure the PCF Isolation Segment tile: 
 
 1. Click **Application Containers**.
 
@@ -67,6 +74,10 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. Click **Save**.
 
+### <a id='networking'></a> Networking
+
+Perform the following steps to configure the PCF Isolation Segment tile: 
+
 1. Click **Networking**.
 
 	<%= image_tag('router-ip-mtu.png') %>
@@ -77,11 +88,7 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
     <p class="note"><strong>Note</strong>: Entering the static IPs is not necessary for deployments running on a public IaaS because PCF users specify the IaaS load balancer in the <strong>Resource Config</strong> section of the <strong>PCF Isolation Segment</strong> tile.</p>
 
-1. Under **TLS Termination Certificates**, select one of the following options:
-	* **Forward SSL to Isolation Segment Router with provided certificates**: Select this option if your deployment uses an external load balancer that can forward encrypted traffic to the Elastic Runtime Router for the isolation segment, or if you are running a development environment that does not require load balancing. Complete the fields for the **Router SSL Termination Certificate and Private Key** and **Router SSL Ciphers**. 
-	* **Forward SSL to Isolation Segment Router with ERT Router certificates**: Select this option to inherit the certificates provided to the Elastic Runtime Router when you configured the Elastic Runtime tile. This option assumes an external load balancer is configured to forward encrypted traffic. 
-	* **Forward unencrypted traffic to Elastic Runtime Router**: Select this option if your deployment uses an external load balancer that cannot forward encrypted traffic to the Elastic Runtime Router, or for a development environment that does not require load balancing.
-	<%= image_tag('isolation-segment/networking2.png') %>
+1. <%= partial '../customizing/haproxy_router_cert_config' %>
 
 1. <%= partial '../customizing/min_tls_version' %>
 
@@ -120,6 +127,10 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. Click **Save**.
 
+### <a id='advanced_features'></a> Advanced Features
+
+Perform the following steps to configure the PCF Isolation Segment tile: 
+
 1. (Optional): Edit the configurations in **Advanced Features** as desired.
 
 1. In the **System Logging** menu, select an option from the  **Do you want to configure syslog for system components?** menu. **No** is selected by default. 
@@ -139,19 +150,29 @@ Perform the following steps to configure the PCF Isolation Segment tile:
  1. Paste the certificate for your TLS certificate authority (CA) in the **TLS CA Certificate** field. 
  1. Click **Save.**
 
-1. (Optional): If you are using a dedicated router for your isolation segment, click **Resource Config** and enter the wildcard DNS entry attached to your load balancer into the **Router** row under **Load Balancers**.
-	<%= image_tag('isolation-segment/resource-config.png') %>
+### <a id='resources'></a> Configure Router Resources
 
-	<p class="note"><strong>Note</strong>: Configuration settings available in <strong>Resource Config</strong> vary depending on your IaaS.</p>
+If you are using a dedicated router for your isolation segment, click **Resource Config** and enter the wildcard DNS entry attached to your load balancer into the **Router** row under **Load Balancers**.
 
-	If you do not have the **Load Balancers** column in your **Resource Config**, perform the following steps:
-	1. Navigate to the **Networking** section of the **PCF Isolation Segment** tile.
-	1. Specify **Router IPs**.
-	1. Attach the IPs to your load balancer manually.
+<%= image_tag('isolation-segment/resource-config.png') %>
 
-1. (Optional): Edit the **Stemcell** configuration as desired.
+<p class="note"><strong>Note</strong>: Configuration settings available in <strong>Resource Config</strong> vary depending on your IaaS.</p>
 
-1. Perform the steps in the [Create an Isolation Segment](../adminguide/isolation-segments.html#create-an-is) section of the <em>Managing Isolation Segments</em> topic to create the isolation segment in the Cloud Controller Database (CCDB).
+If you do not have the **Load Balancers** column in your **Resource Config**, perform the following steps:
+
+1. Navigate to the **Networking** section of the **PCF Isolation Segment** tile.
+1. Specify **Router IPs**.
+1. Attach the IPs to your load balancer manually.
+
+### <a id='stemcell'></a> Stemcell
+
+Optionally, edit the **Stemcell** configuration.
+
+### <a id='after_config'></a> After Tile Configuration
+
+After you configure the PCF Isolation Segment tile, perform the following steps:
+
+1. Create the isolation segment in the Cloud Controller Database (CCDB) by following the procedure in the [Create an Isolation Segment](../adminguide/isolation-segments.html#create-an-is) section of the <em>Managing Isolation Segments</em> topic.
 
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to deploy the tile.
 
