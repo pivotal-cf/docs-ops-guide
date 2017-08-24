@@ -35,10 +35,20 @@ address of your load balancer.
 
 1. For PCF deployments on OpenStack or vSphere, enter the load balancer IP address that you used to set up a wildcard DNS record in the **Router IPs** field. For more information, see the Elastic Runtime networking configuration topic for [OpenStack](../customizing/openstack-er-config.html#networking) or [vSphere](../customizing/config-er-vmware.html#networking).  
 
-1. Under **Select one of the following point-of-entry-options**, select the second option, **Forward unencrypted traffic to Elastic Runtime Router**.
+1. In the **Certificate and Private Key for HAProxy and Router** fields, enter your PEM-encoded certificate and your PEM-encoded private key. You can either upload your own certificate or generate an RSA certificate in Elastic Runtime. For options and instructions on creating a certificate for your wildcard domains, see [Creating a Wildcard Certificate for PCF Deployments](../opsguide/security_config.html#create_or_obtain_certs).
 
-1. If you are not using SSL encryption or if you are using self-signed certificates, you can select **Disable SSL certificate verification for this environment**. Selecting this checkbox also disables SSL verification for route services. 
+1. In the **Minimum version of TLS supported by HAProxy and Router**, select the minimum version of TLS to use in HAProxy communications. HAProxy use TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the HAProxy, see [Cipher Suites](#ciphers). 
+
+1. Under **HAProxy forwards requests to Router over TLS**, select **Disable**.
+
+1. If you want to use a specific set of TLS ciphers for HAProxy, configure **TLS Cipher Suites for HAProxy**. Enter an ordered, colon-separated list of TLS cipher suites in the OpenSSL format. For example, if you have selected support for an earlier version of TLS, you can enter cipher suites supported by this version. Otherwise, leave the default values in this field. 
+
+1. (Optional) If you are not using SSL encryption or if you are using self-signed certificates, you can select **Disable SSL certificate verification for this environment**. Selecting this checkbox also disables SSL verification for route services. 
   <p class="note">Use this checkbox only for development and testing environments. Do not select it for production environments.</p> 
+  
+1. (Optional) If you do not want HAProxy or the Gorouter to accept any non-encrypted HTTP traffic, select the **Disable HTTP on HAProxy and Router** checkbox. 
+
+1. In the **Configure the CF Router support for the X-Forwarded-Client-Cert header** field, select **Always forward the XFCC header in the request, regardless of the whether the client connection is mTLS**.
 
 1. Click **Save**.
 
