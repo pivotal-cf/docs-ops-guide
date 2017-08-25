@@ -103,6 +103,14 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. <%= partial '../customizing/min_tls_version' %>
 
+1. <%= partial '../customizing/haproxy_router_tls_forward' %>
+
+1. <%= partial '../customizing/tls_cipher_suites_router' %>
+
+1. <%= partial '../customizing/tls_cipher_suites_haproxy' %>
+
+1. <%= partial '../customizing/http_disable' %>
+
 1. Select a sharding mode in the **Router Sharding Mode** field. The options are explained below.
 	![Sharding options](router-sharding-options.png)
 	<table>
@@ -117,12 +125,6 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 		<td>The routers for the tile reject requests for any isolation segment. Choose this option to add a group of routers for the Elastic Runtime tile, such as when you want a private point of entry for the system domain.</td>
 	</tr>
 	</table>
-
-1. <%= partial '../customizing/xforwarded_client_cert_xfcc' %>
-
-1. <%= partial '../customizing/log-app-traffic-enable' %>
-
-    <%= image_tag 'log-app-traffic-enable.png' %>
 
 1. To enable container-to-container networking, perform the following steps:
 
@@ -144,6 +146,10 @@ Perform the following steps to configure the PCF Isolation Segment tile:
   - **TCP traffic** - Logs the first packet of every new TCP connection.
   - **UDP traffic** - Logs UDP packets sent and received, up to a maximum per-second rate for each container. Set this rate limit in the **UDP logging interval** field (default: 100).
   - **Packets denied** - Logs packets blocked by either a container-specific [networking policy](../concepts/understand-cf-networking.html#policies) or by [Application Security Group](../opsguide/app-sec-groups.html) rules applied across the space, org, or deployment. Logs packet denials up to a maximum per-second rate for each container, set in the **Denied logging interval** field (default: 1).
+
+1. <%= partial '../customizing/xforwarded_client_cert_xfcc' %>
+
+1. <%= partial '../customizing/max_connections_backend' %>
 
 1. Click **Save**.
 
