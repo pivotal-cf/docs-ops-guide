@@ -57,7 +57,7 @@ In PCF, perform the following steps to configure SSL termination on HAProxy:
 
 1. If you want to use a specific set of TLS ciphers for HAProxy, configure **TLS Cipher Suites for HAProxy**. Enter an ordered, colon-separated list of TLS cipher suites in the OpenSSL format. For example, if you have selected support for an earlier version of TLS, you can enter cipher suites supported by this version. Otherwise, leave the default values in this field. 
 
-1. If you expect requests larger than the default maximum of 16 Kbytes, enter a new value (in bytes) for **HAProxy Request Max Buffer Size**. You may need to do this, for example, to support apps that embed large cookie or query string values in headers.
+1. If you expect requests larger than the default maximum of 16 Kbytes, enter a new value (in bytes) for **HAProxy Request Max Buffer Size**. You may need to do this, for example, to support apps that embed a large cookie or query string values in headers.
 
 1. (Optional) If you are not using SSL encryption or if you are using self-signed certificates, you can select **Disable SSL certificate verification for this environment**. Selecting this checkbox also disables SSL verification for route services. 
   <p class="note">Use this checkbox only for development and testing environments. Do not select it for production environments.</p>
