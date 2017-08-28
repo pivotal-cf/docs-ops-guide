@@ -142,13 +142,13 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
   1. (Optional): Under **Applications Subnet**, enter a CIDR subnet mask specifying the range of available IP addresses to assign to your app containers. This must be different from the network used by the system VMs. Modify the default value only if you need to avoid address collision with a third-party service on the same subnet. If you do not set a custom range, PCF Isolation Segment uses <code>10.254.0.0/22</code>.
 
-1. <%= partial '../customizing/log-app-traffic-enable' %>
-
-    <%= image_tag 'log-app-traffic-enable.png' %>
-
 1. <%= partial '../customizing/xforwarded_client_cert_xfcc' %>
 
 1. <%= partial '../customizing/max_connections_backend' %>
+
+1. <%= partial '../customizing/log-app-traffic-enable' %>
+
+    <%= image_tag 'log-app-traffic-enable.png' %>
 
 1. Click **Save**.
 
@@ -170,10 +170,13 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. Select a protocol from the **Transport Protocol** menu. This is the protocol the sytem uses to transmit logs to syslog.
 
- 1. (Optional) Select the **Enable TLS** option if you want to transmit logs over TLS.
- 1. Enter a **Permitted Peer.** 
- 1. Paste the certificate for your TLS certificate authority (CA) in the **TLS CA Certificate** field. 
- 1. Click **Save.**
+1. (Optional) Select the **Enable TLS** option if you want to transmit logs over TLS.
+
+1. Enter a **Permitted Peer.**
+
+1. Paste the certificate for your TLS certificate authority (CA) in the **TLS CA Certificate** field.
+
+1. Click **Save.**
 
 ### <a id='resources'></a> Configure Router Resources
 
