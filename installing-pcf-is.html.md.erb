@@ -15,7 +15,7 @@ For more information about how isolation segments work, see the [Isolation Segme
 
 ##<a id='routing'></a> Step 1: (Optional) Configure Routing
 
-By default, the Elastic Runtime Router handles traffic for your isolation segment. However, you can deploy a dedicated router for your isolation segment instead. For information on how you can configure and manage routing for isolation segments, see the [Routing for Isolation Segments](../adminguide/routing-is.html) topic. 
+By default, the Elastic Runtime Router handles traffic for your isolation segment. However, you can deploy a dedicated router for your isolation segment instead. For information about configuring and managing routing for isolation segments, see the [Routing for Isolation Segments](../adminguide/routing-is.html) topic. 
 
 To deploy a dedicated router, perform the following steps:
 
@@ -81,7 +81,7 @@ Perform the following steps to configure the PCF Isolation Segment tile:
   * For **LDAP User Fully-Qualified Domain Name**, enter the fully qualified path to the LDAP service account. For example, if you have a service account called `volume-services` that belongs to organizational units (OU) called `service-accounts` and `my-company`, and your domain is called `domain`, the fully qualified path looks like the following:
   <pre>CN=volume-services,OU=service-accounts,OU=my-company,DC=domain,DC=com</pre>
 
-1. By default, ERT manages container images using the [GrootFS](../concepts/architecture/garden.html#garden-rootfs) plugin for Garden-runC. If you experience issues with GrootFS, you can disable the plugin and use the image plugin built into Garden-RunC.
+1. By default, ERT manages container images using the [GrootFS](../concepts/architecture/garden.html#garden-rootfs) plugin for Garden-runC. If you experience issues with GrootFS, you can disable the plugin and use the image plugin built into Garden-runC.
 
 1. Click **Save**.
 
