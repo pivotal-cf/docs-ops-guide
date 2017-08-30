@@ -1,9 +1,37 @@
 You can configure router sharding for isolation segments depending on your use case:
 
-* **Securing apps that run in an isolation segment**: To provide security guarantees in addition to the firewall rules described above, you can configure sharding of Gorouter's routing table, resulting in a router dedicated for an isolation segment having knowledge only of routes for applications in the same isolation segment. If want this configuration, do the following:
-  1. In the **Networking** configuration pane of the Elastic Runtime tile, select the checkbox labeled **Routers reject for Isolation Segments**.
-  1. Set the **Router Sharding Mode** in the isolation segment tile to **Isolation Segment Only**. See <a href="../opsguide/installing-pcf-is.html#config">Installing PCF Isolation Segment</a>.
+<table>
+	<tr>
+		<th style="width:33%">Use Case</th>
+		<th style="width:33%">Description</th>
+		<th>How to Configure</th>
+	</tr>
+	<tr>
+		<td>Securing apps that run in an isolation segment</td>
+		<td>To provide security guarantees in addition to the firewall rules described above, you can configure sharding of Gorouter's routing table, resulting in a router dedicated for an isolation segment having knowledge only of routes for applications in the same isolation segment.</td>
+		<td>
+			<ol>
+				<li>
+				In the <b>Networking</b> configuration pane of the Elastic Runtime tile, select the checkbox labeled <b>Routers reject requests for Isolation Segments</b>.
+				</li>
+				<li>
+				Set the <b>Router Sharding Mode</b>  in the isolation segment tile to <b>Isolation Segment Only</b>.
+				</li>
+			</ol>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Deploying additional routers for Elastic Runtime</td>
+		<td>The flexibility of the configuration also supports deployment of a router that excludes all isolation segments.</td>
+		<td>
+			<ol>
+				<li>In the <b>Networking</b> configuration pane of the Elastic Runtime tile, select the checkbox labeled <b>Routers reject requests for Isolation Segments</b>.</li>
+				<li> 
+  				Set the <b>Router Sharding Mode</b> in the isolation segment tile to <b>No isolation Segment</b>.</li>
+  		</td>
+	</tr>
+</table>
 
-* **Deploying additional routers for Elastic Runtime**: The flexibility of the configuration also supports deployment of a router that that excludes all isolation segments. If want this configuration, do the following:
-  1. In the **Networking** configuration pane of the Elastic Runtime tile, select the checkbox labeled **Routers reject for Isolation Segments**. 
-  1. Set the **Router Sharding Mode** in the isolation segment tile to **No isolation Segment**. See <a href="../opsguide/installing-pcf-is.html#config">Installing PCF Isolation Segment</a>. 
+<p class="note"><strong>Note</strong>: For compute isolation only, you can leave the <b>Routers reject requests for isolation segments</b> checkbox unselected in the Elastic Runtime <b>Networking</b> pane. This is the default setting, which requires does not require any additional routers for the Isolation Segment tile. </p>
+  
