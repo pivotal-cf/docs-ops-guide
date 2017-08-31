@@ -1,43 +1,92 @@
 ---
-title: Configuring Docker Images Disk-Cleanup Scheduling
+title: Configuring Cell Disk Cleanup Scheduling
 owner: Ops Manager
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to configure Docker images disk cleanup scheduling on Cell virtual machines (VMs) in Pivotal Cloud Foundry (PCF).
+This topic describes how to configure disk cleanup scheduling
+on Diego cells in Pivotal Cloud Foundry (PCF).
 
-## <a id="prereq"></a> Prerequisite
+## <a id='what'></a> What is Disk Cleanup
 
-To configure Docker images disk cleanup scheduling, you must enable Docker support in PCF with the `cf enable-feature-flag diego_docker` command, as described in the [Using Docker in Cloud Foundry](../adminguide/docker.html) topic.
+PCF isolates application instances (AIs) from each other
+using containers that run inside Diego cells.
+Containers enforce a set of isolation layers
+including file system isolation.
+A PCF container file system can either be
+a PCF stack
+or the result of pulling a Docker image.
 
-## <a id='disk-cleanup'></a> Options for Disk Cleanup
+For performance reasons,
+the cells cache the Docker image layers and the PCF stacks
+that running AIs use.
+When PCF destroys an AI (e.g.: as a result of `cf delete`)
+or when PCF reschedules an AI to a different cell,
+there is a chance that certain Docker image layers,
+or an old PCF stack
+will become unused.
+If PCF does not clean these unused layers
+the cell ephemeral disk will slowly fill.
 
-PCF provides the following three options for scheduling Docker images disk cleanup: 
+Disk cleanup is the process of removing unused layers
+from the cell disk.
+The disk cleanup process will remove all unused Docker image layers
+and old PCF Stacks,
+regardless of their size or age.
 
-* **Never clean up Cell disk-space**: Choosing this option can result in Cells that run out of disk space. In general, Pivotal does not recommend choosing this option.
-* **Routinely clean up Cell disk-space**: Choosing this option forces a cleanup every time a container image layer stops being used.
-* **Clean up disk-space once threshold is reached**: Choosing this option results in disk space cleanup only when the disk space threshold is reached or exceeded. See the [Advanced: Choosing a Threshold](#choosing-a-threshold) section of this topic for more information.
+## <a id='options'></a> Options for Disk Cleanup
 
-## <a id='recommendations'></a> Recommendations
+PCF provides the following options
+for scheduling the disk cleanup process
+on Diego cells: 
 
-In most cases, Pivotal recommends selecting the second option, **Routinely clean up Cell disk-space**. 
+* **Never clean up the Cell Disk**:
+  Pivotal does not recommend using this option
+  for production environments.
+* **Routinely clean up the Cell Disk**:
+  This option makes the cell schedule a disk cleanup
+  every time a container gets created.
+  Running the disk cleanup process so frequently
+  may have a negative impact on the cell performance.
+* **Clean up Disk space once a threshold is reached**:
+  Choosing this option makes the cell schedule the disk cleanup process
+  only when a configurable disk space threshold is reached or exceeded.
 
-The **Routinely clean up Cell disk-space** option ensures that when a new stack becomes available on a Cell, the old stack is dropped immediately from the cache. If your Elastic Runtime deployment runs Docker-based applications as well, unused Docker image layers are also cleaned up shortly after they stop being used.
+See the [Configure Disk Cleanup Scheduling](#applying-configuration) section for how to choose one these options.
 
-This option adds performance overhead from the frequent deletion of images and layers. Additionally, when using Docker images, selecting this option can result in more cache hits because Docker image layers are quickly evicted from the cache, even if the image layers are only temporarily unused. Despite this additional overhead, the overall performance impact from using this option is usually insignificant.
+### <a id='recommendations'></a> Recommendations
 
-In cases where operators want to optimize cache management and disk cleanup,
-Pivotal recommends selecting the third option, **Clean up disk-space once threshold is reached**. See the [Advanced: Choosing a Threshold](#choosing-a-threshold) section of this topic for instructions about configuring the threshold.
+Choosing the best option for disk cleanup depends
+on the workload that the Diego cells run:
+Docker images or Cloud Foundry buildpack-based apps.
 
-## <a id='choosing-a-threshold'></a> Advanced: Choosing a Threshold
+For PCF installations that mainly run **buildpack-based applications**
+we recommend using the second option:
+**Routinely clean up Cell Disk space**. 
+The **Routinely clean up Cell Disk space** option ensures
+that when a new stack becomes available on a cell,
+the old stack is dropped immediately from the cache.
 
-To choose a realistic value when configuring the disk space cleanup threshold, you must identify some of the most frequently used Docker images in your PCF installation.
+For PCF installations that mainly run **Docker images**,
+or both Docker images and buildpack-based apps,
+we recommend using the third option:
+**Clean up Disk space once a threshold is reached**
+along with a reasonable threshold.
+Choosing a threshold is described in
+[Choosing a Threshold](#choosing-a-threshold).
 
-Docker images are usually created incrementally, in layers, starting from a
-base image. In some cases, you may find it easier to identify which base Docker images are most frequently used.
+### <a id='choosing-a-threshold'></a> Choosing a Threshold
 
-Follow the steps below to configure the disk space cleanup threshold:
+To choose a realistic value when configuring the disk cleanup threshold,
+you must identify some of the most frequently used Docker images
+in your PCF installation.
+Docker images tend to be constructed
+by creating layers over existing, base, images.
+In some cases, you may find it easier
+to identify which base Docker images are most frequently used.  
+
+Follow the steps below to configure the disk cleanup threshold:
 
 1. Identify the most frequently used Docker images or base Docker images. 
 <br><br>Example: The most frequently used images in a test deployment are `openjdk:7`, `nginx:1.13`, and `php:7-apache`.
@@ -64,21 +113,35 @@ Example:
 <br><br>
 Example: Using the output above, the sample threshold calculation is (&nbsp;391&nbsp;MB&nbsp;+&nbsp;586&nbsp;MB&nbsp;+&nbsp;109&nbsp;MB&nbsp;)&nbsp;*&nbsp;1.2&nbsp;=&nbsp;1303.2&nbsp;MB
 
-1. To configure this threshold amount, navigate to the PCF Operations Manager **Installation Dashboard**.
+## <a id='applying-configuration'></a> Configure Disk Cleanup Scheduling
 
-1. Click the **Pivotal Elastic Runtime** tile, and navigate to the **Application Containers** tab.
-    <%= image_tag("images/docker-registry-ert.png") %>
+1. Navigate to the PCF Operations Manager **Installation Dashboard**.
 
-1. Under **Docker Images Disk-Cleanup Scheduling on Cell VMs**, select the
-   **Clean up disk-space once threshold is reached** option. 
+1. Click the **Pivotal Elastic Runtime** tile,
+  and navigate to the **Application Containers** tab.
+  <%= image_tag("images/docker-registry-ert.png") %>
 
-1. In the **Threshold of Disk-Used (MB)** field, enter the disk space threshold amount, in MB, that you calculated for your deployment as described in **Step 3** above. The disk space used by the Cell must reach this threshold before initiating disk cleanup.
-<br><br>Example: As calculated in the previous step, you would enter **1303**. 
+1. Under **Docker Images Disk-Cleanup Scheduling on Cell VMs**,
+  select the option that you prefer.
+
+1. If you select the **Clean up Disk space once threshold is reached** option,
+  fill in the **Threshold of Disk Used (MB)** field.
+  You will need to enter the disk space threshold amount, in MB,
+  that you calculated for your deployment,
+  as described in [Choosing a Threshold](#choosing-a-threshold).
+
+  <br><br>
+  Example: As calculated in the previous step,
+  you would enter **1303**.
 
 1. Click **Save**.
 
-## <a id="next"></a> Next Steps
+### <a id="next"></a> Next Steps
 
-If you are configuring Elastic Runtime for the first time, then return to your specific IaaS configuration to continue the installation process.
+If you are configuring Elastic Runtime for the first time,
+then return to your specific IaaS configuration
+to continue the installation process.
 
-If you are modifying an existing Elastic Runtime installation, return to the **PCF Ops Manager Installation Dashboard** and click **Apply Changes**.
+If you are modifying an existing Elastic Runtime installation, 
+eturn to the **PCF Ops Manager Installation Dashboard**
+and click **Apply Changes**.
