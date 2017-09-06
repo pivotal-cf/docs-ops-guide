@@ -1,44 +1,4 @@
 
-To use the HAProxy load balancer, you must create a wildcard A record in your
-DNS and configure some fields in the Elastic Runtime product tile.
-
-1. Create an A record in your DNS that points to the HAProxy IP address. The A
-record associates the **System Domain** and **Apps Domain** that you configure
-in the **Domains** section of the Elastic Runtime tile with the HAProxy IP address.
-    <br />
-    <br />
-    For example, with `cf.example.com` as the main subdomain for your Cloud 
-    Foundry (CF) deployment and an HAProxy IP address `203.0.113.1`, you must 
-    create an A record in your DNS that serves `example.com` and points `*.cf` 
-    to `203.0.113.1`.
-
-    <table >
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Data</th>
-        <th>Domain</th>
-      </tr>
-      <tr>
-        <td>*.cf</td>
-        <td>A</td>
-        <td>203.0.113.1</td>
-        <td>example.com</td>
-      </tr>
-    </table>
-
-1. Use the Linux `host` command to test your DNS entry. The `host` command
-should return your HAProxy IP address.
-    <br />
-    <br />
-    Example:
-    <pre class='terminal'>
-    $ host cf.example.com
-    cf.example.com has address 203.0.113.1
-    $ host anything.example.com
-    anything.cf.example.com has address 203.0.113.1
-    </pre>
-
 In PCF, perform the following steps to configure SSL termination on HAProxy:
 
 1. Navigate to the Ops Manager Installation Dashboard.
@@ -47,15 +7,44 @@ In PCF, perform the following steps to configure SSL termination on HAProxy:
 
 1. Click **Networking**.
 
-1. For PCF deployments on OpenStack or vSphere, enter the HAProxy IP address that you used to set up a wildcard DNS record in the **HAProxy IPs** field. For more information, see the Elastic Runtime networking configuration topic for [OpenStack](../customizing/openstack-er-config.html#networking) or [vSphere](../customizing/config-er-vmware.html#networking). For PCF deployments on AWS or Azure, leave the HAProxy IP address blank.
+1. Configure the following based on the IaaS of your PCF deployment.
+    <table>
+    <tr>
+     <th>If your PCF deployment is on:</th>
+     <th>Then configure the following:</th>
+     <th>See also:</th>
+    </tr>
+    <tr>
+     <td>
+     OpenStack or vSphere
+     </td>
+     <td><ol>
+      <li>Set up a wildcard DNS record for the IP address of your HAProxy instance. See [How to Set Up DNS for HAProxy](#haproxy_dns).</li>
+      <li>In the **HAProxy IPs** field of the **Networking** page, enter the HAProxy IP address that you used to set up a wildcard DNS record.</li>
+    </ol></td>
+    <td>For more information, see the Elastic Runtime networking configuration topic for [OpenStack](../customizing/openstack-er-config.html#networking) or [vSphere](../customizing/config-er-vmware.html#networking). 
+    </td>
+    <tr>
+    <td>
+    AWS, GCP or Azure
+    </td>
+    <td><ol><li>Leave the HAProxy IP address blank.</li>
+    <li>In the **Resource Config** page of Elastic Runtime tile, locate the HAProxy job.</li>
+    <li>In the **Load Balancer** column for the HAProxy job, specify the appropriate IaaS load balancer resource.</li>
+    </ol>
+    </td>
+    <td>For more information, see the Elastic Runtime installation instructions for [AWS](../customizing/pcf-aws-manual-er-config.html#config-elb), [Azure](../customizing/azure-er-config.html#networking), or [GCP](../customizing/gcp-er-config.html#networking).
+    </td>
+     </tr>
+   </table>
 
 1. In the **Certificate and Private Key for HAProxy and Router** fields, enter your PEM-encoded certificate and your PEM-encoded private key. You can either upload your own certificate or generate an RSA certificate in Elastic Runtime. For options and instructions on creating a certificate for your wildcard domains, see [Creating a Wildcard Certificate for PCF Deployments](../opsguide/security_config.html#create_or_obtain_certs).
 
-1. In the **Minimum version of TLS supported by HAProxy and Router**, select the minimum version of TLS to use in HAProxy communications. HAProxy use TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the HAProxy, see [Cipher Suites](#ciphers). 
+1. In the **Minimum version of TLS supported by HAProxy and Router**, select the minimum version of TLS to use in HAProxy communications. HAProxy use TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the HAProxy, see [TLS Cipher Suites](../security/networking/tls-info.html#ciphers). 
 
 1. Under **HAProxy forwards requests to Router over TLS**, select **Disable**.
 
-1. If you want to use a specific set of TLS ciphers for HAProxy, configure **TLS Cipher Suites for HAProxy**. Enter an ordered, colon-separated list of TLS cipher suites in the OpenSSL format. For example, if you have selected support for an earlier version of TLS, you can enter cipher suites supported by this version. Otherwise, leave the default values in this field. 
+1. If you want to use a specific set of TLS ciphers for HAProxy, configure **TLS Cipher Suites for HAProxy**. Enter an ordered, colon-separated list of TLS cipher suites in the OpenSSL format. For example, if you have selected support for an earlier version of TLS, you can enter cipher suites supported by this version. For a list of TLS ciphers supported by the HAProxy, see [TLS Cipher Suites](../security/networking/tls-info.html#ciphers). 
 
 1. If you expect requests larger than the default maximum of 16 Kbytes, enter a new value (in bytes) for **HAProxy Request Max Buffer Size**. You may need to do this, for example, to support apps that embed a large cookie or query string values in headers.
 
@@ -63,9 +52,11 @@ In PCF, perform the following steps to configure SSL termination on HAProxy:
   <p class="note">Use this checkbox only for development and testing environments. Do not select it for production environments.</p>
 
 1. (Optional) If you do not want HAProxy or the Gorouter to accept any non-encrypted HTTP traffic, select the **Disable HTTP on HAProxy and Router** checkbox. 
- 
-1. In the **Configure the CF Router support for the X-Forwarded-Client-Cert header** field, select **Always forward the XFCC header in the request, regardless of the whether the client connection is mTLS**.
-    
-1. Click **Save**. 
 
-1. For PCF deployments on Azure or AWS, configure the HAProxy job in the **Resource Config** page of Elastic Runtime tile. For more information, see the Elastic Runtime installation instructions for [Azure](../customizing/azure-er-config.html#networking) or [AWS](../customizing/pcf-aws-manual-er-config.html#config-elb). 
+1. In the **Configure the CF Router support for the X-Forwarded-Client-Cert header** field, select **Always forward the XFCC header in the request, regardless of the whether the client connection is mTLS**.
+
+1. (Optional) If your PCF deployment uses HAProxy and you want it to receive traffic only from specific sources, use the following fields:
+    * **Protected Domains**: Enter a comma-separated list of domains from which PCF can receive traffic.
+   * **Trusted CIDRs**: Optionally, enter a space-separated list of CIDRs to limit which IP addresses from the Protected Domains can send traffic to PCF.
+     
+1. Click **Save**. 
