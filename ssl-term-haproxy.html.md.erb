@@ -5,14 +5,13 @@ owner: Ops Manager
 
 <strong><%= modified_date %></strong>
 
-In general, Pivotal recommends that you use HAProxy in lab and test environments only. 
-Production environments should instead use a highly-available customer-provided
-load balancing solution.
+HAProxy is not itself highly available. While it can be scaled horizontally, customers must provide a highly-available load balancer in front of it. The customer-provided load balancer does not need to terminate TLS or even operate at layer 7 (HTTP); it can simply provide layer 4 load balancing of TCP connections.
 
 <p class="note"><strong>Note</strong>: You must use HAProxy in Azure deployments. At time of publication, Azure load balancers do not support external SSL/TLS termination.</p>
 
-CF deploys with a single instance of HAProxy for use with PCF.
-You can use this HAProxy instance for SSL termination and load balancing to the
+HAProxy is appropriate when features are needed that are offered by HAProxy but not by the CF Routers. Use of HAProxy does not remove the need for CF routers; Gorouter must always be deployed for HTTP applications, and TCP Router for non-HTTP applications.
+
+You can use the HAProxy instance for SSL termination and load balancing to the
 Gorouters. In addition, HAProxy supports protected domain and trusted CIDR traffic filtering.
 
 You can generate a self-signed certificate for HAProxy if you do not want to 
