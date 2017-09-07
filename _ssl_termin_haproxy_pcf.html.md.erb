@@ -18,10 +18,20 @@ In PCF, perform the following steps to configure SSL termination on HAProxy:
      <td>
      OpenStack or vSphere
      </td>
-     <td><ol>
-      <li>Set up a wildcard DNS record for the IP address of your HAProxy instance. See [How to Set Up DNS for HAProxy](#haproxy_dns).</li>
-      <li>In the **HAProxy IPs** field of the **Networking** page, enter the HAProxy IP address that you used to set up a wildcard DNS record.</li>
-    </ol></td>
+     <td>Decide whether you want your HAProxy to be highly available.<ul>
+      <li>If you need highly available HAProxy, then perform the following steps:
+      <ol>
+        <li>Set up your load balancer (for example, F5 or NSX) unless you do not require high availability.</li>
+        <li>Choose an IP address for each HAProxy instance on the subnet where you deployed PCF.</li>
+        <li>In the **HAProxy IPs** field of the **Networking** page, enter the IP addresses you have selected for your HAProxy instances.</li>
+      </ol>
+      <li>If you do not require high availability (for example, you are setting up a development environment), then perform the following steps:
+      <ol>
+       <li>Skip setting up the load balancer.</li>
+       <li>Choose one IP address for the single HAProxy instance.</li>
+       <li>Configure DNS to point at the IP address. See [How to Set Up DNS for HAProxy](#haproxy_dns).</li>
+      </ol>
+    </ul></td>
     <td>For more information, see the Elastic Runtime networking configuration topic for [OpenStack](../customizing/openstack-er-config.html#networking) or [vSphere](../customizing/config-er-vmware.html#networking). 
     </td>
     <tr>
@@ -42,7 +52,7 @@ In PCF, perform the following steps to configure SSL termination on HAProxy:
 
 1. In the **Minimum version of TLS supported by HAProxy and Router**, select the minimum version of TLS to use in HAProxy communications. HAProxy use TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the HAProxy, see [TLS Cipher Suites](../security/networking/tls-info.html#ciphers). 
 
-1. Under **HAProxy forwards requests to Router over TLS**, select **Disable**.
+1. Under **HAProxy forwards requests to Router over TLS**, leave **Enabled** selected and provide the backend certificate authority.
 
 1. If you want to use a specific set of TLS ciphers for HAProxy, configure **TLS Cipher Suites for HAProxy**. Enter an ordered, colon-separated list of TLS cipher suites in the OpenSSL format. For example, if you have selected support for an earlier version of TLS, you can enter cipher suites supported by this version. For a list of TLS ciphers supported by the HAProxy, see [TLS Cipher Suites](../security/networking/tls-info.html#ciphers). 
 

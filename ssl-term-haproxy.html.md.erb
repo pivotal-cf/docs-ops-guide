@@ -5,17 +5,17 @@ owner: Ops Manager
 
 <strong><%= modified_date %></strong>
 
-HAProxy is not itself highly available. While it can be scaled horizontally, customers must provide a highly-available load balancer in front of it. The customer-provided load balancer does not need to terminate TLS or even operate at layer 7 (HTTP); it can simply provide layer 4 load balancing of TCP connections.
+Both Elastic Runtime and Isolation Segments for Pivotal Cloud Foundry include an HAProxy instance. 
+
+You can use the HAProxy instance for SSL termination and load balancing to the Gorouters. In addition, HAProxy supports protected domain and trusted CIDR traffic filtering. 
+
+HAProxy is appropriate to use in a deployment when features are needed that are offered by HAProxy, such as trusted CIDR traffic filtering, but are not offered by the CF Routers. Use of HAProxy does not remove the need for CF Routers; Gorouter must always be deployed for HTTP applications, and TCP Router for non-HTTP applications.
+
+For production environment use, note that HAProxy is not itself highly available. While it can be scaled horizontally, customers must provide a highly-available load balancer in front of it. The customer-provided load balancer does not need to terminate TLS or even operate at layer 7 (HTTP); it can simply provide layer 4 load balancing of TCP connections.
 
 <p class="note"><strong>Note</strong>: You must use HAProxy in Azure deployments. At time of publication, Azure load balancers do not support external SSL/TLS termination.</p>
 
-HAProxy is appropriate when features are needed that are offered by HAProxy but not by the CF Routers. Use of HAProxy does not remove the need for CF routers; Gorouter must always be deployed for HTTP applications, and TCP Router for non-HTTP applications.
-
-You can use the HAProxy instance for SSL termination and load balancing to the
-Gorouters. In addition, HAProxy supports protected domain and trusted CIDR traffic filtering.
-
-You can generate a self-signed certificate for HAProxy if you do not want to 
-obtain a signed certificate from a well-known certificate authority.
+You can generate a self-signed certificate for HAProxy if you do not want to obtain a signed certificate from a well-known certificate authority.
 
 ##<a id="haproxy"></a>Terminate SSL/TLS at HAProxy
 
@@ -23,7 +23,9 @@ obtain a signed certificate from a well-known certificate authority.
 
 ##<a id="haproxy_dns"></a> How to Set Up DNS for HAProxy
 
-To use the HAProxy load balancer in a vSphere or OpenStack deployment, you must create a wildcard A record in your DNS and configure some fields in the Elastic Runtime product tile.
+You only need to perform this procedure if you are using one instance of HAProxy such as in a development environment. If you would like HAProxy to be highly available, you must have a load balancer in front of it. In this case, you would point DNS at the load balancer. 
+
+To use a single instance HAProxy load balancer in a vSphere or OpenStack deployment, create a wildcard A record in your DNS and configure some fields in the Elastic Runtime product tile.
 
 1. Create an A record in your DNS that points to the HAProxy IP address. The A
 record associates the **System Domain** and **Apps Domain** that you configure
