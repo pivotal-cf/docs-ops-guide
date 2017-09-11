@@ -21,9 +21,9 @@ In PCF, perform the following steps to configure SSL termination on HAProxy:
      <td>Decide whether you want your HAProxy to be highly available.<ul>
       <li>If you need highly available HAProxy, then perform the following steps:
       <ol>
-        <li>Set up your load balancer (for example, F5 or NSX) unless you do not require high availability.</li>
         <li>Choose an IP address for each HAProxy instance on the subnet where you deployed PCF.</li>
         <li>In the **HAProxy IPs** field of the **Networking** page, enter the IP addresses you have selected for your HAProxy instances.</li>
+        <li>Configure your load balancer (for example, F5 or NSX) to forward domain names to the HAProxy IP addresses.</li>
       </ol>
       <li>If you do not require high availability (for example, you are setting up a development environment), then perform the following steps:
       <ol>
