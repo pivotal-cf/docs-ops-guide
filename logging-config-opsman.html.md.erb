@@ -98,14 +98,6 @@ To enable app traffic logging:
 
 <%= image_tag 'images/log-app-traffic-enable.png' %>
 
-###<a id="scope-app-traffic-log"></a>Global vs. ASG-Level App Traffic Logging
-
-PCF supports two mechanisms for enabling app traffic logging. [Setting](#enable-app-traffic-logging) **Log traffic** to **Enable** in Ops Manager enables app traffic logging globally for all ASGs and container policies. Setting the [`log` property](../concepts/asg.html#asg-logging-prereq) of an ASG to `true` enables app traffic logging at the individual ASG level.
-
-Because these two mechanisms operate independently, PCF generates duplicate logs when app traffic logging is enabled globally and an ASG's `log` property is set to `true`. To avoid duplicate logs, Pivotal recommends setting the `log` property to `false` for all ASGs, or leaving it out entirely, when app traffic logging is [enabled globally](#app-traffic-log).
-
-To focus on specific ASGs for log analysis, Pivotal recommends enabling app traffic logs globally and using a logging platform to filter traffic logs by ASG, rather than setting `log` at the individual ASG level.
-
 ###<a id="log-behavior"></a>App Logging Behavior
 
 App traffic logging generates log messages as follows:
@@ -132,7 +124,6 @@ Each log message includes the following:
   - C2C policy prevented packet from entering destination app container
 * Additional information described in the [cf-networking-release](https://github.com/cloudfoundry-incubator/cf-networking-release/blob/develop/docs/traffic_logging.md).
 
-
 ####<a id="denied-packet"></a>Denied Packet Causes
 
 You can determine whether a denied-packet log resulted from a container networking policy or an ASG rule as follows:
@@ -141,3 +132,10 @@ You can determine whether a denied-packet log resulted from a container networki
 
   * **ASG rule**: Log `message` string includes `egress-denied` and `packet direction` is `egress`.
 
+###<a id="scope-app-traffic-log"></a>Global vs. ASG-Level App Traffic Logging
+
+PCF supports two mechanisms for enabling app traffic logging. [Setting](#enable-app-traffic-logging) **Log traffic** to **Enable** in Ops Manager enables app traffic logging globally for all ASGs and container policies. Setting the [`log` property](../concepts/asg.html#asg-logging-prereq) of an ASG to `true` enables app traffic logging at the individual ASG level.
+
+Because these two mechanisms operate independently, PCF generates duplicate logs when app traffic logging is enabled globally and an ASG's `log` property is set to `true`. To avoid duplicate logs, Pivotal recommends setting the `log` property to `false` for all ASGs, or leaving it out entirely, when app traffic logging is [enabled globally](#app-traffic-log).
+
+To focus on specific ASGs for log analysis, Pivotal recommends enabling app traffic logs globally and using a logging platform to filter traffic logs by ASG, rather than setting `log` at the individual ASG level.
