@@ -12,10 +12,9 @@ This topic describes how to configure SSL/TLS termination for HTTP traffic in [P
 
 When you deploy PCF, you must configure the SSL/TLS termination for HTTP traffic in your Elastic Runtime configuration. You can terminate SSL/TLS at any one of the following entry points into PCF:
 
-* Gorouter
-* Load balancer and Gorouter
 * Load balancer
 * HAProxy
+* Gorouter
 
 The following table summarizes SSL/TLS termination options in PCF and provides guidance on which option to choose for your deployment.
 
@@ -49,7 +48,7 @@ The following table summarizes SSL/TLS termination options in PCF and provides g
   </tr>
     <tr>
     <td><ul>
-      <li>You want a higher level of security, and</li>
+      <li>You want the highest level of security, and</li>
       <li>You do not mind a slightly less performant deployment, and</li>
     <li>You can use a single SAN certificate on the Gorouter, either for all system and application domains (but with a different key than for the same certificates hosted on your load balancer) or for a single domain (but with hostname verification disabled on the load balancer).</li> </td>
     <td><b>Load balancer and Gorouter</b>.<br/><br/>Select the <b>Forward SSL to Elastic Runtime Router</b> in your Elastic Runtime network configuration. 
@@ -57,15 +56,17 @@ The following table summarizes SSL/TLS termination options in PCF and provides g
     <td><a href="../adminguide/securing-traffic.html#lb_and_gorouter_term">Terminating SSL/TLS at Gorouter and Load Balancer</a>
     </td>
   </tr>
+  <tr><th>Optionally, if you are deploying HAProxy, and</th><th>Then in addition, terminate SSL/TLS at:</th>
+  <th>Related topic and configuration procedure:</th>
+  </tr>
    <tr>
   <td><ul>
-   <li>You can use a single SAN certificate for your deployment for your wildcard domains, and</li>
-   <li>You are deploying a test or development environment, or</li>
-   <li>You do not mind a slightly less performant deployment.</li>
+   <li>You would like to secure traffic to the HAProxy, and</li>
+   <li>You can use a single SAN certificate for your deployment for your wildcard domains.</li>
   </ul>
   </td>
   <td>
-  <b>HA Proxy</b>.<br/><br/>Select the <b>Forward SSL to HA Proxy</b>. 
+  <b>HA Proxy</b>
   </td>
   <td><a href="./ssl-term-haproxy.html#haproxy">Terminating SSL/TLS at HA Proxy</a>
   </td>
