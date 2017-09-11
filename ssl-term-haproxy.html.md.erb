@@ -5,18 +5,59 @@ owner: Ops Manager
 
 <strong><%= modified_date %></strong>
 
-Pivotal recommends that you use HAProxy in lab and test environments only. 
-Production environments should instead use a highly-available customer-provided
-load balancing solution.
+Both Elastic Runtime and Isolation Segments for Pivotal Cloud Foundry include an HAProxy instance. 
 
-CF deploys with a single instance of HAProxy for use in lab and test
-environments.
-You can use this HAProxy instance for SSL termination and load balancing to the
-PCF Routers.
+HAProxy is appropriate to use in a deployment when features are needed that are offered by HAProxy but are not offered by the CF Routers. These include filtering of protected domains from trusted networks. 
 
-You can generate a self-signed certificate for HAProxy if you do not want to 
-obtain a signed certificate from a well-known certificate authority.
+<p class="note"><strong>Note</strong>: You must use HAProxy in Azure deployments. At time of publication, Azure load balancers do not support external SSL/TLS termination.</p>
 
-##<a id="haproxy"></a>Terminate SSL/TLS at HAProxy
+While HAProxy instances provide load balancing for the Gorouters, HAProxy is not itself highly available. For production environments, use a highly-available load balancer to scale HAProxy horizontally. The load balancer does not need to terminate TLS or even operate at layer 7 (HTTP); it can simply provide layer 4 load balancing of TCP connections. Use of HAProxy does not remove the need for CF Routers; Gorouter must always be deployed for HTTP applications, and TCP Router for non-HTTP applications.
+
+You can generate a self-signed certificate for HAProxy if you do not want to obtain a signed certificate from a well-known certificate authority.
+
+##<a id="haproxy"></a>Procedure: Terminate SSL/TLS at HAProxy
 
 <%= partial 'ssl_termin_haproxy_pcf' %>
+
+##<a id="haproxy_dns"></a> How to Set Up DNS for HAProxy
+
+You only need to perform this procedure if you are using one instance of HAProxy such as in a development environment. If you would like HAProxy to be highly available, you must have a load balancer in front of it. In this case, you would point DNS at the load balancer. 
+
+To use a single instance HAProxy load balancer in a vSphere or OpenStack deployment, create a wildcard A record in your DNS and configure some fields in the Elastic Runtime product tile.
+
+1. Create an A record in your DNS that points to the HAProxy IP address. The A
+record associates the **System Domain** and **Apps Domain** that you configure
+in the **Domains** section of the Elastic Runtime tile with the HAProxy IP address.
+    <br />
+    <br />
+    For example, with `cf.example.com` as the main subdomain for your Cloud 
+    Foundry (CF) deployment and an HAProxy IP address `203.0.113.1`, you must 
+    create an A record in your DNS that serves `example.com` and points `*.cf` 
+    to `203.0.113.1`.
+
+    <table >
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Data</th>
+        <th>Domain</th>
+      </tr>
+      <tr>
+        <td>*.cf</td>
+        <td>A</td>
+        <td>203.0.113.1</td>
+        <td>example.com</td>
+      </tr>
+    </table>
+
+1. Use the Linux `host` command to test your DNS entry. The `host` command
+should return your HAProxy IP address.
+    <br />
+    <br />
+    Example:
+    <pre class='terminal'>
+    $ host cf.example.com
+    cf.example.com has address 203.0.113.1
+    $ host anything.example.com
+    anything.cf.example.com has address 203.0.113.1
+    </pre>
