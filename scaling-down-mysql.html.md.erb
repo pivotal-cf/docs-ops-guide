@@ -50,7 +50,7 @@ Before scaling down your MySQL cluster, perform the following actions to ensure 
   1. Click the **Status** tab.
   1. Record the IP addresses for all instances of the **MySQL Server** job.
 
-1. Retrieve CCDB credentials from CredHub using the Ops Manager API:
+1. Retrieve Cloud Controller database credentials from CredHub using the Ops Manager API:
           1. Perform the procedures in the [Using the Ops Manager API](../ops-man-api.html) topic to authenticate and access the Ops Manager API.
           1. Use the `GET /api/v0/deployed/products` endpoint to retrieve a list of deployed products, replacing `UAA-ACCESS-TOKEN` with the access token recorded in the previous step:
               <pre class="terminal">$ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/deployed/products" \
@@ -61,7 +61,7 @@ Before scaling down your MySQL cluster, perform the following actions to ensure 
               <pre class="terminal">$ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/deployed/products/PRODUCT-GUID/variables?name=cc-db-credentials" \
                 -X GET \
                 -H "Authorization: Bearer UAA-ACCESS-TOKEN"</pre>
-          1. Record the CCDB `username` and `password` from the response to the above request.
+          1. Record the Cloud Controller database `username` and `password` from the response to the above request.
 
 1. SSH into the Ops Manager VM. Because the procedures vary by IaaS, review the [SSH into Ops Manager](../customizing/trouble-advanced.html#ssh) section of the Advanced Troubleshooting with the BOSH CLI topic for specific instructions.
 
