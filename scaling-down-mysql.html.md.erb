@@ -50,9 +50,18 @@ Before scaling down your MySQL cluster, perform the following actions to ensure 
   1. Click the **Status** tab.
   1. Record the IP addresses for all instances of the **MySQL Server** job.
 
-1. Obtain the CCDB credentials for your MySQL server using the Ops Manager API by performing the following steps:
-    1. Run `GET /api/v0/deployed/products/ERT-DEP/credentials/ccdb_credentials`. Replace `ERT-DEP` with your Elastic Runtime deployment ID, which begins with `cf-`. See [Using the Ops Manager API](../customizing/ops-man-api.html) for more information.
-  1. Record the values for `identity` and `password`.
+1. Retrieve CCDB credentials from CredHub using the Ops Manager API:
+          1. Perform the procedures in the [Using the Ops Manager API](../ops-man-api.html) topic to authenticate and access the Ops Manager API.
+          1. Use the `GET /api/v0/deployed/products` endpoint to retrieve a list of deployed products, replacing `UAA-ACCESS-TOKEN` with the access token recorded in the previous step:
+              <pre class="terminal">$ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/deployed/products" \
+                -X GET \
+                -H "Authorization: Bearer UAA-ACCESS-TOKEN"</pre>
+          1. In the response to the above request, locate the product with an `installation_name` starting with `cf-` and copy its `guid`.
+          1. Run the following `curl` command, replacing `PRODUCT-GUID` with the value of `guid` from the previous step:
+              <pre class="terminal">$ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/deployed/products/PRODUCT-GUID/variables?name=cc-db-credentials" \
+                -X GET \
+                -H "Authorization: Bearer UAA-ACCESS-TOKEN"</pre>
+          1. Record the CCDB `username` and `password` from the response to the above request.
 
 1. SSH into the Ops Manager VM. Because the procedures vary by IaaS, review the [SSH into Ops Manager](../customizing/trouble-advanced.html#ssh) section of the Advanced Troubleshooting with the BOSH CLI topic for specific instructions.
 
