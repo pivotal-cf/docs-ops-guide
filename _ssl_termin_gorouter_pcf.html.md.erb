@@ -12,7 +12,7 @@ Perform the following steps to configure SSL termination on the Gorouter in PCF:
 
 1. Enter your PEM encoded certificate and your PEM encoded private key in the fields under **Router SSL Termination Certificate and Private Key**. You can either upload your own certificate or generate a RSA certificate in ERT. For options and instructions on creating a certificate for your wildcard domains, see [Creating a Wildcard Certificate for PCF Deployments](../opsguide/security_config.html#create_or_obtain_certs).
 
-1. For PCF deployments on OpenStack or vSphere, choose IP addresses for the Gorouters from the subnet configured for Ops Manager and enter the in the **Router IPs** field. Then configure your load balancer to forward requests for the above domains to these IPs. For more information, see the Elastic Runtime networking configuration topic for [OpenStack](../customizing/openstack-er-config.html#networking) or [vSphere](../customizing/config-er-vmware.html#networking).  
+1. For PCF deployments on OpenStack or vSphere, choose IP addresses for the Gorouters from the subnet configured for Ops Manager and enter them in the **Router IPs** field. Then configure your load balancer to forward requests for the above domains to these IP addresses. For more information, see the Elastic Runtime networking configuration topic for [OpenStack](../customizing/openstack-er-config.html#networking) or [vSphere](../customizing/config-er-vmware.html#networking).  
 
 1. If you want to use a specific set of SSL ciphers for the Router, configure **Router SSL Ciphers**. Enter a colon-separated list of custom SSL ciphers to pass to the router. Otherwise, leave this field blank.
 
