@@ -7,9 +7,7 @@ owner: Ops Manager
 
 Both Elastic Runtime and Isolation Segments for Pivotal Cloud Foundry include an HAProxy instance. 
 
-HAProxy is appropriate to use in a deployment when features are needed that are offered by HAProxy but are not offered by the CF Routers. These include filtering of protected domains from trusted networks. 
-
-<p class="note"><strong>Note</strong>: You must use HAProxy in Azure deployments. At time of publication, Azure load balancers do not support external SSL/TLS termination.</p>
+HAProxy is appropriate to use in a deployment when features are needed that are offered by HAProxy but are not offered by the CF Routers or IaaS-provided load balancers such as with Azure load balancers. These include filtering of protected domains from trusted networks. 
 
 While HAProxy instances provide load balancing for the Gorouters, HAProxy is not itself highly available. For production environments, use a highly-available load balancer to scale HAProxy horizontally. The load balancer does not need to terminate TLS or even operate at layer 7 (HTTP); it can simply provide layer 4 load balancing of TCP connections. Use of HAProxy does not remove the need for CF Routers; Gorouter must always be deployed for HTTP applications, and TCP Router for non-HTTP applications.
 
