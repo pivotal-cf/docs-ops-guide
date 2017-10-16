@@ -1,0 +1,122 @@
+---
+title: Configuring Role-Based Access in Ops Manager
+owner: Ops Manager
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to customize role-based access control (RBAC) in Ops Manager.
+Use RBAC to manage which operators in your organization can make deployment changes, view credentials, and manage user roles in Ops Manager.
+
+For information about configuring Ops Manager to use internal authentication or SAML authentication, refer to the Director configuration topic for your IaaS.
+For example, see [Configuring Ops Manager Director on GCP](../customizing/gcp-om-config.html#access-om).
+
+## <a id="about"></a>Understand Roles in Ops Manager
+
+Ops Manager supports the following roles:
+
+| **Ops Manager Role** | **Role Definition** | **UAA Scope** |
+|----------------------+---------------------+---------------|
+| **Write Minus Credentials** | Operators can make configuration changes in Ops Manager and click **Apply Changes**. They cannot view credentials in the **Credentials** tab or Ops Manager API endpoints. | `opsman.manager` |
+| **Write Plus Credentials** | Operators can make configuration changes in Ops Manager, click **Apply Changes**, and view credentials in the **Credentials** tab and Ops Manager API endpoints. | `opsman.trusted_manager` |
+| **Ops Manager Administrator** | Operators can make configuration changes in Ops Manager, view credentials in the **Credentials** tab and Ops Manager API endpoints, and assign roles to other operators. | `opsman.admin` |
+
+When you install a new Ops Manager instance, the first user you create has the **Ops Manager Administrator** role by default.
+
+After enabling RBAC, you must assign users one of the roles listed above before they can access Ops Manager.
+If you do not assign any of the above roles to a user, they cannot log in to Ops Manager.
+
+To assign one of the above roles to an operator, follow the procedure for granting access using either [internal authentication](#write-internal) or [SAML authentication](#write-saml).
+
+## <a id="write-internal"></a>Manage Roles with Internal Authentication
+
+If you configured Ops Manager to use internal authentication, perform the steps in this section to enable role-based access control in Ops Manager and configure roles using the [UAA Command Line Interface (UAAC)](../uaa/uaa-user-management.html).
+
+### <a id="enable-internal"></a>Step 1: Enable RBAC in Ops Manager
+
+To enable RBAC in Ops Manager, you must log in as a user with the `opsman.admin` UAA scope.
+
+1. Log in to Ops Manager and click the Ops Manager tile.
+
+1. In the **Settings** tab, click **Advanced**.
+
+1. Click **Enable RBAC**. When the confirmation dialog box appears, click **Confirm and Logout** to enable role-based access control.
+  <p class="note"><strong>Note</strong>: Enabling RBAC is permanent. You cannot undo this action. When you upgrade Ops Manager, your RBAC settings remain configured.</p>
+
+### <a id="assign-role"></a>Step 2: Assign a Role
+
+1. Target your UAA server and log in as an admin: 
+    <pre>
+    uaac target https<span>:</span>//YOUR-DOMAIN/uaa
+    uaac token sso get
+    </pre>
+
+2. When prompted, enter the following credentials. Enter `opsman` for  **Client ID** and leave **Client secret** blank, then enter your username and password:
+    <pre>
+    Client ID: opsman
+    Client secret:
+    User name: USERNAME
+    Password: YOUR-PASSWORD</pre>
+
+3. Assign one of the following roles to a user, replacing `USERNAME` with their username. See [Creating and Managing Users with the UAA CLI (UAAC)](../uaa/uaa-user-management.html#creating-users) for information about creating new users.
+    * **Write Minus Credentials**:
+      <pre>uaac member add opsman.manager USERNAME</pre>
+    * **Write Plus Credentials**:
+      <pre>uaac member add opsman.manager USERNAME
+      uaac member add opsman.trusted_manager USERNAME</pre>
+    * **Ops Manager Administrator**:
+      <pre>uaac member add opsman.admin USERNAME</pre>
+
+## <a id="write-saml"></a>Manage Roles with SAML Authentication
+
+If you configured Ops Manager with SAML authentication, perform the steps in this section to assign user roles using UAAC.
+
+To enable role-based access control in Ops Manager when using SAML authentication, log in to Ops Manager as a user with the `opsman.admin` UAA scope.
+In addition, you must configure groups in SAML for admins and non-admins and then map the admin group to Ops Manager.
+
+### <a id="enable-saml"></a>Step 1: Enable RBAC in Ops Manager
+
+1. Log in to Ops Manager and click the Ops Manager tile.
+
+1. In the **Settings** tab, click **Advanced**.
+
+1. Click **Enable RBAC**. When the confirmation dialog box appears, click **Confirm and Logout** to enable role-based access control.
+  <p class="note"><strong>Note</strong>: Enabling RBAC is permanent. You cannot undo this action. When you upgrade Ops Manager, your RBAC settings remain configured.</p>
+
+### <a id="admin-saml"></a>Step 2: Configure SAML Groups
+
+Perform the following steps to configure Ops Manager to recognize your SAML admin user group:
+
+1. Log in to your SAML provider dashboard.
+1. Identify the name of the SAML group that contains Ops Manager admin users.
+1. Log in to Ops Manager.
+1. In the **Settings** tab, click **RBAC Configuration**.
+1. Enter the name of the SAML group that contains Ops Manager admin users in the **SAML Admin Group** field.
+1. Proceed to the following step to configure mappings for non-admin groups.
+
+### <a id="non-admin-saml"></a>Step 3: Assign Roles
+
+Perform the following steps to configure non-admin user roles with UAAC:
+
+1. Target your UAA server and log in as an admin: 
+    <pre>
+    uaac target https<span>:</span>//YOUR-DOMAIN/uaa
+    uaac token sso get
+    </pre>
+
+1. When prompted, enter **Client ID** and **Passcode**, leaving **Client secret** blank:
+    <pre>
+    Client ID: opsman
+    Client secret:
+    Passcode (from http<span>:</span>//YOUR-DOMAIN/uaa/passcode): YOUR-UAA-PASSCODE
+    </pre>
+
+1. Run the following command:
+    <pre>
+    uaac group map SAML-GROUP --name 'OPSMAN-SCOPE' --origin 'external-saml-provider'
+    </pre>
+  Replace the placeholder text as follows:
+  * `SAML-GROUP`: Replace with name of the SAML group the user belongs to.
+  * `OPSMAN-SCOPE`: Replace with an Ops Manager UAA scope. Refer to the table in [Understand Roles in Ops Manager](#about) to determine which UAA scope to use.
+
+1. Add new and existing users to the appropriate SAML groups in the SAML provider dashboard. Users must log out of both Ops Manager and the SAML provider for role changes to take effect.
