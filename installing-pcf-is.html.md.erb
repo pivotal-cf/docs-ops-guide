@@ -69,7 +69,7 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. Click **Networking**.
 
-	<%= image_tag('isolation-segment/isolation-segment-networking.png') %>
+	<%= image_tag('isolation-segment/isolation-segment-networking.png') %>		
 
 1. (Optional): Under **Router IPs**, enter one or more static IP addresses for the routers that handle this isolation segment. These IP addresses must be within the subnet CIDR block that you defined in the Ops Manager network configuration. If you have a load balancer, configure it to point to these IP addresses.
 
@@ -86,6 +86,7 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 1. In the **Minimum version of TLS supported by Router** field, select the minimum version of TLS to use in Router communications. The Router uses TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the Gorouter, see [Securing Traffic into Cloud Foundry](../adminguide/securing-traffic.html#ciphers).
 
 1. <%= partial '../customizing/xforwarded_client_cert_xfcc' %>
+1. <%= partial '../customizing/frontend_idle_timeout' %>
 
 1. To enable container-to-container networking, perform the following steps:
 
