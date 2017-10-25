@@ -17,8 +17,8 @@ Ops Manager supports the following roles:
 
 | **Ops Manager Role** | **Role Definition** | **UAA Scope** |
 |----------------------+---------------------+---------------|
-| **Write Minus Credentials** | Operators can make configuration changes in Ops Manager and click **Apply Changes**. They cannot view credentials in the **Credentials** tab or Ops Manager API endpoints. | `opsman.manager` |
-| **Write Plus Credentials** | Operators can make configuration changes in Ops Manager, click **Apply Changes**, and view credentials in the **Credentials** tab and Ops Manager API endpoints. | `opsman.trusted_manager` |
+| **Restricted Control** | Operators can make configuration changes in Ops Manager and click **Apply Changes**. They cannot view credentials in the **Credentials** tab or Ops Manager API endpoints. | `opsman.restricted_control` |
+| **Full Control** | Operators can make configuration changes in Ops Manager, click **Apply Changes**, and view credentials in the **Credentials** tab and Ops Manager API endpoints. | `opsman.full_control` |
 | **Ops Manager Administrator** | Operators can make configuration changes in Ops Manager, view credentials in the **Credentials** tab and Ops Manager API endpoints, and assign roles to other operators. | `opsman.admin` |
 
 When you install a new Ops Manager instance, the first user you create has the **Ops Manager Administrator** role by default.
@@ -59,11 +59,11 @@ To enable RBAC in Ops Manager, you must log in as a user with the `opsman.admin`
     Password: YOUR-PASSWORD</pre>
 
 3. Assign one of the following roles to a user, replacing `USERNAME` with their username. See [Creating and Managing Users with the UAA CLI (UAAC)](../uaa/uaa-user-management.html#creating-users) for information about creating new users.
-    * **Write Minus Credentials**:
-      <pre>uaac member add opsman.manager USERNAME</pre>
-    * **Write Plus Credentials**:
-      <pre>uaac member add opsman.manager USERNAME
-      uaac member add opsman.trusted_manager USERNAME</pre>
+    * **Restricted Control**:
+      <pre>uaac member add opsman.restricted_control USERNAME</pre>
+    * **Full Control**:
+      <pre>uaac member add opsman.restricted_control USERNAME
+      uaac member add opsman.full_control USERNAME</pre>
     * **Ops Manager Administrator**:
       <pre>uaac member add opsman.admin USERNAME</pre>
 
