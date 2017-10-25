@@ -12,7 +12,7 @@ You can configure router sharding for isolation segments depending on your use c
 		<td>
 			<ol>
 				<li>
-				In the <b>Networking</b> configuration pane of the Elastic Runtime tile, select the checkbox labeled <b>Routers reject requests for Isolation Segments</b>.
+				In the <b>Networking</b> configuration pane of the Pivotal Application Service (PAS) tile, select the checkbox labeled <b>Routers reject requests for Isolation Segments</b>.
 				</li>
 				<li>
 				Set the <b>Router Sharding Mode</b>  in the isolation segment tile to <b>Isolation Segment Only</b>.
@@ -22,16 +22,16 @@ You can configure router sharding for isolation segments depending on your use c
 	</tr>
 	<tr>
 		<td>
-			Deploying additional routers for Elastic Runtime</td>
+			Deploying additional routers for PAS</td>
 		<td>The flexibility of the configuration also supports deployment of a router that excludes all isolation segments.</td>
 		<td>
 			<ol>
-				<li>In the <b>Networking</b> configuration pane of the Elastic Runtime tile, select the checkbox labeled <b>Routers reject requests for Isolation Segments</b>.</li>
+				<li>In the <b>Networking</b> configuration pane of the PAS tile, select the checkbox labeled <b>Routers reject requests for Isolation Segments</b>.</li>
 				<li> 
   				Set the <b>Router Sharding Mode</b> in the isolation segment tile to <b>No isolation Segment</b>.</li>
   		</td>
 	</tr>
 </table>
 
-<p class="note"><strong>Note</strong>: For compute isolation only, you can leave the <b>Routers reject requests for isolation segments</b> checkbox unselected in the Elastic Runtime <b>Networking</b> pane. This is the default setting, which does not require any additional routers for the Isolation Segment tile. </p>
+<p class="note"><strong>Note</strong>: For compute isolation only, you can leave the <b>Routers reject requests for isolation segments</b> checkbox unselected in the PAS <b>Networking</b> pane. This is the default setting, which does not require any additional routers for the Isolation Segment tile. </p>
   

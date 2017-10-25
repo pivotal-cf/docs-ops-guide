@@ -1,6 +1,6 @@
 ---
 breadcrumb: Pivotal Cloud Foundry Documentation
-title: Configuring Authentication and Enterprise SSO for Elastic Runtime
+title: Configuring Authentication and Enterprise SSO for PAS
 owner: Identity
 ---
 
@@ -12,7 +12,7 @@ and single sign-on configuration with Lightweight Directory Access Protocol
 
 Refer to the instructions below to configure your deployment with SAML or LDAP.
 
-Connecting Elastic Runtime to either the LDAP or SAML external user store 
+Connecting Pivotal Application Service (PAS) to either the LDAP or SAML external user store 
 allows the User Account and Authentication (UAA) server to delegate 
 authentication to existing enterprise user stores.
 
@@ -30,7 +30,7 @@ Server when it attempts to authenticate a user through LDAP.
 
 ##<a id="configure-saml"></a>Configure PCF to Use a SAML Identity Provider
 
-To connect PCF Elastic Runtime with SAML, you must perform the following tasks:
+To connect PAS with SAML, you must perform the following tasks:
 
 * [Configure PCF as a Service Provider for SAML](#configure-pcf-for-saml)
 
@@ -40,7 +40,7 @@ To connect PCF Elastic Runtime with SAML, you must perform the following tasks:
 
 Follow the instructions below to configure PCF as a service provider for SAML.
 
-1. From the **Installation Dashboard**, click the **Elastic Runtime** tile.
+1. From the **Installation Dashboard**, click the PAS tile.
 
 1. Select the **Domains** tab and record your system domain.
 
@@ -72,7 +72,7 @@ your Pivotal login page, which you can access at `https://login.YOUR-SYSTEM-DOMA
 	<p class="note"><strong>Note</strong>: Refer to the <a href="../opsguide/external-user-management.html">Adding Existing SAML or
 LDAP Users to a PCF Deployment</a> topic for information about on-boarding SAML users and mapping them to PCF user roles.</p>
 
-1. Select the **Name ID Format** for your SAML Identity Provider. This translates to `username` on PCF Elastic Runtime. The default is `Email Address`.
+1. Select the **Name ID Format** for your SAML Identity Provider. This translates to `username` on PAS. The default is `Email Address`.
 
 1. For **Email Domain(s)**, enter a comma-separated list of the email domains for external users who will receive invitations to Apps Manager.
 
@@ -133,11 +133,11 @@ Identity Providers and how to integrate them with PCF:
 
 ## <a id="configure-ldap"></a>Configure LDAP as an Identity Provider for PCF
 
-To integrate the UAA with one or more LDAP servers, configure Elastic Runtime with your LDAP endpoint information as follows:
+To integrate the UAA with one or more LDAP servers, configure PAS with your LDAP endpoint information as follows:
 
 1. Log into the Operations Manager web interface.
 
-1. On the Product Dashboard, select **Pivotal Elastic Runtime**.
+1. On the Product Dashboard, select the PAS tile.
 
     <%=image_tag("uaa/er-tile.png")%>
 

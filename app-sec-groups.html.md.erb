@@ -80,25 +80,25 @@ The procedure for securing your deployment with ASGs varies depending on your ne
     </tr>
     <tr>
       <td>One Network</td>
-      <td><ul><li>One network for Ops Manager and the Ops Manager Director, Elastic Runtime, and services.</li></ul>
+      <td><ul><li>One network for Ops Manager and the Ops Manager Director, Pivotal Application Service (PAS), and services.</li></ul>
       <p class="note"><strong>Note</strong>: You cannot secure your deployment with ASGs if you have this network layout. Because PCF dynamically allocates IPs, they cannot be easily excluded in the case of a single network.</p>  
       </td>
     </tr>
     <tr>
       <td>Two Networks</td>
       <td><ul><li>One network for Ops Manager and the Ops Manager Director.</li>
-          <li>One network for Elastic Runtime and Services.</li></ul></td>
+          <li>One network for PAS and Services.</li></ul></td>
     </tr>
     <tr>
       <td>Three Networks</td>
       <td><ul><li>One network for Ops Manager and the Ops Manager Director.</li>
-          <li>One network for Elastic Runtime.</li>
+          <li>One network for PAS.</li>
           <li>One network for all services.</li></ul></td>
     </tr>
     <tr>
       <td>Three or More Networks</td>
       <td><ul><li>One network for Ops Manager and the Ops Manager Director.</li>
-          <li>One network for Elastic Runtime.</li>
+          <li>One network for PAS.</li>
           <li>One network for each service.</ul></td>
     </tr>
   </table>
@@ -131,7 +131,7 @@ Gather the CIDRs for each network in your deployment:
 
 #### <a name='initial-asgs'></a> Part B: Create and Bind ASGs that Block Network Access
 
-Create ASGs that block apps from sending traffic to the networks that host Ops Manager, Elastic Runtime, and, optionally, any installed services. 
+Create ASGs that block apps from sending traffic to the networks that host Ops Manager, PAS, and, optionally, any installed services. 
 
 1. Create a `config.yml` containing the appropriate content for your network layout and replace the indicated values with the CIDRs you gathered:
   * **Two Network Layout**:
@@ -142,7 +142,7 @@ Create ASGs that block apps from sending traffic to the networks that host Ops M
         - YOUR-ELASTIC-RUNTIME-AND-SERVICES-CIDR
         ```
    * **Three Network Layout**:
-      <p class="note"><strong>Note</strong>: If you only want to secure the Ops Manager and Elastic Runtime components, you can optionally exclude the services CIDR.</p>
+      <p class="note"><strong>Note</strong>: If you only want to secure the Ops Manager and PAS components, you can optionally exclude the services CIDR.</p>
 
          ```
           excluded_networks:
@@ -151,7 +151,7 @@ Create ASGs that block apps from sending traffic to the networks that host Ops M
           - YOUR-SERVICES-CIDR
          ```
     * **Three or More Network Layout**:
-      <p class="note"><strong>Note</strong>: If you only want to secure the Ops Manager and Elastic Runtime components, you can optionally exclude the services CIDRs.</p>
+      <p class="note"><strong>Note</strong>: If you only want to secure the Ops Manager and PAS components, you can optionally exclude the services CIDRs.</p>
 
         ```
         excluded_networks:
@@ -182,9 +182,9 @@ Create ASGs that block apps from sending traffic to the networks that host Ops M
 <p class="note"><strong>Note</strong>: This part is only necessary if you blocked apps from a network that hosts services in the previous part. If you did not block apps from a network that hosts services, proceed to <a href="#unbind-default">Step 4: Remove the Default ASG</a>.
 </p>
 
-<p class="note warning"><strong>WARNING</strong>: In the two network layout, Elastic Runtime and services share the same network. This means that each time you create an ASG that allows apps to access a new port and protocol within the network, you further expose the Elastic Runtime component VMs. This is a limitation of a two network layout. For guidance on network topology, see <a href="../refarch/index.html">Reference Architectures</a>.</p>
+<p class="note warning"><strong>WARNING</strong>: In the two network layout, PAS and services share the same network. This means that each time you create an ASG that allows apps to access a new port and protocol within the network, you further expose the PAS component VMs. This is a limitation of a two network layout. For guidance on network topology, see <a href="../refarch/index.html">Reference Architectures</a>.</p>
 
-Now that you have created ASGs to secure the Ops Man, Elastic Runtime, and service components, work with developers to create additional ASGs that give apps access to the services they need. 
+Now that you have created ASGs to secure the Ops Man, PAS, and service components, work with developers to create additional ASGs that give apps access to the services they need. 
   
 For example, in any space where apps need to access the MySQL for PCF service, follow the steps in [Creating Application Security Groups for MySQL](http://docs.pivotal.io/p-mysql/app-security-groups.html). 
 

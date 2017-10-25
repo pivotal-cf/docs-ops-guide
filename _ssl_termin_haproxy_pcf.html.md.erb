@@ -3,7 +3,7 @@ In PCF, perform the following steps to configure SSL termination on HAProxy:
 
 1. Navigate to the Ops Manager Installation Dashboard.
 
-1. Click the **Elastic Runtime** tile in the Installation Dashboard.
+1. Click the **Pivotal Application Service (PAS)** tile in the Installation Dashboard.
 
 1. Click **Networking**.
 
@@ -32,23 +32,23 @@ In PCF, perform the following steps to configure SSL termination on HAProxy:
        <li>Configure DNS to point at the IP address. See [How to Set Up DNS for HAProxy](#haproxy_dns).</li>
       </ol>
     </ul></td>
-    <td>For more information, see the Elastic Runtime networking configuration topic for [OpenStack](../customizing/openstack-er-config.html#networking) or [vSphere](../customizing/config-er-vmware.html#networking). 
+    <td>For more information, see the PAS networking configuration topic for [OpenStack](../customizing/openstack-er-config.html#networking) or [vSphere](../customizing/config-er-vmware.html#networking). 
     </td>
     <tr>
     <td>
     AWS, GCP or Azure
     </td>
     <td><ol><li>Leave the HAProxy IP address blank.</li>
-    <li>In the **Resource Config** page of Elastic Runtime tile, locate the HAProxy job.</li>
+    <li>In the **Resource Config** page of PAS tile, locate the HAProxy job.</li>
     <li>In the **Load Balancer** column for the HAProxy job, specify the appropriate IaaS load balancer resource.</li>
     </ol>
     </td>
-    <td>For more information, see the Elastic Runtime installation instructions for [AWS](../customizing/pcf-aws-manual-er-config.html#config-elb), [Azure](../customizing/azure-er-config.html#networking), or [GCP](../customizing/gcp-er-config.html#networking).
+    <td>For more information, see the PAS installation instructions for [AWS](../customizing/pcf-aws-manual-er-config.html#config-elb), [Azure](../customizing/azure-er-config.html#networking), or [GCP](../customizing/gcp-er-config.html#networking).
     </td>
      </tr>
    </table>
 
-1. In the **Certificate and Private Key for HAProxy and Router** fields, enter your PEM-encoded certificate and your PEM-encoded private key. You can either upload your own certificate or generate an RSA certificate in Elastic Runtime. For options and instructions on creating a certificate for your wildcard domains, see [Creating a Wildcard Certificate for PCF Deployments](../opsguide/security_config.html#create_or_obtain_certs).
+1. In the **Certificate and Private Key for HAProxy and Router** fields, enter your PEM-encoded certificate and your PEM-encoded private key. You can either upload your own certificate or generate an RSA certificate in PAS. For options and instructions on creating a certificate for your wildcard domains, see [Creating a Wildcard Certificate for PCF Deployments](../opsguide/security_config.html#create_or_obtain_certs).
 
 1. In the **Minimum version of TLS supported by HAProxy and Router**, select the minimum version of TLS to use in HAProxy communications. HAProxy use TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the HAProxy, see [TLS Cipher Suites](../security/networking/tls-info.html#ciphers). 
 

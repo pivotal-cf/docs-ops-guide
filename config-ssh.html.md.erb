@@ -7,13 +7,13 @@ owner: Diego
 
 To help troubleshoot applications hosted by a deployment, [Pivotal Cloud Foundry (PCF)](https://network.pivotal.io/products/pivotal-cf) supports SSH access into running applications. This document describes how to configure a PCF deployment to allow SSH access to application instances, and how to configure load balancing for those application SSH sessions.
 
-## <a id='diego-configuration'></a> Elastic Runtime Configuration
+## <a id='diego-configuration'></a> Pivotal Application Service Configuration
 
-This section describes how to configure Elastic Runtime to enable or disable deployment-wide SSH access to application instances. In addition to this deployment-wide configuration, Space Managers have SSH access control over their Space, and Space Developers have SSH access control over their to their Applications. For details about SSH access permissions, see the [Application SSH Overview](../devguide/deploy-apps/app-ssh-overview.html) topic.
+This section describes how to configure Pivotal Application Service (PAS) to enable or disable deployment-wide SSH access to application instances. In addition to this deployment-wide configuration, Space Managers have SSH access control over their Space, and Space Developers have SSH access control over their to their Applications. For details about SSH access permissions, see the [Application SSH Overview](../devguide/deploy-apps/app-ssh-overview.html) topic.
 
-To configure Elastic Runtime SSH access for application instances:
+To configure PAS SSH access for application instances:
 
-1. Open the **Pivotal Elastic Runtime** tile in Ops Manager.
+1. Open the PAS tile in Ops Manager.
 
 1. Under the **Settings** tab, select the **Application Containers** section.
 

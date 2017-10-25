@@ -2,7 +2,7 @@ Perform the following steps to configure SSL termination on the Gorouter and loa
 
 1. Create an A record in your DNS that points to your load balancer IP address.
 The A record associates the **System Domain** and **Apps Domain** that you
-configure in the **Domains** section of the Elastic Runtime tile with the IP address of
+configure in the **Domains** section of the Pivotal Application Service (PAS) tile with the IP address of
 your load balancer.
     <br />
     <br />
@@ -28,13 +28,13 @@ your load balancer.
 
 1. Navigate to the Ops Manager Installation Dashboard.
 
-1. Click the **Elastic Runtime** tile in the Installation Dashboard.
+1. Click the PAS tile in the Installation Dashboard.
 
 1. Click **Networking**.
 
-1. For PCF deployments on OpenStack or vSphere, choose IP addresses for the Gorouters from the subnet configured for Ops Manager and enter them in the **Router IPs** field. Then configure your load balancer to forward requests for the above domains to these IP addresses. For more information, see the Elastic Runtime networking configuration topic for [OpenStack](../customizing/openstack-er-config.html#networking) or [vSphere](../customizing/config-er-vmware.html#networking).  
+1. For PCF deployments on OpenStack or vSphere, choose IP addresses for the Gorouters from the subnet configured for Ops Manager and enter them in the **Router IPs** field. Then configure your load balancer to forward requests for the above domains to these IP addresses. For more information, see the PAS networking configuration topic for [OpenStack](../customizing/openstack-er-config.html#networking) or [vSphere](../customizing/config-er-vmware.html#networking).  
 
-1. In the **Certificate and Private Key for HAProxy and Router** fields, enter your PEM-encoded certificate and your PEM-encoded private key. You can either upload your own certificate or generate an RSA certificate in Elastic Runtime. For options and instructions on creating a certificate for your wildcard domains, see [Creating a Wildcard Certificate for PCF Deployments](../opsguide/security_config.html#create_or_obtain_certs).
+1. In the **Certificate and Private Key for HAProxy and Router** fields, enter your PEM-encoded certificate and your PEM-encoded private key. You can either upload your own certificate or generate an RSA certificate in PAS. For options and instructions on creating a certificate for your wildcard domains, see [Creating a Wildcard Certificate for PCF Deployments](../opsguide/security_config.html#create_or_obtain_certs).
 
 1. In the **Minimum version of TLS supported by HAProxy and Router**, select the minimum version of TLS to use in HAProxy and Gorouter communications. Gorouter use TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the Gorouter, see [Cipher Suites](#ciphers). 
 
@@ -52,7 +52,7 @@ your load balancer.
 1. If you are not using HAProxy, complete the following steps:
      1. Under **HAProxy forwards requests to Router over TLS**, select **Disable**.
      1. In the **Configure the CF Router support for the X-Forwarded-Client-Cert header** field, select any of the available options depending on your client application needs. For more information about XFCC header forwarding, see [Forward Client Certificate to Applications](../concepts/http-routing.html#forward-client-cert).
-     1. In the Elastic Runtime tile, click **Resource Config**. 
+     1. In the PAS tile, click **Resource Config**. 
      1. In the **Instances** drop down for the **HAPRoxy** job, select `0` instances.
      1. Click **Save**.
      

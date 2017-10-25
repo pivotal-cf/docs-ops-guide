@@ -1,4 +1,4 @@
-Elastic Runtime uses the following properties:
+Pivotal Application Service (PAS) uses the following properties:
 	
 * **Unhealthy Threshold**: Specifies the amount of time, in seconds, that the Router continues to accept connections before shutting down. During this period, the healthcheck reports `unhealthy` to cause load balancers to fail over to other routers. You should set this value greater than or equal to the maximum amount of time it could take your load balancer to consider a router instance unhealthy, given contiguous failed healthchecks.
 
