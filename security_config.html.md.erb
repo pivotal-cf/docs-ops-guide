@@ -10,7 +10,7 @@ This topic describes how to configure SSL/TLS termination for HTTP traffic in Pi
 
 ## <a id="ssl_term"></a> About SSL/TLS Termination in PAS
 
-When you deploy PCF, you must configure the SSL/TLS termination for HTTP traffic in your PAS. You can terminate SSL/TLS at all of the following points:
+When you deploy PCF, you must configure the SSL/TLS termination for HTTP traffic in your PAS configuration. You can terminate SSL/TLS at all of the following points:
 
 * Load balancer
 * Load balancer and Gorouter
@@ -26,7 +26,7 @@ The following sections describe the IaaS-specific certificate requirements for d
 
 ### <a id="aws_certs"></a> Certificate Requirements on AWS
 
-If you are deploying PCF on AWS, then the certificate that you configure in PAS match the certificate that you upload to AWS as a prerequisite to PCF deployment. 
+If you are deploying PCF on AWS, then the certificate that you configure in PAS must match the certificate that you upload to AWS as a prerequisite to PCF deployment. 
 
 ### <a id="gcp_certs"></a> Certificate Requirements on GCP
 
