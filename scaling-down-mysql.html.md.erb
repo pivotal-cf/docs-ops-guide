@@ -23,7 +23,7 @@ Before scaling down your MySQL cluster, perform the following actions to ensure 
 	Not logged in. Use 'cf login' to log in.
 	</pre>
 
-1. Log in with your User Account and Authentication (UAA) Administrator user credentials. Obtain these credentials by clicking the **Credentials** tab of the Elastic Runtime tile, locating the **Admin Credentials** entry in the **UAA** section, and clicking **Link to Credential**.
+1. Log in with your User Account and Authentication (UAA) Administrator user credentials. Obtain these credentials by clicking the **Credentials** tab of the Pivotal Application Service (PAS) tile, locating the **Admin Credentials** entry in the **UAA** section, and clicking **Link to Credential**.
 	<pre class="terminal">
 	$ cf login -u admin
 	API endpoint: http<span>s:</span>//api.YOUR-SYSTEM-DOMAIN
@@ -46,7 +46,7 @@ Before scaling down your MySQL cluster, perform the following actions to ensure 
 	</pre>
 
 1. Obtain the IP addresses of your MySQL server by performing the following steps:
-  1. From the PCF **Installation Dashboard**, click the **Pivotal Elastic Runtime** tile.
+  1. From the PCF **Installation Dashboard**, click the **Pivotal Application Service** tile.
   1. Click the **Status** tab.
   1. Record the IP addresses for all instances of the **MySQL Server** job.
 
@@ -84,7 +84,7 @@ Before scaling down your MySQL cluster, perform the following actions to ensure 
 
 ## <a id="scale-down"></a>Scale Down Your Cluster
 
-1. From the PCF **Installation Dashboard**, click the **Pivotal Elastic Runtime** tile.
+1. From the PCF **Installation Dashboard**, click the **Pivotal Application Service** tile.
 1. Select **Resource Config**.
 1. Use the drop-down menu to change the **Instances** count for **MySQL Server** to `1`.
 1. Click **Save** to apply the changes.

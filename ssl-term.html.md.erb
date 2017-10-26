@@ -13,7 +13,7 @@ Production environments should instead use a highly-available customer-provided
 load balancing solution.
 
 Select an SSL termination method to determine the steps you must take to
-configure Elastic Runtime.
+configure Pivotal Application Service (PAS).
 
 ##<a id="haproxy"></a>Using the Pivotal HAProxy Load Balancer##
 
@@ -26,11 +26,11 @@ signed certificate from a well-known certificate authority.
 <%= partial '../customizing/known-issue-self-signed-certs' %>
 
 To use the HAProxy load balancer, you must create a wildcard A record in your
-DNS and configure three fields in the Elastic Runtime product tile.
+DNS and configure three fields in the PAS product tile.
 
 1. Create an A record in your DNS that points to the HAProxy IP address. The A
 record associates the **System Domain** and **Apps Domain** that you configure
-in the **Domains** section of the Elastic Runtime tile with the HAProxy IP address.
+in the **Domains** section of the PAS tile with the HAProxy IP address.
     <br />
     <br />
     For example, with `cf.example.com` as the main subdomain for your CF install
@@ -64,7 +64,7 @@ should return your HAProxy IP address.
     anything.cf.example.com has address 203.0.113.1
 	</pre>
 
-1. From the PCF Ops Manager Dashboard, click on the Elastic Runtime tile.
+1. From the PCF Ops Manager Dashboard, click on the PAS tile.
 
 1. Select **Networking**.
 
@@ -86,14 +86,14 @@ balancing solution that does the following:
 * Adds appropriate `x-forwarded-for` and `x-forwarded-proto` HTTP headers
 
 You must register static IP addresses for PCF with your load balancer and
-configure three fields in the Elastic Runtime product tile.
+configure three fields in the PAS product tile.
 
 1. Register one or more static IP address for PCF with your load
 balancer.
 
 1. Create an A record in your DNS that points to your load balancer IP address.
 The A record associates the **System Domain** and **Apps Domain** that you
-configure in the **Domains** section of the Elastic Runtime tile with the IP address of
+configure in the **Domains** section of the PAS tile with the IP address of
 your load balancer.
     <br />
     <br />
@@ -117,7 +117,7 @@ your load balancer.
     </table>
 
 
-1. From the PCF Ops Manager Dashboard, click on the Elastic Runtime tile.
+1. From the PCF Ops Manager Dashboard, click on the PAS tile.
 
 1. Select **Networking**.
 

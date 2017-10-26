@@ -1,27 +1,27 @@
 ---
-title: Scaling Elastic Runtime
+title: Scaling PAS
 owner: RelEng
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic discusses how to scale Elastic Runtime for different deployment scenarios. To increase the capacity and availability of the Pivotal Cloud Foundry (PCF) platform, and to decrease the chances of downtime, you can scale a deployment up using the instructions below.
+This topic discusses how to scale Pivotal Application Service (PAS) for different deployment scenarios. To increase the capacity and availability of the Pivotal Cloud Foundry (PCF) platform, and to decrease the chances of downtime, you can scale a deployment up using the instructions below.
 
 If you want to make a PCF configuration highly available, see the [High Availability in CF](./../concepts/high-availability.html) topic.
 
-<p class="note"><strong>Note</strong>: In PCF 1.11 and later, Elastic Runtime defaults to a highly available resource configuration.</p>
+<p class="note"><strong>Note</strong>: In PCF 1.11 and later, PAS defaults to a highly available resource configuration.</p>
 
 ##<a id='scalingtable'></a> Scaling Recommendations
 
 <%= partial vars.scale_table %>
 
-##<a id='scaleup'></a>Scaling Up Elastic Runtime##
+##<a id='scaleup'></a>Scaling Up PAS##
 
-To scale up Elastic Runtime instances, perform the following steps:
+To scale up PAS instances, perform the following steps:
 
 1. Navigate to the Pivotal Cloud Foundry Operations Manager Installation Dashboard.
 
-1. Click the Elastic Runtime tile in the Installation Dashboard.
+1. Click the PAS tile in the Installation Dashboard.
 
 1. Select **Resource Config**.
 <%= image_tag("images/scaling-ert.png") %>
@@ -29,13 +29,13 @@ To scale up Elastic Runtime instances, perform the following steps:
 1. To scale your deployment horizontally, increase the number of **Instances** of a job.  See <a href="#scalingtable">Scaling Recommendations</a> for guidance on the number of job instances required to ensure high availability.
   <p class="note"><strong>Note</strong>: In PCF 1.12, you cannot scale the Autoscaler job to greater than one instance.</p>
 
-1. To scale your deployment vertically, adjust the **Persistent Disk Type** and **VM Type** of a job to allocate more disk space and memory. If you choose **Automatic** from the drop-down menu, Elastic Runtime uses the recommended amount of resources for the job.
+1. To scale your deployment vertically, adjust the **Persistent Disk Type** and **VM Type** of a job to allocate more disk space and memory. If you choose **Automatic** from the drop-down menu, PAS uses the recommended amount of resources for the job.
 
 1. Click **Save**.
 
 1. Return to the **Installation Dashboard** and click **Apply Changes**.
   
-##<a id='scaledown'></a>Scaling Down Elastic Runtime##
+##<a id='scaledown'></a>Scaling Down PAS##
  
 If you are deploying a PCF configuration that does not need to be highly available, Pivotal recommends scaling down job instances to the minimum number required for a functional deployment.
 
@@ -43,7 +43,7 @@ To scale down your deployment, perform the following steps:
 
 1. Navigate to the Pivotal Cloud Foundry Operations Manager Installation Dashboard.
 
-1. Click the Elastic Runtime tile in the Installation Dashboard.
+1. Click the PAS tile in the Installation Dashboard.
 
 1. Select **Resource Config**.
 <%= image_tag("images/scaling-ert.png") %>
@@ -54,7 +54,7 @@ To scale down your deployment, perform the following steps:
 
 ### <a id="diskscale"></a>Scaling Down Jobs with Persistent Disk
 
-If you scale down or delete a job that uses persistent disk, Elastic Runtime marks the disk as "orphaned." Orphaned disks are not attached to any job, and Elastic Runtime deletes them after five days. 
+If you scale down or delete a job that uses persistent disk, PAS marks the disk as "orphaned." Orphaned disks are not attached to any job, and PAS deletes them after five days. 
 
 Use the BOSH CLI to list and recover orphaned disks. Follow the instructions in the ["Prepare to Use the BOSH CLI"](../customizing/trouble-advanced.html#prepare) section of the "Advanced Troubleshooting with the BOSH CLI" topic to log in to the BOSH Director, and then follow the procedures in ["Orphaned Disks"](http://bosh.io/docs/persistent-disks.html#orphaned-disks) in the BOSH documentation.
 
@@ -148,12 +148,12 @@ If you are using an external load balancer, choose the following values in the R
       </tr>
 </table>
 
-For more information about configuring load balancers in the Resource Config section of Elastic Runtime, see the "Deploying Elastic Runtime" topic for your IaaS. For example:
+For more information about configuring load balancers in the Resource Config section of PAS, see the "Deploying PAS" topic for your IaaS. For example:
 
-* [Deploying Elastic Runtime on AWS](../customizing/pcf-aws-manual-er-config.html)
-* [Deploying Elastic Runtime on Azure](../customizing/azure-er-config.html)
-* [Deploying Elastic Runtime on GCP](../customizing/gcp-er-config.html)
-* [Installing Elastic Runtime after Deploying Pivotal Cloud Foundry on OpenStack](../customizing/openstack-er-config.html)
-* [Configuring Elastic Runtime for vSphere](../customizing/config-er-vmware.html)
+* [Deploying PAS on AWS](../customizing/pcf-aws-manual-er-config.html)
+* [Deploying PAS on Azure](../customizing/azure-er-config.html)
+* [Deploying PAS on GCP](../customizing/gcp-er-config.html)
+* [Installing PAS after Deploying Pivotal Cloud Foundry on OpenStack](../customizing/openstack-er-config.html)
+* [Configuring PAS for vSphere](../customizing/config-er-vmware.html)
 
 

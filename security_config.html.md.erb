@@ -5,12 +5,12 @@ owner: RelEng
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to configure SSL/TLS termination for HTTP traffic in [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) Elastic Runtime with an SSL certificate, as part of the process of configuring Elastic Runtime for deployment. 
+This topic describes how to configure SSL/TLS termination for HTTP traffic in Pivotal Application Service (PAS) with an SSL certificate, as part of the process of configuring PAS for deployment. 
 
 
-## <a id="ssl_term"></a> About SSL/TLS Termination in PCF Elastic Runtime
+## <a id="ssl_term"></a> About SSL/TLS Termination in PAS
 
-When you deploy PCF, you must configure the SSL/TLS termination for HTTP traffic in your Elastic Runtime configuration. You can terminate SSL/TLS at all of the following points:
+When you deploy PCF, you must configure the SSL/TLS termination for HTTP traffic in your PAS. You can terminate SSL/TLS at all of the following points:
 
 * Load balancer
 * Load balancer and Gorouter
@@ -26,22 +26,22 @@ The following sections describe the IaaS-specific certificate requirements for d
 
 ### <a id="aws_certs"></a> Certificate Requirements on AWS
 
-If you are deploying PCF on AWS, then the certificate that you configure in Elastic Runtime must match the certificate that you upload to AWS as a prerequisite to PCF deployment. 
+If you are deploying PCF on AWS, then the certificate that you configure in PAS match the certificate that you upload to AWS as a prerequisite to PCF deployment. 
 
 ### <a id="gcp_certs"></a> Certificate Requirements on GCP
 
-If you are deploying PCF on GCP, then you must add your certificate to both the frontend configuration of your HTTP Load Balancer and to the Gorouter (Elastic Runtime Router). For more information, see [Create Instance Groups and the HTTP(S) Load Balancer](../customizing/gcp-prepare-env.html#create-http-and-instance-group).
+If you are deploying PCF on GCP, then you must add your certificate to both the frontend configuration of your HTTP Load Balancer and to the Gorouter (PAS Router). For more information, see [Create Instance Groups and the HTTP(S) Load Balancer](../customizing/gcp-prepare-env.html#create-http-and-instance-group).
 
-GCP load balancers actually forward both encrypted (WebSockets) and unencrypted (HTTP and TLS-terminated HTTPS) traffic to the Gorouter. When configuring the point-of-entry for a GCP deployment, select <b>Forward SSL to Elastic Runtime Router</b> in your Elastic Runtime network configuration. This point-of-entry selection accommodates this special characteristic of GCP deployments.
+GCP load balancers actually forward both encrypted (WebSockets) and unencrypted (HTTP and TLS-terminated HTTPS) traffic to the Gorouter. When configuring the point-of-entry for a GCP deployment, select <b>Forward SSL to PAS Router</b> in your PAS network configuration. This point-of-entry selection accommodates this special characteristic of GCP deployments.
 
 ##<a id="create_or_obtain_certs"></a> Creating a Wildcard Certificate for PCF Deployments
 
-This section describes how to create or generate a certificate for your PCF Elastic Runtime environment. If you are deploying to a production environment, you should obtain a certificate from a trusted authority (CA).
+This section describes how to create or generate a certificate for your PAS environment. If you are deploying to a production environment, you should obtain a certificate from a trusted authority (CA).
 
 For internal development or testing environments, you have two options for creating a required SSL certificates. 
 
 * You can create a self-signed certificate, or 
-* You can have [Elastic Runtime generate the certificate](#ert_certgen) for you. 
+* You can have [PAS generate the certificate](#ert_certgen) for you. 
 
 To create a certificate, you can use a wide variety of tools including OpenSSL, Java's keytool, Adobe Reader, and Apple's Keychain to generate a Certificate Signing Request (CSR). 
 
@@ -59,11 +59,11 @@ In either case for either self-signed or trusted single certificates, apply the 
 
     <p class="note"><strong>Note</strong>: SSL certificates generated for wildcard DNS records only work for a single domain name component or component fragment. For example, a certificate generated for <code>*.EXAMPLE.com</code> does not work for <code>*.apps.EXAMPLE.com</code> and <code>*.system.EXAMPLE.com</code>. The certificate must have both <code>*.apps.EXAMPLE.com</code> and <code>*.system.EXAMPLE.com</code> attributed to it. </p>
     
-### <a id="ert_certgen"></a> Generating a RSA Certificate in Elastic Runtime
+### <a id="ert_certgen"></a> Generating a RSA Certificate in PAS
 
 1. Navigate to the Ops Manager Installation Dashboard.
 
-1. Click the **Elastic Runtime** tile in the Installation Dashboard.
+1. Click the **Pivotal Application Service** tile in the Installation Dashboard.
 
 1. Click **Networking**.
  

@@ -1,20 +1,20 @@
 ---
-title: Understanding the Elastic Runtime Network Architecture
+title: Understanding the PAS Network Architecture
 owner: Routing
 ---
 
 <strong><%= modified_date %></strong>
 
-The diagram below shows the key [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) Elastic Runtime network components.
+The diagram below shows the key Pivotal Application Service (PAS) network components.
 <%= image_tag("er_network.png") %>
 
 # <a id='lb'></a>Load Balancer #
 
-Elastic Runtime includes an HAProxy load balancer for terminating SSL. If you do not want to serve SSL certificates for Elastic Runtime on your own load balancer use the HAProxy. If you do choose to manage SSL yourself, omit the HAProxy by setting the number of instances to zero in Ops Manager.
+PAS includes an HAProxy load balancer for terminating SSL. If you do not want to serve SSL certificates for PAS on your own load balancer use the HAProxy. If you do choose to manage SSL yourself, omit the HAProxy by setting the number of instances to zero in Ops Manager.
 
 # <a id='router'></a>Router #
 
-The routers in Elastic Runtime are responsible for routing HTTP requests from web clients to application instances in a load balanced fashion. The routers are dynamically configured based on users mapping of applications to location URLs called routes, and updated by the runtime service as application instances are dynamically distributed.
+The routers in PAS are responsible for routing HTTP requests from web clients to application instances in a load balanced fashion. The routers are dynamically configured based on users mapping of applications to location URLs called routes, and updated by the runtime service as application instances are dynamically distributed.
 
 For high availability, the routers are designed to be horizontally scalable. Configure your load balancer to distribute incoming traffic across all router instances.
 

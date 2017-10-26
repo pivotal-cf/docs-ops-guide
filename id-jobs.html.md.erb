@@ -1,22 +1,22 @@
 ---
-title: Identifying Elastic Runtime Jobs Using vCenter
+title: Identifying PAS Jobs Using vCenter
 owner: RelEng
 ---
 
 <strong><%= modified_date %></strong>
 
 To effectively monitor, control, and manage the virtual machines making up your
-Elastic Runtime deployment, you may need to identify which VM corresponds to a
-particular job in Elastic Runtime.
-You can find the CID of a particular VM from [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) Operations Manager by navigating to **Elastic Runtime > Status**.
+Pivotal Application Service (PAS) deployment, you may need to identify which VM corresponds to a
+particular job in PAS.
+You can find the CID of a particular VM from [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) Operations Manager by navigating to PAS **Status**.
 
-If you have deployed Elastic Runtime to VMware vSphere, you can also identify
-which Elastic Runtime job corresponds to which VM using the vCenter vSphere
+If you have deployed PAS to VMware vSphere, you can also identify
+which PAS job corresponds to which VM using the vCenter vSphere
 client.
 
 <p class="note"><strong>Note</strong>: The CID shown in Ops Manager is the name of the machine in vCenter.</p>
 
-## <a id='id-jobs'></a>Identifying Elastic Runtime Jobs Using vCenter ##
+## <a id='id-jobs'></a>Identifying PAS Jobs Using vCenter ##
 
 1. Launch the vSphere client and log in to the vCenter Server system.
 
@@ -24,7 +24,7 @@ client.
 
     <%= image_tag("images/id/host-cluster.jpg") %>
 
-1. Select the Resource Pool containing your Elastic Runtime deployment.
+1. Select the Resource Pool containing your PAS deployment.
 
     <%= image_tag("images/id/deployment.jpg") %>
 
@@ -36,7 +36,7 @@ client.
 
     <%= image_tag("images/id/job.jpg") %>
 
-1. The job column displays the Elastic Runtime job associated with each virtual
+1. The job column displays the PAS job associated with each virtual
 machine.
 
     <%= image_tag("images/id/jobs.jpg") %>

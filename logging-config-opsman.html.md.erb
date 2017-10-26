@@ -1,5 +1,5 @@
 ---
-title: Configuring Logging in Elastic Runtime
+title: Configuring Logging in PAS
 owner: APM
 ---
 
@@ -50,12 +50,12 @@ Pivotal Cloud Foundry (PCF) generates two types of logs, _system logs_ from PCF 
 
 To forward system log messages to an external Reliable Event Logging Protocol (RELP) server, complete the following steps:
 
-1. From the Elastic Runtime tile, Select **System Logging**.
+1. From the Pivotal Application Service (PAS) tile, Select **System Logging**.
 	<%= image_tag 'sys-logging.png' %>
 1. To include security events in your log stream, select the **Enable Cloud Controller security event logging** checkbox.
 This logs all API requests, including the endpoint, user, source IP, and request result, in the Common Event Format (CEF).
 1. Enter the IP address of your syslog server in **External Syslog Aggregator Hostname** and its port in **External Syslog Aggregator Port**. The default port for a syslog server is `514`.
-<p class="note"><strong>Note</strong>: The host must be reachable from the Elastic Runtime network, accept TCP connections, and use the RELP protocol. Ensure your syslog server listens on external interfaces.</p>
+<p class="note"><strong>Note</strong>: The host must be reachable from the PAS network, accept TCP connections, and use the RELP protocol. Ensure your syslog server listens on external interfaces.</p>
 1. Select an **External Syslog Network Protocol** to use when forwarding logs.
 1. For the **Syslog Drain Buffer Size**, enter the number of messages the Doppler server can hold from Metron agents before the server starts to drop them. See the [Loggregator Guide for Cloud Foundry Operators](../loggregator/log-ops-guide.html) topic for more details.
 1. Click **Save**.
@@ -72,7 +72,7 @@ Follow the instructions below to scale the Loggregator system. For guidance on m
 
 ### <a id="instances"></a> Add Component VM Instances
 
-1. From the **Elastic Runtime** tile, select **Resource Config**.
+1. From the PAS tile, select **Resource Config**.
 1. Increase the number in the **Instances** column of the component you want to scale. You can add instances for the following Loggregator components: 
 	* **Loggregator Traffic Controller**
 		<p class="note"><strong>Note</strong>: The <a href="../loggregator/architecture.html#metron">Reverse Log Proxy (RLP)</a> BOSH job is colocated with the Traffic Controller VM. If you want to scale Loggregator to handle more logs for syslog drains, you can add instances of the Traffic Controller.</p>
@@ -92,7 +92,7 @@ App traffic logging lets network security teams audit C2C traffic, by seeing all
 
 To enable app traffic logging:
 
-1. From Ops Manager, navigate to the **Pivotal Elastic Runtime** tile > **Networking** pane.
+1. From Ops Manager, navigate to the **Pivotal Application Service** tile > **Networking** pane.
 
 1. Under **Log traffic for all accepted/denied application packets**, select **Enable (will increase log volume)** or **Disable** to enable or disable app traffic logging.
 

@@ -28,7 +28,7 @@ The Notifications Service is deployed as a suite of applications to the `notific
 
 ### <a id="smtp"></a> Create a SMTP Server ASG
 
-1. Navigate to the Ops Manager **Installation Dashboard** and click the **Pivotal Elastic Runtime** tile > **Settings** tab. 
+1. Navigate to the Ops Manager **Installation Dashboard** and click the **Pivotal Application Service** tile > **Settings** tab. 
 
 1. Record the information in the **Address of SMTP Server** and **Port of SMTP Server** fields. 
 
@@ -57,7 +57,7 @@ The Notifications Service is deployed as a suite of applications to the `notific
 
 If you are using the built-in HAProxy as your load balancer, follow this procedure. If you are using an external load balancer, you must obtain your HAProxy IPs from the service you are using. 
 
-1. Record the **HAProxy IPs** in the **Pivotal Elastic Runtime Tile** > **Settings** > **Networking** tab. 
+1. Record the **HAProxy IPs** in the **Pivotal Application Service** tile > **Settings** > **Networking** tab. 
 
 1. Create a `load-balancer-https.json` file. For `destination`, use the **HAProxy IPs** you recorded above.
 
@@ -80,7 +80,7 @@ If you are using the built-in HAProxy as your load balancer, follow this procedu
 
 <p class="note"><strong>Note</strong>: If you use external services, the IP addresses, ports, and protocols depend on the service.</p>
 
-1. Navigate to the Ops Manager **Installation Dashboard** > **Pivotal Elastic Runtime** tile > **Settings** > **Assign AZs and Networks** section. 
+1. Navigate to the Ops Manager **Installation Dashboard** > **Pivotal Application Service** tile > **Settings** > **Assign AZs and Networks** section. 
 
 1. Navigate to the network selected in the dropdown.
 

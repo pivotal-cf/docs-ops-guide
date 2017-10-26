@@ -5,7 +5,7 @@ owner: Ops Manager
 
 <strong><%= modified_date %></strong>
 
-This topic describes critical factors to consider when evaluating the type of file storage to use in your Pivotal Cloud Foundry (PCF) deployment. The [Elastic Runtime blobstore](../concepts/architecture/cloud-controller.html#blob-store) relies on the file storage system to read and write resources, app packages, and droplets.
+This topic describes critical factors to consider when evaluating the type of file storage to use in your Pivotal Cloud Foundry (PCF) deployment. The [Pivotal Application Service (PAS) blobstore](../concepts/architecture/cloud-controller.html#blob-store) relies on the file storage system to read and write resources, app packages, and droplets.
 
 During an upgrade of PCF, file storage with insufficient IOPS numbers can negatively impact the performance and stability of your PCF deployment. 
 
@@ -17,7 +17,7 @@ To see an example of system performance and IOPS load during an upgrade, refer t
 
 ## <a id="types"></a> Selecting Internal or External File Storage
 
-When you deploy PCF, you can select internal file storage or external file storage, either network-accessible or IaaS-provided, as an option in the Elastic Runtime tile. 
+When you deploy PCF, you can select internal file storage or external file storage, either network-accessible or IaaS-provided, as an option in the PAS tile. 
 
 Selecting internal storage causes PCF to deploy a dedicated virtual machine (VM) that uses either NFS or WebDAV for file storage. Selecting external storage allows you to configure file storage provided in network-accessible location or by an IaaS, such as Amazon S3, Google Cloud Storage, or Azure Storage. 
 
@@ -31,7 +31,7 @@ As a best-effort calculation, estimate the total number of bits needed to move d
 
 As a first calculation, determine the number of Diego cells that your deployment currently uses.  
 
-To view the number of Diego cell instances currently running in your deployment, see the **Resource Config** section of your Elastic Runtime tile.
+To view the number of Diego cell instances currently running in your deployment, see the **Resource Config** section of your PAS tile.
 
 If you expect to scale up the number of instances, use the anticipated scaled number.
 
@@ -59,6 +59,6 @@ For more information about how Diego cells are upgraded, see the [Managing Diego
 
 ## <a id="rel_links"></a> Related Links
 
-* [How to use Elastic Runtime blob storage data](https://discuss.pivotal.io/hc/en-us/articles/217982188-How-to-use-Elastic-Runtime-blob-storage-data-)
+* [How to use PAS blob storage data](https://discuss.pivotal.io/hc/en-us/articles/217982188-How-to-use-Elastic-Runtime-blob-storage-data-)
 * [Upgrading Pivotal Cloud Foundry](../customizing/upgrading-pcf.html)
 * [Managing Diego Cell Limits During an Upgrade](../adminguide/diego-cell-upgrade.html)
