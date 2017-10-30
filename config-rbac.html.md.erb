@@ -8,12 +8,22 @@ owner: Ops Manager
 This topic describes how to customize role-based access control (RBAC) in Ops Manager.
 Use RBAC to manage which operators in your organization can make deployment changes, view credentials, and manage user roles in Ops Manager.
 
+When you install a new instance of Ops Manager, RBAC is enabled by default.
+If you upgrade from an older Ops Manager instance, you must enable RBAC and assign roles to users before they can access Ops Manager.
+If you do not assign any roles to a user, they cannot log in to Ops Manager.
+
 For information about configuring Ops Manager to use internal authentication or SAML authentication, refer to the Director configuration topic for your IaaS.
 For example, see [Configuring Ops Manager Director on GCP](../customizing/gcp-om-config.html#access-om).
 
 ## <a id="about"></a>Understand Roles in Ops Manager
 
-Ops Manager supports the following roles:
+Ops Manager supports the roles in the following diagram:
+
+<%= image_tag("roles-diagram.png") %>
+
+The Ops Manager Administrator role also includes the privileges listed in Full Control and Restricted Control.
+The Full Control role also includes the privileges listed in Restricted Control.
+See the following table for more information.
 
 | **Ops Manager Role** | **Role Definition** | **UAA Scope** |
 |----------------------+---------------------+---------------|
@@ -21,10 +31,7 @@ Ops Manager supports the following roles:
 | **Full Control** | Operators can make configuration changes in Ops Manager, click **Apply Changes**, and view credentials in the **Credentials** tab and Ops Manager API endpoints. | `opsman.full_control` |
 | **Restricted Control** | Operators can make configuration changes in Ops Manager and click **Apply Changes**. They cannot view credentials in the **Credentials** tab or Ops Manager API endpoints. | `opsman.restricted_control` |
 
-When you install a new Ops Manager instance, RBAC is enabled and all users have the Ops Manager Administrator role by default.
-
-If you upgrade from an older Ops Manager instance, after you enable RBAC you must assign users one of the roles listed above before they can access Ops Manager.
-If you do not assign any of the above roles to a user, they cannot log in to Ops Manager.
+When you install a new Ops Manager instance, all existing users have the Ops Manager Administrator role by default.
 
 To assign one of the above roles to an operator, follow the procedure for granting access using either [internal authentication](#write-internal) or [SAML authentication](#write-saml).
 
@@ -45,7 +52,7 @@ Perform the following procedure to enable RBAC in Ops Manager:
 
 ### <a id="assign-role"></a>Step 2: Assign a Role
 
-<p class="note warning"><strong>WARNING</strong>: Confirm that you have enabled RBAC before you assign roles to any users.</p>
+<p class="note warning"><strong>WARNING</strong>: Do not assign roles before you enable RBAC.</p>
 
 1. Target your UAA server and log in as an admin: 
     <pre>
