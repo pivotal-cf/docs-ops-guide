@@ -35,14 +35,14 @@ Before scaling down your MySQL cluster, perform the following actions to ensure 
 
 1. Create a test organization to verify the database across all nodes:
 	<pre class="terminal">
-	$ cf create-org validation-testing
-	Creating org validation-testing as admin...
+	$ cf create-org data-integrity-test-organization
+	Creating org data-integrity-test-organization as admin...
 	OK
 
-	Assigning role OrgManager to user admin in org validation-testing ...
+	Assigning role OrgManager to user admin in org data-integrity-test-organization ...
 	OK
 
-	TIP: Use 'cf target -o validation-testing' to target new org
+	TIP: Use 'cf target -o data-integrity-test-organization' to target new org
 	</pre>
 
 1. Obtain the IP addresses of your MySQL server by performing the following steps:
