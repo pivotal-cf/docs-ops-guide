@@ -160,8 +160,7 @@ To integrate the UAA with one or more LDAP servers, configure PAS with your LDAP
 
 1. For **User Search Filter**, enter a string that defines LDAP User search criteria. These search criteria allow LDAP to perform more effective and efficient searches. For example, the standard LDAP search filter `cn=Smith` returns all objects with a common name equal to `Smith`.
 <br><br>
-In the LDAP search filter string that you use to configure Elastic 
-Runtime,	use `{0}` instead of the username. For example, use `cn={0}` to return 
+In the LDAP search filter string that you use to configure PAS,	use `{0}` instead of the username. For example, use `cn={0}` to return 
 all LDAP objects with the same common name as the username.
 <br><br>
 In addition to `cn`, other attributes commonly searched for and returned are `mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
