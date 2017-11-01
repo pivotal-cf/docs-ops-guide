@@ -1,54 +1,32 @@
 ---
 breadcrumb: Pivotal Cloud Foundry Documentation
-title: Operator's Guide
+title: PCF Operator Guide
+owner: PCF Documentation
 ---
 
-This guide covers networking and user management for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) operators.
+##<a id='who'></a>For PCF Operators
 
-## Table of Contents ##
+This guide shows you how to run a PCF platform. This ongoing responsibility may include but is not limited to:
 
-* <a href="./er_network.html" class="subnav">Understanding the PAS Network Architecture</a>
+* Configuring PCF capabilities
+* Integrating PCF with external systems
+* Updating PCF and installed products
+* Monitoring PCF health and performance
+* Adjusting PCF resources and options to fix health or performance issues
+* Diagnosing and troubleshooting PCF problems
+* Managing Pivotal Application Service (PAS) users, resources, and infrastructure
+* Installing software services and otherwise enabling PCF developers
+* Maintaining PCF
+* Keeping PCF secure
 
-* <a href="./api-endpoint.html" class="subnav">Identifying the API Endpoint for your PAS Instance</a>
+If you do these things, you are a PCF **operator**, and the contents of this guide are for you.
 
-* <a href="./creating-account.html" class="subnav">Creating New PAS User Accounts</a>
+##<a id='contents'></a>Guide Contents
 
-* <a href="./ssl-term-haproxy.html" class="subnav">Configuring SSL/TLS Termination at HAProxy</a>
+This guide has two parts. The first part explains the PCF planning and installation process, and the second describes the main tools that operators use when installing PCF.
 
-* <a href="./config-proxy.html" class="subnav">Configuring Proxy Settings for All Applications</a>
+### Planning and Installation
 
-* <a href="./app-sec-groups.html" class="subnav">Restricting App Access to Internal PCF Components</a>
 
-* <a href="./notifications-asg.html" class="subnav">Configuring Application Security Groups for Email Notifications</a>
 
-* <a href="../opsguide/config-ssh.html" class="subnav">Configuring SSH Access for PCF</a>
 
-* <a href="./id-jobs.html" class="subnav">Identifying PAS Jobs Using vCenter</a>
-
-* <a href="./logging-config-opsman.html" class="subnav">Configuring Logging in PAS</a>
-
-* <a href="./pw-policy.html" class="subnav">Configuring UAA Password Policy</a>
-
-* <a href="./auth-sso.html" class="subnav">Configuring Authentication and Enterprise SSO for PAS</a>
-
-* <a href="./external-user-management.html" class="subnav">Adding Existing SAML or LDAP Users to a Pivotal Cloud Foundry Deployment</a>
-
-* <a href="./switching-domains.html" class="subnav">Switching Application Domains</a>
-
-* <a href="./scaling-ert-components.html" class="subnav">Scaling PAS</a>
-
-* <a href="../opsguide/scaling-down-mysql.html" class="subnav">Scaling Down Your MySQL Cluster</a>
-
-* <a href="./docker-registry.html" class="subnav">Using Docker Registries</a>
-
-* <a href="./config-cell-cleanup.html" class="subnav">Configuring Cell Disk-Cleanup Scheduling</a>
-
-* <a href="./custom-branding.html" class="subnav">Custom Branding Apps Manager</a>
-
-* <a href="./accounting-report.html" class="subnav">Monitoring App, Task, and Service Instance Usage</a>
-
-* <a href="./accounting-report-apps-man.html" class="subnav">Monitoring Instance Usage with Apps Manager</a>
-
-* <a href="./security_config.html" class="subnav">Providing a Certificate for your SSL Termination Point</a>
-
-* <a href="./enable-vol-services.html" class="subnav">Enabling NFS Volume Services</a>
