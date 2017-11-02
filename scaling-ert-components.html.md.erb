@@ -15,6 +15,8 @@ If you want to make a PCF configuration highly available, see the [High Availabi
 
 <%= partial vars.scale_table %>
 
+<p class="note"><strong>Note:</strong> You must configure a load balancer to achieve complete high-availability.</p>
+
 ##<a id='scaleup'></a>Scaling Up Elastic Runtime##
 
 To scale up Elastic Runtime instances, perform the following steps:
@@ -106,9 +108,12 @@ If you need to change back to this configuration, choose the values shown below 
       </tr>
       <tr>
         <td>MySQL Proxy</td>
-        <td>1</td>
+        <td>2</td>
       </tr>
 </table>
+
+<p class="note"><strong>Note:</strong> Apps that are not using MySQL for PCF are not affected by the scaling process when you redeploy Pivotal Elastic Runtime.
+In addition, redeploying ERT with the MySQL cluster means that the PCF API will not be available for a brief period of time. For example, you are not able to push apps or query their state during this time.</p>
 
 ###<a id='external-blobstore'></a>Deployments Using an External Blobstore ###
 
