@@ -111,7 +111,7 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
       </tr>
       <tr>
         <td>MySQL Proxy</td>
-        <td>2</td>
+        <td>1</td>
         <td></td>
       </tr>
       <tr>
@@ -126,10 +126,7 @@ If you want to make a Diego or PCF configuration highly available, see the [Zero
       </tr>
     </table>
 
-<p class="note"><strong>Note:</strong> Apps that are not using MySQL for PCF are not affected by the scaling process when you redeploy Pivotal Elastic Runtime.
-In addition, redeploying ERT with the MySQL cluster means that the PCF API will not be available for a brief period of time. For example, you are not able to push apps or query their state during this time.</p>
-
-###<a id='external-blobstore'></a>Deployments Using an External Blobstore ###
+    ###<a id='external-blobstore'></a>External Blobstore   ###
 
     If you are using an external [Blobstore](./../customizing/cloudform-er-config.html#filestore), choose the following value in the Resource Config:
 
@@ -146,7 +143,7 @@ In addition, redeploying ERT with the MySQL cluster means that the PCF API will 
       </tr>
     </table>
 
-###<a id='external-lb'></a>External Load Balancer    ###
+    ###<a id='external-lb'></a>External Load Balancer    ###
 
     If you are using an external load balancer, choose the following values in the Resource Config:
 
@@ -173,7 +170,7 @@ In addition, redeploying ERT with the MySQL cluster means that the PCF API will 
       </tr>
     </table>
 
-###<a id='jmx-bridge'></a>JMX Bridge    ###
+    ###<a id='jmx-bridge'></a>JMX Bridge    ###
 
     If you are using [JMX Bridge](http://docs.pivotal.io/jmx-bridge/use-metrics.html), choose the following value in the Resource Config:
 
