@@ -1,0 +1,124 @@
+---
+title: Ongoing Operations
+owner: PCF Documentation
+---
+
+<strong><%= modified_date %></strong>
+
+The topics in this section explain how to perform routine operations on a running Pivotal Cloud Foundry (PCF) platform.
+
+##<a id='overview'></a>Overview
+
+Ongoing operations are procedures that PCF operators routinely perform to keep the platform working as it should, or to change how it works if the platform needs to do something new or has a problem.
+
+Examples include:
+
+* Performing upgrades
+* Monitoring platform health, checking logs and generating usage reports
+* Tuning the platform eliminate bottlenecks or increase capacity
+* Giving developers access to new software services, stacks, and app capabilities
+* Backing up and restoring the platform
+
+In addition to these tasks, PCF operators also routinely perform [Day 2 configurations](../customizing/day2.html), to configure or change platform features and integrations&#8212;even well past Day 2.
+      
+##<a id='contents'></a>Contents
+
+### <a id=''></a> Upgrading
+
+* <a href="/pivotalcf/2-0/customizing/upgrading-pcf.html">Upgrading Pivotal Cloud Foundry</a>
+
+* <a href="/pivotalcf/2-0/customizing/upgrading-products.html">Upgrading PAS and Other Pivotal Cloud Foundry Products</a>
+
+* <a href="/pivotalcf/2-0/opsguide/single-component.html">Understanding the Effects of Single Components on a Pivotal Cloud Foundry Upgrade</a>
+
+* <a href="/pivotalcf/2-0/adminguide/diego-cell-upgrade.html">Managing Diego Cell Limits During Upgrade</a>
+
+* <a href="/pivotalcf/2-0/customizing/azure-om-upgrade.html">Upgrading Ops Manager on Azure</a>
+
+* <a href="/pivotalcf/2-0/customizing/gcp-om-upgrade.html">Upgrading Ops Manager on GCP</a>
+
+* <a href="/pivotalcf/2-0/opsguide/pws_upgrade_load.html">Upgrade Load Example&#58; Pivotal Web Services</a>
+
+* <a href="/pivotalcf/2-0/refarch/vsphere/vsphere_upgrade.html">Upgrading vSphere without PCF Downtime</a>
+
+### <a id=''></a> Monitoring, Logging, and Reporting
+
+* <a href="/pivotalcf/2-0/monitoring/index.html">Monitoring Pivotal Cloud Foundry</a>
+
+	- <a href="/pivotalcf/2-0/monitoring/kpi.html">Key Performance Indicators</a>
+
+	- <a href="/pivotalcf/2-0/monitoring/key-cap-scaling.html">Key Capacity Scaling Indicators</a>
+
+	- <a href="/pivotalcf/2-0/monitoring/metrics.html">Configuring a Monitoring System</a>
+
+* <a href="/pivotalcf/2-0/loggregator/architecture.html">Overview of the Loggregator System</a>
+
+* <a href="/pivotalcf/2-0/loggregator/data-sources.html">Logs and Metrics Sources</a>
+
+* <a href="/pivotalcf/2-0/loggregator/log-ops-guide.html">Loggregator Guide for Cloud Foundry Operators</a>
+
+* <a href="/pivotalcf/2-0/loggregator/cc-uaa-logging.html">Security Event Logging for Cloud Controller and UAA</a>
+
+* <a href="/pivotalcf/2-0/opsguide/accounting-report.html">Reporting App, Task, and Service Instance Usage</a>
+
+* <a href="/pivotalcf/2-0/opsguide/accounting-report-apps-man.html">Reporting Instance Usage with Apps Manager</a>
+
+* <a href="/pivotalcf/2-0/customizing/monitoring.html">Monitoring PCF VMs from Ops Manager and vSphere</a>
+
+* <a href="/pivotalcf/2-0/opsguide/id-jobs.html">Identifying PAS Jobs Using vCenter</a>
+
+### <a id=''></a> Platform Tuning
+
+* <a href="/pivotalcf/2-0/adminguide/listing-feature-flags.html">Feature Flags</a>
+
+* <a href="/pivotalcf/2-0/opsguide/scaling-ert-components.html">Scaling PAS</a>
+
+* <a href="/pivotalcf/2-0/opsguide/scaling-down-mysql.html">Scaling Down Your MySQL Cluster</a>
+
+* <a href="/pivotalcf/2-0/adminguide/start-stop-vms.html">Stopping and Starting Virtual Machines</a>
+
+* <a href="/pivotalcf/2-0/adminguide/max-container-starts.html">Setting a Maximum Number of Started Containers</a>
+
+* <a href="/pivotalcf/2-0/customizing/update-nsx.html">Updating NSX Security Group and Load Balancer Information</a>
+
+* <a href="/pivotalcf/2-0/refarch/vsphere/vsphere_migrate_datastore.html">Migrating PCF to a New Datastore in vSphere</a>
+
+* <a href="/pivotalcf/2-0/customizing/deleting-aws-install.html">Deleting PCF on AWS</a>
+
+* <a href="/pivotalcf/2-0/customizing/deleting-azure-install.html">Deleting PCF on Azure</a>
+
+* <a href="/pivotalcf/2-0/customizing/deleting-gcp-install.html">Deleting PCF on GCP</a>
+
+### <a id=''></a> Enabling Developers
+
+* <a href="/pivotalcf/2-0/adminguide/custom-stack.html">Adding a Custom Stack</a>
+
+* <a href="/pivotalcf/2-0/opsguide/switching-domains.html">Switching Application Domains</a>
+
+* <a href="/pivotalcf/2-0/opsguide/enable-vol-services.html">Enabling NFS Volume Services</a>
+
+* <a href="/pivotalcf/2-0/services/supporting-multiple-cf-instances.html">Supporting Multiple Cloud Foundry Instances</a>
+
+* <a href="/pivotalcf/2-0/devguide/deploy-apps/cf-networking.html">Administering Container-to-Container Networking</a>
+
+* <a href="/pivotalcf/2-0/adminguide/isolation-segments.html">Managing Isolation Segments</a>
+
+* <a href="/pivotalcf/2-0/adminguide/routing-is.html">Routing for Isolation Segments</a>
+
+### <a id=''></a> Backing Up
+
+* <a href="/pivotalcf/2-0/customizing/backup-restore/index.html">Backing Up and Restoring Pivotal Cloud Foundry</a>
+
+* <a href="/pivotalcf/2-0/customizing/backup-restore/backup-pcf-bbr.html">Backing Up Pivotal Cloud Foundry with BBR</a>
+
+* <a href="/pivotalcf/2-0/customizing/backup-restore/restore-pcf-bbr.html">Restoring Pivotal Cloud Foundry from Backup with BBR</a>
+
+* <a href="/pivotalcf/2-0/customizing/backup-restore/system-setup-bbr.html">Setting Up Your Jumpbox for BBR</a>
+
+* <a href="/pivotalcf/2-0/customizing/backup-restore/rollback-ert-bbr.html">Rolling Back ERT Deployment to an Earlier Backup with BBR</a>
+
+* <a href="/pivotalcf/2-0/customizing/backup-restore/in-place-restore.html">Restoring an ERT Backup In-place</a>
+
+* <a href="/pivotalcf/2-0/customizing/backup-restore/troubleshooting-bbr.html">Troubleshooting BBR</a>
+
+* <a href="https://docs.pivotal.io/bbr/index.html">BOSH Backup and Restore</a>
