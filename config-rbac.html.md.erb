@@ -17,19 +17,15 @@ For example, see [Configuring Ops Manager Director on GCP](../customizing/gcp-om
 
 ## <a id="about"></a>Understand Roles in Ops Manager
 
-Ops Manager supports the roles in the following diagram:
-
-<%= image_tag("roles-diagram.png") %>
-
-The Ops Manager Administrator role also includes the privileges listed in Full Control and Restricted Control.
-The Full Control role also includes the privileges listed in Restricted Control.
-See the following table for more information.
+Ops Manager supports the roles in the following table:
 
 | **Ops Manager Role** | **Role Definition** | **UAA Scope** |
 |----------------------+---------------------+---------------|
 | **Ops Manager Administrator** | Operators can make configuration changes in Ops Manager, view credentials in the **Credentials** tab and Ops Manager API endpoints, change the authentication method, and assign roles to other operators. | `opsman.admin` |
 | **Full Control** | Operators can make configuration changes in Ops Manager, click **Apply Changes**, and view credentials in the **Credentials** tab and Ops Manager API endpoints. | `opsman.full_control` |
 | **Restricted Control** | Operators can make configuration changes in Ops Manager and click **Apply Changes**. They cannot view credentials in the **Credentials** tab or Ops Manager API endpoints. | `opsman.restricted_control` |
+| **Full View** | Operators can view Ops Manager configuration settings and view credentials in the **Credentials** tab and Ops Manager API endpoints. They cannot make configuration changes in Ops Manager. | `opsman.full_view` |
+| **Restricted View** | Operators can view Ops Manager configuration settings. They cannot make configuration changes or view credentials in the **Credentials** tab or Ops Manager API endpoints. | `opsman.restricted_view` |
 
 When you install a new Ops Manager instance, all existing users have the Ops Manager Administrator role by default.
 
@@ -76,6 +72,10 @@ Perform the following procedure to enable RBAC in Ops Manager:
       <pre>uaac member add opsman.full_control USERNAME</pre>
     * **Restricted Control**:
       <pre>uaac member add opsman.restricted_control USERNAME</pre>
+    * **Full View**:
+      <pre>uaac member add opsman.full_view USERNAME</pre>
+    * **Restricted View**:
+      <pre>uaac member add opsman.restricted_view USERNAME</pre>
 
 ## <a id="write-saml"></a>Manage Roles with SAML Authentication
 
