@@ -1,0 +1,60 @@
+---
+title: Securing Services Instance Credentials with Runtime CredHub
+owner: CredHub
+---
+
+## <a id='pas-config'></a> Step 1: Configure the PAS tile
+
+From the PAS tile in Ops Manager, complete the following steps: 
+
+<%= partial '../customizing/credhub' %>
+
+## <a id='asgs'></a> Step 2: Create ASGs 
+
+PCF uses _Application Security Groups_ (ASGs), which are network policy rules specifying protocols, ports, and IP ranges that apply to outbound network connections initiated from apps.
+
+1. From the PAS tile, click **Assign AZs and Networks** and record the selected Network that the tile is installed on.
+
+1. From the Ops Manager Director tile, click **Create Networks** within the **Settings** tab.
+
+1. In the **Networks** section, expand the PAS network by clicking its name.
+
+1. Record the CIDR for the PAS network.
+
+1. Create a file named `runtime-credhub.json` for specifying your ASG rules:
+
+	```
+	[
+		{
+		"protocol": "tcp",
+		"destination": "YOUR-PAS-CIDR",
+		"ports": "YOUR-PAS-CREDHUB-DB-PORT"
+		}
+	]
+	```
+
+1. Run the following command to create an ASG that allows apps to access the CredHub database:
+	<pre class="terminal">
+	$ cf create-security-group runtime-credhub ~/workspace/runtime-credhub runtime-credhub.json
+	</pre>
+
+1. Bind this ASG to to your deployment or the the specific space in which you want apps to access CredHub. See [Bind ASGs](../concepts/asg.html#binding-groups).
+
+1. Restart apps for the ASGs to take effect. 
+
+
+## <a id='service-instances'></a> Step 3: Re-bind Service Instances 
+
+For service bindings that existed before Runtime CredHub was available, you must delete the service instance binding and re-bind the service instance to your apps. 
+
+1. Delete the existing binding to a Service Instance
+
+1. Create new binding to existing Service Instance
+	<pre class="terminal">Example</pre>
+	The new Service Instance Bindings stored in PAS contain CredHub pointers
+1. Restart your app to apply the service binding. 
+	<pre class="terminal">Example</pre>
+	Observe that App’s VCAP_SERVICES still contain credentials for the Service Instance Binding
+
+
+
