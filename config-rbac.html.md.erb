@@ -17,7 +17,15 @@ For example, see [Configuring Ops Manager Director on GCP](../customizing/gcp-om
 
 ## <a id="about"></a>Understand Roles in Ops Manager
 
-Ops Manager supports the roles in the following table:
+You can assign the following roles to determine which operators in your organization make deployment changes, view credentials, and manage user roles in Ops Manager:
+
+![Ops Manager roles diagram](images/roles-diagram.png)
+
+Ops Manager Administrators can use the roles defined in the diagram above to meet the security needs of their organization.
+The roles provide a range of privileges that are appropriate for different types of users.
+For example, assign either **Restricted Control** or **Restricted View** to an operator to prevent access to all Ops Manager credentials.
+
+See the following table for more information about each role:
 
 | **Ops Manager Role** | **Role Definition** | **UAA Scope** |
 |----------------------+---------------------+---------------|
