@@ -3,15 +3,29 @@ title: Securing Services Instance Credentials with Runtime CredHub
 owner: CredHub
 ---
 
-## <a id='pas-config'></a> Step 1: Configure the PAS tile
+This topic describes how PCF operators can ensure service instance credentials are securely stored in CredHub.
 
-From the PAS tile in Ops Manager, complete the following steps: 
+* **What is Runtime CredHub?**
+	* The Pivotal Application Service (PAS) tile includes its own CredHub VM, separate from the CredHub VM included with the Ops Manager Director tile. For more information about this centralized credential management component, see the [CredHub](../credhub/index.html) documentation.
+* **What is Runtime CredHub used for?**
+	* Runtime CredHub exists to securely store service instance credentials. Previously, PCF could only use the Cloud Controller database for storing these credentials.
+* **What are service instance credentials**? 
+	* When developers want their app to use a service provided by a PCF service tile, they have to bind their app to an instance of that service. Service bindings include credentials that developers can use to access the service from their app. See [Binding Credentials](../services/binding-credentials.html). 
+* **How can I ensure that service instance credentials are stored in Runtime CredHub?**
+	* Not all service tiles support this feature. If your deployment uses a service tile that supports storing service instance credentials in Runtime CredHub, follow the procedure below. To find out whether a service tile supports this feature, check the documentation for that service tile. 
+
+
+## <a id='pas-config'></a> Step 1: Configure the PAS Tile
+
+You must configure the PAS tile to support securing service instance credentials in CredHub. From the PAS tile in Ops Manager, complete the following steps: 
 
 <%= partial '../customizing/credhub' %>
 
-## <a id='asgs'></a> Step 2: Create ASGs 
+## <a id='asgs'></a> Step 2: Create Application Security Groups (ASGs)
 
-PCF uses _Application Security Groups_ (ASGs), which are network policy rules specifying protocols, ports, and IP ranges that apply to outbound network connections initiated from apps.
+ASGs are network policy rules specifying protocols, ports, and IP ranges that apply to outbound network connections initiated from apps. You must follow the steps below to ensure the ASGs for your deployment allow apps to communicate with the Runtime CredHub API.
+
+<p class="note"><strong>Note</strong>: The default ASGs in PCF allow apps running on your deployment to send traffic to almost any IP address. If you have not modified the default ASGs, you can skip this step.</p>
 
 1. From the PAS tile, click **Assign AZs and Networks** and record the selected Network that the tile is installed on.
 
@@ -21,40 +35,52 @@ PCF uses _Application Security Groups_ (ASGs), which are network policy rules sp
 
 1. Record the CIDR for the PAS network.
 
-1. Create a file named `runtime-credhub.json` for specifying your ASG rules:
+1. Create a file named `runtime-credhub.json` for specifying your ASG rules and paste in the content below. Replace `YOUR-PAS-CIDR` with the CIDR you recorded in the previous step. 
 
 	```
 	[
 		{
 		"protocol": "tcp",
 		"destination": "YOUR-PAS-CIDR",
-		"ports": "YOUR-PAS-CREDHUB-DB-PORT"
+		"ports": "8844"
 		}
 	]
 	```
 
-1. Run the following command to create an ASG that allows apps to access the CredHub database:
+1. Run the following command to create an ASG that allows apps to access the CredHub API:
 	<pre class="terminal">
 	$ cf create-security-group runtime-credhub ~/workspace/runtime-credhub runtime-credhub.json
 	</pre>
 
-1. Bind this ASG to to your deployment or the the specific space in which you want apps to access CredHub. See [Bind ASGs](../concepts/asg.html#binding-groups).
+1. Bind this ASG to to your deployment or the specific space in which you want apps to access CredHub. See [Bind ASGs](../concepts/asg.html#binding-groups).
 
-1. Restart apps for the ASGs to take effect. 
+1. Restart apps for the ASGs to take effect. Optionally, you can use the [app-restarter cf CLI plugin](https://github.com/cloudfoundry-incubator/app-restarter) to restart all apps in a particular space, org, or deployment.
 
 
-## <a id='service-instances'></a> Step 3: Re-bind Service Instances 
+## <a id='service-instances'></a> Step 3: Unbind and Rebind Service Instances 
 
-For service bindings that existed before Runtime CredHub was available, you must delete the service instance binding and re-bind the service instance to your apps. 
+For any service instance bindings that existed before Runtime CredHub was supported for that service, you must work with your developers to unbind and rebind the service instances to their apps. 
 
-1. Delete the existing binding to a Service Instance
+1. Unbind the service instance from the app:
+	<pre class="terminal">
+	$ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE
+	</pre>
 
-1. Create new binding to existing Service Instance
-	<pre class="terminal">Example</pre>
-	The new Service Instance Bindings stored in PAS contain CredHub pointers
-1. Restart your app to apply the service binding. 
-	<pre class="terminal">Example</pre>
-	Observe that App’s VCAP_SERVICES still contain credentials for the Service Instance Binding
+1. Rebind the service instance to the app: 
+	<pre class="terminal">
+	$ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE
+	</pre>
+
+1. Check the `VCAP_SERVICES` environment variable to see that the new service instance binding includes CredHub pointers:
+	<pre class="terminal">
+	$ cf env YOUR-APP
+	</pre>
+	See [VCAP_SERVICES](../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES) for help parsing the output of the `cf-env` command. 
+1. Restart the app to apply the service instance binding: 
+	<pre class="terminal">
+	cf restart YOUR-APP
+	</pre>
+	If you run `cf-env` again, you can see the `VCAP-SERVICES` environment variable now contains the credentials for the service instance binding. 
 
 
 
