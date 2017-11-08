@@ -12,14 +12,27 @@ This topic describes how PCF operators can ensure service instance credentials a
 * **What are service instance credentials**? 
 	* When developers want their app to use a service provided by a PCF service tile, they have to bind their app to an instance of that service. Service bindings include credentials that developers can use to access the service from their app. See [Binding Credentials](../services/binding-credentials.html). 
 * **How can I ensure that service instance credentials are stored in Runtime CredHub?**
-	* Not all service tiles support this feature. If your deployment uses a service tile that supports storing service instance credentials in Runtime CredHub, follow the procedure below. To find out whether a service tile supports this feature, check the documentation for that service tile. 
+	* Not all service tiles support this feature. If your deployment uses a service tile that supports storing service instance credentials in Runtime CredHub, follow the procedure below to ensure it does so. 
 
+## <a id='prereq'></a> Prerequisite
+
+The procedures in this document are only effective for service tiles that support storing their instance credentials in Runtime CredHub. To find out whether a service tile supports this feature, check the documentation for that service tile.
 
 ## <a id='pas-config'></a> Step 1: Configure the PAS Tile
 
 You must configure the PAS tile to support securing service instance credentials in CredHub. From the PAS tile in Ops Manager, complete the following steps: 
 
-<%= partial '../customizing/credhub' %>
+1. Select **Credhub**. 
+	<%= image_tag('images/credhub.png') %>
+1. Choose the location of your CredHub Database. PAS includes this CredHub database for services to store their service instance credentials. 
+	1. If you chose **External**, enter the following:
+		* **Hostname**: The IP address of your database server. 
+		* **TCP Port**: The port of your database server, such as `3306`. 
+		* **Username**: A unique username that can access this specific database on the database server. 
+		* **Password**: The password for the provided username. 
+		* **Database CA Certificate**: Enter a certificate to use for encrypting traffic to and from the database. 
+1. In the **Active Encryption Password Value** field, enter a key to use for encrypting and decrypting the values stored in the CredHub database. This key must be at least 20 characters. 
+1. If your deployment uses any PCF service tiles that support storing service instance credentials in CredHub and you want to enable this feature, select the **Secure Service Instance Credentials** checkbox. 
 
 ## <a id='asgs'></a> Step 2: Create Application Security Groups (ASGs)
 
@@ -60,6 +73,8 @@ ASGs are network policy rules specifying protocols, ports, and IP ranges that ap
 ## <a id='service-instances'></a> Step 3: Unbind and Rebind Service Instances 
 
 For any service instance bindings that existed before Runtime CredHub was supported for that service, you must work with your developers to unbind and rebind the service instances to their apps. 
+
+<p class="note"><strong>Note</strong>: This step is not required for bindings created after you installed the new version of the service tile that supports CredHub and completed the procedures in steps 1 and 2 of this topic.</p>
 
 1. Unbind the service instance from the app:
 	<pre class="terminal">
