@@ -169,7 +169,7 @@ Create ASGs that block apps from sending traffic to the networks that host Ops M
 1. Create an ASG by running the following command:
   1. Replace `SECURITY-GROUP-NAME` with a name of your choice.
   1. Replace `OUTPUT-FILE-NAME` with the name of the generated file from the previous step. 
-  <pre class="terminal">$ create-security-group SECURITY-GROUP-NAME OUTPUT-FILE-NAME.json</pre>
+  <pre class="terminal">$ cf create-security-group SECURITY-GROUP-NAME OUTPUT-FILE-NAME.json</pre>
 
 1. Bind the ASG to the default staging set:
   <pre class="terminal">$ cf bind-staging-security-group SECURITY-GROUP-NAME</pre>
