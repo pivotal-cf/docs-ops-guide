@@ -34,16 +34,20 @@ You must configure the PAS tile to support securing service instance credentials
 		* **Username**: A unique username that can access this specific database on the database server. 
 		* **Password**: The password for the provided username. 
 		* **Database CA Certificate**: Enter a certificate to use for encrypting traffic to and from the database. 
-1. In the **Active Encryption Password Value** field, enter a key to use for encrypting and decrypting the values stored in the CredHub database. This key must be at least 20 characters. 
+1. Under **Encryption Keys**, specify a key to use for encrypting and decrypting the values stored in the CredHub database.
+	* **Name**: Enter the name of the key.
+	* **Key**: Enter a key that is at least 20 characters in length. 
+	* **Primary**: Select this checkbox to use this key as your primary key. 
+		<p class="note"><strong>Note</strong>: Ensure that you only mark one key as <b>Primary</b>. The UI includes an <b>Add</b> button to add more keys to support key rotation.</p>
 1. If your deployment uses any PCF services that support storing service instance credentials in CredHub and you want to enable this feature, select the **Secure Service Instance Credentials** checkbox. 
 1. Select the **Resource Config** pane.
-1. Under the **Job** column of the **CredHub** row, set the number of instances to `1` or more. Set at least `2` for high availability.
+1. Under the **Job** column of the **CredHub** row, set the number of instances to `2`. This is the minimum instance count required for high availability.
 
 ## <a id='asgs'></a> Step 2: Create Application Security Groups (ASGs)
 
-ASGs are network policy rules specifying protocols, ports, and IP ranges that apply to outbound network connections initiated from apps. You must follow the steps below to ensure the ASGs for your deployment allow apps to communicate with the PAS CredHub API.
+ASGs are network policy rules specifying protocols, ports, and IP ranges that apply to outbound network connections initiated from apps. You must follow the steps below to ensure the ASGs for your deployment allow apps to communicate with the PAS CredHub API.  
 
-<p class="note"><strong>Note</strong>: The default ASGs in PCF allow apps running on your deployment to send traffic to almost any IP address. If you have not modified the default ASGs, you can skip this step.</p>
+<p class="note"><strong>Note</strong>: The default ASGs in PCF allow apps running on your deployment to send traffic to almost any IP address. This step is only required if your ASGs restrict network access from apps to the network that PAS runs on, as documented in [Restricting App Access to Internal PCF Components](./app-sec-groups.html).</p>
 
 1. From the PAS tile, click **Assign AZs and Networks** and record the selected Network that the tile is installed on.
 
@@ -70,14 +74,14 @@ ASGs are network policy rules specifying protocols, ports, and IP ranges that ap
 	$ cf create-security-group runtime-credhub ~/workspace/runtime-credhub runtime-credhub.json
 	</pre>
 
-1. Bind this ASG to to your deployment or the specific space in which you want apps to access CredHub. See [Bind ASGs](../concepts/asg.html#binding-groups).
+1. Bind this ASG to to your deployment or the specific space in which you want apps to access CredHub. See [Bind ASGs](../concepts/asg.html#binding-groups). Ensure that apps deployed as part of the service tile installation process have access to CredHub in addition to the apps pushed to the platform by developers. For example, the Spring Cloud Services tile deploys the `spring-cloud-broker` app to the `p-spring-cloud-services` space of the `systsem` org. 
 
 1. Restart apps for the ASGs to take effect. Optionally, you can use the [app-restarter cf CLI plugin](https://github.com/cloudfoundry-incubator/app-restarter) to restart all apps in a particular space, org, or deployment.
 
 
 ## <a id='service-instances'></a> Step 3: Unbind and Rebind Service Instances 
 
-For any service instance bindings that existed before Runtime CredHub was supported for that service, you must work with your developers to unbind and rebind the service instances to their apps. 
+For any service instance bindings that existed before PAS CredHub was supported for that service, you must work with your developers to unbind and rebind the service instances to their apps. If you do not unbind and rebind the service, apps continue functioning as normal and fetching credentials from the Cloud Controller database. 
 
 <p class="note"><strong>Note</strong>: This step is not required for bindings created after you installed the new version of the service tile that supports CredHub and completed the procedures in steps 1 and 2 of this topic.</p>
 
