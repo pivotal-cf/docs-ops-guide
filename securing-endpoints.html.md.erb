@@ -1,0 +1,39 @@
+---
+title: Securing System and Application Endpoints
+---
+
+This topic describes how to create a public-facing website and an intranet microservice within the same app.
+
+The configuration described in this topic may be ideal for those in financial or health sectors who need extra security and convenience managing internal and external services. If the configuration is successful, developers can only `cf push` from approved network paths.
+
+## <a id="prerequisites"></a> Prerequisites
+
+Before beginning your configuration, you will need to have registered three domains through your trusted DNS provider:
+
+- A **System Domain** to host Pivotal Application Service (PAS) and its accompanying tile services
+
+- An **App Domain** to secure your internal microservice only accessible via private network or network paths of your choice
+
+- An **Additional Domain** for the public-facing portions of your app
+
+<p class="note"><strong>Note</strong>: Pivotal recommends that you use the same domain name but different subdomain names for your system and app domains. Doing so allows you to use a single wildcard certificate for the domain while preventing apps from creating routes that overlap with system routes.</p>
+
+## <a id="system-domain"></a> Step 1: Configure System and App Domains
+
+1. Log in to your Pivotal Cloud Foundry (PCF) Ops Manager
+
+1. Click the **Pivotal Application Service** tile.
+	
+	![](pas-tile.png)
+
+1. Select the **Domains** pane.
+
+1. Enter the system and application domains defined in the [prerequisites](#prerequisites) above.
+
+     ![](domains.png)
+
+1. Navigate to your DNS provider to create A records that point from your apps domains to the public IP address of your load balancer. 
+
+1. Click **Save**.
+
+## <a id="load-balancer"></a> Step 2: Configure Load Balancers
