@@ -2,7 +2,7 @@
 title: Securing System and Application Endpoints
 ---
 
-This topic describes how to create a public-facing website and an intranet microservice within the same app.
+This topic describes how to create a public-facing website and an intranet microservice in the same app.
 
 The configuration described in this topic may be ideal for those in financial or health sectors who need extra security and convenience managing internal and external services. If the configuration is successful, developers can only `cf push` from approved network paths.
 
@@ -10,15 +10,15 @@ The configuration described in this topic may be ideal for those in financial or
 
 Before beginning your configuration, you will need to have registered three domains through your trusted DNS provider:
 
-- A **System Domain** to host Pivotal Application Service (PAS) and its accompanying tile services
+- A **System Domain** for Pivotal Application Service (PAS) and its accompanying tile services
 
-- An **App Domain** to secure your internal microservice only accessible via private network or network paths of your choice
+- An **Apps Domain** for your intranet microservice
 
 - An **Additional Domain** for the public-facing portions of your app
 
 <p class="note"><strong>Note</strong>: Pivotal recommends that you use the same domain name but different subdomain names for your system and app domains. Doing so allows you to use a single wildcard certificate for the domain while preventing apps from creating routes that overlap with system routes.</p>
 
-## <a id="system-domain"></a> Step 1: Configure System and App Domains
+## <a id="system-domain"></a> Step 1: Configure System and Apps Domains
 
 1. Log in to your Pivotal Cloud Foundry (PCF) Ops Manager
 
@@ -36,4 +36,12 @@ Before beginning your configuration, you will need to have registered three doma
 
 1. Click **Save**.
 
-## <a id="load-balancer"></a> Step 2: Configure Load Balancers
+## <a id="load-balancer"></a> Step 2: Configure Load Balancer
+
+1. Select the **Networking** pane.
+
+1. 
+
+## <a id="authentication"></a> Step 3: (Optional) Enable an Authentication Service
+
+For added security, you may want to install an authentication service to your private domain like Single Sign-on (SSO). For more information about SSO, see [Single Sign-On Overview](https://docs.pivotal.io/p-identity/index.html).
