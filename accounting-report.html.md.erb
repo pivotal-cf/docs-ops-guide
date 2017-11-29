@@ -70,6 +70,8 @@ $ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/system_report/app_usages" -k -v \
 }
 </pre>
 
+Note: "average_app_instances" = "app_instance_hours"/# of hours in the month. "maximum_app_instances" = maximum # of concurrent apps 
+
 ### <a id='task-usage'></a> Task Usage
 
 Use `curl` to make a request to `/system_report/task_usages` on the Usage Service endpoint to show system-wide task usage data:
