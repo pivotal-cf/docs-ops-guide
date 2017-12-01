@@ -4,7 +4,7 @@ title: Securing System and Application Endpoints
 
 This topic describes how to create a public-facing website and an intranet microservice in the same app.
 
-The configuration described in this topic may be ideal for those in financial or health sectors who need extra security and convenience managing internal and external services. If the configuration is successful, developers can only `cf push` from approved network paths.
+The configuration described in this topic may be ideal for those in financial or health sectors who need extra security and convenience managing internal and external services. If the configuration is successful, developers can only use the Cloud Foundry Command Line Interface (cf CLI) command [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) from approved network paths.
 
 ## <a id="prerequisites"></a> Prerequisites
 
@@ -14,7 +14,7 @@ Before beginning your configuration, you will need to have registered three doma
 
 - An **Apps Domain** for your intranet microservice
 
-- An **Additional Domain** for the public-facing portions of your app
+- An additional domain for the public-facing portions of your app
 
 <p class="note"><strong>Note</strong>: Pivotal recommends that you use the same domain name but different subdomain names for your system and app domains. Doing so allows you to use a single wildcard certificate for the domain while preventing apps from creating routes that overlap with system routes.</p>
 
@@ -28,7 +28,7 @@ Before beginning your configuration, you will need to have registered three doma
 
 1. Select the **Domains** pane.
 
-1. Enter the system and application domains defined in the [prerequisites](#prerequisites) above.
+1. Enter the **System Domain** and **Apps Domain** defined in the [prerequisites](#prerequisites) above.
 
      ![](domains.png)
 
@@ -36,11 +36,19 @@ Before beginning your configuration, you will need to have registered three doma
 
 1. Click **Save**.
 
-## <a id="load-balancer"></a> Step 2: Configure Load Balancer
+## <a id="load-balancer"></a> Step 2: Secure Apps Domain with HAProxy 
+
+<p class="warning note"><strong>WARNING: </strong> This method is easy to implement but may not be the best option for your security needs. Contact Pivotal Support if you seek a custom solution to building secure, internal services.</p>
+
+<p class="note"><strong>Note: </strong>Pivotal supports HAProxy by default. However, you may configure an internal domain using any load balancer you choose that supports host header filtering.</p>
 
 1. Select the **Networking** pane.
 
-1. 
+1. Enter **HAProxy Protected Domains**. The domain you enter will be the same domain as the **Apps Domain** defined in [prerequisites](#prerequisites).
+
+1. Enter **HAProxy Trusted CIDRs** separated by spaces. This field is to specify CIDRs allowed to make requests to the domains listed in the **Protected Domains** field. For example, entering `10.0.1.0/24` would allow any requests originating at a host IP in that range to reach applications or services hosted on the **Protected Domains** list.
+
+1. (Optional) Configure an additional HAProxy for BOSH to secure your public-facing domain with credentials. See [proxy-boshrelease](https://github.com/cloudfoundry-incubator/haproxy-boshrelease) on GitHub for more information.
 
 ## <a id="authentication"></a> Step 3: (Optional) Enable an Authentication Service
 
