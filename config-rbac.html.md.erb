@@ -8,10 +8,6 @@ owner: Ops Manager
 This topic describes how to customize role-based access control (RBAC) in Ops Manager.
 Use RBAC to manage which operators in your organization can make deployment changes, view credentials, and manage user roles in Ops Manager.
 
-When you install a new instance of Ops Manager, RBAC is enabled by default.
-If you upgrade from an older Ops Manager instance, you must enable RBAC and assign roles to users before they can access Ops Manager.
-If you do not assign any roles to a user, they cannot log in to Ops Manager.
-
 For information about configuring Ops Manager to use internal authentication or SAML authentication, refer to the Ops Manager configuration topic for your IaaS:
 
   * [Configuring Ops Manager on AWS](../customizing/cloudform-om-config.html#access-om)
@@ -44,13 +40,18 @@ When you install a new Ops Manager instance, all existing users have the Ops Man
 
 To assign one of the above roles to an operator, follow the procedure for granting access using either [internal authentication](#write-internal) or [SAML authentication](#write-saml).
 
-## <a id="write-internal"></a>Manage Roles with Internal Authentication
+## <a id="enable"></a>Enable RBAC in Ops Manager
 
-If you configured Ops Manager to use internal authentication, perform the steps in this section to enable RBAC in Ops Manager and configure roles using the [UAA Command Line Interface (UAAC)](../uaa/uaa-user-management.html).
+When you install a new instance of Ops Manager, RBAC is enabled by default.
 
-### <a id="enable-internal"></a>Step 1: Enable RBAC in Ops Manager
+If you upgrade from an older Ops Manager instance, you must enable RBAC and assign roles to users before they can access Ops Manager.
+If you do not assign any roles to a user, they cannot log in to Ops Manager.
 
-Perform the following procedure to enable RBAC in Ops Manager:
+<p class="note warning"><strong>WARNING</strong>: Do not assign roles before you enable RBAC.</p>
+
+### <a id="enable-internal"></a>Enable RBAC with Internal Authentication
+
+If you are upgrading from an older version of Ops Manager and use internal authentication, perform the following steps to enable RBAC:
 
 1. Log in to Ops Manager and click the Ops Manager tile.
 
@@ -59,9 +60,40 @@ Perform the following procedure to enable RBAC in Ops Manager:
 1. Click **Enable RBAC**. When the confirmation dialog box appears, click **Confirm and Logout**.
   <p class="note"><strong>Note</strong>: Enabling RBAC is permanent. You cannot undo this action. When you upgrade Ops Manager, your RBAC settings remain configured.</p>
 
-### <a id="assign-role"></a>Step 2: Assign a Role
+### <a id="enable-saml"></a>Enable RBAC with SAML Authentication
 
-<p class="note warning"><strong>WARNING</strong>: Do not assign roles before you enable RBAC.</p>
+If you are upgrading from an older version of Ops Manager and use SAML authentication, perform steps in this section to enable RBAC.
+
+To enable RBAC in Ops Manager when using SAML authentication, you must configure groups in SAML for admins and non-admins and then map the admin group to Ops Manager.
+
+#### <a id="admin-saml"></a>Step 1: Configure SAML Groups
+
+Perform the following steps to gather information from your SAML dashboard:
+
+1. Log in to your SAML provider dashboard.
+1. Create or identify the name of the SAML group that contains Ops Manager admin users.
+1. Identify the groups attribute tag you configured for your SAML server.
+
+#### <a id="enable-om-saml"></a>Step 2: Enable RBAC in Ops Manager
+
+Perform the following steps to configure Ops Manager to recognize your SAML admin user group:
+<p class="note"><strong>Note</strong>: When RBAC is enabled, only users with the Ops Manager Administrator role can edit SAML configuration.</p>
+
+1. Log in to Ops Manager.
+1. In the **Settings** tab, click **RBAC Configuration**.
+1. Enter the name of the SAML group that contains Ops Manager admin users in the **SAML Admin Group** field.
+1. Enter the groups attribute tag for your SAML server in the **Groups Attribute** field.
+1. In the **Settings** tab, click **Advanced**.
+1. Click **Enable RBAC**. When the confirmation dialog box appears, click **Confirm and Logout**.
+  <p class="note"><strong>Note</strong>: Enabling RBAC is permanent. You cannot undo this action. When you upgrade Ops Manager, your RBAC settings remain configured.</p>
+
+## <a id="manage-roles"></a>Manage RBAC Roles in Ops Manager
+
+You can assign the roles defined in [Understanding Roles in Ops Manager](#about) to determine which operators in your organization make deployment changes, view credentials, and manage user roles in Ops Manager.
+
+### <a id="write-internal"></a>Manage Roles with Internal Authentication
+
+If you configured Ops Manager to use internal authentication, perform the steps in this section to enable RBAC in Ops Manager and configure roles using the [UAA Command Line Interface (UAAC)](../uaa/uaa-user-management.html).
 
 1. Target your UAA server and log in as an admin: 
     <pre>
@@ -76,7 +108,7 @@ Perform the following procedure to enable RBAC in Ops Manager:
     User name: USERNAME
     Password: YOUR-PASSWORD</pre>
 
-1. (Optional) If you are installing a new Ops Manager instance, create users by following the procedure in the [Creating and Managing Users with the UAA CLI (UAAC)](../uaa/uaa-user-management.html#creating-users) topic.
+1. **(Optional)** If you are installing a new Ops Manager instance, create users by following the procedure in the [Creating and Managing Users with the UAA CLI (UAAC)](../uaa/uaa-user-management.html#creating-users) topic.
 
 1. Assign one of the following roles to a user, replacing `USERNAME` with their username.
     * **Ops Manager Administrator**:
@@ -90,34 +122,9 @@ Perform the following procedure to enable RBAC in Ops Manager:
     * **Restricted View**:
       <pre>uaac member add opsman.restricted_view USERNAME</pre>
 
-## <a id="write-saml"></a>Manage Roles with SAML Authentication
+### <a id="write-saml"></a>Manage Roles with SAML Authentication
 
 If you configured Ops Manager with SAML authentication, perform the steps in this section to assign user roles using UAAC.
-
-To enable RBAC in Ops Manager when using SAML authentication, you must configure groups in SAML for admins and non-admins and then map the admin group to Ops Manager.
-
-### <a id="admin-saml"></a>Step 1: Configure SAML Groups
-
-Perform the following steps to gather information from your SAML dashboard:
-
-1. Log in to your SAML provider dashboard.
-1. Create or identify the name of the SAML group that contains Ops Manager admin users.
-1. Identify the groups attribute tag you configured for your SAML server.
-
-### <a id="enable-saml"></a>Step 2: Enable RBAC in Ops Manager
-
-Perform the following steps to configure Ops Manager to recognize your SAML admin user group:
-<p class="note"><strong>Note</strong>: When RBAC is enabled, only users with the Ops Manager Administrator role can edit SAML configuration.</p>
-
-1. Log in to Ops Manager.
-1. In the **Settings** tab, click **RBAC Configuration**.
-1. Enter the name of the SAML group that contains Ops Manager admin users in the **SAML Admin Group** field.
-1. Enter the groups attribute tag for your SAML server in the **Groups Attribute** field.
-1. In the **Settings** tab, click **Advanced**.
-1. Click **Enable RBAC**. When the confirmation dialog box appears, click **Confirm and Logout**.
-  <p class="note"><strong>Note</strong>: Enabling RBAC is permanent. You cannot undo this action. When you upgrade Ops Manager, your RBAC settings remain configured.</p>
-
-### <a id="non-admin-saml"></a>Step 3: Assign Roles
 
 Perform the following steps to configure non-admin user roles with UAAC:
 
