@@ -4,4 +4,4 @@ To configure Gorouter behavior for handling client certificates, select one of t
 
 * **Router requests but does not require client certificates.** Gorouter requests client certificates in TLS handshakes, validates them when presented, but does not require them. This is the default configuration.
 
-* **Router requires client certificates.** Gorouter validates that the client certificate is signed by a Certificate Authority that Gorouter trusts. 
+* **Router requires client certificates.** Gorouter validates that the client certificate is signed by a Certificate Authority that Gorouter trusts. If Gorouter cannot validate the client certificate, the TLS handshake fails.
