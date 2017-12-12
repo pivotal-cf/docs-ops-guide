@@ -25,6 +25,8 @@ This topic describes how Pivotal Cloud Foundry (PCF) operators can ensure servic
 
 The procedures in this document are only effective for services that support storing their instance credentials in PAS CredHub. To learn whether a service supports this feature, see the documentation for that service.
 
+   <p class="note breaking"><strong>Breaking Change</strong>: If you opt out of the <a href="../pcf-release-notes/runtime-rn.html#bosh-dns">BOSH DNS feature</a>, your PCF deployment cannot support Secure Service Instance Credentials.</p>
+
 ## <a id='pas-config'></a> Step 1: Configure the PAS Tile
 
 You must configure the PAS tile to support securing service instance credentials in CredHub. From the PAS tile in Ops Manager, complete the following steps: 
