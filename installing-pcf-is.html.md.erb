@@ -62,8 +62,7 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. Click **Networking**.
 
-	<%= image_tag('isolation-segment/networking1.png') %>
-
+1. Enter a value for **Router Max Idle Keepalive Connections**. See [Considerations for Configuring max\_idle\_connections](../adminguide/routing-keepalive.html#considerations).
 1. (Optional): Under **Router IPs**, enter one or more static IP addresses for the routers that handle this isolation segment. These IP addresses must be within the subnet CIDR block that you defined in the Ops Manager network configuration. If you have a load balancer, configure it to point to these IP addresses.
 
     <p class="note"><strong>Note</strong>: Entering the static IPs is not necessary for deployments running on a public IaaS because PCF users specify the IaaS load balancer in the <strong>Resource Config</strong> section of the <strong>PCF Isolation Segment</strong> tile.</p>
@@ -71,6 +70,8 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 1. (Optional): Under **Applications Subnet**, enter a CIDR subnet mask specifying the range of available IP addresses to assign to your app containers. This must be different from the network used by the system VMs. Only modify the default value if you need to avoid address collision with a third-party service on the same subnet.
 
 1. (Optional): Under **Applications Network Maximum Transmission Unit**, change the Maximum Transmission Unit (MTU). The default is `1454` bytes. 
+
+1. <%= partial '../customizing/enable_router_local_logs' %>
 
 1. Under **TLS Termination Certificates**, select one of the following options:
 	* **Forward SSL to Isolation Segment Router with provided certificates**: Select this option if your deployment uses an external load balancer that can forward encrypted traffic to the Elastic Runtime Router for the isolation segment, or if you are running a development environment that does not require load balancing. Complete the fields for the **Router SSL Termination Certificate and Private Key** and **Router SSL Ciphers**. 
