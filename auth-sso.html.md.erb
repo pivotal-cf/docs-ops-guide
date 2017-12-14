@@ -6,7 +6,7 @@ owner: Identity
 
 <strong><%= modified_date %></strong>
 
-This topic describes [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) authentication 
+This topic describes [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) Pivotal Application Service (PAS) authentication 
 and single sign-on configuration with Lightweight Directory Access Protocol 
 (LDAP) and Security Assertion Markup Language (SAML).
 
@@ -28,17 +28,19 @@ in PCF.
 This [Knowledge Base article](https://discuss.zendesk.com/hc/en-us/articles/204140418-Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry-) explains the process used by the UAA 
 Server when it attempts to authenticate a user through LDAP.
 
-##<a id="configure-saml"></a>Configure PCF to Use a SAML Identity Provider
+##<a id="configure-saml"></a>Configure PAS to Use a SAML Identity Provider
+
+In SAML terminology, the SAML protocol communicates user data between an identity provider (IdP) and a service provider (SP).
 
 To connect PCF Elastic Runtime with SAML, you must perform the following tasks:
 
-* [Configure PCF as a Service Provider for SAML](#configure-pcf-for-saml)
+* [Configure PAS as a Service Provider for SAML](#configure-pcf-for-saml)
 
-* [Configure SAML as an Identity Provider for PCF](#configure-saml-for-pcf)
+* [Configure SAML as an Identity Provider for PAS](#configure-saml-for-pcf)
 
-###<a id="configure-pcf-for-saml"></a>Configure PCF as a Service Provider for SAML
+###<a id="configure-pcf-for-saml"></a>Configure PAS as a Service Provider for SAML
 
-Follow the instructions below to configure PCF as a service provider for SAML.
+The following procedure configures PAS to use a SAML IdP:
 
 1. From the **Installation Dashboard**, click the **Elastic Runtime** tile.
 
@@ -63,14 +65,14 @@ your Pivotal login page, which you can access at `https://login.YOUR-SYSTEM-DOMA
 
 	<%= image_tag("login-page.png") %>
 
-1. Retrieve the metadata from your Identity Provider and copy it into either the **Provider Metadata** or the **Provider Metadata URL** fields, depending on whether your Identity Provider exposes a Metadata URL. Refer to the [Configure SAML Identity Provider for PCF](#configure-saml-for-pcf) section of this topic for more information. Pivotal recommends that you use the Provider Metadata URL rather than Provider Metadata because the metadata can change. You can do this in either of the following ways:
+1. Retrieve the metadata from your Identity Provider and copy it into either the **Provider Metadata** or the **Provider Metadata URL** fields, depending on whether your Identity Provider exposes a Metadata URL. Refer to the [Configure SAML as an Identity Provider for PAS](#configure-saml-for-pcf) section of this topic for more information. Pivotal recommends that you use the Provider Metadata URL rather than Provider Metadata because the metadata can change. You can do this in either of the following ways:
 	* If your Identity Provider exposes a Metadata URL, provide the Metadata URL.
 	* Download your Identity Provider metadata and paste this XML into the **Provider Metadata** area.
 
 	<p class='note'><strong>Note</strong>: You only need to select one of the above configurations. If you configure both, your Identity Provider defaults to the <strong>(OR) Provider Metadata URL</strong>.</p>
 
 	<p class="note"><strong>Note</strong>: Refer to the <a href="../opsguide/external-user-management.html">Adding Existing SAML or
-LDAP Users to a PCF Deployment</a> topic for information about on-boarding SAML users and mapping them to PCF user roles.</p>
+LDAP Users to a PCF Deployment</a> topic for information about on-boarding SAML users and mapping them to PAS user roles.</p>
 
 1. Select the **Name ID Format** for your SAML Identity Provider. This translates to `username` on PCF Elastic Runtime. The default is `Email Address`.
 
@@ -83,12 +85,14 @@ LDAP Users to a PCF Deployment</a> topic for information about on-boarding SAML 
 1. For **External Groups Attribute**, enter the attribute name in your SAML 
 database that defines the groups that a user belongs to, for example 
 `group_memberships`. To map the groups from the SAML assertion to admin roles 
-in PCF, follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) 
+in PAS, follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) 
 section of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic. 
 
-1. By default, all SAML Authentication Request from PCF are signed. To change this, disable the **Sign Authentication Requests** checkbox and configure your Identity Provider to verify SAML authentication requests.
+1. By default, all SAML Authentication Request from PAS are signed. To change this, disable the **Sign Authentication Requests** checkbox and configure your Identity Provider to verify SAML authentication requests.
 
 1. To validate the signature for the incoming SAML assertions, enable the **Required Signed Assertions** checkbox and configure your Identity Provider to send signed SAML assertions.
+
+1. Your SAML Entity ID defaults to `http://login.YOUR-SYSTEM-DOMAIN` where `YOUR-SYSTEM-DOMAIN` is set in the **Domains** > **System Domain** field. To override this default, enter a custom SAML Entity ID in the **Entity ID Override** field.
 
 1. Click **Save**.
 
@@ -98,7 +102,9 @@ section of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic.
 
     <%=image_tag("uaa/apply-changes.png")%>
 
-###<a id="configure-saml-for-pcf"></a>Configure SAML as an Identity Provider for PCF
+###<a id="configure-saml-for-pcf"></a>Configure SAML as an Identity Provider for PAS
+
+The following procedure configures a SAML IdP to designate PAS as an SP.
 
 Download the Service Provider Metadata from 
 `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata`. 
@@ -106,7 +112,7 @@ Consult the documentation from your Identity Provider for configuration
 instructions.
 
 Refer to the table below for information about certain industry-standard 
-Identity Providers and how to integrate them with PCF:
+Identity Providers and how to integrate them with PAS:
 
 <table border="1">
 	<tr>
@@ -129,7 +135,7 @@ Identity Providers and how to integrate them with PCF:
 
 <p class="note"><strong>Note</strong>: Some Identity Providers allow uploads of Service Provider Metadata. Other providers require you to manually enter the Service Provider Metadata into a form.</p>
 
-## <a id="configure-ldap"></a>Configure LDAP as an Identity Provider for PCF
+## <a id="configure-ldap"></a>Configure LDAP as an Identity Provider for PAS
 
 To integrate the UAA with one or more LDAP servers, configure Elastic Runtime with your LDAP endpoint information as follows:
 
@@ -172,9 +178,9 @@ For example, a domain named "cloud.example.com" typically uses the following LDA
 <br><br>
 Follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) section 
 of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic to map the 
-groups under this search base to admin roles in PCF.
+groups under this search base to admin roles in PAS.
 <p class="note"><strong>Note</strong>: Refer to the <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a PCF Deployment</a> topic to on-board individual LDAP users and map 
-them to PCF Roles.</p>
+them to PAS Roles.</p>
 
 1. For **Group Search Filter**, enter a string that defines LDAP Group search criteria. The standard value is `member={0}`.
 
