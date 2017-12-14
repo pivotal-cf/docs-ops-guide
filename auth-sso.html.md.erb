@@ -30,6 +30,8 @@ Server when it attempts to authenticate a user through LDAP.
 
 ##<a id="configure-saml"></a>Configure PCF to Use a SAML Identity Provider
 
+In SAML terminology, the SAML protocol communicates user data between an identity provider (IdP) and a service provider (SP).
+
 To connect PCF Elastic Runtime with SAML, you must perform the following tasks:
 
 * [Configure PCF as a Service Provider for SAML](#configure-pcf-for-saml)
@@ -38,7 +40,7 @@ To connect PCF Elastic Runtime with SAML, you must perform the following tasks:
 
 ###<a id="configure-pcf-for-saml"></a>Configure PCF as a Service Provider for SAML
 
-Follow the instructions below to configure PCF as a service provider for SAML.
+The following procedure configures PCF to use a SAML IdP:
 
 1. From the **Installation Dashboard**, click the **Elastic Runtime** tile.
 
@@ -63,7 +65,7 @@ your Pivotal login page, which you can access at `https://login.YOUR-SYSTEM-DOMA
 
 	<%= image_tag("login-page.png") %>
 
-1. Retrieve the metadata from your Identity Provider and copy it into either the **Provider Metadata** or the **Provider Metadata URL** fields, depending on whether your Identity Provider exposes a Metadata URL. Refer to the [Configure SAML Identity Provider for PCF](#configure-saml-for-pcf) section of this topic for more information. Pivotal recommends that you use the Provider Metadata URL rather than Provider Metadata because the metadata can change. You can do this in either of the following ways:
+1. Retrieve the metadata from your Identity Provider and copy it into either the **Provider Metadata** or the **Provider Metadata URL** fields, depending on whether your Identity Provider exposes a Metadata URL. Refer to the [Configure SAML as an Identity Provider for PCF](#configure-saml-for-pcf) section of this topic for more information. Pivotal recommends that you use the Provider Metadata URL rather than Provider Metadata because the metadata can change. You can do this in either of the following ways:
 	* If your Identity Provider exposes a Metadata URL, provide the Metadata URL.
 	* Download your Identity Provider metadata and paste this XML into the **Provider Metadata** area.
 
@@ -90,6 +92,8 @@ section of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic.
 
 1. To validate the signature for the incoming SAML assertions, enable the **Required Signed Assertions** checkbox and configure your Identity Provider to send signed SAML assertions.
 
+1. Your SAML Entity ID defaults to `http://login.YOUR-SYSTEM-DOMAIN` where `YOUR-SYSTEM-DOMAIN` is set in the **Domains** > **System Domain** field. To override this default, enter a custom SAML Entity ID in the **Entity ID Override** field.
+
 1. Click **Save**.
 
 1. Return to the **Installation Dashboard** by clicking the link.
@@ -99,6 +103,8 @@ section of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic.
     <%=image_tag("uaa/apply-changes.png")%>
 
 ###<a id="configure-saml-for-pcf"></a>Configure SAML as an Identity Provider for PCF
+
+The following procedure configures a SAML IdP to designate PCF as an SP.
 
 Download the Service Provider Metadata from 
 `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata`. 
