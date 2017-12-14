@@ -69,24 +69,19 @@ Perform the following steps to configure the PCF Isolation Segment tile:
 
 1. Click **Networking**.
 
-	<%= image_tag('isolation-segment/isolation-segment-networking.png') %>		
-
+1. (Optional): Under **Applications Network Maximum Transmission Unit**, change the Maximum Transmission Unit (MTU). The default is `1454` bytes. 
+1. <%= partial '../customizing/xforwarded_client_cert_xfcc' %>
+1. <%= partial '../customizing/gorouter_client_cert_validation' %>
+1. Enter a value for **Router Max Idle Keepalive Connections**. See [Considerations for Configuring max\_idle\_connections](../adminguide/routing-keepalive.html#considerations).
+1. <%= partial '../customizing/frontend_idle_timeout' %>
 1. (Optional): Under **Router IPs**, enter one or more static IP addresses for the routers that handle this isolation segment. These IP addresses must be within the subnet CIDR block that you defined in the Ops Manager network configuration. If you have a load balancer, configure it to point to these IP addresses.
 
     <p class="note"><strong>Note</strong>: Entering the static IPs is not necessary for deployments running on a public IaaS because PCF users specify the IaaS load balancer in the <strong>Resource Config</strong> section of the <strong>PCF Isolation Segment</strong> tile.</p>
-
-1. (Optional): Under **Applications Network Maximum Transmission Unit**, change the Maximum Transmission Unit (MTU). The default is `1454` bytes. 
 
 1. Under **TLS Termination Certificates**, select one of the following options:
 	* **Forward SSL to Isolation Segment Router with provided certificates**: Select this option if your deployment uses an external load balancer that can forward encrypted traffic to the Elastic Runtime Router for the isolation segment, or if you are running a development environment that does not require load balancing. Complete the fields for the **Router SSL Termination Certificate and Private Key** and **Router SSL Ciphers**. 
 	* **Forward SSL to Isolation Segment Router with ERT Router certificates**: Select this option to inherit the certificates provided to the Elastic Runtime Router when you configured the Elastic Runtime tile. This option assumes an external load balancer is configured to forward encrypted traffic. 
 	* **Forward unencrypted traffic to Elastic Runtime Router**: Select this option if your deployment uses an external load balancer that cannot forward encrypted traffic to the Elastic Runtime Router, or for a development environment that does not require load balancing.
-	<%= image_tag('isolation-segment/networking2.png') %>
-
-1. In the **Minimum version of TLS supported by Router** field, select the minimum version of TLS to use in Router communications. The Router uses TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the Gorouter, see [Securing Traffic into Cloud Foundry](../adminguide/securing-traffic.html#ciphers).
-
-1. <%= partial '../customizing/xforwarded_client_cert_xfcc' %>
-1. <%= partial '../customizing/frontend_idle_timeout' %>
 
 1. To enable container-to-container networking, perform the following steps:
 
@@ -96,6 +91,10 @@ Perform the following steps to configure the PCF Isolation Segment tile:
   1. (Optional): Enter a UDP port number in the **VXLAN Tunnel Endpoint Port** box. If you do not set a custom port, PCF Isolation Segment uses <code>4789</code>.
   	<%= image_tag('isolation-segment/ert-c2c-vxlan-port.png') %>
   For more information about configuring container-to-container networking rules, see the <a href="../devguide/deploy-apps/cf-networking.html#create-policies">Create Policies for Container-to-Container Networking</a> section of the <em>Administering Container-to-Container Networking</em> topic.
+  
+1. In the **Minimum version of TLS supported by Router** field, select the minimum version of TLS to use in Router communications. The Router uses TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the Gorouter, see [Securing Traffic into Cloud Foundry](../adminguide/securing-traffic.html#ciphers).
+
+1. <%= partial 'enable_router_local_logs' %>
 
 1. To disable container-to-container networking, perform the following steps:
 
