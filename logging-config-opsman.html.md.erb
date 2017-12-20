@@ -76,7 +76,7 @@ Follow the instructions below to scale the Loggregator system. For guidance on m
 1. Increase the number in the **Instances** column of the component you want to scale. You can add instances for the following Loggregator components: 
 	* **Loggregator Traffic Controller**
 		<p class="note"><strong>Note</strong>: The <a href="../loggregator/architecture.html#rlp">Reverse Log Proxy (RLP)</a> BOSH job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more logs for syslog drains, you can add instances of the Traffic Controller.</p>
-    <p class="note"><strong>Note</strong>: The <a href="../loggregator/architecture.html#bosh-metrics">BOSH System Metrics Forwarder</a> job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more BOSH system metrics, you can add instances of the Traffic Controller.</p>
+		<p class="note"><strong>Note</strong>: The <a href="../loggregator/architecture.html#bosh-metrics">BOSH System Metrics Forwarder</a> job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more BOSH system metrics, you can add instances of the Traffic Controller.</p>
 	* **Syslog Adapter**
 	* **Doppler Server**
   <%= image_tag 'loggregator-vms.png' %>
