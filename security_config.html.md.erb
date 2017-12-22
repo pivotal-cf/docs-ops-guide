@@ -1,28 +1,28 @@
 ---
-title: Providing a Certificate for Your SSL/TLS Termination Point
+title: Providing a Certificate for Your TLS Termination Point
 owner: RelEng
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to configure SSL/TLS termination for HTTP traffic in Pivotal Application Service (PAS) with an SSL certificate, as part of the process of configuring PAS for deployment. 
+This topic describes how to configure Transport Layer Security (TLS) termination for HTTP traffic in Pivotal Application Service (PAS) with a TLS certificate, as part of the process of configuring PAS for deployment. 
 
 
-## <a id="ssl_term"></a> About SSL/TLS Termination in PAS
+## <a id="ssl_term"></a> Configure TLS Termination
 
-When you deploy PCF, you must configure the SSL/TLS termination for HTTP traffic in your PAS configuration. You can terminate SSL/TLS at all of the following points:
+When you deploy PCF, you must configure the TLS termination for HTTP traffic in your PAS configuration. You can terminate TLS at all of the following points:
 
 * Load Balancer
 * Load Balancer and Gorouter
 * Gorouter
 
-For guidance on which SSL/TLS termination option to choose for your deployment, see [Securing Traffic into Cloud Foundry](../adminguide/securing-traffic.html).
+Follow the guidance in [Securing Traffic into Cloud Foundry](../adminguide/securing-traffic.html#ssl_options) to choose and configure the TLS termination option for your deployment.
 
 <%=vars.ssl_haproxy_2%>
 
-##<a id="certs"></a> Certificate Requirements for PCF
+##<a id="certs"></a> Obtain TLS Certificates
 
-The following sections describe the IaaS-specific certificate requirements for deploying PCF.
+To secure traffic into PCF, you must obtain at least one TLS certificate. See [Certificate Requirements](../adminguide/securing-traffic.html#certtypes) for general certificate requirements for deploying PCF. The following sections describe additional IaaS-specific certificate requirements.
 
 ### <a id="aws_certs"></a> Certificate Requirements on AWS
 
@@ -38,7 +38,7 @@ GCP load balancers actually forward both encrypted (WebSockets) and unencrypted 
 
 This section describes how to create or generate a certificate for your PAS environment. If you are deploying to a production environment, you should obtain a certificate from a trusted authority (CA).
 
-For internal development or testing environments, you have two options for creating a required SSL certificates. 
+For internal development or testing environments, you have two options for creating a required TLS certificates. 
 
 * You can create a self-signed certificate, or 
 * You can have [PAS generate the certificate](#ert_certgen) for you. 
@@ -57,7 +57,7 @@ In either case for either self-signed or trusted single certificates, apply the 
     * `*.login.system.yourdomain.com`
     * `*.uaa.system.yourdomain.com`
 
-    <p class="note"><strong>Note</strong>: SSL certificates generated for wildcard DNS records only work for a single domain name component or component fragment. For example, a certificate generated for <code>*.EXAMPLE.com</code> does not work for <code>*.apps.EXAMPLE.com</code> and <code>*.system.EXAMPLE.com</code>. The certificate must have both <code>*.apps.EXAMPLE.com</code> and <code>*.system.EXAMPLE.com</code> attributed to it. </p>
+    <p class="note"><strong>Note</strong>: TLS certificates generated for wildcard DNS records only work for a single domain name component or component fragment. For example, a certificate generated for <code>*.EXAMPLE.com</code> does not work for <code>*.apps.EXAMPLE.com</code> and <code>*.system.EXAMPLE.com</code>. The certificate must have both <code>*.apps.EXAMPLE.com</code> and <code>*.system.EXAMPLE.com</code> attributed to it. </p>
     
 ### <a id="ert_certgen"></a> Generating a RSA Certificate in PAS
 
