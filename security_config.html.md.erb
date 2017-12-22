@@ -22,17 +22,12 @@ Follow the guidance in [Securing Traffic into Cloud Foundry](../adminguide/secur
 
 ##<a id="certs"></a> Obtain TLS Certificates
 
-To secure traffic into PCF, you must obtain at least one TLS certificate. See [Certificate Requirements](../adminguide/securing-traffic.html#certtypes) for general certificate requirements for deploying PCF. The following sections describe additional IaaS-specific certificate requirements.
+To secure traffic into PCF, you must obtain at least one TLS certificate. See [Certificate Requirements](../adminguide/securing-traffic.html#certtypes) for general certificate requirements for deploying PCF.
 
-### <a id="aws_certs"></a> Certificate Requirements on AWS
+See the following sections for additional IaaS-specific certificate requirements:
 
-If you are deploying PCF on AWS, then the certificate that you configure in PAS must match the certificate that you upload to AWS as a prerequisite to PCF deployment. 
-
-### <a id="gcp_certs"></a> Certificate Requirements on GCP
-
-If you are deploying PCF on GCP, then you must add your certificate to both the frontend configuration of your HTTP Load Balancer and to the Gorouter (PAS Router). For more information, see [Create Instance Groups and the HTTP(S) Load Balancer](../customizing/gcp-prepare-env.html#create-http-and-instance-group).
-
-GCP load balancers actually forward both encrypted (WebSockets) and unencrypted (HTTP and TLS-terminated HTTPS) traffic to the Gorouter. When configuring the point-of-entry for a GCP deployment, select <b>Forward SSL to PAS Router</b> in your PAS network configuration. This point-of-entry selection accommodates this special characteristic of GCP deployments.
+* **AWS**: [Certificate Requirements on AWS](../customizing/aws.html#aws_certs)
+* **GCP**: [Certificate Requirements on GCP](../customizing/gcp.html#gcp_certs)
 
 ##<a id="create_or_obtain_certs"></a> Creating a Wildcard Certificate for PCF Deployments
 
