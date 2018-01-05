@@ -1,0 +1,135 @@
+---
+title: Ongoing Operations
+owner: PCF Documentation
+---
+
+<strong><%= modified_date %></strong>
+
+The topics in this section explain how to perform routine operations on a running Pivotal Cloud Foundry (PCF) platform.
+
+##<a id='overview'></a>Overview
+
+Ongoing operations are procedures that PCF operators routinely perform to keep the platform working as it should, or to change how it works if the platform needs to do something new or has a problem.
+
+Examples include:
+
+* Performing PCF upgrades
+* Making changes to your IaaS and external components
+* Monitoring platform health, checking logs and generating usage reports
+* Tuning the platform eliminate bottlenecks or increase capacity
+* Giving developers access to new software services, stacks, and app capabilities
+* Backing up and restoring the platform
+
+In addition to these tasks, PCF operators also routinely perform [Day 2 configurations](../customizing/day2.html) to configure or change platform features and integrations even well past Day 2.
+      
+##<a id='contents'></a>Contents
+
+### <a id='upgrading'></a> Upgrading
+
+* <a href="/pivotalcf/1-10/customizing/upgrading-pcf.html">Upgrading Pivotal Cloud Foundry</a>
+
+* <a href="/pivotalcf/1-10/customizing/upgrading-products.html">Upgrading Elastic Runtime and Other Pivotal Cloud Foundry Products</a>
+
+* <a href="/pivotalcf/1-10/opsguide/single-component.html">Understanding the Effects of Single Components on a Pivotal Cloud Foundry Upgrade</a>
+
+* <a href="/pivotalcf/1-10/customizing/cfpush-availability-during-upgrade.html">cf push Availability During Pivotal Application Services Upgrades</a>
+
+* <a href="/pivotalcf/1-10/adminguide/diego-cell-upgrade.html">Managing Diego Cell Limits During Upgrade</a>
+
+* <a href="/pivotalcf/1-10/customizing/azure-om-upgrade.html">Upgrading Ops Manager on Azure</a>
+
+* <a href="/pivotalcf/1-10/customizing/gcp-om-upgrade.html">Upgrading Ops Manager on GCP</a>
+
+* <a href="/pivotalcf/1-10/opsguide/pws_upgrade_load.html">Upgrade Load Example&#58; Pivotal Web Services</a>
+
+### <a id='changes'></a> IaaS Changes
+
+* <a href="/pivotalcf/1-10/customizing/update-nsx.html">Updating NSX Security Group and Load Balancer Information</a>
+
+* <a href="/pivotalcf/1-10/refarch/vsphere/vsphere_migrate_datastore.html">Migrating PCF to a New Datastore in vSphere</a>
+
+* <a href="/pivotalcf/1-10/refarch/vsphere/vsphere_upgrade.html">Upgrading vSphere without PCF Downtime</a>
+
+* <a href="/pivotalcf/1-10/customizing/deleting-aws-install.html">Deleting PCF on AWS</a>
+
+* <a href="/pivotalcf/1-10/customizing/deleting-azure-install.html">Deleting PCF on Azure</a>
+
+* <a href="/pivotalcf/1-10/customizing/deleting-gcp-install.html">Deleting PCF on GCP</a>
+
+### <a id='monitoring'></a> Monitoring, Logging, and Reporting
+
+* <a href="/pivotalcf/1-10/loggregator/data-sources.html">Logs and Metrics Sources</a>
+
+* <a href="/pivotalcf/1-10/monitoring/index.html">Monitoring Pivotal Cloud Foundry</a>
+
+	- <a href="/pivotalcf/1-10/monitoring/kpi.html">Key Performance Indicators</a>
+
+	- <a href="/pivotalcf/1-10/monitoring/key-cap-scaling.html">Key Capacity Scaling Indicators</a>
+
+	- <a href="/pivotalcf/1-10/monitoring/metrics.html">Configuring a Monitoring System</a>
+
+* <a href="/pivotalcf/1-10/loggregator/architecture.html">Overview of the Loggregator System</a>
+
+* <a href="/pivotalcf/1-10/loggregator/log-ops-guide.html">Loggregator Guide for Cloud Foundry Operators</a>
+
+* <a href="/pivotalcf/1-10/loggregator/cc-uaa-logging.html">Security Event Logging for Cloud Controller and UAA</a>
+
+* <a href="/pivotalcf/1-10/opsguide/accounting-report-apps-man.html">Reporting Instance Usage with Apps Manager</a>
+
+* <a href="/pivotalcf/1-10/opsguide/accounting-report.html">Reporting App, Task, and Service Instance Usage</a>
+
+* <a href="/pivotalcf/1-10/customizing/monitoring.html">Monitoring Virtual Machines in PCF</a>
+
+### <a id='tuning'></a> Platform Tuning
+
+* <a href="/pivotalcf/1-10/opsguide/scaling-ert-components.html">Scaling Elastic Runtime</a>
+
+* <a href="/pivotalcf/1-10/opsguide/scaling-down-mysql.html">Scaling Down Your MySQL Cluster</a>
+
+* <a href="/pivotalcf/1-10/adminguide/routing-keepalive.html">Router Idle Keepalive Connections</a>
+
+* <a href="/pivotalcf/1-10/adminguide/max-container-starts.html">Setting a Maximum Number of Started Containers</a>
+
+* <a href="/pivotalcf/1-10/concepts/high-availability.html">High Availability in Cloud Foundry</a>
+
+### <a id='devs'></a> Enabling Developers
+
+* <a href="/pivotalcf/1-10/customizing/add-delete.html">Adding and Deleting Products</a>
+
+* <a href="/pivotalcf/1-10/adminguide/isolation-segments.html">Managing Isolation Segments</a>
+
+* <a href="/pivotalcf/1-10/adminguide/routing-is.html">Routing for Isolation Segments</a>
+
+* <a href="/pivotalcf/1-10/opsguide/enable-vol-services.html">Enabling NFS Volume Services</a>
+
+* <a href="/pivotalcf/1-10/devguide/deploy-apps/cf-networking.html">Administering Container-to-Container Networking</a>
+
+* <a href="/pivotalcf/1-10/opsguide/switching-domains.html">Switching Application Domains</a>
+
+### <a id='backups'></a> Backing Up
+
+* <a href="/pivotalcf/1-10/customizing/backup-restore/index.html">Backing Up and Restoring Pivotal Cloud Foundry</a>
+
+* <a href="/pivotalcf/1-10/customizing/backup-restore/system-setup-bbr.html">Setting Up Your Jumpbox for BBR</a>
+
+* <a href="/pivotalcf/1-10/customizing/backup-restore/backup-pcf-bbr.html">Backing Up Pivotal Cloud Foundry with BBR</a>
+
+* <a href="/pivotalcf/1-10/customizing/backup-restore/restore-pcf-bbr.html">Restoring Pivotal Cloud Foundry from Backup with BBR</a>
+
+* <a href="/pivotalcf/1-10/adminguide/start-stop-vms.html">Stopping and Starting Virtual Machines</a>
+
+* <a href="/pivotalcf/1-10/customizing/backup-restore/in-place-restore.html">Restoring an ERT Backup In-Place</a>
+
+* <a href="/pivotalcf/1-10/customizing/backup-restore/troubleshooting-bbr.html">Troubleshooting BBR</a>
+
+* <a href="http://docs.cloudfoundry.org/bbr/index.html">BOSH Backup and Restore (Open-Source Documentation)</a>
+
+### <a id='security'></a> Security
+
+* <a href="/pivotalcf/1-10/opsguide/app-sec-groups.html">Restricting App Access to Internal PCF Components</a>
+
+* <a href="/pivotalcf/1-10/opsguide/security_config.html">Providing a Certificate for your SSL Termination Point</a>
+
+* <a href="/pivotalcf/1-10/security/pcf-infrastructure/api-cert-rotation.html">Managing Non-Configurable TLS/SSL Certificates</a>
+
+
