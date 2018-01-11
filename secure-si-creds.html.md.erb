@@ -1,5 +1,5 @@
 ---
-title: Securing Services Instance Credentials with PAS CredHub (Beta)
+title: Securing Services Instance Credentials with Runtime CredHub (Beta)
 owner: CredHub
 ---
 
@@ -7,23 +7,23 @@ This topic describes how Pivotal Cloud Foundry (PCF) operators can ensure servic
 
 <p class="note"><strong>Note</strong>: This feature is currently in Beta.</p>
 
-* **What is PAS CredHub?**
+* **What is runtime CredHub?**
 	* The Pivotal Application Service (PAS) tile includes its own CredHub component, separate from the CredHub component included with the Ops Manager Director tile. For more information about this centralized credential management component, see the [CredHub](../credhub/index.html) documentation.
-* **What is PAS CredHub used for?**
-	* PAS CredHub exists to securely store service instance credentials. Previously, PCF could only use the Cloud Controller database for storing these credentials.
+* **What is runtime CredHub used for?**
+	* Runtime CredHub exists to securely store service instance credentials. Previously, PCF could only use the Cloud Controller database for storing these credentials.
 * **What are service instance credentials**? 
 	* When developers want their app to use a service, such as those provided by the Spring Cloud Services tile for PCF, they must bind their app to an instance of that service. Service bindings include credentials that developers can use to access the service from their app. For more information, see [Binding Credentials](../services/binding-credentials.html). 
-* **How can I ensure that service instance credentials are stored in PAS CredHub?** 
-	* You must configure PAS to enable this functionality by following the procedure below. Not all services support the use of PAS CredHub.  
-* **Can I use PAS CredHub to store service instance credentials if some of my services do not support the use of PAS CredHub?**
-	*  PAS supports both services that do and do not use PAS CredHub. Services that do not use PAS CredHub continue to pass their credentials to the Cloud Controller database.
-* **Can I rotate service instance credentials in PAS CredHub?**
-	* PAS CredHub supports credential rotation. For more information, see the [Rotating PAS CredHub Encryption Keys](../opsguide/credential-rotation.html) topic.
+* **How can I ensure that service instance credentials are stored in runtime CredHub?** 
+	* You must configure PAS to enable this functionality by following the procedure below. Not all services support the use of runtime CredHub.  
+* **Can I use runtime CredHub to store service instance credentials if some of my services do not support the use of runtime CredHub?**
+	*  PAS supports both services that do and do not use runtime CredHub. Services that do not use runtime CredHub continue to pass their credentials to the Cloud Controller database.
+* **Can I rotate service instance credentials in runtime CredHub?**
+	* Runtime CredHub supports credential rotation. For more information, see the [Rotating Runtime CredHub Encryption Keys](../opsguide/credential-rotation.html) topic.
 
 
 ## <a id='prereq'></a> Prerequisite
 
-The procedures in this document are only effective for services that support storing their instance credentials in PAS CredHub. To learn whether a service supports this feature, see the documentation for that service.
+The procedures in this document are only effective for services that support storing their instance credentials in runtime CredHub. To learn whether a service supports this feature, see the documentation for that service.
 
    <p class="note breaking"><strong>Breaking Change</strong>: If you opt out of the <a href="../pcf-release-notes/runtime-rn.html#bosh-dns">BOSH DNS feature</a>, your PCF deployment cannot support Secure Service Instance Credentials.</p>
 
@@ -51,7 +51,7 @@ You must configure the PAS tile to support securing service instance credentials
 
 ## <a id='asgs'></a> Step 2: Create Application Security Groups
 
-Application Security Groups (ASGs) are network policy rules specifying protocols, ports, and IP ranges that apply to outbound network connections initiated from apps. You must follow the steps below to ensure the ASGs for your deployment allow apps to communicate with the PAS CredHub API.  
+Application Security Groups (ASGs) are network policy rules specifying protocols, ports, and IP ranges that apply to outbound network connections initiated from apps. You must follow the steps below to ensure the ASGs for your deployment allow apps to communicate with the runtime CredHub API.  
 
 <p class="note"><strong>Note</strong>: The default ASGs in PCF allow apps running on your deployment to send traffic to almost any IP address. This step is only required if your ASGs restrict network access from apps to the network that PAS runs on, as documented in <a href="./app-sec-groups.html">Restricting App Access to Internal PCF Components</a>.</p>
 
@@ -86,7 +86,7 @@ Application Security Groups (ASGs) are network policy rules specifying protocols
 
 ## <a id='service-instances'></a> Step 3: Unbind and Rebind Service Instances 
 
-For any service instance bindings that existed before PAS CredHub was supported for that service, you must work with your developers to unbind and rebind the service instances to their apps. If you do not unbind and rebind the service, apps continue functioning as normal and fetching credentials from the Cloud Controller database. 
+For any service instance bindings that existed before runtime CredHub was supported for that service, you must work with your developers to unbind and rebind the service instances to their apps. If you do not unbind and rebind the service, apps continue functioning as normal and fetching credentials from the Cloud Controller database. 
 
 <p class="note"><strong>Note</strong>: This step is not required for bindings created after you installed the new version of the service tile that supports CredHub and you completed the procedures in steps 1 and 2 of this topic.</p>
 
