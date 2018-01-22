@@ -137,7 +137,7 @@ Create ASGs that block apps from sending traffic to the networks that host Ops M
   * **Two Network Layout**:
 
         ```
-        excluded_networks:
+        exclude:
         - YOUR-OPS-MANAGER-CIDR
         - YOUR-PAS-AND-SERVICES-CIDR
         ```
@@ -145,7 +145,7 @@ Create ASGs that block apps from sending traffic to the networks that host Ops M
       <p class="note"><strong>Note</strong>: If you only want to secure the Ops Manager and PAS components, you can optionally exclude the services CIDR.</p>
 
          ```
-          excluded_networks:
+          exclude:
           - YOUR-OPS-MANAGER-CIDR
           - YOUR-PAS-CIDR
           - YOUR-SERVICES-CIDR
@@ -154,7 +154,7 @@ Create ASGs that block apps from sending traffic to the networks that host Ops M
       <p class="note"><strong>Note</strong>: If you only want to secure the Ops Manager and PAS components, you can optionally exclude the services CIDRs.</p>
 
         ```
-        excluded_networks:
+        exclude:
         - YOUR-OPS-MANAGER-CIDR
         - YOUR-PAS-CIDR
         - YOUR-SERVICE-CIDR-1
