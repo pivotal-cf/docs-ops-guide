@@ -142,7 +142,7 @@ Create ASGs that block apps from sending traffic to the networks that host Ops M
         - YOUR-ELASTIC-RUNTIME-AND-SERVICES-CIDR
         ```
    * **Three Network Layout**:
-      <p class="note"><strong>Note</strong>: If you only want to secure the Ops Manager and Elastic Runtime components, you can optionally exclude the services CIDR.</p>
+      <p class="note"><strong>Note</strong>: If you want to secure only the Ops Manager and PAS components, you can remove the services CIDR from the <code>exclude</code> section.</p>
 
          ```
           exclude:
@@ -151,7 +151,7 @@ Create ASGs that block apps from sending traffic to the networks that host Ops M
           - YOUR-SERVICES-CIDR
          ```
     * **Three or More Network Layout**:
-      <p class="note"><strong>Note</strong>: If you only want to secure the Ops Manager and Elastic Runtime components, you can optionally exclude the services CIDRs.</p>
+      <p class="note"><strong>Note</strong>: If you want to secure only the Ops Manager and PAS components, you can remove the services CIDRs from the <code>exclude</code> section.</p>
 
         ```
         exclude:
