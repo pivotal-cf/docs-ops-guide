@@ -1,25 +1,27 @@
 ---
-title: Configuring ADFS Single Sign­-On for PCF
+title: ADFS Single Sign­-On Configuration for Pivotal Cloud Foundry
 owner: Identity
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic explains how to configure single sign­-on (SSO) for Active Directory Federation
-Services (ADFS) on Pivotal Cloud Foundry (PCF). You must configure SSO on both ADFS and PCF. 
+This topic explains how to configure single sign­-on (SSO) between Active Directory Federation
+Services (ADFS) and Pivotal Cloud Foundry (PCF).
 
-## <a id='pcf'></a>Configure ADFS as the SAML 2.0 Identity Provider on PCF
+## <a id='pcf'></a>Configuring ADFS as the SAML 2.0 Identity Provider on PCF
 
-1. Browse to `https://SERVER-HOST-NAME/federationmetadata/2007­-06/federationmetadata.xml` to download the identity provider metadata from the ADFS server. Replace `SERVER-HOST-NAME` with your server host name. 
+1. Download the identity provider metadata from the ADFS server using the
+`https://SERVER-HOST-NAME/federationmetadata/2007­-06/federationmetadata.xml` URL.
 1. Follow the steps in [Configuring Authentication and Enterprise SSO for PAS](http://docs.pivotal.io/pivotalcf/opsguide/sso.html) to set the identity provider metadata on Pivotal Cloud Foundry.
 
-## <a id='adfs'></a>Configure PCF as the SAML 2.0 Service Provider on ADFS
+## <a id='adfs'></a>Configuring PCF as the SAML 2.0 Service Provider on ADFS
 
 1. Download the service provider metadata using the `https://login.SYSTEM-DOMAIN/saml/metadata` URL.
 1. Open the **ADFS Management** co​nsole.
 1. Click **Add Relying Party Trust…​** in the **Actions** pane.
 1. On the Welcome step, click **Start**​.
-1. Select **Import data about the relying party from a file**,​ enter the path to the downloaded service provider metadata, and click **Next**.​
+1. Select **Import data about the relying party from a file**,​ enter the path to the
+downloaded service provider metadata, and click **Next**.​
 1. Enter a name for **Display name**​ and click **Next**.​
 1. Leave the default multi­factor authentication selection and click **Next**​.
 1. Select **Permit all users to access this relying party​** and click **Next**.​
@@ -27,90 +29,8 @@ Services (ADFS) on Pivotal Cloud Foundry (PCF). You must configure SSO on bot
 1. Click **Close**​ to finish the wizard.
 1. Select the **Encryption​** tab and click **Remove​** to remove the encryption certificate.
 1. Select the **Advanced**​ tab and select **SHA­1**​ for the **Secure hash algorithm​**.
-1. (Optional) If you are using a self­-signed certificate and want to disable CRL checks,
+1. (Optional) If you are using a self­signed certificate and want to disable CRL checks,
 follow these steps:
   1. Open **Windows Powershell​** as an Administrator.
   1. Execute the following command: `set­-ADFSRelyingPartyTrust ­-TargetName "RELYING-PARTY-TRUST" ­-SigningCertificateRevocationCheck None`
 
-User Access Scenario Two – Elastic Runtime – Developer Access
-The second access scenario considered was developer access to the Pivotal Cloud Foundry Elastic Runtime (ERT) Environment. Access to the ERT environment is required by developers to deploy and manage deployed applications. The ERT environment is accessible both through a web portal and through the Cloud Foundry Command Line Interface (CF CLI). Pivotal security methodologies are not broken down in this document, however there is extensive information available on the Pivotal Documentation portal related to how ERT implements security concepts necessary to support a Platform as a Service (PaaS) environment.
-
-Scenario Two Overview
-An example workflow for controlling user access to the Elastic Runtime web portal is presented in Figure 3 - ERT Access Workflow.
-
-
-Figure 3 - ERT Access Workflow
-
-The ERT access workflow is like the PCF Ops Manager workflow with the addition of a minor change to the initial access request. Steps three (3) through eleven (11) mirror steps one (1) through nine (9) of the PCF Ops Manager workflow, thus they will not be restated. The only additions, steps one (1) and two (2) are described below:
-
-To access the developer web portal, a developer would navigate to https://login.<system-domain>.com. For example, https://login.system.cf.iwic.iwinnovations.com/login within the Intelligent Waves Lab environment. 
-When the developer accesses this portal redirection to the AD FS login portal will not occur immediately. Alternatively, a login screen will be displayed with information presented in Figure 3. The developer may attempt to login with a Username and Password if enabled or they may select the SAML integrated option below the “Sign In” button. For our lab environment, the Display Name is set to “IWIC ADFS”, and is setup based on information provided during the Elastic Runtime deployment. Once the “IWIC ADFS” link is selected, the user is immediately redirected to the Microsoft ADFS login portal. Upon entering credentials at the ADFS Portal the user is either granted access or prevented from accessing the requested resources.
-
-
-Figure 4 - Elastic Runtime Login
-
-The remaining steps three (3) through eleven (11) are identical to the steps which are provided for PCF Ops Manager login.
-
-Scenario Two Implementation
-Setting up SAML based access for Elastic Runtime is documented at the Pivotal Documentation portal however key steps are documented below.
-
-Log into PCF Ops Manager and select the Elastic Runtime Tile
-Select “Authentication and Enterprise SSO” from the left hand pane
-Select “SAML Authentication Provider”
-Enter a Provider Name -  Note: This name should not change after the setup has been completed.
-Enter a Display Name – Note: This name will be displayed on the Elastic Runtime login portal below the “Sign In” button
-Add the ADFS Metadata URL in the “(OR) Provider Metadata URL” text box – This URL should be: https://ADFS-FEDERATION-NAME/federationmetadata/200706/federationmetadata.xml (Configuring Authentication and Enterprise SSO for Elastic Runtime, 2017)
-Leave Name ID Format set to “Email Address”
-Ensure that Signature Algorithm is set to “SHA-1”
-Next select “UAA” from the left hand pane
-On this pane, you must paste in the Base64 encoded Certificate for Elastic Runtime and key. This certificate must have multiple Subject Alternate Names as documented on the Pivotal Documentation portal. (Providing a Certificate for Your SSL/TLS Termination Point, 2017) Additional information regarding generation of the Certificate Service Request (CSR) may be found in this documents appendix.
-Navigate to the following URL to obtain the XML file with information required for the AD FS setup https://login.YOUR-SYSTEM-DOMAIN/saml/metadata and download the required XML file
-
-The above steps complete the basic setup required for Single Sign On support using SAML for PCF. Additional steps are required on the Active Directory Federation Server to complete the integration. High level ADFS setup steps are provided below (ADFS-PCF-SSO-Runbook, 2017):
-
-Log into your Active Directory Federation Services server and open the “AD FS Management” application
-In the left pane, expand the Trusts Relationships directory.
-Right Click on Relying Party Trusts and select “Add relying party trusts…”.
-When prompted, press “Start” to continue with the addition of a new relying party trust.
-Select the middle radio button for “Import data for the relying party from a file”.
-Choose the file that was downloaded above in step 5.
-Press “OK” if prompted with an alert that states not all data will be imported due to AD FS support conflicts.
-Specify a Display Name for the new relying party trust.
-Press “Next” on the Multi-Factor Authentication configuration screen.
-Leave “Permit all users to access this relying party” radio button selected and press “Next”.
-Press “Next” on the Ready to Add Trust screen.
-Press “Close” to complete the wizard.
-Modify the Relying Party Trust
-Double click on the newly created Relying Party Trust in the right window pane.
-Select the “Encryption” tab and press the “Remove” button to delete the encryption certificate that was imported during the Relying Party Trust creation.
-Select the “Advanced” tab and change the “Secure Hash Algorithm” to SHA-1.
-Modify the Claim Rules associated with the Relying Party Trust
-Right Click on the new Relying Party Trust and select “Edit Claim Rules…”
-Select the first tab – “Issuance Transform Rules”
-Create Claim Rule one:
-Press the “Add Rule” button, a popup will appear.
-Keep Send LDAP Attributes as Claims template selected in the “Claim Rule Template” dropdown and press “Next”.
-Provide a claim rule name, for example “UPN to Email Address”.
-In the “Attribute Store” drop down, select the Active Directory option.
-Expand the “LDAP Attribute” dropdown and select User-Principle-Name.
-Expand the “Outgoing Claim Type” and select E-Mail Address.
-Press the “Finish” button to create the first Issuance Claim Rule.
-Create Claim Rule two:
-Press the “Add Rule” button, a popup will appear.
-Select Transform An Incoming Claim in the “Claim Rule Template” dropdown and press “Next”.
-Provide a claim rule name, for example “NameID”.
-For the “Incoming Claim Type” select E-Mail Address.
-For the “Outgoing Claim Type” select Name ID.
-For “Outgoing Name Format” select E-Mail Address.
-Ensure the radio button for “Pass through all Claim Values” is selected.
-Press the “Finish” button to create the second Issuance Claim Rule.
-Select the second tab – “Issuance Authorization Rules”
-Press the “Add Rule” button, a popup will appear.
-Keep Permit or Deny Users Based on an Incoming Claim selected in the “Claim Rule Template” dropdown and press “Next”.
-Provide a claim rule name, for example “Permit PCF Developers”.
-In the “Incoming Claim Type” dropdown select Group SID.
-Press the “Browse” button, a popup will appear. Search and locate the Security Group in your domain which PCF developers are a part of and press “OK”.
-Ensure the radio button for “Permit access to users with this incoming claim” is selected.
-Press the “Finish” button to create the Authorization Claim Rule.
-
-At this point the environment should allow users in the appropriate security to login to the PCF Elastic Runtime web portal.
