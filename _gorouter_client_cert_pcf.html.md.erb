@@ -1,4 +1,4 @@
-To configure Gorouter behavior for handling client certificates, select one of the options in the **Router behavior for Client Certificates** field of the **Networking** configuration screen in PAS. 
+To configure Gorouter behavior for handling client certificates, select one of the options in the **Router behavior for Client Certificates** field of the **Networking** configuration screen in Elastic Runtime. 
 
 * **Router does not request client certificates.** This option is incompatible with the XFCC configuration options <b>Forward the XFCC header received from the client only when the client connection is mTLS</b> and <b>Strip the XFCC header when present and set it to the client certificate from the mTLS handshake</b> because these options require mutual authentication. As client certificates are not requested, client will not provide them, and thus validation of client certificates will not occur.
 
