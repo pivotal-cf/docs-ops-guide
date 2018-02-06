@@ -21,12 +21,12 @@ for single sign-on (SSO), you can configure SSO to allow users to access the
 Apps Manager and Cloud Foundry Command Line Interface (cf CLI) without creating 
 a new account or, if using SAML, without re-entering credentials.
 
-See the [Adding Existing SAML or LDAP Users to a PCF Deployment](../opsguide/external-user-management.html) topic for information 
+See the [Adding Existing SAML or LDAP Users to a PCF Deployment](./opsguide/external-user-management.html) topic for information 
 about managing user identity and pre-provisioning user roles with SAML or LDAP 
 in PCF.
 
-This [Knowledge Base article](https://discuss.zendesk.com/hc/en-us/articles/204140418-Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry-) explains the process used by the UAA 
-Server when it attempts to authenticate a user through LDAP.
+For an explanation of the process used by the UAA Server when it attempts to 
+authenticate a user through LDAP, see the [Configuring LDAP Integration with Pivotal Cloud Foundry](https://discuss.zendesk.com/hc/en-us/articles/204140418-Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry-) Knowledge Base article.
 
 ##<a id="configure-saml"></a>Configure PCF to Use a SAML Identity Provider
 
@@ -45,14 +45,12 @@ The following procedure configures PCF to use a SAML IdP:
 1. From the **Installation Dashboard**, click the **Elastic Runtime** tile.
 
 1. Select the **Domains** tab and record your system domain.
-
-	<%= image_tag("new-domains.png") %>
+    <%= image_tag("new-domains.png") %>
 
 1. Select **Authentication and Enterprise SSO**.
 
 1. Select **SAML Identity Provider**.
-
-	<%= image_tag("sso-ert.png") %>
+    <%= image_tag("sso-ert.png") %>
 
 1. Set the **Provider Name**. This is a unique name you create for the Identity 
 Provider. This name can include only alphanumeric characters, `+`, `_`, and 
@@ -61,38 +59,58 @@ You should not change this name after deployment because all external users use
 it to link to the provider.
 
 1. Enter a **Display Name**. Your provider display name appears as a link on 
-your Pivotal login page, which you can access at `https://login.YOUR-SYSTEM-DOMAIN`.
+your Pivotal login page, which you can access at 
+`https://login.YOUR-SYSTEM-DOMAIN`.
+    <%= image_tag("login-page.png") %>
 
-	<%= image_tag("login-page.png") %>
+1. Retrieve the metadata from your Identity Provider and copy it into either 
+the **Provider Metadata** or the **Provider Metadata URL** fields, depending on 
+whether your Identity Provider exposes a Metadata URL. Refer to the [Configure 
+SAML as an Identity Provider for PCF](#configure-saml-for-pcf) section of this 
+topic for more information. Pivotal recommends that you use the Provider 
+Metadata URL rather than Provider Metadata because the metadata can change. You 
+can do this in either of the following ways:
+    * If your Identity Provider exposes a Metadata URL, provide the Metadata URL.
+    * Download your Identity Provider metadata and paste this XML into the **Provider Metadata** area.
 
-1. Retrieve the metadata from your Identity Provider and copy it into either the **Provider Metadata** or the **Provider Metadata URL** fields, depending on whether your Identity Provider exposes a Metadata URL. Refer to the [Configure SAML as an Identity Provider for PCF](#configure-saml-for-pcf) section of this topic for more information. Pivotal recommends that you use the Provider Metadata URL rather than Provider Metadata because the metadata can change. You can do this in either of the following ways:
-	* If your Identity Provider exposes a Metadata URL, provide the Metadata URL.
-	* Download your Identity Provider metadata and paste this XML into the **Provider Metadata** area.
+    <p class='note'><strong>Note</strong>: You only need to select one of the above configurations. If you configure both, your Identity Provider defaults to the <strong>(OR) Provider Metadata URL</strong>.</p>
 
-	<p class='note'><strong>Note</strong>: You only need to select one of the above configurations. If you configure both, your Identity Provider defaults to the <strong>(OR) Provider Metadata URL</strong>.</p>
+    <p class="note"><strong>Note</strong>: Refer to the <a href="../opsguide/external-user-management.html">Adding Existing SAML or
+LDAP Users to a PCF Deployment</a> topic for information about on-boarding SAML 
+users and mapping them to PCF user roles.</p>
 
-	<p class="note"><strong>Note</strong>: Refer to the <a href="../opsguide/external-user-management.html">Adding Existing SAML or
-LDAP Users to a PCF Deployment</a> topic for information about on-boarding SAML users and mapping them to PCF user roles.</p>
+1. Select the **Name ID Format** for your SAML Identity Provider. This 
+translates to `username` on PCF Elastic Runtime. The default is `Email Address`.
 
-1. Select the **Name ID Format** for your SAML Identity Provider. This translates to `username` on PCF Elastic Runtime. The default is `Email Address`.
+1. For **Email Domain(s)**, enter a comma-separated list of the email domains 
+for external users who will receive invitations to Apps Manager.
 
-1. For **Email Domain(s)**, enter a comma-separated list of the email domains for external users who will receive invitations to Apps Manager.
+1. For **First Name Attribute** and **Last Name Attribute**, enter the 
+attribute names in your SAML database that correspond to the first and last 
+names in each user record, for example `first_name` and `last_name`.
 
-1. For **First Name Attribute** and **Last Name Attribute**, enter the attribute names in your SAML database that correspond to the first and last names in each user record, for example `first_name` and `last_name`.
-
-1. For **Email Attribute**, enter the attribute name in your SAML assertion that corresponds to the email address in each user record, for example `EmailID`.
+1. For **Email Attribute**, enter the attribute name in your SAML assertion 
+that corresponds to the email address in each user record, for example 
+`EmailID`.
 
 1. For **External Groups Attribute**, enter the attribute name in your SAML 
 database that defines the groups that a user belongs to, for example 
 `group_memberships`. To map the groups from the SAML assertion to admin roles 
-in PCF, follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) 
-section of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic. 
+in PCF, follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) section 
+of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic. 
 
-1. By default, all SAML Authentication Request from PCF are signed. To change this, disable the **Sign Authentication Requests** checkbox and configure your Identity Provider to verify SAML authentication requests.
+1. By default, all SAML Authentication Request from PCF are signed. To change 
+this, disable the **Sign Authentication Requests** checkbox and configure your 
+Identity Provider to verify SAML authentication requests.
 
-1. To validate the signature for the incoming SAML assertions, enable the **Required Signed Assertions** checkbox and configure your Identity Provider to send signed SAML assertions.
+1. To validate the signature for the incoming SAML assertions, enable the 
+**Required Signed Assertions** checkbox and configure your Identity Provider to 
+send signed SAML assertions.
 
-1. Your SAML Entity ID defaults to `http://login.YOUR-SYSTEM-DOMAIN` where `YOUR-SYSTEM-DOMAIN` is set in the **Domains** > **System Domain** field. To override this default, enter a custom SAML Entity ID in the **Entity ID Override** field.
+1. Your SAML Entity ID defaults to `http://login.YOUR-SYSTEM-DOMAIN` where 
+`YOUR-SYSTEM-DOMAIN` is set in the **Domains** > **System Domain** field. To 
+override this default, enter a custom SAML Entity ID in the **Entity ID 
+Override** field.
 
 1. Click **Save**.
 
@@ -115,29 +133,31 @@ Refer to the table below for information about certain industry-standard
 Identity Providers and how to integrate them with PCF:
 
 <table border="1">
-	<tr>
-		<th>Solution Name</th>
-		<th>Integration Guide</th>
-	</tr>
-	<tr>
-		<td><a href='http://www.ca.com/us/securecenter/ca-single-sign-on.aspx'>CA Single Sign-On aka CA SiteMinder</a></td>
-		<td><a href="./images/CASM-PivotalCloudFoundryFederationRunbook-ver1.0.pdf">PDF</a></td>
-	</tr>
-	<tr>
-		<td><a href='https://www.pingidentity.com/en/products/pingfederate.html'>Ping Federate</a></td>
-		<td><a href="./images/PingFederate-PCF-SSO-Runbook.pdf">PDF</a></td>
-	</tr>
-	<tr>
-		<td><a href='https://technet.microsoft.com/en-us/windowsserver/dd448613.aspx'>Active Directory Federation Services</a></td>
-		<td><a href="adfs-sso-configuration.html">Link</a></td>
-	</tr>
+  <tr>
+    <th>Solution Name</th>
+    <th>Integration Guide</th>
+  </tr>
+  <tr>
+    <td><a href='http://www.ca.com/us/securecenter/ca-single-sign-on.aspx'>CA Single Sign-On aka CA SiteMinder</a></td>
+    <td><a href="./images/CASM-PivotalCloudFoundryFederationRunbook-ver1.0.pdf">PDF</a></td>
+  </tr>
+  <tr>
+    <td><a href='https://www.pingidentity.com/en/products/pingfederate.html'>Ping Federate</a></td>
+    <td><a href="./images/PingFederate-PCF-SSO-Runbook.pdf">PDF</a></td>
+  </tr>
+  <tr>
+    <td><a href='https://technet.microsoft.com/en-us/windowsserver/dd448613.aspx'>Active Directory Federation Services</a></td>
+    <td><a href="adfs-sso-configuration.html">Link</a></td>
+  </tr>
 </table>
 
-<p class="note"><strong>Note</strong>: Some Identity Providers allow uploads of Service Provider Metadata. Other providers require you to manually enter the Service Provider Metadata into a form.</p>
+<p class="note"><strong>Note</strong>: Some Identity Providers allow uploads of 
+Service Provider Metadata. Other providers require you to manually enter the Service Provider Metadata into a form.</p>
 
 ## <a id="configure-ldap"></a>Configure LDAP as an Identity Provider for PCF
 
-To integrate the UAA with one or more LDAP servers, configure Elastic Runtime with your LDAP endpoint information as follows:
+To integrate the UAA with one or more LDAP servers, configure Elastic Runtime 
+with your LDAP endpoint information as follows:
 
 1. Log into the Operations Manager web interface.
 
@@ -155,46 +175,65 @@ To integrate the UAA with one or more LDAP servers, configure Elastic Runtime wi
     * `ldap://`: This specifies that the LDAP server uses an unencrypted connection.
     * `ldaps://`: This specifies that the LDAP server uses SSL for an encrypted connection and requires that the LDAP server holds a trusted certificate or that you import a trusted certificate to the JVM truststore.
 
-1. For **LDAP Credentials**, enter the LDAP Distinguished Name (DN) and password for binding to the LDAP Server. Example DN: `cn=administrator,ou=Users,dc=example,dc=com`
+1. For **LDAP Credentials**, enter the LDAP Distinguished Name (DN) and 
+password for binding to the LDAP Server. Example DN: 
+`cn=administrator,ou=Users,dc=example,dc=com`
     <p class="note"><strong>Note</strong>: Pivotal recommends that you provide LDAP credentials that grant read-only permissions on the LDAP Search Base and the LDAP Group Search Base. In addition to this, if the bind user belongs to a different search base, you must use the full DN.</p>
 
-1. For **User Search Base**, enter the location in the LDAP directory tree from which any LDAP User search begins. The typical LDAP Search Base matches your domain name.
+1. For **User Search Base**, enter the location in the LDAP directory tree from 
+which any LDAP User search begins. The typical LDAP Search Base matches your 
+domain name.
 <br><br>
-    For example, a domain named "cloud.example.com" typically uses the following LDAP User Search Base: `ou=Users,dc=example,dc=com`
+For example, a domain named "cloud.example.com" typically uses the following 
+LDAP User Search Base: `ou=Users,dc=example,dc=com`
 
-1. For **User Search Filter**, enter a string that defines LDAP User search criteria. These search criteria allow LDAP to perform more effective and efficient searches. For example, the standard LDAP search filter `cn=Smith` returns all objects with a common name equal to `Smith`.
+1. For **User Search Filter**, enter a string that defines LDAP User search 
+criteria. These search criteria allow LDAP to perform more effective and 
+efficient searches. For example, the standard LDAP search filter `cn=Smith` 
+returns all objects with a common name equal to `Smith`.
 <br><br>
 In the LDAP search filter string that you use to configure Elastic 
 Runtime,	use `{0}` instead of the username. For example, use `cn={0}` to return 
 all LDAP objects with the same common name as the username.
 <br><br>
-In addition to `cn`, other attributes commonly searched for and returned are `mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
-<p class="note"><strong>Note</strong>: This [Knowledge Base article](https://discuss.zendesk.com/hc/en-us/articles/204140418-Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry-) provides instructions for testing and troubleshooting your LDAP search filters.</p>
+In addition to `cn`, other attributes commonly searched for and returned are 
+`mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
+<p class="note"><strong>Note</strong>: For instructions for testing and troubleshooting your LDAP search filters, see the [Configuring LDAP Integration with Pivotal Cloud Foundry](https://discuss.zendesk.com/hc/en-us/articles/204140418-Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry-) Knowledge Base article.</p>
 
 1. For **Group Search Base**, enter the location in the LDAP directory tree 
 from which the LDAP Group search begins.
 <br><br>
-For example, a domain named "cloud.example.com" typically uses the following LDAP Group Search Base: `ou=Groups,dc=example,dc=com`
+For example, a domain named "cloud.example.com" typically uses the following 
+LDAP Group Search Base: `ou=Groups,dc=example,dc=com`
 <br><br>
 Follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) section 
 of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic to map the 
 groups under this search base to admin roles in PCF.
-<p class="note"><strong>Note</strong>: Refer to the <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a PCF Deployment</a> topic to on-board individual LDAP users and map 
+    <p class="note"><strong>Note</strong>: Refer to the <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a PCF Deployment</a> topic to on-board individual LDAP users and map 
 them to PCF Roles.</p>
 
 1. For **Group Search Filter**, enter a string that defines LDAP Group search criteria. The standard value is `member={0}`.
 
 1. For **Server SSL Cert**, paste in the root certificate from your CA certificate or your self-signed certificate.
 
-1. If you are using `ldaps://` with a self-signed certificate, enter a Subject Alternative Name for your certificate under **Server SSL Cert AltName**. Otherwise, leave this field blank.
+1. If you are using `ldaps://` with a self-signed certificate, enter a Subject 
+Alternative Name for your certificate under **Server SSL Cert AltName**. 
+Otherwise, leave this field blank.
 
-1. For **First Name Attribute** and **Last Name Attribute**, enter the attribute names in your LDAP directory that correspond to the first and last names in each user record, for example `cn` and `sn`.
+1. For **First Name Attribute** and **Last Name Attribute**, enter the 
+attribute names in your LDAP directory that correspond to the first and last 
+names in each user record, for example `cn` and `sn`.
 
-1. For **Email Attribute**, enter the attribute name in your LDAP directory that corresponds to the email address in each user record, for example `mail`.
+1. For **Email Attribute**, enter the attribute name in your LDAP directory 
+that corresponds to the email address in each user record, for example `mail`.
 
-1. For **Email Domain(s)**, enter a comma-separated list of the email domains for external users who will receive invitations to Apps Manager.
+1. For **Email Domain(s)**, enter a comma-separated list of the email domains 
+for external users who will receive invitations to Apps Manager.
 
-1. For **LDAP Referrals**, choose how the UAA handles LDAP server referrals out to other external user stores. The UAA can follow the external referrals, ignore them without returning errors, or throw an error for each external referral and abort the authentication.
+1. For **LDAP Referrals**, choose how the UAA handles LDAP server referrals out 
+to other external user stores. The UAA can follow the external referrals, 
+ignore them without returning errors, or throw an error for each external 
+referral and abort the authentication.
 
 1. Click **Save**.
 
