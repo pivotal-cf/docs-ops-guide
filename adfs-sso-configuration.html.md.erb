@@ -18,16 +18,15 @@ This topic explains how to configure single sign­-on (SSO) between Active Direc
 1. Download the service provider metadata using the `https://login.SYSTEM-DOMAIN/saml/metadata` URL.
 1. Open the **ADFS Management** console.
 1. Click **Add Relying Party Trust...** in the **Actions** pane.
-1. On the Welcome step, click **Start**​.
-1. Select **Import data about the relying party from a file**,​ enter the path to the downloaded service provider metadata and click **Next**.​
-1. Enter a name for **Display name**​ and click **Next**.​
-1. Leave the default multi­factor authentication selection and click **Next**​.
-1. Select **Permit all users to access this relying party​** and click **Next**.​
-1. Review your settings and click **Next**.​
-1. Click **Close**​ to finish the wizard.
-1. Select the **Encryption​** tab and click **Remove​** to remove the encryption certificate.
-1. Select the **Advanced**​ tab and select **SHA­1**​ for the **Secure hash algorithm​**.
+1. On the Welcome step, click **Start**.
+1. Select **Import data about the relying party from a file**, enter the path to the downloaded service provider metadata, and click **Next**.
+1. Enter a name for **Display name** and click **Next**.
+1. Leave the default multi­factor authentication selection and click **Next**.
+1. Select **Permit all users to access this relying party** and click **Next**.
+1. Review your settings and click **Next**.
+1. Click **Close** to finish the wizard.
+1. Select the **Encryption** tab and click **Remove** to remove the encryption certificate.
+1. Select the **Advanced** tab and select **SHA­1** for the **Secure hash algorithm**.
 1. (Optional) If you are using a self­-signed certificate and want to disable CRL checks, follow these steps:
-  1. Open **Windows Powershell​** as an Administrator.
+  1. Open **Windows Powershell** as an Administrator.
   1. Execute the following command: `set­-ADFSRelyingPartyTrust ­-TargetName "RELYING-PARTY-TRUST" ­-SigningCertificateRevocationCheck None`
-
