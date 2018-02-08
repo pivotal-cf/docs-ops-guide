@@ -10,7 +10,7 @@ This topic explains how to configure single sign-on (SSO) between PingFederate a
 ## <a id='pcf'></a>Configuring PingFederate as the SAML 2.0 Identity Provider on PCF
 
 1. Download your Identity Provider Metadata from PingFederate Server. Click **Metadata Export** under **Administrative Functions** on the Main Menu of the PingFederate Administrative Console. If your PingFederate server is configured to act as both an Identity Provider (IdP) and a service provider (SP), indicate which type of configuration you want to export and click **Next**. The Signing key can be exported. You can skip the options related to Encryption Keys and Metadata Attribute Contract because they are not supported at this time.
-1. Follow the steps in [Configuring Authentication and Enterprise SSO for Elastic Runtime](./auth-sso.html) to set your IdP metadata on PCF.
+1. Follow the steps in [Configuring Authentication and Enterprise SSO for Elastic Runtime](./auth-sso.html#configure-pcf-for-saml) to set your IdP metadata on PCF.
 
 ## <a id='ping-federate'></a>Configuring PCF as the SAML 2.0 Service Provider on PingFederate
 
