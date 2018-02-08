@@ -15,7 +15,7 @@ This topic explains how to configure single sign-on (SSO) between PingFederate a
 ## <a id='ping-federate'></a>Configuring PCF as the SAML 2.0 Service Provider on PingFederate
 
 1. Download your Service Provider Metadata from `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata`.
-1. Import the Service Provider Metadata to PingFederate. Navigate to **Main Menu** -> **IdP Configuration** -> **SP Connection** and click **Import**. In the **Import Connection** screen, browse and select the `.xml` file downloaded in the previous step. Click **Import** and **Done**.
+1. Import the Service Provider Metadata to PingFederate. Navigate to **Main Menu** → **IdP Configuration** → **SP Connection** and click **Import**. In the **Import Connection** screen, browse and select the `.xml` file downloaded in the previous step. Click **Import** and **Done**.
 1. PCF expects the NameID format to be an email address (for example, `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress`) and the value to be the email address of the currently logged in user. The SSO does not function without this setting.
     1. Click the connection name on **Main Menu**. To see a full list of connections, click **Manage All SP**.
     1. Click **Browser SSO** under the **SP Connection** tab.
