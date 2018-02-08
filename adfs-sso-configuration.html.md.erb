@@ -1,19 +1,19 @@
 ---
-title: ADFS Single Sign-On Configuration for Pivotal Cloud Foundry
+title: ADFS Single Sign-On Configuration for PAS
 owner: Identity
 ---
 
 <strong><%= modified_date %></strong>
 
 This topic explains how to configure single sign-on (SSO) between Active 
-Directory Federation Services (ADFS) and Pivotal Cloud Foundry (PCF).
+Directory Federation Services (ADFS) and Pivotal Application Service (PAS).
 
 ## <a id='pcf'></a>Configuring ADFS as the SAML 2.0 Identity Provider on PCF
 
 1. Download the identity provider metadata from the ADFS server using the
 `https://SERVER-HOST-NAME/federationmetadata/2007-06/federationmetadata.xml` 
 URL.
-1. Follow the steps in [Configuring Authentication and Enterprise SSO for PAS](./auth-sso.html) to set the identity provider metadata on Pivotal Cloud Foundry.
+1. Follow the steps in [Configuring Authentication and Enterprise SSO for PAS](./auth-sso.html##configure-pcf-for-saml) to set the identity provider metadata on Pivotal Cloud Foundry.
 
 ## <a id='adfs'></a>Configuring PCF as the SAML 2.0 Service Provider on ADFS
 
