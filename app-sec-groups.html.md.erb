@@ -80,24 +80,24 @@ The procedure for securing your deployment with ASGs varies depending on your ne
     </tr>
     <tr>
       <td>One Network</td>
-      <td><ul><li>One network for Ops Manager and the Ops Manager Director, Pivotal Application Service (PAS), and services.</li></ul>
+      <td><ul><li>One network for Ops Manager and the BOSH Director, Pivotal Application Service (PAS), and services.</li></ul>
       <p class="note"><strong>Note</strong>: You cannot secure your deployment with ASGs if you have this network layout. Because PCF dynamically allocates IPs, they cannot be easily excluded in the case of a single network.</p>  
       </td>
     </tr>
     <tr>
       <td>Two Networks</td>
-      <td><ul><li>One network for Ops Manager and the Ops Manager Director.</li>
+      <td><ul><li>One network for Ops Manager and the BOSH Director.</li>
           <li>One network for PAS and Services.</li></ul></td>
     </tr>
     <tr>
       <td>Three Networks</td>
-      <td><ul><li>One network for Ops Manager and the Ops Manager Director.</li>
+      <td><ul><li>One network for Ops Manager and the BOSH Director.</li>
           <li>One network for PAS.</li>
           <li>One network for all services.</li></ul></td>
     </tr>
     <tr>
       <td>Three or More Networks</td>
-      <td><ul><li>One network for Ops Manager and the Ops Manager Director.</li>
+      <td><ul><li>One network for Ops Manager and the BOSH Director.</li>
           <li>One network for PAS.</li>
           <li>One network for each service.</ul></td>
     </tr>
@@ -123,7 +123,7 @@ Follow these steps to create ASGs that block apps from accessing PCF components 
 
 Gather the CIDRs for each network in your deployment:
 
-1. From the Ops Manager Director tile, click **Create Networks** within the **Settings** tab.
+1. From the BOSH Director tile, click **Create Networks** within the **Settings** tab.
 
 1. In the **Networks** section, expand each network in your deployment by clicking its name.
 

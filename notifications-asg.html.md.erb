@@ -84,7 +84,7 @@ If you are using the built-in HAProxy as your load balancer, follow this procedu
 
 1. Navigate to the network selected in the dropdown.
 
-1. Record the **Ops Manager Director** tile > **Settings** tab > **Create Networks** > **CIDR** for the network identified in the previous step. Ensure the subnet mask allows the space to access `p-mysql`, `p-rabbitmq`, and `p-redis`.
+1. Record the **BOSH Director** tile > **Settings** tab > **Create Networks** > **CIDR** for the network identified in the previous step. Ensure the subnet mask allows the space to access `p-mysql`, `p-rabbitmq`, and `p-redis`.
 
 1. Create a file `assigned-network.json`. For the `destination`, enter the **CIDR** you recorded above. 
 

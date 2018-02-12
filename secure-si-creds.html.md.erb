@@ -8,7 +8,7 @@ This topic describes how Pivotal Cloud Foundry (PCF) operators can ensure servic
 <p class="note"><strong>Note</strong>: This feature is currently in Beta.</p>
 
 * **What is runtime CredHub?**
-	* The Pivotal Application Service (PAS) tile includes its own CredHub component, separate from the CredHub component included with the Ops Manager Director tile. For more information about this centralized credential management component, see the [CredHub](../credhub/index.html) documentation.
+	* The Pivotal Application Service (PAS) tile includes its own CredHub component, separate from the CredHub component included with the BOSH Director tile. For more information about this centralized credential management component, see the [CredHub](../credhub/index.html) documentation.
 * **What is runtime CredHub used for?**
 	* Runtime CredHub exists to securely store service instance credentials. Previously, PCF could only use the Cloud Controller database for storing these credentials.
 * **What are service instance credentials**? 
@@ -57,7 +57,7 @@ Application Security Groups (ASGs) are network policy rules specifying protocols
 
 1. From the PAS tile, click **Assign AZs and Networks** and record the selected Network where the tile is installed.
 
-1. From the Ops Manager Director tile, within the **Settings** tab, click **Create Networks**.
+1. From the BOSH Director tile, within the **Settings** tab, click **Create Networks**.
 
 1. In the **Networks** section, click the name of the PAS network to expand it.
 
