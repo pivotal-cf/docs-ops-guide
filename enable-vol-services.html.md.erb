@@ -15,12 +15,13 @@ Developers can then use the [Cloud Foundry Command Line Interface](../cf-cli/ind
 
 ### <a id='security'></a>Security
 
-When it comes to securing your NFS server against traffic apps running on PCF, you can use the following:
+When it comes to securing your NFS server against traffic apps running on PCF, you can use ASGs and LDAP:
 
-* **Application Security Groups (ASGs)**
-  * PCF uses Application Security Groups (ASGs) to prevent apps from sending traffic directly to your NFS ports. Using ASGs to block acces to your NFS ports prevents apps from bypassing LDAP security in your NFS volume service. For more information, see[Understanding Application Security Groups](../concepts/asg.html).
-* **LDAP**  
-  * LDAP secures the nfs-volume-release so that app developers cannot bind to an NFS volume service using an arbitrary UID and gain access to sensitive data. With LDAP support enabled, app developers must provide credentials for any user they wish to bind as.
+* **Application Security Groups (ASGs)** <br/>
+  Use Application Security Groups (ASGs) to prevent apps from sending traffic directly to your NFS ports. Apps should never need to use NFS ports directly. Pivotal recommends defining an ASG that blocks direct access to your NFS server IP, especially ports 111 and 2049. For more information on setting up ASGs, see 
+  [Understanding Application Security Groups](../concepts/asg.html).
+* **LDAP**  <br/>
+  In addition to ASGs, LDAP secures the NFS volume service so that app developers cannot bind to the service using an arbitrary UID and gain access to sensitive data. With LDAP support enabled, app developers must provide credentials for any user they wish to bind as.
 
 The Diego cells running on PCF must be able to reach your LDAP server on the port you use for connections, which are typically `389` or `636`. You cannot limit which Diego cells have access to your NFS or LDAP servers.   
 
