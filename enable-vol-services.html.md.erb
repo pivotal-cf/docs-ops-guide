@@ -13,6 +13,18 @@ Developers can then use the [Cloud Foundry Command Line Interface](../cf-cli/ind
 
 <p class="note"><strong>Note</strong>: You must have an NFS server running to enable NFS volume services. If you want to use NFS and do not currently have a server available, you can <a href="https://github.com/cloudfoundry-incubator/nfs-volume-release#deploying-the-test-nfs-server-optional">deploy the test NFS server</a> bundled with the NFS Volume release or enable NFS volume services with the NFS Broker Errand for Pivotal Elastic Runtime. You can enable this errand during ERT tile configuration.</p>
 
+### <a id='security'></a>Security
+
+When it comes to securing your NFS server against traffic apps running on PCF, you can use ASGs and LDAP:
+
+* **Application Security Groups (ASGs)** <br/>
+  Use Application Security Groups (ASGs) to prevent apps from sending traffic directly to your NFS ports. Apps should never need to use NFS ports directly. Pivotal recommends defining an ASG that blocks direct access to your NFS server IP, especially ports 111 and 2049. For more information on setting up ASGs, see 
+  [Understanding Application Security Groups](../concepts/asg.html).
+* **LDAP**  <br/>
+  In addition to ASGs, LDAP secures the NFS volume service so that app developers cannot bind to the service using an arbitrary UID and gain access to sensitive data. With LDAP support enabled, app developers must provide credentials for any user they wish to bind as.
+
+The Diego cells running on PCF must be able to reach your LDAP server on the port you use for connections, which are typically `389` or `636`. You cannot limit which Diego cells have access to your NFS or LDAP servers.   
+
 ## <a id='enable'></a>Enable Volume Services
 
 To enable NFS volume services in PCF, perform the following steps:
