@@ -27,6 +27,18 @@ Clicking **Import Stemcell** prompts you to select a stemcell file to import. Yo
 
 Once you import a stemcell, the stemcell is permanently in Ops Manager. If no products are compatible with the stemcell, an option to stage that stemcell appears if you later import a compatible product.
 
+If the stemcell has a green checkmark and the words "Latest stemcell" below the **Staged** dropdown, the stemcell is up to date. An outdated stemcell will display "Stemcell out-of-date."
+
+![Beneath the "Staged" version dropdown, a green checkmark next to the words "Latest stemcell" appears. The stemcell in this image is the latest available version.](opsman-latest-stemcell.png)
+
+## <a id="version"></a> Choose a Stemcell Version
+
+If you have uploaded multiple versions of a stemcell, you can use the dropdown menu in the **Staged** column to choose which version to use.
+
+You can choose a different version until you deploy. After deployment, different stemcell versions will no longer be available.
+
+![The dropdown menu for a stemcell is displayed in the Staged column. Three versions are available.](opsman-view-available-stemcells.png)
+
 ## <a id="stage"></a> Stage a Stemcell
 
 ![A modal that appears after importing a stemcell. The modal says, 'Select the products you want to stage'. The modal has a checkbox next to the product name. It also has a dismiss button and an Apply Stemcell to Products button](staging-modal.png)
