@@ -17,15 +17,15 @@ For more conceptual information about floating stemcells and stemcell upgrades, 
 
 To navigate to the stemcell manager, click **Manage Stemcells** from the Ops Manager **Installation Dashboard**. For more information on navigating the **Installation Dashboard**, see [Understanding the Ops Manager Interface](../customizing/pcf-interface.html).
 
-## <a id="import"></a> Import a Stemcell
+## <a id="import"></a> Import and Stage a Stemcell
 
 ![The Import Stemcell button is floated to the right of the Manage Stemcells header next to the Save button](import-stemcell.png)
 
-<p class="note"><strong>Note: </strong>Before you can import a stemcell, download the appropriate <code>.tgz</code> stemcell file from <a href="https://network.pivotal.io/products/pivotal-cf">Pivotal Network</a>.</p>
+Download the appropriate <code>.tgz</code> stemcell file from [Pivotal Network](https://network.pivotal.io/products/pivotal-cf). Then click **Import Stemcell** to permanently import a stemcell into Ops Manager.
 
-Clicking **Import Stemcell** prompts you to select a stemcell file to import. You can find the **Import Stemcell** button both above the stemcell management table and in the **Staged** column if no compatible stemcell is imported. Both buttons have the same functionality.
+![A modal that appears after importing a stemcell. The modal says, 'Select the products you want to stage'. The modal has a checkbox next to the product name. It also has a dismiss button and an Apply Stemcell to Products button](staging-modal.png)
 
-Once you import a stemcell, the stemcell is permanently in Ops Manager. If no products are compatible with the stemcell, an option to stage that stemcell appears if you later import a compatible product.
+To stage your stemcell to compatible products, enable the products in the "Import Stemcell" dialog. Click **Apply Stemcell to Products** to save your selections. Click **Dismiss** to dismiss the "Import Stemcell" dialog.
 
 ## <a id="version"></a> Choose a Stemcell Version
 
@@ -39,12 +39,3 @@ If the stemcell has a green checkmark and the words "Latest stemcell" below the 
 
 ![Beneath the "Staged" version dropdown, a green checkmark next to the words "Latest stemcell" appears. The stemcell in this image is the latest available version.](opsman-latest-stemcell.png)
 
-## <a id="stage"></a> Stage a Stemcell
-
-![A modal that appears after importing a stemcell. The modal says, 'Select the products you want to stage'. The modal has a checkbox next to the product name. It also has a dismiss button and an Apply Stemcell to Products button](staging-modal.png)
-
-After you import a stemcell, enable the products you want to stage your stemcell. All products are enabled by default.
-
-Clicking **Dismiss** disables all compatible products from staging. The imported stemcell is available for selection in the **Staged** dropdown.
-
-Clicking **Apply Stemcell to Products** stages your selections.
