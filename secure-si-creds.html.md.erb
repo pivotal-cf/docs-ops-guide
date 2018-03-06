@@ -21,11 +21,13 @@ This topic describes how Pivotal Cloud Foundry (PCF) operators can ensure servic
 	* Runtime CredHub supports credential rotation. For more information, see the [Rotating Runtime CredHub Encryption Keys](../opsguide/credential-rotation.html) topic.
 
 
-## <a id='prereq'></a> Prerequisite
+## <a id='prereq'></a> Prerequisites
 
 The procedures in this document are only effective for services that support storing their instance credentials in runtime CredHub. To learn whether a service supports this feature, see the documentation for that service.
 
    <p class="note breaking"><strong>Breaking Change</strong>: If you opt out of the <a href="http://docs-pcf-staging.cfapps.io/pivotalcf/2-1/pcf-release-notes/runtime-rn.html#bosh-dns">BOSH DNS feature</a>, your PCF deployment cannot support Secure Service Instance Credentials.</p>
+
+(Optional) CredHub allows you to use a Hardware Security Module (HSM) to store encryption keys. For more information, see [Preparing CredHub HSMs for Configuration](../customizing/hsm-config.html).
 
 ## <a id='pas-config'></a> Step 1: Configure the PAS Tile
 
