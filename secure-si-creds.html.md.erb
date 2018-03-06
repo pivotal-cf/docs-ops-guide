@@ -27,21 +27,28 @@ The procedures in this document are only effective for services that support sto
 
    <p class="note breaking"><strong>Breaking Change</strong>: If you opt out of the <a href="http://docs-pcf-staging.cfapps.io/pivotalcf/2-1/pcf-release-notes/runtime-rn.html#bosh-dns">BOSH DNS feature</a>, your PCF deployment cannot support Secure Service Instance Credentials.</p>
 
-(Optional) CredHub allows you to use a Hardware Security Module (HSM) to store encryption keys. For more information, see [Preparing CredHub HSMs for Configuration](../customizing/hsm-config.html).
+CredHub allows you to use a Hardware Security Module (HSM) to store encryption keys. If you wish to use an HSM with CredHub, you must configure the HSM before completing the procedures below. For more information, see [Preparing CredHub HSMs for Configuration](../customizing/hsm-config.html).
 
 ## <a id='pas-config'></a> Step 1: Configure the PAS Tile
 
 You must configure the PAS tile to support securing service instance credentials in CredHub. From the PAS tile in Ops Manager, complete the following steps: 
 
 1. Select the **CredHub** pane. 
-	<%= image_tag('images/credhub.png') %>
+	<%= image_tag('images/credhub-db-internal-external.png') %>
 1. Choose the location of your CredHub Database. PAS includes this CredHub database for services to store their service instance credentials. 
+<%= image_tag('images/credhub-external-db-config.png') %>
 	1. If you chose **External**, enter the following:
 		* **Hostname**: The IP address of your database server. 
 		* **TCP Port**: The port of your database server, such as `3306`. 
 		* **Username**: A unique username that can access this specific database on the database server. 
 		* **Password**: The password for the provided username. 
 		* **Database CA Certificate**: A certificate to use for encrypting traffic to and from the database. 
+<%= image_tag('images/credhub-hsm-config.png') %>
+1. (Optional) To configure CredHub to use an HSM, enter the following:
+    * Enter the **HSM Provider Partition**. This is a text string you created on the HSM.
+    * Enter the **HSM Provider Partition password**, which you created on the HSM.
+    * Paste the **HSM Provider Client Certificate**, which the HSM provides.
+    * Enter information for the **HSM Provider Server** and click **Add** to finalize.
 1. Under **Encryption Keys**, specify a key to use for encrypting and decrypting the values stored in the CredHub database.
 	* **Name**: Enter the name of the key.
 	* **Key**: Enter a key that is at least 20 characters in length. 
