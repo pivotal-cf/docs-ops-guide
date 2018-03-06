@@ -5,25 +5,26 @@ owner: Ops Manager
 
 <strong><%= modified_date %></strong>
 
-This topic explains how to import and stage stemcells to products by using the stemcell manager introduced in Ops Manager v2.1.
+This topic explains how use the Stemcell Library introduced in Ops Manager v2.1 to import and stage stemcells to products.
 
-For more conceptual information about floating stemcells and stemcell upgrades, see [Understanding Floating Stemcells](../customizing/understanding-stemcells.html).
+For more conceptual information about floating stemcells and stemcell upgrades, 
+see [Understanding Floating Stemcells](../customizing/understanding-stemcells.html).
 
-![The stemcell manager shows a table with columns headed Product, Required, Deployed, and Staged as well as an Import Stemcell button and a Save Button](images/manage-stemcells.png)
+![The Stemcell Library shows a table with columns headed Product, Required, Deployed, and Staged as well as an Import Stemcell button and a Save Button](images/manage-stemcells.png)
 
-## <a id="navigate"></a> Navigate to the Stemcell Management Page
+## <a id="navigate"></a> Navigate to the Stemcell Library Page
 
-![The Manage Stemcells link is floated to the right of the Installation Dashboard header](images/installation-dashboard-manage-stemcells.png)
+![The Stemcell Library link floats to the right of the Installation Dashboard header](images/installation-dashboard-manage-stemcells.png)
 
-To navigate to the stemcell manager, click **Manage Stemcells** from the Ops Manager **Installation Dashboard**. For more information on navigating the **Installation Dashboard**, see [Understanding the Ops Manager Interface](../customizing/pcf-interface.html).
+To navigate to the Stemcell Library, click **Stemcell Library** from the Ops Manager **Installation Dashboard**. For more information on navigating the **Installation Dashboard**, see [Understanding the Ops Manager Interface](../customizing/pcf-interface.html).
 
 ## <a id="import"></a> Import and Stage a Stemcell
 
-![The Import Stemcell button is floated to the right of the Manage Stemcells header next to the Save button](import-stemcell.png)
+![The Import Stemcell button is floated to the right of the Stemcell Library header next to the Save button](images/import-stemcell.png)
 
-Download the appropriate <code>.tgz</code> stemcell file from [Pivotal Network](https://network.pivotal.io/products/pivotal-cf). Then click **Import Stemcell** to permanently import a stemcell into Ops Manager.
+Download the appropriate <code>.tgz</code> stemcell file from [Pivotal Network](https://network.pivotal.io/products/pivotal-cf), then click **Import Stemcell** to permanently import a stemcell into Ops Manager.
 
-![A modal that appears after importing a stemcell. The modal says, 'Select the products you want to stage'. The modal has a checkbox next to the product name. It also has a dismiss button and an Apply Stemcell to Products button](staging-modal.png)
+![A modal that appears after importing a stemcell. The modal reads, 'Select the products you want to stage'. The modal has a checkbox next to the product name. It also has a dismiss button and an Apply Stemcell to Products button](images/staging-modal.png)
 
 To stage your stemcell to compatible products, enable the products in the "Import Stemcell" dialog. Click **Apply Stemcell to Products** to save your selections. Click **Dismiss** to dismiss the "Import Stemcell" dialog.
 
@@ -31,11 +32,11 @@ To stage your stemcell to compatible products, enable the products in the "Impor
 
 If you have uploaded multiple versions of a stemcell, you can use the dropdown menu in the **Staged** column to choose which version to use.
 
-You can choose a different version until you deploy. After deployment, different stemcell versions will no longer be available.
+You can choose a different version until you deploy. After deployment, different stemcell versions are longer be available.
 
-![The dropdown menu for a stemcell is displayed in the Staged column. Three versions are available.](opsman-view-available-stemcells.png)
+![The dropdown menu for a stemcell is displayed in the Staged column. Three versions are available.](images/opsman-view-available-stemcells.png)
 
-If the stemcell has a green checkmark and the words "Latest stemcell" below the **Staged** dropdown, the stemcell is the latest available version on your host. An outdated stemcell will display "Stemcell out-of-date."
+If the stemcell display with a green checkmark and the words "Latest stemcell" below the **Staged** dropdown, the stemcell is the latest available version on your host. An outdated stemcell displays "Stemcell out-of-date."
 
-![Beneath the "Staged" version dropdown, a green checkmark next to the words "Latest stemcell" appears. The stemcell in this image is the latest available version.](opsman-latest-stemcell.png)
+![Beneath the "Staged" version dropdown, a green checkmark next to the words "Latest stemcell" appears. The stemcell in this image is the latest available version.](images/opsman-latest-stemcell.png)
 
