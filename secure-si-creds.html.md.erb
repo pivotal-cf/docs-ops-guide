@@ -43,20 +43,22 @@ You must configure the PAS tile to support securing service instance credentials
 		* **Username**: A unique username that can access this specific database on the database server. 
 		* **Password**: The password for the provided username. 
 		* **Database CA Certificate**: A certificate to use for encrypting traffic to and from the database. 
+
 <%= image_tag('images/credhub-hsm-config.png') %>
-1. (Optional) To configure CredHub to use an HSM, enter the following:
+
+3. (Optional) To configure CredHub to use an HSM, enter the following:
     * Enter the **HSM Provider Partition**. This is a text string you created on the HSM.
     * Enter the **HSM Provider Partition password**, which you created on the HSM.
     * Paste the **HSM Provider Client Certificate**, which the HSM provides.
     * Enter information for the **HSM Provider Server** and click **Add** to finalize.
-1. Under **Encryption Keys**, specify a key to use for encrypting and decrypting the values stored in the CredHub database.
+4. Under **Encryption Keys**, specify a key to use for encrypting and decrypting the values stored in the CredHub database.
 	* **Name**: Enter the name of the key.
 	* **Key**: Enter a key that is at least 20 characters in length. 
 	* **Primary**: Select this checkbox to use this key as your primary key. 
 		<p class="note"><strong>Note</strong>: Ensure that you only mark one key as <strong>Primary</strong>. The UI includes an <strong>Add</strong> button to add more keys to support key rotation.</p>
-1. If your deployment uses any PCF services that support storing service instance credentials in CredHub and you want to enable this feature, select the **Secure Service Instance Credentials** checkbox. 
-1. Select the **Resource Config** pane.
-1. In the **CredHub** row, under the **Job** column, set the number of instances to `2`. This is the minimum instance count required for high availability.
+5. If your deployment uses any PCF services that support storing service instance credentials in CredHub and you want to enable this feature, select the **Secure Service Instance Credentials** checkbox. 
+6. Select the **Resource Config** pane.
+7. In the **CredHub** row, under the **Job** column, set the number of instances to `2`. This is the minimum instance count required for high availability.
 
 ## <a id='asgs'></a> Step 2: Create Application Security Groups
 
