@@ -31,7 +31,14 @@ CredHub allows you to use a Hardware Security Module (HSM) to store encryption k
 
 ## <a id='pas-config'></a> Step 1: Configure the PAS Tile
 
-You must configure the PAS tile to support securing service instance credentials in CredHub. From the PAS tile in Ops Manager, complete the following steps: 
+You must configure the PAS tile to support securing service instance credentials in CredHub. CredHub configuration options include:
+
+* Internal or external databases
+* Encryption keys stored internally, externally in a Hardware Security Module (HSM), or both
+
+<p class="note"><strong>Note:</strong> CredHub supports multiple encryption key providers and requires at least one.</p>
+
+From the PAS tile in Ops Manager, complete the following steps: 
 
 <ol>
 	<li>Select the <strong>CredHub</strong> pane. 
@@ -54,7 +61,15 @@ You must configure the PAS tile to support securing service instance credentials
 		<li><strong>HSM Provider Partition</strong>: This is a text string you created on the HSM.</li>
 		<li><strong>HSM Provider Partition Password</strong>: The password corresponding to the HSM Provider Partition.</li>
 		<li><strong>HSM Provider Client Certificate</strong>: You provided this certificate to the HSM during configuration. For more information, see <a href="../customizing/hsm-config.html#create-register-hsm">Create and Register HSM Clients</a>.</li>
-		<li><strong>HSM Provider Server</strong>: The URL of the provider server. Click <strong>Add</strong> to finalize this step.</li> 
+		<li>In the <strong>HSM Provider Server</strong> field, click <strong>Add</strong> to add a new HSM. You can add multiple HSMs by clicking <strong>Add</strong> multiple times.
+		<li>For each HSM, complete the following fields:<br/>
+			<ul>
+			<li><Strong>HSM Host Address</Strong></li>
+			<li><Strong>HSM Port Address</Strong>. If you don't know your port address, enter <code>1792</code>.</li>
+			<li><Strong>Partition Serial Number</Strong></li>
+			<li><Strong>HSM Certificate:</Strong> The certificate that the HSM presents to CredHub to establish a two-way TLS connection.</li>
+			</ul>
+		</li>
 	</ul>
 	</li>
 	<li>Under <strong>Encryption Keys</strong>, specify a key to use for encrypting and decrypting the values stored in the CredHub database.
