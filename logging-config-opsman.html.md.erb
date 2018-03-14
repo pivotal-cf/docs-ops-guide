@@ -7,7 +7,7 @@ owner: APM
 
 This topic describes the types of logs that Pivotal Cloud Foundry (PCF) generates. It also explains how to forward system logs to an external aggregator service, how to scale [Loggregator](../loggregator/architecture.html) component VMs to keep up with app log volume, and how to manage app traffic logging.
 
-## <a id='types'></a> System Logs, App Logs, App Traffic Logs ##
+## <a id='types'></a> System Logs, App Logs, App Traffic Logs
 
 Pivotal Cloud Foundry (PCF) generates two types of logs, _system logs_ from PCF components and _app logs_ from hosted apps, as differentiated in the table below:
 
@@ -46,7 +46,7 @@ Pivotal Cloud Foundry (PCF) generates two types of logs, _system logs_ from PCF 
 
 <strong>App traffic logs are system logs.</strong> When app containers communicate, or attempt to communicate, their host cells generate _app traffic logs_. App traffic logs are system logs, not app logs. These logs come from host cells, not apps, and they carry no information from within the app. App traffic logs only show app communication behavior, as detected from outside by the host cell.
 
-## <a id='syslog-forward'></a> Enable Syslog Forwarding ##
+## <a id='syslog-forward'></a> Enable Syslog Forwarding
 
 To forward system log messages to an external Reliable Event Logging Protocol (RELP) server, complete the following steps:
 
@@ -61,7 +61,15 @@ This logs all API requests, including the endpoint, user, source IP, and request
 1. For the **Custom rsyslog Configuration**, enter your [custom syslog rules](../customizing/custom-syslog-rules.html).
 1. Click **Save**.
 
-## <a id='scaling'></a> Scale Loggregator ##
+## <a id='container-metrics'></a> Include Container Metrics in Syslog Drains
+
+You can monitor container metrics over the syslog protocol using the [CF Drain CLI plugin](https://github.com/cloudfoundry/cf-drain-cli). After you download this plugin, it will enable the CLI to deliver container metrics or custom app metrics to a syslog drain and then monitor based on those metrics. 
+
+In PAS, this option is enabled by default in the **System Logging** pane. If you have security concerns with streaming container metrics from your app, you can uncheck the **Include container metrics in Syslog Drains** checkbox. 
+
+For more information, see [Including Container Metrics in Syslog Drains](https://docs-pcf-staging.cfapps.io/pivotalcf/2-1/devguide/deploy-apps/streaming-logs.html#container-metrics) in the _Application Logging in Cloud Foundry_ topic.
+
+## <a id='scaling'></a> Scale Loggregator
 
 Apps constantly generate app logs and PCF platform components constantly generate component metrics. The Loggregator system combines these data streams and handles them as follows. See [Overview of the Loggregator System](../loggregator/architecture.html) for more information. 
 
@@ -84,13 +92,13 @@ Follow the instructions below to scale the Loggregator system. For guidance on m
 1. Click **Save**.
 1. Click **Apply Changes**.
 
-##<a id="app-traffic-log"></a>App Traffic Logging
+## <a id="app-traffic-log"></a> App Traffic Logging
 
 App traffic logging generates logs when app containers communicate with each other directly, or attempt to communicate, as allowed by [container-to-container networking (C2C) policies](../concepts/understand-cf-networking.html#c2cvsasg) and [Application Security Groups (ASGs)](../concepts/asg.html).
 
 App traffic logging lets network security teams audit C2C traffic, by seeing allowed and denied packets, without needing access to the Cloud Controller or the apps themselves.
 
-###<a id="enable-app-traffic-log"></a>Enable App Traffic Logging
+### <a id="enable-app-traffic-log"></a> Enable App Traffic Logging
 
 To enable app traffic logging:
 
@@ -100,7 +108,7 @@ To enable app traffic logging:
 
 <%= image_tag 'images/log-app-traffic-enable.png' %>
 
-###<a id="log-behavior"></a>App Logging Behavior
+### <a id="log-behavior"></a> App Logging Behavior
 
 App traffic logging generates log messages as follows:
 
@@ -108,7 +116,7 @@ App traffic logging generates log messages as follows:
   * **UDP traffic** - Logs UDP packets sent and received, up to a maximum per-second rate for each container. Set this rate limit in the **UDP logging interval** field (default: 100).
   * **Packets denied** - Logs packets blocked by either a container-specific [networking policy](../concepts/understand-cf-networking.html#policies) or by [Application Security Group](./app-sec-groups.html) (ASG) rules applied across the space, org, or deployment. Logs packet denials up to a maximum per-second rate for each container, set in the **Denied logging interval** field (default: 1).
 
-###<a id="log-format"></a>App Traffic Log Format and Contents
+### <a id="log-format"></a> App Traffic Log Format and Contents
 
 App traffic logs are formatted as described in the [cf-networking-release Traffic logging](https://github.com/cloudfoundry-incubator/cf-networking-release/blob/develop/docs/traffic_logging.md) documentation, following the `iptables-logger` format but without line breaks. For example, the first part of an app traffic log line looks like: `{"timestamp": "1500924070.182554722", "source": "cfnetworking.iptables", "message": "cfnetworking.iptables.ingress-allowed", "log_level": 1, "data": { "destination": { "container_id": "d5978989-1401-49ff-46cd-33e5","app_guid": "bc6f229d-5e4a-4c41-a63f-e8795496c283",`.
 
@@ -126,7 +134,7 @@ Each log message includes the following:
   - C2C policy prevented packet from entering destination app container
 * Additional information described in the [cf-networking-release](https://github.com/cloudfoundry-incubator/cf-networking-release/blob/develop/docs/traffic_logging.md).
 
-####<a id="denied-packet"></a>Denied Packet Causes
+#### <a id="denied-packet"></a> Denied Packet Causes
 
 You can determine whether a denied-packet log resulted from a container networking policy or an ASG rule as follows:
 
@@ -134,7 +142,7 @@ You can determine whether a denied-packet log resulted from a container networki
 
   * **ASG rule**: Log `message` string includes `egress-denied` and `packet direction` is `egress`.
 
-###<a id="scope-app-traffic-log"></a>Global vs. ASG-Level App Traffic Logging
+### <a id="scope-app-traffic-log"></a> Global vs. ASG-Level App Traffic Logging
 
 PCF supports two mechanisms for enabling app traffic logging. [Setting](#enable-app-traffic-logging) **Log traffic** to **Enable** in Ops Manager enables app traffic logging globally for all ASGs and container policies. Setting the [`log` property](../concepts/asg.html#asg-logging-prereq) of an ASG to `true` enables app traffic logging at the individual ASG level.
 
