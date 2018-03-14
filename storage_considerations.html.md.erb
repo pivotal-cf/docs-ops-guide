@@ -45,18 +45,6 @@ Operators can limit the number of containers and Diego cell instances that Diego
 
 <%= partial 'diego-upgrade-limits-table' %>
 
-### <a id="instances"></a> Calculating Upgrade Load Based on Number of App Instances and Droplet Size
-
-Using the above numbers, you can determine a rough estimate of the expected upgrade load by multiplying the total number of expected app instances for all cells with the size of the instance droplets.
-
-For example, if your deployment starts 10 cells that each host 20 app instances, and each app instance droplet is an average of 100 MB in size, then you potentially have 20 GB of data hitting the disk at the same time. Depending on the IOPS capacity of your disk, this 20 GB of data will take a set amount of time to reassemble on a new disk. 
-
-Calculate the amount of time needed to process your potential upgrade load, and verify that the number falls under the evacuation timeout (default is 10 minutes) for Diego cells.
-
-If the calculated processing time is longer than the evacuation timeout, you should upgrade your file storage to use disk with higher IOPS capacity.
-
-For more information about how Diego cells are upgraded, see the [Managing Diego Cell Limits During an Upgrade](../adminguide/diego-cell-upgrade.html) topic.
-
 ## <a id="rel_links"></a> Related Links
 
 * [How to use PAS blob storage data](https://discuss.pivotal.io/hc/en-us/articles/217982188-How-to-use-Elastic-Runtime-blob-storage-data-)
