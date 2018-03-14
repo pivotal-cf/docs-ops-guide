@@ -27,7 +27,7 @@ The procedures in this document are only effective for services that support sto
 
    <p class="note breaking"><strong>Breaking Change</strong>: If you opt out of the <a href="http://docs.pivotal.io/pivotalcf/2-0/pcf-release-notes/runtime-rn.html#bosh-dns">BOSH DNS feature</a>, your PCF deployment cannot support Secure Service Instance Credentials.</p>
 
-CredHub allows you to use a Hardware Security Module (HSM) to store encryption keys. If you wish to use an HSM with CredHub, you must configure the HSM before completing the procedures below. For more information, see [Preparing CredHub HSMs for Configuration](../customizing/hsm-config.html).
+Runtime CredHub allows you to use one or more Hardware Security Modules (HSMs) to store encryption keys. If you wish to use an HSM with CredHub, you must configure the HSM before completing the procedures below. For more information, see [Preparing CredHub HSMs for Configuration](../customizing/hsm-config.html).
 
 ## <a id='pas-config'></a> Step 1: Configure the PAS Tile
 
@@ -73,9 +73,10 @@ From the PAS tile in Ops Manager, complete the following steps:
 		</li>
 	</ul>
 	</li>
-	<li>Under <strong>Encryption Keys</strong>, specify a key to use for encrypting and decrypting the values stored in the CredHub database.
+	<li>Under <strong>Encryption Keys</strong>, specify one or more keys to use for encrypting and decrypting the values stored in the CredHub database.
 		<ul>
 			<li><strong>Name</strong>: Enter the name of the key.</li>
+			<li><strong>Provider</strong>: Designate keys with provider `Internal` to store them internally, or `HSM` to store them in the HSMs configured above. Multiple HSMs act as a single cluster, storing all encryption keys collectively.</li>
 			<li><strong>Key</strong>: Enter a key that is at least 20 characters in length.</li>
 			<li><strong>Primary</strong>: Select this checkbox to use this key as your primary key.</li>
 		</ul>
