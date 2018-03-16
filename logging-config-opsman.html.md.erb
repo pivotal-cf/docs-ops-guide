@@ -63,7 +63,7 @@ This logs all API requests, including the endpoint, user, source IP, and request
 
 ## <a id='container-metrics'></a> Include Container Metrics in Syslog Drains
 
-You can monitor container metrics over the syslog protocol using the [CF Drain CLI plugin](https://github.com/cloudfoundry/cf-drain-cli). After you download this plugin, it will enable the CLI to deliver container metrics or custom app metrics to a syslog drain and then monitor based on those metrics. 
+Developers can monitor container metrics over the syslog protocol using the [CF Drain CLI plugin](https://github.com/cloudfoundry/cf-drain-cli). After you download this plugin, it will enable the CLI to set the app container to deliver container metrics to a syslog drain. Developers can then monitor the app container based on those metrics.
 
 In PAS, this option is enabled by default in the **System Logging** pane. If you have security concerns with streaming container metrics from your app, you can uncheck the **Include container metrics in Syslog Drains** checkbox. 
 
