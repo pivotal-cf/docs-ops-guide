@@ -48,6 +48,8 @@ Before beginning your configuration, you will need to have registered three doma
 
 1. Enter **HAProxy Trusted CIDRs** separated by spaces. This field is to specify CIDRs allowed to make requests to the domains listed in the **Protected Domains** field. For example, entering `10.0.1.0/24` would allow any requests originating at a host IP in that range to reach applications or services hosted on the **Protected Domains** list.
 
+1. (Optional) <%= partial '../customizing/haproxy_hsts_config' %>
+
 1. (Optional) Configure an additional HAProxy for BOSH to secure your public-facing domain with credentials. See [proxy-boshrelease](https://github.com/cloudfoundry-incubator/haproxy-boshrelease) on GitHub for more information.
 
 ## <a id="authentication"></a> Step 3: (Optional) Enable an Authentication Service
