@@ -40,9 +40,15 @@ When you install a new Ops Manager instance, all existing users have the Ops Man
 
 To assign one of the above roles to an operator, follow the procedure for granting access using either [internal authentication](#write-internal) or [SAML authentication](#write-saml).
 
+<<<<<<< HEAD
 ## <a id="enable"></a>Enable RBAC in Ops Manager
+=======
+<p class="note"><strong>Note:</strong> Multiple <strong>Restricted View</strong> and <strong>Full View</strong> operators can be logged in to Ops Manager at the same time. However, other roles with write access cannot be logged in simultaneously.</p>
 
-When you install a new instance of Ops Manager, RBAC is enabled by default.
+## <a id="enable"></a>Enable RBAC in Ops Manager After Upgrade
+>>>>>>> 26b1a45... Incorporate interrupt feedback [#156170310]
+
+When you install a new instance of Ops Manager, RBAC is permanently enabled by default.
 
 If you upgrade from an older Ops Manager instance, you must enable RBAC and assign roles to users before they can access Ops Manager.
 If you do not assign any roles to a user, they cannot log in to Ops Manager.
@@ -53,12 +59,19 @@ If you do not assign any roles to a user, they cannot log in to Ops Manager.
 
 If you are upgrading from an older version of Ops Manager and use internal authentication, perform the following steps to enable RBAC:
 
-1. Log in to Ops Manager and click the Ops Manager tile.
+1. Log in to the Ops Manager dashboard
 
-1. In the **Settings** tab, click **Advanced**.
+1. Click **Settings** from the user account menu.
+
+1. Click **Advanced**.
 
 1. Click **Enable RBAC**. When the confirmation dialog box appears, click **Confirm and Logout**.
-  <p class="note"><strong>Note</strong>: Enabling RBAC is permanent. You cannot undo this action. When you upgrade Ops Manager, your RBAC settings remain configured.</p>
+  <div class="note"><strong>Notes</strong>:
+    <ul>
+      <li>Enabling RBAC is permanent. You cannot undo this action. When you upgrade Ops Manager, your RBAC settings remain configured.</li>
+      <li>You will not see this dialog box if RBAC is already configured. With new instances of Ops Manager, RBAC is permanently configured by default.</li>
+    </li>
+  </div>
 
 ### <a id="enable-saml"></a>Enable RBAC with SAML Authentication
 
@@ -75,16 +88,8 @@ Perform the following steps to gather information from your SAML dashboard:
 
 #### <a id="enable-om-saml"></a>Step 2: Enable RBAC in Ops Manager
 
-Perform the following steps to configure Ops Manager to recognize your SAML admin user group:
-<p class="note"><strong>Note</strong>: When RBAC is enabled, only users with the Ops Manager Administrator role can edit SAML configuration.</p>
-
-1. Log in to Ops Manager.
-1. In the **Settings** tab, click **RBAC Configuration**.
-1. Enter the name of the SAML group that contains Ops Manager admin users in the **SAML Admin Group** field.
-1. Enter the groups attribute tag for your SAML server in the **Groups Attribute** field.
-1. In the **Settings** tab, click **Advanced**.
-1. Click **Enable RBAC**. When the confirmation dialog box appears, click **Confirm and Logout**.
-  <p class="note"><strong>Note</strong>: Enabling RBAC is permanent. You cannot undo this action. When you upgrade Ops Manager, your RBAC settings remain configured.</p>
+Perform the steps above in [Enable RBAC with Internal Authentication](#enable-internal) to configure Ops Manager to recognize your SAML admin user group.
+<p class="note"><strong>Note:</strong>: When RBAC is enabled, only users with the Ops Manager Administrator role can edit SAML configuration.</p>
 
 ## <a id="manage-roles"></a>Manage RBAC Roles in Ops Manager
 
