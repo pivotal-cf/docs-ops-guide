@@ -40,9 +40,11 @@ When you install a new Ops Manager instance, all existing users have the Ops Man
 
 To assign one of the above roles to an operator, follow the procedure for granting access using either [internal authentication](#write-internal) or [SAML authentication](#write-saml).
 
-## <a id="enable"></a>Enable RBAC in Ops Manager
+<p class="note"><strong>Note:</strong> Multiple <strong>Restricted View</strong> and <strong>Full View</strong> operators can be logged in to Ops Manager at the same time. However, other roles with write access cannot be logged in simultaneously.</p>
 
-When you install a new instance of Ops Manager, RBAC is enabled by default.
+## <a id="enable"></a>Enable RBAC in Ops Manager After Upgrade
+
+When you install a new instance of Ops Manager, RBAC is permanently enabled by default.
 
 If you upgrade from an older Ops Manager instance, you must enable RBAC and assign roles to users before they can access Ops Manager.
 If you do not assign any roles to a user, they cannot log in to Ops Manager.
@@ -53,12 +55,19 @@ If you do not assign any roles to a user, they cannot log in to Ops Manager.
 
 If you are upgrading from an older version of Ops Manager and use internal authentication, perform the following steps to enable RBAC:
 
-1. Log in to Ops Manager and click the Ops Manager tile.
+1. Log in to the Ops Manager dashboard
 
-1. In the **Settings** tab, click **Advanced**.
+1. Click **Settings** from the user account menu.
+
+1. Click **Advanced**.
 
 1. Click **Enable RBAC**. When the confirmation dialog box appears, click **Confirm and Logout**.
-  <p class="note"><strong>Note</strong>: Enabling RBAC is permanent. You cannot undo this action. When you upgrade Ops Manager, your RBAC settings remain configured.</p>
+  <div class="note"><strong>Notes</strong>:
+    <ul>
+      <li>Enabling RBAC is permanent. You cannot undo this action. When you upgrade Ops Manager, your RBAC settings remain configured.</li>
+      <li>You will not see this dialog box if RBAC is already configured. With new instances of Ops Manager, RBAC is permanently configured by default.</li>
+    </li>
+  </div>
 
 ### <a id="enable-saml"></a>Enable RBAC with SAML Authentication
 
@@ -75,16 +84,12 @@ Perform the following steps to gather information from your SAML dashboard:
 
 #### <a id="enable-om-saml"></a>Step 2: Enable RBAC in Ops Manager
 
-Perform the following steps to configure Ops Manager to recognize your SAML admin user group:
-<p class="note"><strong>Note</strong>: When RBAC is enabled, only users with the Ops Manager Administrator role can edit SAML configuration.</p>
+Perform the steps above in [Enable RBAC with Internal Authentication](#enable-internal) to configure Ops Manager to recognize your SAML admin user group.
+<p class="note"><strong>Note:</strong>: When RBAC is enabled, only users with the Ops Manager Administrator role can edit SAML configuration.</p>
 
-1. Log in to Ops Manager.
-1. In the **Settings** tab, click **RBAC Configuration**.
-1. Enter the name of the SAML group that contains Ops Manager admin users in the **SAML Admin Group** field.
-1. Enter the groups attribute tag for your SAML server in the **Groups Attribute** field.
-1. In the **Settings** tab, click **Advanced**.
-1. Click **Enable RBAC**. When the confirmation dialog box appears, click **Confirm and Logout**.
-  <p class="note"><strong>Note</strong>: Enabling RBAC is permanent. You cannot undo this action. When you upgrade Ops Manager, your RBAC settings remain configured.</p>
+## <a id="create-users"></a>Create User Accounts in Ops Manager
+
+To assign RBAC roles to operators, you must first create user accounts for them. For more information about creating user accounts in Ops Manager with the User Account and Authentication (UAA) module, see [Creating and Managing Ops Manager User Accounts](../customizing/opsman-users.html).
 
 ## <a id="manage-roles"></a>Manage RBAC Roles in Ops Manager
 
@@ -95,51 +100,49 @@ You can assign the roles defined in [Understanding Roles in Ops Manager](#about)
 If you configured Ops Manager to use internal authentication, perform the steps in this section to configure roles using the [UAA Command Line Interface (UAAC)](../uaa/uaa-user-management.html).
 
 1. Target your UAA server and log in as an admin: 
-    <pre>
+    <pre class="terminal">
     uaac target https<span>:</span>//YOUR-OPSMAN-DOMAIN/uaa
     uaac token owner get
     </pre>
 
 1. When prompted, enter the following credentials. Enter `opsman` for  **Client ID** and leave **Client secret** blank, then enter your username and password:
-    <pre>
+    <pre class="terminal">
     Client ID: opsman
     Client secret:
     User name: USERNAME
     Password: YOUR-PASSWORD</pre>
 
-1. **(Optional)** If you are installing a new Ops Manager instance, create users by following the procedure in the [Creating and Managing Users with the UAA CLI (UAAC)](../uaa/uaa-user-management.html#creating-users) topic.
-
 1. Assign one of the following roles to a user, replacing `USERNAME` with their username.
     * **Ops Manager Administrator**:
-      <pre>uaac member add opsman.admin USERNAME</pre>
+      <pre class="terminal">uaac member add opsman.admin USERNAME</pre>
     * **Full Control**:
-      <pre>uaac member add opsman.full_control USERNAME</pre>
+      <pre class="terminal">uaac member add opsman.full_control USERNAME</pre>
     * **Restricted Control**:
-      <pre>uaac member add opsman.restricted_control USERNAME</pre>
+      <pre class="terminal">uaac member add opsman.restricted_control USERNAME</pre>
     * **Full View**:
-      <pre>uaac member add opsman.full_view USERNAME</pre>
+      <pre class="terminal">uaac member add opsman.full_view USERNAME</pre>
     * **Restricted View**:
-      <pre>uaac member add opsman.restricted_view USERNAME</pre>
+      <pre class="terminal">uaac member add opsman.restricted_view USERNAME</pre>
 
 ### <a id="write-saml"></a>Manage Roles with SAML Authentication
 
 If you configured Ops Manager with SAML authentication, perform the steps in this section to assign non-admin user roles using UAAC.
 
 1. Target your UAA server and log in as an admin: 
-    <pre>
+    <pre class="terminal">
     uaac target https<span>:</span>//YOUR-OPSMAN-DOMAIN/uaa
     uaac token sso get
     </pre>
 
 1. When prompted, enter **Client ID** and **Passcode**, leaving **Client secret** blank:
-    <pre>
+    <pre class="terminal">
     Client ID: opsman
     Client secret:
     Passcode (from http<span>:</span>//YOUR-OPSMAN-DOMAIN/uaa/passcode): YOUR-UAA-PASSCODE
     </pre>
 
 1. Run the following command:
-    <pre>
+    <pre class="terminal">
     uaac group map SAML-GROUP --name 'OPSMAN-SCOPE' --origin 'external-saml-provider'
     </pre>
   Replace the placeholder text as follows:
