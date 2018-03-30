@@ -1,34 +1,44 @@
 ---
-title: ADFS Single Sign-On Configuration for Pivotal Cloud Foundry
+title: Configuring Active Directory Federation Services as an Identity Provider
 owner: Identity
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic explains how to configure single sign-on (SSO) between Active 
-Directory Federation Services (ADFS) and Pivotal Cloud Foundry (PCF).
+This topic explains how to set up Active Directory Federation Services (ADFS) as your identity provider (IdP) by configuring SAML integration in Pivotal Cloud Foundry (PCF) and ADFS.
 
-## <a id='pcf'></a>Configuring ADFS as the SAML 2.0 Identity Provider on PCF
+## <a id='idp'></a>Configure SAML Integration in PCF and ADFS
 
-1. Download the identity provider metadata from the ADFS server using the
-`https://SERVER-HOST-NAME/federationmetadata/2007-06/federationmetadata.xml` 
-URL.
-1. Follow the steps in [Configuring Authentication and Enterprise SSO for PAS](./auth-sso.html) to set the identity provider metadata on Pivotal Cloud Foundry.
+To set up ADFS as your SAML IdP, follow the steps below:
 
-## <a id='adfs'></a>Configuring PCF as the SAML 2.0 Service Provider on ADFS
+* [Configure ADFS as Your SAML IdP in Elastic Runtime](#pcf)
+* [Configure PCF as Your SAML Service Provider in ADFS](#adfs)
 
-1. Download the service provider metadata using the `https://login.SYSTEM-DOMAIN/saml/metadata` URL.
-1. Open the **ADFS Management** console.
+## <a id='pcf'></a>Configure ADFS as Your SAML IdP in Elastic Runtime 
+
+To configure PCF to use ADFS as your SAML IdP, do the following:
+
+1. Navigate to https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml to download your IdP metadata from the ADFS server. 
+1. Perform the steps in the [Configure PCF as a Service Provider for SAML
+](./auth-sso.html#configure-pcf-for-saml) section of the _Configuring Authentication and Enterprise SSO for Elastic Runtime_ topic.
+
+## <a id='adfs'></a>Configure PCF as Your SAML Service Provider in ADFS
+
+To designate PCF as your SAML service provider (SP) in ADFS, do the following:
+
+1. Download your SP metadata from `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata`.
+1. Open your **ADFS Management** console.
 1. Click **Add Relying Party Trust...** in the **Actions** pane.
 1. On the Welcome step, click **Start**.
-1. Select **Import data about the relying party from a file**, enter the path to the downloaded service provider metadata, and click **Next**.
-1. Enter a name for **Display name** and click **Next**.
-1. Leave the default multi­factor authentication selection and click **Next**.
+1. Select **Import data about the relying party from a file**, import the downloaded SP metadata file, and click **Next**.
+1. Enter a **Display name** for the new relying party trust and click **Next**.
+1. Leave the default multi-factor authentication selection and click **Next**.
 1. Select **Permit all users to access this relying party** and click **Next**.
 1. Review your settings and click **Next**.
 1. Click **Close** to finish the wizard.
-1. Select the **Encryption** tab and click **Remove** to remove the encryption certificate.
-1. Select the **Advanced** tab and select **SHA­1** for the **Secure hash algorithm**.
-1. (Optional) If you are using a self­-signed certificate and want to disable CRL checks, follow these steps:
+1. Double-click on the new Relying Party Trust to modify it.
+1. Select the **Encryption** tab and click **Remove** to remove the encryption certificate you imported.
+1. In the **Advanced** tab, select **SHA-1** for the **Secure hash algorithm**.
+1. (Optional) If you are using a self-signed certificate and want to disable CRL checks, follow these steps:
   1. Open **Windows Powershell** as an Administrator.
   1. Execute the following command: `set-ADFSRelyingPartyTrust -TargetName "RELYING-PARTY-TRUST" -SigningCertificateRevocationCheck None`
