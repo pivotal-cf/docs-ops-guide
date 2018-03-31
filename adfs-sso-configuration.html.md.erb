@@ -9,20 +9,40 @@ This topic explains how to set up Active Directory Federation Services (ADFS) as
 
 ## <a id='idp'></a>Configure SAML Integration in PCF and ADFS
 
-To set up ADFS as your SAML IdP, follow the steps below:
+You can use ADFS as your SAML IdP for Ops Manager and Elastic Runtime:
 
-* [Configure ADFS as Your SAML IdP in Elastic Runtime](#pcf)
-* [Configure PCF as Your SAML Service Provider in ADFS](#adfs)
+* If you want to set up ADFS as your SAML IdP for Ops Manager, follow the steps below:
 
-## <a id='pcf'></a>Configure ADFS as Your SAML IdP in Elastic Runtime 
+  * [Configure ADFS as Your SAML IdP in Ops Manager](#ops-man)
+  * [Configure PCF as Your SAML Service Provider in ADFS](#adfs)
 
-To configure PCF to use ADFS as your SAML IdP, do the following:
+* If you want to set up ADFS as your SAML IdP for Elastic Runtime, follow the steps below:
+
+  * [Configure ADFS as Your SAML IdP in Elastic Runtime](#ert)
+  * [Configure PCF as Your SAML Service Provider in ADFS](#adfs)
+
+### <a id='ops-man'></a>Configure ADFS as Your SAML IdP in Ops Manager
+
+To configure Ops Manager to use ADFS as your SAML IdP, do the following:
+
+1. Navigate to https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml to download your IdP metadata from the ADFS server.
+1. Perform the steps in the _Use an Identity Provider_ section of the Ops Manager Director configuration topic for you IaaS:
+
+  * [Manually Configuring Ops Manager Director for AWS](../customizing/cf-aws-manual-om-config.html#idp)
+  * [Configuring Ops Manager Director on Azure](../customizing/azure-om-config.html#idp)
+  * [Configuring Ops Manager Director on GCP](../customizing/gcp-om-config.html#idp)
+  * [Configuring Ops Manager Director for OpenStack](../customizing/openstack-om-config.html#idp)
+  * [Configuring Ops Manager on vSphere](../customizing/vsphere-config.html#idp)
+
+### <a id='ert'></a>Configure ADFS as Your SAML IdP in Elastic Runtime
+
+To configure Elastic Runtime to use ADFS as your SAML IdP, do the following:
 
 1. Navigate to https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml to download your IdP metadata from the ADFS server. 
 1. Perform the steps in the [Configure PCF as a Service Provider for SAML
 ](./auth-sso.html#configure-pcf-for-saml) section of the _Configuring Authentication and Enterprise SSO for Elastic Runtime_ topic.
 
-## <a id='adfs'></a>Configure PCF as Your SAML Service Provider in ADFS
+### <a id='adfs'></a>Configure PCF as Your SAML Service Provider in ADFS
 
 To designate PCF as your SAML service provider (SP) in ADFS, do the following:
 
