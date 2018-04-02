@@ -6,50 +6,53 @@ owner: Identity
 
 This topic explains how to configure single sign-on (SSO) between CA and Pivotal Cloud Foundry (PCF).
 
-The partnership creation for each partner involves the following steps:
+Partnership creation between CA and PCF involves the following steps:
+
 1. Installing and configuring the prerequisites
 1. Configuring CA Single Sign-On as an Identity Provider
 1. Configuring the Service Provider
 
 ## Prerequisites
 
-1. CA Single Sign-On v12.52 installation
-1. User store and Session store configuration
-1. Creation of Signed Certificate by a Certificate Authority
-1. Protect Identity Provider URL with CA SSO by creating the following objects:
+* CA Single Sign-On v12.52 installation
+* User store and Session store configuration
+* Creation of Signed Certificate by a Certificate Authority
+* Protect Identity Provider URL with CA SSO by creating the following objects:
 	* Authentication scheme
 	* Domain
 	* Realm
 	* Rules and policy
-1. PCF Environment at https://console.SYSTEM-DOMAIN
-<p class="note"><strong>Note: </strong> Replace SYSTEM-DOMAIN with the name of your PCF installation. </p>
+* PCF Environment at https://console.YOUR-SYSTEM-DOMAIN
+<p class="note"><strong>Note: </strong> Replace YOUR-SYSTEM-DOMAIN with the name of your PCF installation. </p>
 
 ## <a id='pcf'></a>Configuring CA as the SAML 2.0 Identity Provider on PCF 
-1. Follow the steps in [Configuring Authentication and Enterprise SSO for Elastic Runtime](./auth-sso.html#configure-pcf-for-saml) to set the identity provider metadata on PCF. 
-1. Download the service provider metadata using the `https://login.SYSTEM-DOMAIN/saml/metadata` URL.
+
+1. Download the service provider metadata.
 	1. Navigate `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata` and log in to CA SSO.
 	1. Navigate to **Federation**.
 	1. Select **Partnership Federation**
 	1. In the Actions menu, select **Export Metadata**.
 	1. Save the exported metadata in an XML file.
+1. Follow the steps in [Configuring Authentication and Enterprise SSO for Elastic Runtime](./auth-sso.html#configure-pcf-for-saml) to set the identity provider metadata on PCF. 
 1. Paste the contents of the XML file into the **Identity Provider Metadata** field. 
-1. Click **Save** and click **Apply Changes**.
+1. Click **Save**.
+1. Click **Apply Changes**.
 
 ## <a id='ca-sso'></a>Configuring PCF as the SAML 2.0 Service Provider on CA Single Sign-On
 
-## Configure Identity Provider and Service Provider Entities 
+### Configure Identity Provider and Service Provider Entities 
 1. Navigate to `https://login.YOUR-SYSTEM-DOMAIN/` and log in to CA SSO.
 1. Navigate to **Federation**.
-1. Select **Partnership Federation**.
-1. Select **Entity**.
-1. Select **Create Entity**.
+1. Click **Partnership Federation**.
+1. Click **Entity**.
+1. Click **Create Entity**.
 1. To create a local entity, use the values below:
 	* **Entity Location**: Local
 	* **Entity Type**: SAML2 IDP
 	* **Entity ID**: Enter an ID for your local identity provider. For example, `https://ca-technologies.xxx.com`. 
 	* **Entity Name**: Create a name for your local identity provider.
 	* **Base URL**: Enter the fully-qualified domain name for the host service CA SSO Federation Web Services.
-	* **Signing Private Key Alias**: Select the private key alias or import or import a private key. 
+	* **Signing Private Key Alias**: Select the private key alias or import a private key. 
 	* **Signed Authentication Requests Required**: Select **No**. 
 	* **Supported NameID format**: Enter `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress` and `urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified` to select both email address and unspecified as supported NameID formats.
 1. To create a remote entity, click **Import Metadata Button** and complete the steps below:
@@ -60,13 +63,13 @@ The partnership creation for each partner involves the following steps:
 	<p class="note"><strong>Note: </strong> PCF signs the outgoing SAML authentication requests. </p>
 	1. Click **Save**
 
-## Configure Partnership Between CA SSO and PCF
+### Configure Partnership Between CA SSO and PCF
 
 1. Navigate to `https://login.YOUR-SYSTEM-DOMAIN/` and log in to CA SSO.
 1. Navigate to **Federation**.
-1. Select **Partnership Federation**.
+1. Click **Partnership Federation**.
 1. Click **Create Partnership**.
-1. To configure the partnership, use the values below to fill out the fields:
+1. To configure the partnership, use the values below to fill in the fields:
 	* **Add Partnership Name**: Enter a name for your partnership. 
 	* (optional) **Description**: Enter a relevant description for your partnership.
 	* **Local IPD ID**: Enter the Local Service Provider ID you created in the [Remote Entity Creation]() section.
@@ -74,7 +77,7 @@ The partnership creation for each partner involves the following steps:
 	* **Base URL**: This field will be pre-populated. 
 	* **Skew Time**: Enter any skew time required by your environment.
 	* **User Directories and Search Order**: Select the required directories in the required search order.
-1. Click **Next**
+1. Click **Next**.
 1. On the Federation Users page, accept the default values.
 1. Click **Next**.
 1. To complete the Name ID Format section:
