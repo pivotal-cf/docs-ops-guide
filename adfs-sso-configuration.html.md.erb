@@ -7,34 +7,33 @@ owner: Identity
 
 This topic explains how to set up Active Directory Federation Services (ADFS) as your identity provider (IdP) by configuring SAML integration in Pivotal Cloud Foundry (PCF) and ADFS.
 
-## <a id='idp'></a>Configure SAML Integration in PCF and ADFS
+## <a id='idp'></a>Configure SAML Integration in PCF
 
 You can use ADFS as your SAML IdP for Ops Manager and Elastic Runtime:
 
-* If you want to set up ADFS as your SAML IdP for Ops Manager, follow the steps below:
+* If you want to use ADFS as your SAML IdP for Ops Manager, follow the steps below:
 
-  * [Configure ADFS as Your SAML IdP in Ops Manager](#ops-man)
-  * [Configure PCF as Your SAML Service Provider in ADFS](#adfs)
+  * [Configure SAML Integration in Ops Manager](#ops-man)
+  * [Configure SAML Integration in ADFS](#adfs)
 
-* If you want to set up ADFS as your SAML IdP for Elastic Runtime, follow the steps below:
+* If you want to use ADFS as your SAML IdP for Elastic Runtime, follow the steps below:
 
-  * [Configure ADFS as Your SAML IdP in Elastic Runtime](#ert)
-  * [Configure PCF as Your SAML Service Provider in ADFS](#adfs)
+  * [Configure SAML Integration in Elastic Runtime](#ert)
+  * [Configure SAML Integration in ADFS](#adfs)
 
-### <a id='ops-man'></a>Configure ADFS as Your SAML IdP in Ops Manager
+### <a id='ops-man'></a>Configure SAML Integration in Ops Manager
 
 To configure Ops Manager to use ADFS as your SAML IdP, do the following:
 
 1. Navigate to https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml to download your IdP metadata from the ADFS server.
 1. Perform the steps in the _Use an Identity Provider_ section of the Ops Manager Director configuration topic for you IaaS:
-
   * [Manually Configuring Ops Manager Director for AWS](../customizing/cf-aws-manual-om-config.html#idp)
   * [Configuring Ops Manager Director on Azure](../customizing/azure-om-config.html#idp)
   * [Configuring Ops Manager Director on GCP](../customizing/gcp-om-config.html#idp)
   * [Configuring Ops Manager Director for OpenStack](../customizing/openstack-om-config.html#idp)
   * [Configuring Ops Manager on vSphere](../customizing/vsphere-config.html#idp)
 
-### <a id='ert'></a>Configure ADFS as Your SAML IdP in Elastic Runtime
+### <a id='ert'></a>Configure SAML Integration in Elastic Runtime
 
 To configure Elastic Runtime to use ADFS as your SAML IdP, do the following:
 
@@ -42,23 +41,50 @@ To configure Elastic Runtime to use ADFS as your SAML IdP, do the following:
 1. Perform the steps in the [Configure PCF as a Service Provider for SAML
 ](./auth-sso.html#configure-pcf-for-saml) section of the _Configuring Authentication and Enterprise SSO for Elastic Runtime_ topic.
 
-### <a id='adfs'></a>Configure PCF as Your SAML Service Provider in ADFS
+## <a id='adfs'></a>Configure SAML Integration in ADFS
 
 To designate PCF as your SAML service provider (SP) in ADFS, do the following:
 
 1. Download your SP metadata from `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata`.
-1. Open your **ADFS Management** console.
-1. Click **Add Relying Party Trust...** in the **Actions** pane.
-1. On the Welcome step, click **Start**.
-1. Select **Import data about the relying party from a file**, import the downloaded SP metadata file, and click **Next**.
-1. Enter a **Display name** for the new relying party trust and click **Next**.
-1. Leave the default multi-factor authentication selection and click **Next**.
-1. Select **Permit all users to access this relying party** and click **Next**.
-1. Review your settings and click **Next**.
-1. Click **Close** to finish the wizard.
-1. Double-click on the new Relying Party Trust to modify it.
-1. Select the **Encryption** tab and click **Remove** to remove the encryption certificate you imported.
-1. In the **Advanced** tab, select **SHA-1** for the **Secure hash algorithm**.
+1. Open your **ADFS Management** console and add a relying party trust as follows:
+  1. Click **Add Relying Party Trust...** in the **Actions** pane.
+  1. On the Welcome step, click **Start**.
+  1. Select **Import data about the relying party from a file**, import the downloaded SP metadata file, and click **Next**.
+  1. Enter a **Display name** for the new relying party trust and click **Next**.
+  1. Leave the default multi-factor authentication selection and click **Next**.
+  1. Select **Permit all users to access this relying party** and click **Next**.
+  1. Review your settings and click **Next**.
+  1. Click **Close** to finish the wizard.
+1. Modify your relying party trust as follows:
+  1. Double-click on the new relying party trust.
+  1. Select the **Encryption** tab and click **Remove** to remove the encryption certificate you imported.
+  1. In the **Advanced** tab, select **SHA-1** for the **Secure hash algorithm**.
 1. (Optional) If you are using a self-signed certificate and want to disable CRL checks, follow these steps:
   1. Open **Windows Powershell** as an Administrator.
   1. Execute the following command: `set-ADFSRelyingPartyTrust -TargetName "RELYING-PARTY-TRUST" -SigningCertificateRevocationCheck None`
+1. To add claim rules for your relying party trust, select your relying party trust and click **Edit Claim Rules…**.
+1. In the **Issuance Transform Rules** tab, create two claim rules as follows:
+
+  1. Click **Add Rule**.
+  1. Select **Send LDAP Attributes as Claims** for **Claim rule template** and click **Next**.
+  1. Enter a **Claim rule name**.
+  1. Select **Active Directory** for **Attribute store**.
+  1. Select **User-Principle-Name** for **LDAP Attribute** and **E-Mail Address** for **Outgoing Claim Type**.
+  1. Click **Finish**.
+  <br><br>
+  1. Click **Add Rule**.
+  1. Select **Transform an Incoming Claim** for **Claim rule template** and click **Next**.
+  1. Enter a **Claim rule name**.
+  1. Select **E-Mail Address** for **Incoming claim type**.
+  1. Select **Name ID** for **Outgoing claim type**.
+  1. Select **Email** for **Outgoing name ID format**.
+  1. Click **Finish**.
+
+1. Navigate to the **Issuance Authorization Rules** tab and create an authorization claim rule as follows:
+  1. Click **Add Rule**.
+  1. Select **Permit or Deny Users Based on an Incoming Claim** for **Claim rule template** and click **Next**.
+  1. Enter a **Claim rule name**.
+  1. Select **Group SID** for **Incoming claim type**.
+  1. Click **Browse** and locate the security group in your domain that PCF developers are a part of and click **OK**.
+  1. Ensure **Permit access to users with this incoming claim** is selected.
+  1. Click **Finish**.
