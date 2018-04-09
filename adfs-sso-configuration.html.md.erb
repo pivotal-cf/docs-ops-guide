@@ -25,7 +25,7 @@ You can use ADFS as your SAML IdP for Ops Manager and Elastic Runtime:
 
 To configure Ops Manager to use ADFS as your SAML IdP, do the following:
 
-1. Navigate to https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml to download your IdP metadata from the ADFS server.
+1. Download your IdP metadata from https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml.
 1. Perform the steps in the _Use an Identity Provider_ section of the Ops Manager Director configuration topic for you IaaS:
   * [Manually Configuring Ops Manager Director for AWS](../customizing/cf-aws-manual-om-config.html#idp)
   * [Configuring Ops Manager Director on Azure](../customizing/azure-om-config.html#idp)
@@ -37,7 +37,7 @@ To configure Ops Manager to use ADFS as your SAML IdP, do the following:
 
 To configure Elastic Runtime to use ADFS as your SAML IdP, do the following:
 
-1. Navigate to https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml to download your IdP metadata from the ADFS server. 
+1. Download your IdP metadata from https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml.
 1. Perform the steps in the [Configure PCF as a Service Provider for SAML
 ](./auth-sso.html#configure-pcf-for-saml) section of the _Configuring Authentication and Enterprise SSO for Elastic Runtime_ topic.
 
@@ -69,7 +69,7 @@ To designate PCF as your SAML service provider (SP) in ADFS, do the following:
   1. Select **Send LDAP Attributes as Claims** for **Claim rule template** and click **Next**.
   1. Enter a **Claim rule name**.
   1. Select **Active Directory** for **Attribute store**.
-  1. Select **User-Principle-Name** for **LDAP Attribute** and **E-Mail Address** for **Outgoing Claim Type**.
+  1. Select **E-Mail-Addresses** for **LDAP Attribute** and **E-Mail Address** for **Outgoing Claim Type**. Alternatively, if you do not have the email attribute configured for users, you can select **User-Principle-Name** under **LDAP Attribute**.
   1. Click **Finish**.
   <br><br>
   1. Click **Add Rule**.
@@ -80,7 +80,7 @@ To designate PCF as your SAML service provider (SP) in ADFS, do the following:
   1. Select **Email** for **Outgoing name ID format**.
   1. Click **Finish**.
 
-1. Navigate to the **Issuance Authorization Rules** tab and create an authorization claim rule as follows:
+1. (Optional) If you want to permit access to users based on a security group, navigate to the **Issuance Authorization Rules** tab and create an authorization claim rule as follows:
   1. Click **Add Rule**.
   1. Select **Permit or Deny Users Based on an Incoming Claim** for **Claim rule template** and click **Next**.
   1. Enter a **Claim rule name**.
