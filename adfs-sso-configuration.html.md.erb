@@ -9,16 +9,16 @@ This topic explains how to set up Active Directory Federation Services (ADFS) as
 
 ## <a id='idp'></a>Configure SAML Integration in PCF
 
-You can use ADFS as your SAML IdP for Ops Manager and Elastic Runtime:
+You can use ADFS as your SAML IdP for Ops Manager and Pivotal Application Service (PAS):
 
 * If you want to use ADFS as your SAML IdP for Ops Manager, follow the steps below:
 
   * [Configure SAML Integration in Ops Manager](#ops-man)
   * [Configure SAML Integration in ADFS](#adfs)
 
-* If you want to use ADFS as your SAML IdP for Elastic Runtime, follow the steps below:
+* If you want to use ADFS as your SAML IdP for PAS, follow the steps below:
 
-  * [Configure SAML Integration in Elastic Runtime](#ert)
+  * [Configure SAML Integration in PAS](#pas)
   * [Configure SAML Integration in ADFS](#adfs)
 
 ### <a id='ops-man'></a>Configure SAML Integration in Ops Manager
@@ -33,13 +33,13 @@ To configure Ops Manager to use ADFS as your SAML IdP, do the following:
   * [Configuring Ops Manager Director for OpenStack](../customizing/openstack-om-config.html#idp)
   * [Configuring Ops Manager on vSphere](../customizing/vsphere-config.html#idp)
 
-### <a id='ert'></a>Configure SAML Integration in Elastic Runtime
+### <a id='pas'></a>Configure SAML Integration in PAS
 
-To configure Elastic Runtime to use ADFS as your SAML IdP, do the following:
+To configure PAS to use ADFS as your SAML IdP, do the following:
 
 1. Download your IdP metadata from https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml.
 1. Perform the steps in the [Configure PCF as a Service Provider for SAML
-](./auth-sso.html#configure-pcf-for-saml) section of the _Configuring Authentication and Enterprise SSO for Elastic Runtime_ topic.
+](./auth-sso.html#configure-pcf-for-saml) section of the _Configuring Authentication and Enterprise SSO for PAS_ topic.
 
 ## <a id='adfs'></a>Configure SAML Integration in ADFS
 
