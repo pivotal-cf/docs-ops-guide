@@ -61,6 +61,14 @@ This logs all API requests, including the endpoint, user, source IP, and request
 1. For the **Custom rsyslog Configuration**, enter your [custom syslog rules](../customizing/custom-syslog-rules.html).
 1. Click **Save**.
 
+## <a id='container-metrics'></a> Include Container Metrics in Syslog Drains
+
+Developers can monitor container metrics over the syslog protocol using the [CF Drain CLI plugin](https://github.com/cloudfoundry/cf-drain-cli). With the CF Drain CLI plugin, you can use the Cloud Foundry Command Line Interface (cf CLI) tool to set the app container to deliver container metrics to a syslog drain. Developers can then monitor the app container based on those metrics.
+
+In PAS, the **Include container metrics in Syslog Drains** checkbox is enabled by default in the **System Logging** pane. If you have security concerns about streaming container metrics from your app, you can disable this checkbox. 
+
+For more information, see [Including Container Metrics in Syslog Drains](https://docs-pcf-staging.cfapps.io/pivotalcf/2-1/devguide/deploy-apps/streaming-logs.html#container-metrics) in _Application Logging in Cloud Foundry_.
+
 ## <a id='scaling'></a> Scale Loggregator ##
 
 Apps constantly generate app logs and PCF platform components constantly generate component metrics. The Loggregator system combines these data streams and handles them as follows. See [Overview of the Loggregator System](../loggregator/architecture.html) for more information. 
