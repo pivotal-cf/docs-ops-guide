@@ -7,11 +7,11 @@ owner: RelEng
 
 This topic discusses how to scale Pivotal Application Service (PAS) for different deployment scenarios. To increase the capacity and availability of the Pivotal Cloud Foundry (PCF) platform, and to decrease the chances of downtime, you can scale a deployment up using the instructions below.
 
-If you want to make a PCF configuration highly available, see the [High Availability in CF](./../concepts/high-availability.html) topic.
+If you want to make a PCF configuration highly available, see the [High Availability in Cloud Foundry](./../concepts/high-availability.html) topic.
 
 To make a PCF configuration highly available, you must configure an external load balancer. See the [Configure a Load Balancer](http://docs.pivotal.io/p-mysql/1-10/installing.html#load-balancer) section of the _Installing MySQL for PCF_ topic for more information.
 
-<p class="note"><strong>Note</strong>: In PCF 1.11 and later, PAS defaults to a highly available resource configuration.</p>
+<p class="note"><strong>Note</strong>: In PCF v1.11 and later, PAS defaults to a highly available resource configuration.</p>
 
 
 ## <a id='scalingtable'></a> Scaling Recommendations
@@ -30,8 +30,8 @@ To scale up PAS instances, perform the following steps:
 1. Select **Resource Config**.
 <%= image_tag("images/scaling-ert.png") %>
 
-1. To scale your deployment horizontally, increase the number of **Instances** of a job.  See <a href="#scalingtable">Scaling Recommendations</a> for guidance on the number of job instances required to ensure high availability.
-  <p class="note"><strong>Note</strong>: In PCF 1.12, you cannot scale the Autoscaler job to greater than one instance.</p>
+1. To scale your deployment horizontally, increase the number of **Instances** of a job.  See <a href="#scalingtable">Scaling Recommendations</a> for guidance about the number of job instances required to ensure high availability.
+  <p class="note"><strong>Note</strong>: In PCF v1.12, you cannot scale the Autoscaler job to greater than one instance.</p>
 
 1. To scale your deployment vertically, adjust the **Persistent Disk Type** and **VM Type** of a job to allocate more disk space and memory. If you choose **Automatic** from the drop-down menu, PAS uses the recommended amount of resources for the job.
 
@@ -59,14 +59,13 @@ To scale down your deployment, perform the following steps:
 
 ### <a id="diskscale"></a> Scaling Down Jobs with Persistent Disk
 
-If you scale down or delete a job that uses persistent disk, PAS marks the disk as "orphaned." Orphaned disks are not attached to any job, and PAS deletes them after five days. 
+If you scale down or delete a job that uses persistent disk, PAS marks the disk as **orphaned**. Orphaned disks are not attached to any job, and PAS deletes them after five days. 
 
-Use the BOSH CLI to list and recover orphaned disks. Follow the instructions in the ["Prepare to Use the BOSH CLI"](../customizing/trouble-advanced.html#prepare) section of the "Advanced Troubleshooting with the BOSH CLI" topic to log in to the BOSH Director, and then follow the procedures in ["Orphaned Disks"](http://bosh.io/docs/persistent-disks.html#orphaned-disks) in the BOSH documentation.
-
+Use the BOSH CLI to list and recover orphaned disks. Follow the instructions in the [Prepare to Use the BOSH CLI](../customizing/trouble-advanced.html#prepare) section of the _Advanced Troubleshooting with the BOSH CLI_ topic to log in to the BOSH Director, and then follow the procedures in [Orphaned Disks](http://bosh.io/docs/persistent-disks.html#orphaned-disks) in the BOSH documentation.
 
 ## <a id="deployscenarios"></a> Scaling Recommendations for Specific Deployment Configurations
  
-If you are using one of the following configurations, choose the values in the corresponding table to scale instances for your particular deployment:
+If you use one of the following configurations, choose the values in the corresponding table to scale instances for your particular deployment:
 
 * [Deployments Using External Databases](#external-databases)
 * [Deployments Using Internal MySQL] (#internal-mysql)
@@ -76,7 +75,7 @@ If you are using one of the following configurations, choose the values in the c
 
 ### <a id='external-databases'></a> Deployments Using External Databases
 
-If you are using an [external database](./../customizing/pcf-aws-manual-er-config.html#sys-db), you can scale down the instance counts for internal MySQl jobs.
+If you use an external database, you can scale down the instance counts for internal MySQl jobs.
 
 Select the following values in the Resource Config:
 
@@ -97,8 +96,8 @@ Select the following values in the Resource Config:
 
 ### <a id='internal-mysql'></a> Deployments Using Internal MySQL
 
-If you are using the internal MySQL database on a clean install, or on an upgrade from a configuration that previously used internal MySQL databases, you do not need to change the default values shown in the table below. 
-    
+If you use the internal MySQL database on a clean install, or on an upgrade from a configuration that previously used internal MySQL databases, you do not need to change the default values shown in the table below. 
+
 If you need to change back to this configuration, choose the values shown below in the Resource Config. <p class="note"><strong>Note</strong>: Changing back to this configuration deletes any data written to your other database option.</p>
 
 <table border="1" class="nice" >
@@ -116,12 +115,12 @@ If you need to change back to this configuration, choose the values shown below 
       </tr>
 </table>
 
-<p class="note"><strong>Note:</strong> Apps that are not using MySQL for PCF are not affected by the scaling process when you redeploy PAS.
+<p class="note"><strong>Note:</strong> Apps that do not use MySQL for PCF are not affected by the scaling process when you redeploy PAS.
 In addition, redeploying PAS with the MySQL cluster means that the PCF API will not be available for a brief period of time. For example, you are not able to push apps or query their state during this time.</p>
 
 ### <a id='external-blobstore'></a> Deployments Using an External Blobstore
 
-If you are using an external [Blobstore](./../customizing/pcf-aws-manual-er-config.html#filestore), choose the following value in the Resource Config:
+If you use an external blobstore, choose the following value in the Resource Config:
 
 <table border="1" class="nice" >
       <tr>
@@ -136,7 +135,7 @@ If you are using an external [Blobstore](./../customizing/pcf-aws-manual-er-conf
 
 ###<a id='external-lb'></a> Deployments Using External Load Balancers
 
-If you are using an external load balancer, choose the following values in the Resource Config:
+If you use an external load balancer, choose the following values in the Resource Config:
 
 <table border="1" class="nice" >
       <tr>
