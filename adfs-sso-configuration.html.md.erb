@@ -5,7 +5,7 @@ owner: Identity
 
 <strong><%= modified_date %></strong>
 
-This topic explains how to set up Active Directory Federation Services (ADFS) as your identity provider (IdP) by configuring SAML integration in Pivotal Cloud Foundry (PCF) and ADFS.
+This topic describes the process of configuring Active Directory Federation Services (ADFS) as your identity provider (IdP) in Pivotal Cloud Foundry (PCF) and ADFS.
 
 ## <a id='idp'></a>Configure SAML Integration in PCF
 
@@ -25,7 +25,7 @@ You can use ADFS as your SAML IdP for Ops Manager and Pivotal Application Servic
 
 To configure Ops Manager to use ADFS as your SAML IdP, do the following:
 
-1. Download your IdP metadata from https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml.
+1. Download your IdP metadata from `https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml`.
 1. Perform the steps in the _Use an Identity Provider_ section of the Ops Manager Director configuration topic for you IaaS:
   * [Manually Configuring Ops Manager Director for AWS](../customizing/pcf-aws-manual-om-config.html#idp)
   * [Configuring Ops Manager Director on Azure](../customizing/azure-om-config.html#idp)
@@ -39,7 +39,7 @@ To configure Ops Manager to use ADFS as your SAML IdP, do the following:
 
 To configure PAS to use ADFS as your SAML IdP, do the following:
 
-1. Download your IdP metadata from https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml.
+1. Download your IdP metadata from `https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml`.
 1. Perform the steps in the [Configure PCF as a Service Provider for SAML
 ](./auth-sso.html#configure-pcf-for-saml) section of the _Configuring Authentication and Enterprise SSO for PAS_ topic.
 
