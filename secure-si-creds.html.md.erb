@@ -21,9 +21,33 @@ This topic describes how Pivotal Cloud Foundry (PCF) operators can ensure servic
 	* Runtime CredHub supports credential rotation. For more information, see the [Rotating Runtime CredHub Encryption Keys](../opsguide/credential-rotation.html) topic.
 
 
-## <a id='prereq'></a> Prerequisites
+## <a id='services'></a> PCF Services that Use Secure Binding Credentials
 
-The procedures in this document are only effective for services that support storing their instance credentials in runtime CredHub. To learn whether a service supports this feature, see the documentation for that service.
+The procedures in this document are only effective for services that support storing their instance credentials in runtime CredHub. To learn whether a service supports this feature, see the table below or the documentation for that service.
+
+[//]: # (add RabbitMQ for PCF v1.12 and later when avail)
+
+<table id='service-table' border="1" class="nice" >
+  <tr>
+    <th>Service</th>
+    <th>Versions with Secure Binding Credentials</th>
+    <th>Pivotal Network Listing</th>
+  </tr><tr>
+    <td>CredHub Service Broker for PCF</td>
+    <td>All</td>
+    <td><a href="https://network.pivotal.io/products/credhub-service-broker">CredHub Service Broker for PCF</a></td>
+  </tr><tr>
+    <td>MySQL for PCF v2</td>
+    <td>v2.3 and later (available to user groups only)</td>
+    <td><a href="https://network.pivotal.io/products/pivotal-mysql">MySQL for PCF v2</a></td>
+  </tr><tr>
+    <td>Spring Cloud Services for PCF</td>
+    <td>v1.5 and later</td>
+    <td><a href="https://network.pivotal.io/products/p-spring-cloud-services">Spring Cloud Services for PCF</a></td>
+  </tr>
+</table>
+
+## <a id='prereq'></a> Prerequisites
 
    <p class="note breaking"><strong>Breaking Change</strong>: If you opt out of the <a href="http://docs.pivotal.io/pivotalcf/2-0/pcf-release-notes/runtime-rn.html#bosh-dns">BOSH DNS feature</a>, your PCF deployment cannot support Secure Service Instance Credentials.</p>
 
