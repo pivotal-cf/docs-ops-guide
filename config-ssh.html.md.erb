@@ -25,8 +25,6 @@ To configure PAS SSH access for application instances:
 
 ## <a id="ssh-load-balancer-configuration"></a> SSH Load Balancer Configuration
 
-If you use HAProxy as a load balancer and SSH access is enabled, SSH requests are load balanced by HAProxy. This configuration relies on the presence of the same Consul server cluster that Diego components use for service discovery. This configuration also works well for deployments where all traffic on the system domain and its subdomains is directed towards the HAProxy job, as is the case for a BOSH-Lite Cloud Foundry deployment on the default `192.0.2.34.xip.io` domain.
+For IAASes where load-balancing is available as a service, the deployment operator should provision a load balancer to balance load across the SSH proxy instances. You should configure this load balancer to forward incoming TCP traffic on port 2222 to a target pool where you'll deploy your diego_brain instances.
 
-For AWS deployments, where the infrastructure offers load balancing as a service through Elastic Load Balancers (ELBs), the deployment operator can provision an ELB to balance load across the SSH proxy instances. You should configure this ELB to listen to TCP traffic on the port given in `app_ssh.port` and to send it to port 2222.
-
-To register the SSH proxies with this ELB, add the ELB identifier to the `elbs` property in the `cloud_properties` hash of the Diego manifest `access_zN` resource pools. If you used the Spiff-based manifest-generation templates to produce the Diego manifest, specify these `cloud_properties` hashes in the `iaas_settings.resource_pool_cloud_properties` section of the `iaas-settings.yml` stub.
+To register the SSH proxies with this load balancer, under "Resource Config" fill in the load balancer column for the "Diego Brain" row with the name of that load balancer.
