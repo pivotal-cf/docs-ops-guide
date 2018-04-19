@@ -25,6 +25,8 @@ To configure PAS SSH access for application instances:
 
 ## <a id="ssh-load-balancer-configuration"></a> SSH Load Balancer Configuration
 
-For IAASes where load-balancing is available as a service, operators should provision a load balancer to balance load across SSH proxy instances. Configure this load balancer to forward incoming TCP traffic on port 2222 to a target pool where you deploy diego_brain instances.
+For IaaSes where load-balancing is available as a service, operators should provision a load balancer to balance load across SSH proxy instances. Configure this load balancer to forward incoming TCP traffic on port 2222 to a target pool where you deploy diego_brain instances.
 
-To register SSH proxies with a load balancer, complete the load balancer field with load balancer name in the **Diego Brain** row.
+For AWS, Azure and GCP IaaSes you configure SSH load balancers in the Resource Config pane. To register SSH proxies with a load balancer, complete the load balancer field with load balancer name in the **Diego Brain** row of the Resource Config pane. 
+
+Ops Manager supports and API only `nsx_lbs` field to configure a load balancer in vSphere. All other IaaSes do not have laod balancer support. 
