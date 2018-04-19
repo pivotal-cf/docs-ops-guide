@@ -25,6 +25,6 @@ To configure PAS SSH access for application instances:
 
 ## <a id="ssh-load-balancer-configuration"></a> SSH Load Balancer Configuration
 
-For IAASes where load-balancing is available as a service, the deployment operator should provision a load balancer to balance load across the SSH proxy instances. You should configure this load balancer to forward incoming TCP traffic on port 2222 to a target pool where you'll deploy your diego_brain instances.
+For IAASes where load-balancing is available as a service, operators should provision a load balancer to balance load across SSH proxy instances. Configure this load balancer to forward incoming TCP traffic on port 2222 to a target pool where you deploy diego_brain instances.
 
-To register the SSH proxies with this load balancer, under "Resource Config" fill in the load balancer column for the "Diego Brain" row with the name of that load balancer.
+To register SSH proxies with a load balancer, complete the load balancer field with load balancer name in the **Diego Brain** row.
