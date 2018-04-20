@@ -147,7 +147,7 @@ Application Security Groups (ASGs) are network policy rules specifying protocols
     $ cf create-security-group runtime-credhub ~/workspace/runtime-credhub runtime-credhub.json
     </pre>
 
-1. Bind this ASG to your deployment or the specific space in which you want apps to access CredHub. For more information about binding ASGs, see [Bind ASGs](../concepts/asg.html#binding-groups). Ensure that apps deployed as part of the service tile installation process have access to CredHub in addition to the apps pushed to the platform by developers. For example, the Spring Cloud Services tile deploys the `spring-cloud-broker` app to the `p-spring-cloud-services` space of the `systsem` org. 
+1. Bind this ASG to your deployment or the specific space in which you want apps to access CredHub. For more information about binding ASGs, see [Bind ASGs](../concepts/asg.html#binding-groups). Ensure that apps deployed as part of the service tile installation process have access to CredHub in addition to the apps pushed to the platform by developers. For example, the Spring Cloud Services tile deploys the `spring-cloud-broker` app to the `p-spring-cloud-services` space of the `system` org. 
 
 1. Restart apps for the ASGs to take effect. Optionally, you can use the [app-restarter cf CLI plugin](https://github.com/cloudfoundry-incubator/app-restarter) to restart all apps in a particular space, org, or deployment.
 
