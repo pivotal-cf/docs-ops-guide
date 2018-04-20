@@ -8,18 +8,17 @@ This topic describes how Pivotal Cloud Foundry (PCF) operators can ensure servic
 <p class="note"><strong>Note</strong>: This feature is currently in Beta.</p>
 
 * **What is runtime CredHub?**
-	* The Pivotal Application Service (PAS) tile includes its own CredHub component, separate from the CredHub component included with the BOSH Director tile. For more information about this centralized credential management component, see the [CredHub](../credhub/index.html) documentation.
+    * The Pivotal Application Service (PAS) tile includes its own CredHub component, separate from the CredHub component included with the BOSH Director tile. For more information about this centralized credential management component, see the [CredHub](../credhub/index.html) documentation.
 * **What is runtime CredHub used for?**
-	* Runtime CredHub exists to securely store service instance credentials. Previously, PCF could only use the Cloud Controller database for storing these credentials.
+    * Runtime CredHub exists to securely store service instance credentials. Previously, PCF could only use the Cloud Controller database for storing these credentials.
 * **What are service instance credentials**? 
-	* When developers want their app to use a service, such as those provided by the Spring Cloud Services tile for PCF, they must bind their app to an instance of that service. Service bindings include credentials that developers can use to access the service from their app. For more information, see [Binding Credentials](../services/binding-credentials.html). 
+    * When developers want their app to use a service, such as those provided by the Spring Cloud Services tile for PCF, they must bind their app to an instance of that service. Service bindings include credentials that developers can use to access the service from their app. For more information, see [Binding Credentials](../services/binding-credentials.html). 
 * **How can I ensure that service instance credentials are stored in runtime CredHub?** 
-	* You must configure PAS to enable this functionality by following the procedure below. Not all services support the use of runtime CredHub.  
+    * You must configure PAS to enable this functionality by following the procedure below. Not all services support the use of runtime CredHub.  
 * **Can I use runtime CredHub to store service instance credentials if some of my services do not support the use of runtime CredHub?**
-	*  PAS supports both services that do and do not use runtime CredHub. Services that do not use runtime CredHub continue to pass their credentials to the Cloud Controller database.
+    * PAS supports both services that do and do not use runtime CredHub. Services that do not use runtime CredHub continue to pass their credentials to the Cloud Controller database.
 * **Can I rotate service instance credentials in runtime CredHub?**
-	* Runtime CredHub supports credential rotation. For more information, see the [Rotating Runtime CredHub Encryption Keys](../opsguide/credential-rotation.html) topic.
-
+    * Runtime CredHub supports credential rotation. For more information, the [Rotating Runtime CredHub Encryption Keys](../opsguide/credential-rotation.html).
 
 ## <a id='services'></a> PCF Services that Use Secure Binding Credentials
 
@@ -32,19 +31,23 @@ The procedures in this document are only effective for services that support sto
     <th>Service</th>
     <th>Versions with Secure Binding Credentials</th>
     <th>Pivotal Network Listing</th>
-  </tr><tr>
+  </tr>
+  <tr>
     <td>CredHub Service Broker for PCF</td>
     <td>All</td>
     <td><a href="https://network.pivotal.io/products/credhub-service-broker">CredHub Service Broker for PCF</a></td>
-  </tr><tr>
+  </tr>
+  <tr>
     <td>MySQL for PCF v2</td>
     <td>v2.3 and later (available to user groups only)</td>
     <td><a href="https://network.pivotal.io/products/pivotal-mysql">MySQL for PCF v2</a></td>
-  </tr><tr>
+  </tr>
+  <tr>
     <td>Spring Cloud Services for PCF</td>
     <td>v1.5 and later</td>
     <td><a href="https://network.pivotal.io/products/p-spring-cloud-services">Spring Cloud Services for PCF</a></td>
-  </tr><tr>
+  </tr>
+  <tr>
     <td>RabbitMQ for PCF</td>
     <td>v1.12 and later</td>
     <td><a href="https://network.pivotal.io/products/p-rabbitmq">RabbitMQ for PCF</a></td>
@@ -53,7 +56,7 @@ The procedures in this document are only effective for services that support sto
 
 ## <a id='prereq'></a> Prerequisites
 
-   <p class="note breaking"><strong>Breaking Change</strong>: If you opt out of the <a href="http://docs.pivotal.io/pivotalcf/2-0/pcf-release-notes/runtime-rn.html#bosh-dns">BOSH DNS feature</a>, your PCF deployment cannot support Secure Service Instance Credentials.</p>
+<p class="note breaking"><strong>Breaking Change</strong>: If you opt out of the <a href="http://docs.pivotal.io/pivotalcf/2-0/pcf-release-notes/runtime-rn.html#bosh-dns">BOSH DNS feature</a>, your PCF deployment cannot support Secure Service Instance Credentials.</p>
 
 Runtime CredHub allows you to use one or more Hardware Security Modules (HSMs) to store encryption keys. If you wish to use an HSM with CredHub, you must configure the HSM before completing the procedures below. For more information, see [Preparing CredHub HSMs for Configuration](../customizing/hsm-config.html).
 
@@ -69,52 +72,47 @@ You must configure the PAS tile to support securing service instance credentials
 From the PAS tile in Ops Manager, complete the following steps: 
 
 <ol>
-	<li>Select the <strong>CredHub</strong> pane. 
-	<%= image_tag('images/credhub-db-internal-external.png') %></li>
-	<li>Choose the location of your CredHub Database. PAS includes this CredHub database for services to store their service instance credentials. 
-	<ol>
-	<li>If you chose <strong>External</strong>, enter the following:
-	<ul>
-		<li><strong>Hostname</strong>: The IP address of your database server.</li>
-		<li><strong>TCP Port</strong>: The port of your database server, such as <code>3306</code>.</li>
-		<li><strong>Username</strong>: A unique username that can access this specific database on the database server.</li>
-		<li><strong>Password</strong>: The password corresponding to the username you provided.</li>
-		<li><strong>Database CA Certificate</strong>: A certificate to use when encrypting traffic to and from the database.</li>
-	</ul>
-	</li>
-	</ol>
-	<%= image_tag('images/credhub-hsm-config.png') %></li>
-	<li>(Optional) To configure CredHub to use an HSM, enter the following:
-	<ul>
-		<li><strong>HSM Provider Partition</strong>: This is a text string you created on the HSM.</li>
-		<li><strong>HSM Provider Partition Password</strong>: The password corresponding to the HSM Provider Partition.</li>
-		<li><strong>HSM Provider Client Certificate</strong>: You provided this certificate to the HSM during configuration. For more information, see <a href="../customizing/hsm-config.html#create-register-hsm">Create and Register HSM Clients</a>.</li>
-		<li>In the <strong>HSM Provider Server</strong> field, click <strong>Add</strong> to add a new HSM. You can add multiple HSMs by clicking <strong>Add</strong> multiple times. <br/>
-		<img src="images/credhub-hsm-provider-servers.png" alt="this image shows the fields for the HSM provider servers configuration options, which are listed in the following step"></li>
-		<li>For each HSM, complete the following fields:<br/>
-			<ul>
-			<li><Strong>HSM Host Address</Strong></li>
-			<li><Strong>HSM Port Address</Strong>. If you don't know your port address, enter <code>1792</code>.</li>
-			<li><Strong>Partition Serial Number</Strong></li>
-			<li><Strong>HSM Certificate:</Strong> The certificate that the HSM presents to CredHub to establish a two-way TLS connection.</li>
-			</ul>
-		</li>
-	</ul>
-	</li>
-	<li>Under <strong>Encryption Keys</strong>, specify one or more keys to use for encrypting and decrypting the values stored in the CredHub database.
-		<ul>
-			<li><strong>Name</strong>: Enter the name of the key.</li>
-			<li><strong>Provider</strong>: Designate keys with provider `Internal` to store them internally, or `HSM` to store them in the HSMs configured above. Multiple HSMs act as a single cluster, storing all encryption keys collectively.</li>
-			<li><strong>Key</strong>: Enter a key that is at least 20 characters in length.</li>
-			<li><strong>Primary</strong>: Select this checkbox to use this key as your primary key.</li>
-		</ul>
-		<p class="note"><strong>Note</strong>: Only mark one key as <strong>Primary</strong>. The UI includes an <strong>Add</strong> button to add more keys to support key rotation, but there should only be one Primary key at a time.</p>
-	</li>
-	<li>If your deployment uses any PCF services that support storing service instance credentials in CredHub and you want to enable this feature, select the <strong>Secure Service Instance Credentials</strong> checkbox.</li>
-	<li>Select the <strong>Resource Config</strong> pane.
-</li>
-<li>In the <strong>CredHub</strong> row, under the <strong>Job</strong> column, set the number of instances to <code>2</code>. This is the minimum instance count required for high availability.
-</li>
+  <li>Select the <strong>CredHub</strong> pane. 
+  <%= image_tag('images/credhub-db-internal-external.png') %></li>
+  <li>Choose the location of your CredHub Database. PAS includes this CredHub database for services to store their service instance credentials. If you chose <strong>External</strong>, enter the following:
+    <ul>
+      <li><strong>Hostname</strong>: The IP address of your database server.</li>
+      <li><strong>TCP Port</strong>: The port of your database server, such as <code>3306</code>.</li>
+      <li><strong>Username</strong>: A unique username that can access this specific database on the database server.</li>
+      <li><strong>Password</strong>: The password corresponding to the username you provided.</li>
+      <li><strong>Database CA Certificate</strong>: A certificate to use when encrypting traffic to and from the database.</li>
+    </ul>
+  </li>
+  <%= image_tag('images/credhub-hsm-config.png') %></li>
+  <li>(Optional) To configure CredHub to use an HSM, enter the following:
+    <ul>
+      <li><strong>HSM Provider Partition</strong>: This is a text string you created on the HSM.</li>
+      <li><strong>HSM Provider Partition Password</strong>: The password corresponding to the HSM Provider Partition.</li>
+      <li><strong>HSM Provider Client Certificate</strong>: You provided this certificate to the HSM during configuration. For more information, see <a href="../customizing/hsm-config.html#create-register-hsm">Create and Register HSM Clients</a>.</li>
+      <li>In the <strong>HSM Provider Server</strong> field, click <strong>Add</strong> to add a new HSM. You can add multiple HSMs by clicking <strong>Add</strong> multiple times. <br/>
+      <img src="images/credhub-hsm-provider-servers.png" alt="this image shows the fields for the HSM provider servers configuration options, which are listed in the following step"></li>
+      <li>For each HSM, complete the following fields:<br/>
+        <ul>
+          <li><Strong>HSM Host Address</Strong></li>
+          <li><Strong>HSM Port Address</Strong>. Enter your HSM port address. If you do not know your port address, enter <code>1792</code>.</li>
+          <li><Strong>Partition Serial Number</Strong></li>
+          <li><Strong>HSM Certificate:</Strong> The certificate that the HSM presents to CredHub to establish a two-way TLS connection.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Under <strong>Encryption Keys</strong>, specify one or more keys to use for encrypting and decrypting the values stored in the CredHub database.
+    <ul>
+      <li><strong>Name</strong>: Enter the name of the key.</li>
+      <li><strong>Provider</strong>: Designate keys with provider <code>Internal</code> to store them internally, or <code>HSM</code> to store them in the HSMs configured above. Multiple HSMs act as a single cluster, storing all encryption keys collectively.</li>
+      <li><strong>Key</strong>: Enter a key that is at least 20 characters in length.</li>
+      <li><strong>Primary</strong>: Select this checkbox to use this key as your primary key.</li>
+    </ul>
+    <p class="note"><strong>Note</strong>: Only mark one key as <strong>Primary</strong>. The UI includes an <strong>Add</strong> button to add more keys to support key rotation, but you should mark only one key as <strong>Primary</strong>.</p>
+  </li>
+  <li>If your deployment uses any PCF services that support storing service instance credentials in CredHub and you want to enable this feature, select the <strong>Secure Service Instance Credentials</strong> checkbox.</li>
+  <li>Select the <strong>Resource Config</strong> pane.</li>
+  <li>In the <strong>CredHub</strong> row, under the <strong>Job</strong> column, set the number of instances to at least <code>2</code>. This is the minimum instance count required for high availability.</li>
 </ol> 
 
 ## <a id='asgs'></a> Step 2: Create Application Security Groups
@@ -131,24 +129,25 @@ Application Security Groups (ASGs) are network policy rules specifying protocols
 
 1. Record the CIDR for the PAS network.
 
-1. Create a file named `pas-credhub.json` for specifying your ASG rules. Copy the content below into the file. Replace `YOUR-PAS-CIDR` with the CIDR you recorded in the previous step. 
+1. Create a file named `runtime-credhub.json` for specifying your ASG rules. Copy the content below into the file. Replace `YOUR-PAS-CIDR` with the CIDR you recorded in the previous step. 
 
-	```
-	[
-		{
-		"protocol": "tcp",
-		"destination": "YOUR-PAS-CIDR",
-		"ports": "8844"
-		}
-	]
-	```
+    ```
+    [
+      {
+      "protocol": "tcp",
+      "destination": "YOUR-PAS-CIDR",
+      "ports": "8844"
+      }
+    ]
+    ```
 
 1. Run the following command to create an ASG that allows apps to access the CredHub API:
-	<pre class="terminal">
-	$ cf create-security-group runtime-credhub ~/workspace/runtime-credhub runtime-credhub.json
-	</pre>
 
-1. Bind this ASG to your deployment or the specific space in which you want apps to access CredHub. For more information about binding ASGs, see [Bind ASGs](../concepts/asg.html#binding-groups). Ensure that apps deployed as part of the service tile installation process have access to CredHub in addition to the apps pushed to the platform by developers. For example, the Spring Cloud Services tile deploys the `spring-cloud-broker` app to the `p-spring-cloud-services` space of the `systsem` org. 
+    <pre class="terminal">
+    $ cf create-security-group runtime-credhub ~/workspace/runtime-credhub runtime-credhub.json
+    </pre>
+
+1. Bind this ASG to your deployment or the specific space in which you want apps to access CredHub. For more information about binding ASGs, see [Bind ASGs](../concepts/asg.html#binding-groups). Ensure that apps deployed as part of the service tile installation process have access to CredHub in addition to the apps pushed to the platform by developers. For example, the Spring Cloud Services tile deploys the `spring-cloud-broker` app to the `p-spring-cloud-services` space of the `system` org. 
 
 1. Restart apps for the ASGs to take effect. Optionally, you can use the [app-restarter cf CLI plugin](https://github.com/cloudfoundry-incubator/app-restarter) to restart all apps in a particular space, org, or deployment.
 
@@ -159,23 +158,27 @@ For any service instance bindings that existed before runtime CredHub was suppor
 <p class="note"><strong>Note</strong>: This step is not required for bindings created after you installed the new version of the service tile that supports CredHub and you completed the procedures in steps 1 and 2 of this topic.</p>
 
 1. Unbind the service instance from the app:
-	<pre class="terminal">
-	$ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE
-	</pre>
+
+    <pre class="terminal">
+    $ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE
+    </pre>
 
 1. Rebind the service instance to the app: 
-	<pre class="terminal">
-	$ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE
-	</pre>
+
+    <pre class="terminal">
+    $ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE
+    </pre>
 
 1. Review the `VCAP_SERVICES` environment variable to verify that the new service instance binding includes CredHub pointers:
-	<pre class="terminal">
-	$ cf env YOUR-APP
-	</pre>
-	See [VCAP_SERVICES](../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES) for help parsing the output of the `cf-env` command. 
-1. Restart the app to apply the service instance binding: 
-	<pre class="terminal">
-	cf restart YOUR-APP
-	</pre>
-	If you run `cf-env` again, you can see the `VCAP-SERVICES` environment variable now contains the credentials for the service instance binding. 
 
+    <pre class="terminal">
+    $ cf env YOUR-APP
+    </pre>
+    See the [VCAP_SERVICES](../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES) section of _Cloud Foundry Environment Variables_ for help parsing the output of the `cf-env` command.
+
+1. Restart the app to apply the service instance binding: 
+
+    <pre class="terminal">
+    $ cf restart YOUR-APP
+    </pre>
+    If you run `cf-env` again, you can see the `VCAP-SERVICES` environment variable now contains the credentials for the service instance binding. 
