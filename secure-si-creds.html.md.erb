@@ -8,17 +8,17 @@ This topic describes how Pivotal Cloud Foundry (PCF) operators can ensure servic
 <p class="note"><strong>Note</strong>: This feature is currently in Beta.</p>
 
 * **What is runtime CredHub?**
-	* The Pivotal Application Service (PAS) tile includes its own CredHub component, separate from the CredHub component included with the Ops Manager Director tile. For more information about this centralized credential management component, see the [CredHub](../credhub/index.html) documentation.
+    * The Pivotal Application Service (PAS) tile includes its own CredHub component, separate from the CredHub component included with the Ops Manager Director tile. For more information about this centralized credential management component, see the [CredHub](../credhub/index.html) documentation.
 * **What is runtime CredHub used for?**
-	* Runtime CredHub exists to securely store service instance credentials. Previously, PCF could only use the Cloud Controller database for storing these credentials.
+    * Runtime CredHub exists to securely store service instance credentials. Previously, PCF could only use the Cloud Controller database for storing these credentials.
 * **What are service instance credentials**? 
-	* When developers want their app to use a service, such as those provided by the Spring Cloud Services tile for PCF, they must bind their app to an instance of that service. Service bindings include credentials that developers can use to access the service from their app. For more information, see [Binding Credentials](../services/binding-credentials.html). 
+    * When developers want their app to use a service, such as those provided by the Spring Cloud Services tile for PCF, they must bind their app to an instance of that service. Service bindings include credentials that developers can use to access the service from their app. For more information, see [Binding Credentials](../services/binding-credentials.html). 
 * **How can I ensure that service instance credentials are stored in runtime CredHub?** 
-	* You must configure PAS to enable this functionality by following the procedure below. Not all services support the use of runtime CredHub.
+    * You must configure PAS to enable this functionality by following the procedure below. Not all services support the use of runtime CredHub.
 * **Can I use runtime CredHub to store service instance credentials if some of my services do not support the use of runtime CredHub?**
 	* PAS supports both services that do and do not use runtime CredHub. Services that do not use runtime CredHub continue to pass their credentials to the Cloud Controller database.
 * **Can I rotate service instance credentials in runtime CredHub?**
-	* Runtime CredHub supports credential rotation. For more information, see [Rotating Runtime CredHub Encryption Keys](../opsguide/credential-rotation.html).
+    * Runtime CredHub supports credential rotation. For more information, see [Rotating Runtime CredHub Encryption Keys](../opsguide/credential-rotation.html).
 
 ## <a id='services'></a> PCF Services that Use Secure Binding Credentials
 
@@ -134,7 +134,7 @@ For any service instance bindings that existed before runtime CredHub was suppor
     <pre class="terminal">
     $ cf env YOUR-APP
     </pre>
-    See the [VCAP_SERVICES](../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES)section of _Cloud Foundry Environment Variables_ for help parsing the output of the `cf-env` command.
+    See the  [VCAP_SERVICES](../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES) section of _Cloud Foundry Environment Variables_ for help parsing the output of the `cf-env` command.
 1. Restart the app to apply the service instance binding: 
     <pre class="terminal">
     $ cf restart YOUR-APP
