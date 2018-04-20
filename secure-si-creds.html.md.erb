@@ -14,11 +14,11 @@ This topic describes how Pivotal Cloud Foundry (PCF) operators can ensure servic
 * **What are service instance credentials**? 
 	* When developers want their app to use a service, such as those provided by the Spring Cloud Services tile for PCF, they must bind their app to an instance of that service. Service bindings include credentials that developers can use to access the service from their app. For more information, see [Binding Credentials](../services/binding-credentials.html). 
 * **How can I ensure that service instance credentials are stored in runtime CredHub?** 
-	* You must configure PAS to enable this functionality by following the procedure below. Not all services support the use of runtime CredHub.  
+	* You must configure PAS to enable this functionality by following the procedure below. Not all services support the use of runtime CredHub.
 * **Can I use runtime CredHub to store service instance credentials if some of my services do not support the use of runtime CredHub?**
-	*  PAS supports both services that do and do not use runtime CredHub. Services that do not use runtime CredHub continue to pass their credentials to the Cloud Controller database.
+	* PAS supports both services that do and do not use runtime CredHub. Services that do not use runtime CredHub continue to pass their credentials to the Cloud Controller database.
 * **Can I rotate service instance credentials in runtime CredHub?**
-	* Runtime CredHub supports credential rotation. For more information, see the [Rotating Runtime CredHub Encryption Keys](../opsguide/credential-rotation.html) topic.
+	* Runtime CredHub supports credential rotation. For more information, see [Rotating Runtime CredHub Encryption Keys](../opsguide/credential-rotation.html).
 
 ## <a id='services'></a> PCF Services that Use Secure Binding Credentials
 
@@ -31,19 +31,23 @@ The procedures in this document are only effective for services that support sto
     <th>Service</th>
     <th>Versions with Secure Binding Credentials</th>
     <th>Pivotal Network Listing</th>
-  </tr><tr>
+  </tr>
+  <tr>
     <td>CredHub Service Broker for PCF</td>
     <td>All</td>
     <td><a href="https://network.pivotal.io/products/credhub-service-broker">CredHub Service Broker for PCF</a></td>
-  </tr><tr>
+  </tr>
+  <tr>
     <td>MySQL for PCF v2</td>
     <td>v2.3 and later (available to user groups only)</td>
     <td><a href="https://network.pivotal.io/products/pivotal-mysql">MySQL for PCF v2</a></td>
-  </tr><tr>
+  </tr>
+  <tr>
     <td>Spring Cloud Services for PCF</td>
     <td>v1.5 and later</td>
     <td><a href="https://network.pivotal.io/products/p-spring-cloud-services">Spring Cloud Services for PCF</a></td>
-  </tr><tr>
+  </tr>
+  <tr>
     <td>RabbitMQ for PCF</td>
     <td>v1.12 and later</td>
     <td><a href="https://network.pivotal.io/products/p-rabbitmq">RabbitMQ for PCF</a></td>
@@ -52,33 +56,32 @@ The procedures in this document are only effective for services that support sto
 
 ## <a id='prereq'></a> Prerequisites
 
-   <p class="note breaking"><strong>Breaking Change</strong>: If you opt out of the <a href="https://docs.pivotal.io/pivotalcf/2-0/pcf-release-notes/runtime-rn.html#bosh-dns">BOSH DNS feature</a>, your PCF deployment cannot support Secure Service Instance Credentials.</p>
+<p class="note breaking"><strong>Breaking Change</strong>: If you opt out of the <a href="https://docs.pivotal.io/pivotalcf/2-0/pcf-release-notes/runtime-rn.html#bosh-dns">BOSH DNS feature</a>, your PCF deployment cannot support Secure Service Instance Credentials.</p>
 
 ## <a id='pas-config'></a> Step 1: Configure the PAS Tile
 
 You must configure the PAS tile to support securing service instance credentials in CredHub. From the PAS tile in Ops Manager, complete the following steps: 
 
-1. Select the **CredHub** pane. 
-	<%= image_tag('images/credhub.png') %>
-1. Choose the location of your CredHub Database. PAS includes this CredHub database for services to store their service instance credentials. 
-	1. If you chose **External**, enter the following:
-		* **Hostname**: The IP address of your database server. 
-		* **TCP Port**: The port of your database server, such as `3306`. 
-		* **Username**: A unique username that can access this specific database on the database server. 
-		* **Password**: The password for the provided username. 
-		* **Database CA Certificate**: A certificate to use for encrypting traffic to and from the database. 
+1. Select the **CredHub** pane.
+    <%= image_tag('images/credhub.png') %>
+1. Choose the location of your CredHub Database. PAS includes this CredHub database for services to store their service instance credentials. If you chose **External**, enter the following:
+    * **Hostname**: The IP address of your database server. 
+    * **TCP Port**: The port of your database server, such as `3306`. 
+    * **Username**: A unique username that can access this specific database on the database server. 
+    * **Password**: The password for the provided username. 
+    * **Database CA Certificate**: A certificate to use for encrypting traffic to and from the database. 
 1. Under **Encryption Keys**, specify a key to use for encrypting and decrypting the values stored in the CredHub database.
-	* **Name**: Enter the name of the key.
-	* **Key**: Enter a key that is at least 20 characters in length. 
-	* **Primary**: Select this checkbox to use this key as your primary key. 
-		<p class="note"><strong>Note</strong>: Ensure that you only mark one key as <strong>Primary</strong>. The UI includes an <strong>Add</strong> button to add more keys to support key rotation.</p>
+    * **Name**: Enter the name of the key.
+    * **Key**: Enter a key that is at least 20 characters in length. 
+    * **Primary**: Select this checkbox to use this key as your primary key. 
+    <p class="note"><strong>Note</strong>: Ensure that you only mark one key as <strong>Primary</strong>. The UI includes an <strong>Add</strong> button to add more keys to support key rotation.</p>
 1. If your deployment uses any PCF services that support storing service instance credentials in CredHub and you want to enable this feature, select the **Secure Service Instance Credentials** checkbox. 
 1. Select the **Resource Config** pane.
-1. In the **CredHub** row, under the **Job** column, set the number of instances to `2`. This is the minimum instance count required for high availability.
+1. In the **CredHub** row, under the **Job** column, set the number of instances to at least `2`. This is the minimum instance count required for high availability.
 
 ## <a id='asgs'></a> Step 2: Create Application Security Groups
 
-Application Security Groups (ASGs) are network policy rules specifying protocols, ports, and IP ranges that apply to outbound network connections initiated from apps. You must follow the steps below to ensure the ASGs for your deployment allow apps to communicate with the runtime CredHub API.  
+Application Security Groups (ASGs) are network policy rules specifying protocols, ports, and IP ranges that apply to outbound network connections initiated from apps. You must follow the steps below to ensure the ASGs for your deployment allow apps to communicate with the runtime CredHub API.
 
 <p class="note"><strong>Note</strong>: The default ASGs in PCF allow apps running on your deployment to send traffic to almost any IP address. This step is only required if your ASGs restrict network access from apps to the network that PAS runs on, as documented in <a href="./app-sec-groups.html">Restricting App Access to Internal PCF Components</a>.</p>
 
@@ -90,51 +93,50 @@ Application Security Groups (ASGs) are network policy rules specifying protocols
 
 1. Record the CIDR for the PAS network.
 
-1. Create a file named `pas-credhub.json` for specifying your ASG rules. Copy the content below into the file. Replace `YOUR-PAS-CIDR` with the CIDR you recorded in the previous step. 
+1. Create a file named `runtime-credhub.json` for specifying your ASG rules. Copy the content below into the file. Replace `YOUR-PAS-CIDR` with the CIDR you recorded in the previous step.
 
-	```
-	[
-		{
-		"protocol": "tcp",
-		"destination": "YOUR-PAS-CIDR",
-		"ports": "8844"
-		}
-	]
-	```
+    ```
+    [
+      {
+      "protocol": "tcp",
+      "destination": "YOUR-PAS-CIDR",
+      "ports": "8844"
+      }
+    ]
+    ```
 
 1. Run the following command to create an ASG that allows apps to access the CredHub API:
-	<pre class="terminal">
-	$ cf create-security-group runtime-credhub ~/workspace/runtime-credhub runtime-credhub.json
-	</pre>
+    <pre class="terminal">
+    $ cf create-security-group runtime-credhub ~/workspace/runtime-credhub runtime-credhub.json
+    </pre>
 
-1. Bind this ASG to your deployment or the specific space in which you want apps to access CredHub. For more information about binding ASGs, see [Bind ASGs](../concepts/asg.html#binding-groups). Ensure that apps deployed as part of the service tile installation process have access to CredHub in addition to the apps pushed to the platform by developers. For example, the Spring Cloud Services tile deploys the `spring-cloud-broker` app to the `p-spring-cloud-services` space of the `systsem` org. 
+1. Bind this ASG to your deployment or the specific space in which you want apps to access CredHub. For more information about binding ASGs, see [Bind ASGs](../concepts/asg.html#binding-groups). Ensure that apps deployed as part of the service tile installation process have access to CredHub in addition to the apps pushed to the platform by developers. For example, the Spring Cloud Services tile deploys the `spring-cloud-broker` app to the `p-spring-cloud-services` space of the `system` org. 
 
 1. Restart apps for the ASGs to take effect. Optionally, you can use the [app-restarter cf CLI plugin](https://github.com/cloudfoundry-incubator/app-restarter) to restart all apps in a particular space, org, or deployment.
 
 ## <a id='service-instances'></a> Step 3: Unbind and Rebind Service Instances 
 
-For any service instance bindings that existed before runtime CredHub was supported for that service, you must work with your developers to unbind and rebind the service instances to their apps. If you do not unbind and rebind the service, apps continue functioning as normal and fetching credentials from the Cloud Controller database. 
+For any service instance bindings that existed before runtime CredHub was supported for that service, you must work with your developers to unbind and rebind the service instances to their apps. If you do not unbind and rebind the service, apps continue functioning as before and fetch credentials from the Cloud Controller database, and not from runtime CredHub.
 
 <p class="note"><strong>Note</strong>: This step is not required for bindings created after you installed the new version of the service tile that supports CredHub and you completed the procedures in steps 1 and 2 of this topic.</p>
 
 1. Unbind the service instance from the app:
-	<pre class="terminal">
-	$ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE
-	</pre>
+    <pre class="terminal">
+    $ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE
+    </pre>
 
 1. Rebind the service instance to the app: 
-	<pre class="terminal">
-	$ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE
-	</pre>
+    <pre class="terminal">
+    $ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE
+    </pre>
 
 1. Review the `VCAP_SERVICES` environment variable to verify that the new service instance binding includes CredHub pointers:
-	<pre class="terminal">
-	$ cf env YOUR-APP
-	</pre>
-	See [VCAP_SERVICES](../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES) for help parsing the output of the `cf-env` command. 
+    <pre class="terminal">
+    $ cf env YOUR-APP
+    </pre>
+    See the [VCAP_SERVICES](../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES)section of _Cloud Foundry Environment Variables_ for help parsing the output of the `cf-env` command.
 1. Restart the app to apply the service instance binding: 
-	<pre class="terminal">
-	cf restart YOUR-APP
-	</pre>
-	If you run `cf-env` again, you can see the `VCAP-SERVICES` environment variable now contains the credentials for the service instance binding. 
-
+    <pre class="terminal">
+    $ cf restart YOUR-APP
+    </pre>
+    If you run `cf-env` again, you can see the `VCAP-SERVICES` environment variable now contains the credentials for the service instance binding. 
