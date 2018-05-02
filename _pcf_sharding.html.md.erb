@@ -33,5 +33,9 @@ You can configure router sharding for isolation segments depending on your use c
 	</tr>
 </table>
 
-<p class="note"><strong>Note</strong>: For compute isolation only, you can leave the <b>Routers reject requests for isolation segments</b> checkbox unselected in the Elastic Runtime <b>Networking</b> pane. This is the default setting, which does not require any additional routers for the Isolation Segment tile. </p>
-  
+<p class="note"><strong>Note</strong>: For compute isolation only, you can leave the <b>Routers reject requests for isolation segments</b> checkbox unselected in the Elastic Runtime <b>Networking</b> pane. This is the default setting, which does not require any additional routers for the Isolation Segment tile.</p>
+
+<p class="note"><strong>Note</strong>: For upgrades from PCF v1.11 to v1.12,
+Pivotal adds the <strong>Shared and Segment</strong> router sharding mode to fix the <a href="https://docs.pivotal.io/pivotalcf/1-12/pcf-release-notes/segment-rn.html#ist-apps">Apps Deployed to PCF Isolation Segment Unreachable</a> issue in PCF Isolation Segment v1.12.
+When you upgrade from PCF v1.11 to v1.12, this mode is selected in PCF Isolation Segment by default.
+For more information about upgrading from PCF v1.11 to v1.12, see <a href="../customizing/upgrading-pcf.html">Upgrading Pivotal Cloud Foundry</a>.</p>
