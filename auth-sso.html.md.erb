@@ -168,6 +168,9 @@ connection.
 password for binding to the LDAP Server. Example DN: `cn=administrator,ou=Users,dc=example,dc=com`
     <p class="note"><strong>Note</strong>: Pivotal recommends that you provide LDAP credentials that grant read-only permissions on the LDAP Search Base and the LDAP Group Search Base. In addition to this, if the bind user belongs to a different search base, you must use the full DN.</p>
 
+    <p class="note warning"><strong>WARNING: </strong>Pivotal recommends against reusing LDAP service accounts across environments. LDAP service accounts should not be subject to manual lockouts, such as, lockouts that result from users utilizing the same account. Also, LDAP service accounts should not be subject to automated deletions, since disruption to these service accounts could prevent user logins.
+    </p>
+
 1. For **User Search Base**, enter the location in the LDAP directory tree from 
 which any LDAP User search begins. The typical LDAP Search Base matches your 
 domain name.
