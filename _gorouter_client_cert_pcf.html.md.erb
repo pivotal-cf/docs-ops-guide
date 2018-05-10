@@ -1,8 +1,23 @@
-To configure Gorouter behavior for handling client certificates, select one of the options in the **Router behavior for Client Certificates** field of the **Networking** configuration screen in Elastic Runtime. 
+To configure Gorouter behavior for handling client certificates, select one of the options in the **Router behavior for Client Certificates** field of the **Networking** configuration screen in PAS. 
 
-* **Router does not request client certificates.** This option is incompatible with the XFCC configuration options <b>Forward the XFCC header received from the client only when the client connection is mTLS</b> and <b>Strip the XFCC header when present and set it to the client certificate from the mTLS handshake</b> because these options require mutual authentication. As client certificates are not requested, client will not provide them, and thus validation of client certificates will not occur.
+* **Router does not request client certificates.** The Gorouter does not request client certificates in TLS handshakes so clients will not provide them and validation of client certificates does not occur. This option is incompatible with the XFCC configuration options **TLS terminated for the first time at HAProxy** and **TLS terminated for the first time at the Router** in PAS because these options require mutual authentication.
 
-* **Router requests but does not require client certificates.** The Gorouter requests client certificates in TLS handshakes, validates them when presented, but does not require them. This is the default configuration.
+* **Router requests but does not require client certificates.** The Gorouter requests client certificates in TLS handshakes. The handshake will fail if the client certificate is not signed by a CA configured for the router. This is the default configuration.
 
-* **Router requires client certificates.** The Gorouter validates that the client certificate is signed by a Certificate Authority that the Gorouter trusts. If the Gorouter cannot validate the client certificate, the TLS handshake fails.
-<p class="note warning"><strong>WARNING:</strong> Requests to the platform will fail upon upgrade if your load balancer is configured with client certificates and the Gorouter does not have the certificate authority. To mitigate this issue, select <strong>Router does not request client certificates</strong> for <strong>Router behavior for Client Certificate Validation</strong> in the <strong>Networking</strong> pane.</p>
+* **Router requires client certificates.** The Gorouter requests and requires client certificates in TLS handshakes. The handshake will fail if a client cert is not provided or if the client certificate is not signed by a CA configured for the router. 
+
+The behavior controlled by this property is global; it applies to all requests received by Gorouters so configured.
+
+If Gorouter is the first point of TLS termination (your load balancer does not terminate TLS, and passes the request through to Gorouter over TCP), consider the following:
+- Only option **Router does not request client certificates** should be used with PAS, as the Gorouters are in that product receive requests for the system domain. Many clients of CF platform APIs do not present client certificates in TLS handshakes, so the first point of TLS termination for requests to the system domain must not request them.
+- All options may be used for routers deployed with the Isolation Segment tile, as these only receive requests for app domains.
+- Options **Router requests but does not require client certificates** and **Router requires client certificates** will trigger browsers to prompt users to select a certificate if the browser is not already configured with a certificate signed by one of the CAs configured for the router.
+
+If Gorouter is not the first point of TLS termination, this property can be used to secure communications between the Load Balancer and Gorouter. The router must be configured with the CA used to sign the client certification the load balancer will present.
+
+<p class="note warning"><strong>WARNING:</strong> Requests to the platform will fail upon upgrade if your load balancer is configured to present a client certificate in the TLS handshake with Gorouter but Gorouter has not been configured with the certificate authority used to sign it. To mitigate this issue, select <strong>Router does not request client certificates</strong> for <strong>Router behavior for Client Certificate Validation</strong> in the <strong>Networking</strong> pane or configure the router with the appropriate CA.</p>
+
+
+
+
+
