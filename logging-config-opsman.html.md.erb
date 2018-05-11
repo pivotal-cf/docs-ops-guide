@@ -7,6 +7,7 @@ owner: APM
 
 This topic describes the types of logs that Pivotal Cloud Foundry (PCF) generates. It also explains how to forward system logs to an external aggregator service, how to scale [Loggregator](../loggregator/architecture.html) component VMs to keep up with app log volume, and how to manage app traffic logging.
 
+
 ## <a id='types'></a> System Logs, App Logs, App Traffic Logs
 
 Pivotal Cloud Foundry (PCF) generates two types of logs, _system logs_ from PCF components and _app logs_ from hosted apps, as differentiated in the table below:
@@ -46,6 +47,7 @@ Pivotal Cloud Foundry (PCF) generates two types of logs, _system logs_ from PCF 
 
 <strong>App traffic logs are system logs.</strong> When app containers communicate, or attempt to communicate, their host cells generate _app traffic logs_. App traffic logs are system logs, not app logs. These logs come from host cells, not apps, and they carry no information from within the app. App traffic logs only show app communication behavior, as detected from outside by the host cell.
 
+
 ## <a id='syslog-forward'></a> Enable Syslog Forwarding
 
 To forward system log messages to an external Reliable Event Logging Protocol (RELP) server, complete the following steps:
@@ -61,6 +63,9 @@ This logs all API requests, including the endpoint, user, source IP, and request
 1. For the **Custom rsyslog Configuration**, enter your [custom syslog rules](../customizing/custom-syslog-rules.html).
 1. Click **Save**.
 
+See the [Settings](http://docs-pcf-staging.cfapps.io/pivotalcf/2-2/customizing/pcf-interface.html#settings) section in the _Understanding the Ops Manager Interface_ topic to configure Ops Manager for system logging.
+
+
 ## <a id='container-metrics'></a> Include Container Metrics in Syslog Drains
 
 Developers can monitor container metrics over the syslog protocol using the [CF Drain CLI plugin](https://github.com/cloudfoundry/cf-drain-cli). With the CF Drain CLI plugin, you can use the Cloud Foundry Command Line Interface (cf CLI) tool to set the app container to deliver container metrics to a syslog drain. Developers can then monitor the app container based on those metrics.
@@ -68,6 +73,7 @@ Developers can monitor container metrics over the syslog protocol using the [CF 
 In PAS, the **Include container metrics in Syslog Drains** checkbox is enabled by default in the **System Logging** pane. If you have security concerns about streaming container metrics from your app, you can disable this checkbox. 
 
 For more information, see [Including Container Metrics in Syslog Drains](../devguide/deploy-apps/streaming-logs.html#container-metrics) in _Application Logging in Cloud Foundry_.
+
 
 ## <a id='scaling'></a> Scale Loggregator
 
@@ -91,6 +97,7 @@ Follow the instructions below to scale the Loggregator system. For guidance on m
   <%= image_tag 'loggregator-vms.png' %>
 1. Click **Save**.
 1. Click **Apply Changes**.
+
 
 ## <a id="app-traffic-log"></a> App Traffic Logging
 
