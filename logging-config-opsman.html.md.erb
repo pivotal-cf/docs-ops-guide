@@ -44,7 +44,7 @@ When the log and metrics data input to a Doppler exceeds its buffer size for a g
 
 Elastic Runtime can forward log data to an external aggregator service instead of routing it to the Loggregator Firehose. System log forwarding for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) is managed through the **PCF Ops Manager Installation Dashboard**. Complete the steps below to enable syslog forwarding:
 
-1. From the Elastic Runtime tile, Select **System Logging**.
+1. From the Elastic Runtime tile, select **System Logging**.
 	<%= image_tag 'sys-logging.png' %>
 1. If you want to include security events in your log stream, select the **Enable Cloud Controller security event logging** checkbox.
 This logs all API requests, including the endpoint, user, source IP, and request result, in the Common Event Format (CEF).
