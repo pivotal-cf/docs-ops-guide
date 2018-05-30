@@ -110,6 +110,6 @@ This procedure migrates PAS internal MySQL databases from the less secure MariaD
 1. **Change the System Databases Location**: In the PAS tile > **Databases** pane, under **Choose the location of your system databases**, select to **Internal Databases - MySQL with TLS**.  Click **Save**.
 <%= image_tag("system-db-tls.png") %>
 
-1. **Migrate the Database**: Return to the **Installation Dashboard**, and click **Apply Changes** to re-deploy PAS with the new internal database. Internal system databases become temporarily unavailable to PAS components during this migration step, but PAS apps continue to run. The length of downtime length depends on multiple factors, including database size, persistent disk type, CPU and disk capacity of VMs, and PAS configuration.
+1. **Migrate the Database**: Return to the **Installation Dashboard**, and click **Apply Changes** to re-deploy PAS with the new internal database. Internal system databases become temporarily unavailable to PAS components during this migration step, but PAS apps continue to run. The length of downtime depends on multiple factors, including database size, persistent disk type, CPU and disk capacity of VMs, and PAS configuration.
 
 1. **Scale the Cluster Back Up**: If you want to scale the database cluster back up to multiple server nodes, increase the instance count under **Resource Config** > **MySQL Server**. Then click **Save** to save the change and **Apply Changes** in the Installation Dashboard to re-deploy.
