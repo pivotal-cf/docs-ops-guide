@@ -88,12 +88,12 @@ Before scaling down your MySQL cluster, perform the following actions to ensure 
 
 1. If each MySQL server instance does not return the same `created_at` result, contact [Pivotal Support](https://support.pivotal.io/) before proceeding further or making any changes to your deployment. If each MySQL server instance does return the same result, then you can safely proceed to scaling down your cluster to a single node by performing the steps in the following section.
 
-### <a id="scale-down"></a>Scale Down Your Cluster
+### <a id="scale-down"></a>Set Server Instance Count to 1
 
 1. From the PCF **Installation Dashboard**, click the **Pivotal Application Service** tile.
 1. Select **Resource Config**.
 1. Use the drop-down menu to change the **Instances** count for **MySQL Server** to `1`.
-1. Click **Save** to apply the changes.
+1. Click **Save** and **Apply Changes** to apply the changes.
 1. Delete your test organization with the following cf CLI command:
 	<pre class="terminal">$ cf delete-org data-integrity-test-organization</pre>
 
@@ -103,13 +103,23 @@ In PAS v2.1 and earlier, internal system MySQL databases ran [MariaDB](http://ww
 
 This procedure migrates PAS internal MySQL databases from the less secure MariaDB infrastructure to a TLS-encrypted Percona stack.
 
-<p class="note warning"><strong>WARNING</strong>: This procedure causes temporary downtime of PAS system functions. It does not interrupt apps hosted by PAS.</p>
+<p class="note warning"><strong>WARNING</strong>: This procedure causes temporary downtime of PAS system functions, as described in <a href="#mysql-downtime">MySQL Downtime</a>. It does not interrupt apps hosted by PAS.</p>
 
-1. **Scale Down Your Cluster**: If your internal databases MySQL cluster runs three or more nodes, you must scale it down to a single node before you migrate. See [Scale Down Your MySQL Cluster](#scale-down).  You can check your current node instance count in the PAS tile > **Resource Config** > **MySQL Server**, under **Instances**.
+1. **Scale Down Your Cluster**: If your internal databases MySQL cluster runs three or more nodes, scale it down to a single node before you migrate. In the PAS tile > **Resource Config** > **MySQL Server** settings, set **Instances** to `1`. Click **Save**.
 
-1. **Change the System Databases Location**: In the PAS tile > **Databases** pane, under **Choose the location of your system databases**, select to **Internal Databases - MySQL with TLS**.  Click **Save**.
+1. **Change the System Databases Location**: In the PAS tile > **Databases** pane, under **Choose the location of your system databases**, select to **Internal Databases - MySQL - Percona XtraDB Cluster**.  Click **Save**.
 <%= image_tag("system-db-tls.png") %>
 
-1. **Migrate the Database**: Return to the **Installation Dashboard**, and click **Apply Changes** to re-deploy PAS with the new internal database. Internal system databases become temporarily unavailable to PAS components during this migration step, but PAS apps continue to run. The length of downtime depends on multiple factors, including database size, persistent disk type, CPU and disk capacity of VMs, and PAS configuration.
+1. **Migrate the Database**: Return to the **Installation Dashboard**, and click **Apply Changes** to re-deploy PAS with the new internal database. Internal system databases become temporarily unavailable to PAS components during this migration step, but PAS apps continue to run. See [MySQL Migration Downtime](#mysql-downtime) for details.
 
 1. **Scale the Cluster Back Up**: If you want to scale the database cluster back up to multiple server nodes, increase the instance count under **Resource Config** > **MySQL Server**. Then click **Save** to save the change and **Apply Changes** in the Installation Dashboard to re-deploy.
+
+### <a id='mysql-downtime'></a>MySQL Migration Downtime
+
+Upgrading existing internal system databases to the new option of **Internal Databases - MySQL - Percona XtraDB Cluster** causes temporary downtime of PAS system functions. It does not interrupt apps hosted by PAS.
+
+The length of downtime depends on multiple factors, including database size, persistent disk type, CPU and disk capacity of VMs, and PAS configuration.
+
+During internal MySQL server downtime, the Cloud Controller and other platform components that use system databases become unavailable. This prevents users from pushing apps, scaling apps, and running other cf CLI commands.
+
+If the PAS UAA is configured to use an internal database, then the UAA also becomes unavailable, which temporarily prevents users from signing into PAS orgs and spaces, Apps Manager, and other PAS interfaces.
