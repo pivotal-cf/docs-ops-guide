@@ -120,6 +120,8 @@ Upgrading existing internal system databases to the new option of **Internal Dat
 
 The length of downtime depends on multiple factors, including database size, persistent disk type, CPU and disk capacity of VMs, and PAS configuration.
 
+#### <a id='downtime-effects'></a>Effects of MySQL Downtime
+
 During internal MySQL server downtime, the Cloud Controller and other platform components that use system databases become unavailable. This prevents users from pushing apps, scaling apps, and running other cf CLI commands.
 
 If the PAS UAA is configured to use an internal database, then the UAA also becomes unavailable, which temporarily prevents users from signing into PAS orgs and spaces, Apps Manager, and other PAS interfaces.
