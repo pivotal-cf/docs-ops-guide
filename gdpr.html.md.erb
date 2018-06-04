@@ -1,0 +1,437 @@
+---
+title: General Data Protection Regulation
+owner: Legal
+---
+
+This topic provides an overview of the General Data Protection Regulation (GDPR) and where Pivotal Cloud Foundry (PCF) may store personal data.
+
+##<a id='overview'></a> Overview
+
+GDPR came into effect on May 25, 2018 and impacts any company processing the data of EU citizens or residents, even if the company is not EU-based. The GDPR sets forth how companies should handle privacy issues, securely store data, and respond to security breaches. 
+
+##<a id='personal-data'></a> Understand Personal Data
+
+The GDPR grants data subjects certain rights, such as the right to obtain a copy of their personal data, object to the processing of personal data, and the right to have their personal data erased. Organizations subject to GDPR will need to ensure that they can address and respond to requests by data subjects if they are processing their personal data.
+
+Article 4, Section 1 of the GDPR defines personal data as follows:
+
+<blockquote>
+'personal data' means any information relating to an identified or identifiable natural person ('data subject'); an identifiable natural person is one who can be identified, directly or indirectly, in particular by reference to an identifier such as a name, an identification number, location data, an online identifier or to one or more factors specific to the physical, physiological, genetic, mental, economic, cultural or social identity of that natural person;
+</blockquote> 
+
+For more information, see the GDPR [text](http://www.privacy-regulation.eu/en/article-4-definitions-GDPR.htm).
+
+##<a id='compliance'></a> Understand Compliance
+
+Personal data can be collected, stored and processed in a PCF deployment. Pivotal has performed a review of PCF components and determined that personal data may reside in the following areas: 
+
+##<a id='uaa'></a>User Account and Authentication (UAA)
+
+UAA is an open-source Cloud Foundry component that provides identity management features and identity-based security for applications and APIs. For more information, see <a href="../uaa/index.html">User Account and Authentication</a>.
+
+<table>
+<tbody>
+<tr>
+<th>GDPR</th>
+<th>Workflow</th>
+<th>What personal data is collected?</th>
+<th>When is it collected?</th>
+<th>Where is it stored?</th>
+<th>How is it processed?</th>
+<th>Who has access to it?</th>
+</tr>
+<tr>
+<th rowspan="3" scope="rowgroup">Business Initiation</th>
+<td>User registers</td>
+<td> 
+<ul>
+<li>Username</li>
+<li>Email address</li>
+<li>First name (optional)</li>
+<li>Last name (optional)</li>
+<li>User ID (UAA GUID, generated)</li>
+</ul>
+</td>
+<td>User registration submission</td>
+<td>UAA DB</td>
+<td>Stored in UAA DB</td>
+<td>
+<ul>
+<li>End user</li>
+<li>UAA administrators</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>Just-in-time provisioning: create user on user login</td>
+<td>
+<ul>
+<li>Username</li>
+<li>Email address</li>
+<li>First name (optional)</li>
+<li>Last name (optional)</li>
+<li>User ID (UAA GUID, generated)</li>
+<li>Additional attributes as defined by the organization </li>
+</ul>
+</td>
+<td>User login </td>
+<td>UAA DB</td>
+<td>Stored in UAA DB </td>
+<td>UAA administrators</td>
+</tr>
+<tr>
+<td>Admin user makes a creation API call</td>
+<td> 
+<ul>
+<li>Username</li>
+<li>Email address</li>
+<li>First name (optional)</li>
+<li>Last name (optional)</li>
+<li>User ID (UAA GUID, generated)</li>
+<li>Additional attributes as defined by the organization</li>
+</ul>
+</td>
+<td>Admin API call </td>
+<td>UAA DB </td>
+<td>Stored in UAA DB </td>
+<td>UAA administrators</td>
+</tr>
+<tr>
+<th rowspan="4" scope="rowgroup">Business Execution</th>
+<td>User self-updates profile</td>
+<td>
+<ul>
+<li>Email address</li>
+<li>First name (optional)</li>
+<li>Last name (optional)</li>
+</ul>
+</td>
+<td>User registration submission</td>
+<td>UAA DB</td>
+<td>Stored in UAA DB</td>
+<td>
+<ul>
+<li>End user</li>
+<li>UAA administrators</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>Just-in-time provisioning: user update</td>
+<td>
+<ul>
+<li>Email address</li>
+<li>First name (optional)</li>
+<li>Last Name (optional)</li>
+<li>Additional attributes as defined by the organization </li>
+</ul>
+</td>
+<td>User login </td>
+<td>UAA DB </td>
+<td>Stored in UAA DB</td>
+<td>UAA administrators</td>
+</tr>
+<tr>
+<td>User logs in</td>
+<td>
+<ul>
+<li>Current account cookie (generated)</li>
+<li>Saved account cookie (generated)</li>
+</ul>
+</td>
+<td>User login</td>
+<td>User browser</td>
+<td>By UAA</td>
+<td>
+<ul>
+<li>End user</li>
+<li>UAA login page </li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>Admin user makes an update API call</td>
+<td>
+<ul>
+<li>Email address</li>
+<li>First name (optional)</li>
+<li>Last name (optional)</li>
+<li>Additional attributes as defined by the organization</li>
+</ul>
+</td>
+<td> Admin API call</td>
+<td>UAA DB </td>
+<td>Stored in UAA DB</td>
+<td> UAA administrators</td>
+</tr>
+<tr>
+<th rowspan="2" scope="rowgroup">Delete User Flow</th>
+<td>Admin user makes a hard delete API call</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Deleted from UAA DB</td>
+<td>UAA administrators</td>
+</tr>
+<tr>
+<td>Admin user makes a deactivation API call</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Soft delete (records still held in database but user cannot login) </td>
+<td>UAA administrators</td>
+</tr>
+<tr>
+<th>Reports/Logs</th>
+<td>Event or debug logs</td>
+<td>Any information</td>
+<td>When event happens</td>
+<td>UAA logs</td>
+<td>Depends on setup of <a href="https://docs.pivotal.io/pivotalcf/loggregator/index.html">Loggregator</a> and log forwarding</td>
+<td>BOSH administrators</td>
+</tr>
+</tbody>
+</table>
+
+##<a id="capi"></a> Cloud Foundry API
+
+The Cloud Foundry API release contains several components, including the Cloud Controller. For more information, see the Cloud Foundry API release [readme](https://github.com/cloudfoundry/capi-release).
+
+<table>
+<tbody>
+<tr>
+<th>GDPR</th>
+<th>Workflow</th>
+<th>What personal data is collected?</th>
+<th>When is it collected?</th>
+<th>Where is it stored?</th>
+<th>How is it processed?</th>
+<th>Who has access to it?</th>
+<th>How long is it kept?</th>
+</tr>
+<tr>
+<th>Business Initiation</th>
+<td>User makes a request for the first time</td>
+<td> User ID</td>
+<td>The first time a user makes a request to the API</td>
+<td>Cloud Controller DB</td>
+<td>It is used to identify permissions for the user</td>
+<td>PCF operator </td>
+<td>As long as the user is part of the system</td>
+</tr>
+<tr>
+<th>Business Execution</th>
+<td>Troubleshooting API requests</td>
+<td>
+<ul>
+<li>User ID </li>
+<li>User agent</li>
+<li>IP address</li>
+</ul>
+</td>
+<td>On each request</td>
+<td>
+<ul>
+<li>Local VM:<br />component and logs </li>
+<li>Log aggregator used by PCF operator</li>
+</ul>
+</td>
+<td> n/a</td>
+<td>PCF operator</td>
+<td>
+<ul>
+<li>Local VM:<br />4 week maximum by default</li>
+<li>Log aggregator as configured by PCF operator</li>
+</ul>
+ </td>
+</tr>
+<tr>
+<th rowspan="3" scope="rowgroup">Audit Trails</th>
+<td>Audit what changes a user makes</td>
+<td>
+<ul>
+<li>Name</li>
+<li>User ID</li>
+<li>Email address</li>
+</ul>
+</td>
+<td>On specific API requests that mutate the state of resources</td>
+<td>Audit Event Table in the Cloud Controller DB</td>
+<td> n/a</td>
+<td>
+<ul>
+<li>PCF operator</li>
+<li>Users that can view the resource that had an audited change</li>
+</ul>
+</td>
+<td>31 days</td>
+</tr>
+<tr>
+<td>Audit what changes a user makes</td>
+<td>
+<ul>
+<li>IP Address</li>
+<li>Email address</li>
+<li>User ID</li>
+<li>Username</li>
+</ul>
+</td>
+<td>On each request </td>
+<td>
+<ul>
+<li>Local VM:<br />CEF logs</li>
+<li>Log aggregator used by PCF operator</li>
+</ul>
+</td>
+<td>n/a </td>
+<td>PCF operator </td>
+<td>
+<ul>
+<li>Local VM:<br />4 week maximum by default</li>
+<li>Log aggregator as configured by PCF operator</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>Audit what user created a resource</td>
+<td>
+<ul>
+<li>Name</li>
+<li>User ID</li>
+<li>Email address</li>
+</ul>
+</td>
+<td>When API resources are created</td>
+<td>As part of the resource row in Cloud Controller DB</td>
+<td>n/a</td>
+<td>
+<ul>
+<li>PCF operator</li>
+<li>Users that can view the resource</li></ul>
+</td>
+<td>As long as the resource exists</td>
+</tr>
+</tbody>
+</table>
+
+##<a id='routing'></a>Routing
+
+By default, the [Gorouter](../concepts/architecture/router.html) logs include the `X-Forwarded-For` header, which may include the originating client IP.
+Under GDPR, client IP addresses should be considered personal data.
+
+In Pivotal Application Service (PAS) v2.0 and above and Elastic Runtime v1.12, operators can disable logging of client IP addresses in the Gorouter.
+
+To disable logging of client IP addresses, perform the following steps:
+
+1. Navigate to the Ops Manager Installation Dashboard and click the PAS or Elastic Runtime tile.
+1. Click **Networking**.
+1. Under **Logging of Client IPs in CF Router**, select one of the two options:
+	* If the source IP address exposed by your load balancer is its own IP address, select **Disable logging of X-Forwarded-For header only**. 
+	* If the source IP address exposed by your load balancer belongs to the downstream client, select **Disable logging of both source IP and X-Forwarded-For header**.
+1. Click **Save**.
+1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to redeploy.
+
+##<a id='diego'></a>Diego
+
+Diego is the container management system for PCF. 
+For more information, see [Diego Components and Architecture](https://docs.pivotal.io/pivotalcf/concepts/diego/diego-architecture.html).
+
+<table>
+<tbody>
+<tr>
+<th>GDPR</th>
+<th>Workflow</th>
+<th>What personal data is collected?</th>
+<th>When is it collected?</th>
+<th>Where is it stored?</th>
+<th>How is it processed?</th>
+<th>Who has access to it?</th>
+<th>How can I delete it?</th>
+</tr>
+<tr>
+<th>Business Execution</th>
+<td>Executing apps and tasks</td>
+<td>No personal data is collected explicitly, but personal data may be encoded in app file contents or runtime metadata such as environment variables or start commands.</td>
+<td>Runtime metadata is collected when Cloud Controller submits work specification to the Diego BBS API. File contents are collected when Diego schedules an app or a task on a Diego cell.</td>
+<td>Runtime metadata is stored in the Diego BBS DB. App file contents are cached on Diego cells.</td>
+<td>Runtime metadata is used to start processes inside app instance containers and to configure their environment. App file contents are presented as part of the app instance container filesystem.</td>
+<td>Platform operators and other developers with access to the Cloud Controller space containing that app can view the data.</td>
+<td><ul><li>To delete the runtime metadata stored in the Diego BBS DB, stop the app or cancel the task that includes that data.</li>
+<li>To delete the app file contents stored in the running app and task containers, stop the app or cancel the task to destroy the containers. To destroy the app file contents stored in the download cache on the Diego cells, recreate the Diego cell VMs.</li></ul></td>
+</tr>
+<tr>
+<th>Reports/Logs</th>
+<td>SSH proxy logs Cloud Foundry user access.</td>
+<td>UAA user name and ID</td>
+<td>When the user authenticates for SSH access to an app.</td>
+<td>The data is stored in a log file collocated with the SSH proxy instance handling the authentication request. This log file may also have its contents forwarded to a remote syslog destination.</td>
+<td>No processing of the local log file is done automatically. If the log file contents are forwarded to a log aggregation service, they may be parsed and processed arbitrarily.</td>
+<td>Only platform operators have access to the local log file. Platform operators or auditors may have access to these log contents in a downstream log aggregation service.</td>
+<td>To delete the log lines containing the user ID, perform the following steps:
+	<ol><li>Run <code>bosh recreate</code> on the VMs hosting the SSH proxy processes to remove all the logs on ephemeral disk.</li>
+	<li><code>bosh ssh</code> into the VMs hosting the SSH proxy processes and remove specific log lines containing user IDs.</li>
+	<li>Scrub corresponding log lines from any log aggregation service.</li>
+</ol></td>
+</tr>
+</table>
+
+##<a id='cf-notifications'></a>Notifications Service
+
+The Notifications Service enables operators to configure components of Cloud Foundry to send emails to end users. For more information, see [Getting Started with the Notifications Service](../adminguide/notifications.html). 
+<table>
+<tbody>
+<tr>
+<th>GDPR</th>
+<th>Workflow</th>
+<th>What personal data is collected?</th>
+<th>When is it collected?</th>
+<th>Where is it stored?</th>
+<th>How is it processed?</th>
+<th>Who has access to it?</th>
+</tr>
+<tr>
+<th rowspan="4" scope="rowgroup">Business Execution</th>
+<td>Sending email to UAA users</td>
+<td>User ID</td>
+<td>First email sent</td>
+<td>The <code>receipts</code> table in the Notifications database</td>
+<td>Stored in the Notifications database</td>
+<td>Notifications operator making a database query</td>
+</tr>
+<tr>
+<td>UAA user unsubscribes globally</td>
+<td>User ID</td>
+<td>When the UAA user unsubscribes</td>
+<td>The <code>global_unsubscribes</code> table in the Notifications database</td>
+<td>Stored in the Notifications database</td>
+<td>Notifications operator making a database query</td>
+</tr>
+<tr>
+<td>UAA user unsubscribes from a specific kind of email</td>
+<td>User ID</td>
+<td>When the UAA user unsubscribes</td>
+<td>The <code>unsubscribes</code> table in the Notifications database</td>
+<td>Stored in the Notifications database</td>
+<td>Notifications operator making a database query</td>
+</tr>
+<tr>
+<td>UAA user unsubscribes from a campaign in the v2 API</td>
+<td>User ID</td>
+<td>When the UAA user unsubscribes</td>
+<td>The <code>unsubscribes</code> table in the Notifications database</td>
+<td>Stored in the Notifications database</td>
+<td>Notifications operator making a database query</td>
+</tr>
+<tr>
+<th>Reports/Logs</th>
+<td>UAA user unsubscribes</td>
+<td>User email address</td>
+<td>When the UAA user unsubscribes</td>
+<td>Log output</td>
+<td><a href="../loggregator/architecture.html">Loggregator</a></td>
+<td>Loggregator Firehose users</td>
+</tr>
+</table>
+
+
+
