@@ -21,11 +21,11 @@ Article 4, Section 1 of the GDPR defines personal data as follows:
 
 For more information, see the GDPR [text](http://www.privacy-regulation.eu/en/article-4-definitions-GDPR.htm).
 
-##<a id='compliance'></a> Understand Compliance
+##<a id='compliance'></a>Understand Compliance
 
 Personal data can be collected, stored and processed in a PCF deployment. Pivotal has performed a review of PCF components and determined that personal data may reside in the following areas: 
 
-##<a id='uaa'></a>User Account and Authentication (UAA)
+###<a id='uaa'></a>User Account and Authentication (UAA)
 
 UAA is an open-source Cloud Foundry component that provides identity management features and identity-based security for applications and APIs. For more information, see <a href="../uaa/index.html">User Account and Authentication</a>.
 
@@ -193,7 +193,7 @@ UAA is an open-source Cloud Foundry component that provides identity management�
 </tbody>
 </table>
 
-##<a id="capi"></a> Cloud Foundry API
+###<a id="capi"></a> Cloud Foundry API
 
 The Cloud Foundry API release contains several components, including the Cloud Controller. For more information, see the Cloud Foundry API release [readme](https://github.com/cloudfoundry/capi-release).
 
@@ -212,7 +212,7 @@ The Cloud Foundry API release contains several components, including the Cloud C
 <tr>
 <th>Business Initiation</th>
 <td>User makes a request for the first time</td>
-<td> User ID</td>
+<td>User ID</td>
 <td>The first time a user makes a request to the API</td>
 <td>Cloud Controller DB</td>
 <td>It is used to identify permissions for the user</td>
@@ -314,7 +314,7 @@ The Cloud Foundry API release contains several components, including the Cloud C
 </tbody>
 </table>
 
-##<a id='routing'></a>Routing
+###<a id='routing'></a>Routing
 
 By default, the [Gorouter](../concepts/architecture/router.html) logs include the `X-Forwarded-For` header, which may include the originating client IP.
 Under GDPR, client IP addresses should be considered personal data.
@@ -331,7 +331,7 @@ To disable logging of client IP addresses, perform the following steps:
 1. Click **Save**.
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to redeploy.
 
-##<a id='diego'></a>Diego
+###<a id='diego'></a>Diego
 
 Diego is the container management system for PCF. 
 For more information, see [Diego Components and Architecture](https://docs.pivotal.io/pivotalcf/concepts/diego/diego-architecture.html).
@@ -375,7 +375,7 @@ For more information, see [Diego Components and Architecture](https://docs.pivot
 </tr>
 </table>
 
-##<a id='cf-notifications'></a>Notifications Service
+###<a id='cf-notifications'></a>Notifications Service
 
 The Notifications Service enables operators to configure components of Cloud Foundry to send emails to end users. For more information, see [Getting Started with the Notifications Service](../adminguide/notifications.html). 
 <table>
