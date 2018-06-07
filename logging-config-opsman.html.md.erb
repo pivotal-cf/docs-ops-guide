@@ -49,9 +49,7 @@ Pivotal Cloud Foundry (PCF) generates two types of logs, _system logs_ from PCF 
 
 ## <a id="log-cache"></a>Enable Log Cache
 
-Log Cache is a Loggregator feature that lets you filter and query logs through a CLI. Cached logs are available on demand; you do not need to stream them continuously.
-
-[Download the Log Cache CLI](https://plugins.cloudfoundry.org/). 
+Log Cache is a Loggregator feature that lets you filter and query logs through a CLI or API endpoints. Cached logs are available on demand; you do not need to stream them continuously.
 
 <p class="note breaking"><strong>Breaking Change</strong>: App Autoscaler is dependent on Log Cache. If you disable Log Cache, App Autoscaler will fail. For more information, see <a href="../../pcf-release-notes/breaking-changes.html#autoscaler-log-cache">App Autoscaler Fails When Loggregator’s Log Cache Is Disabled</a>.</p>
 
@@ -67,20 +65,38 @@ To enable Log Cache:
 1. Select the **Enable Log Cache** checkbox.
 1. Click **Save**.
 
-After you have enabled Log Cache, use the CLI to query and filter logs.
+After you have enabled Log Cache, use the CLI or API to query and filter logs.
 
-### <a id="log-cache-examples"></a>Example uses of Log Cache
+### <a id="log-cache-cli-examples"></a>Example uses of the Log Cache CLI
+
+[Download the Log Cache CLI](https://plugins.cloudfoundry.org/). 
 
 The basic command to access cached logs is:
 <pre class="terminal">$ cf tail [OPTIONS] [SOURCE ID/APP]</pre>
 
 Here are some ways you can use Log Cache to filter logs:
 
-* View logs within a specific period of time with `start-time` and `--end-time`.
-* Output logs in JSON with `--json`.
-* Append exported logs to `stdout` with `--follow`.
+* `--start-time`: Displays the start of the cache or the start of a time period you specify. Results display as a UNIX timestamp, in seconds. Pair with `--end-time` to view logs within a time period.
+* `--end-time`: Displays the end of the cache or the end of a time period you specify. Results display as a UNIX timestamp, in seconds. Pair with `--start-time` to view logs within a time period.
+* `--json`: Output logs in JSON. 
+* `--follow`: Append exported logs to `stdout`.
 
 For more information on using Log Cache, see [Log Cache CLI: Usage](https://github.com/cloudfoundry/log-cache-cli/blob/develop/README.md).
+
+### <a id="log-cache-api-examples"></a>Example uses of the Log Cache API
+
+The basic command to access and filter cached logs is: 
+<pre class="terminal">GET /v1/read/<SOURCE-ID></pre>
+
+Append the following parameters to the `GET` to customize logs: 
+
+* `start_time`: Displays the start of the cache or the start of a time period you specify. Results display as a UNIX timestamp, in seconds. Pair with `end_time` to view logs within a time period.
+* `end_time`: Displays the end of the cache or the end of a time period you specify. Results display as a UNIX timestamp, in seconds. Pair with `start_time` to view logs within a time period.
+* `envelope_types`: Filters by Envelope Type. The available filters are: `LOG`, `COUNTER`, `GAUGE`, `TIMER`, and `EVENT`. Set an envelope type filter to emit logs of only that type. Specify this parameter multiple times to include more types.
+* `limit`: Sets a maximum number of envelopes to request. The max limit is 1000. This value defaults to 100.
+
+More API parameters are available to customize emitted logs. For more information, see [Log Cache: RESTful API Gateway](https://github.com/cloudfoundry/log-cache#restful-api-via-gateway).
+
 
 ## <a id='syslog-forward'></a> Enable Syslog Forwarding
 
