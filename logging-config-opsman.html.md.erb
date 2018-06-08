@@ -76,8 +76,8 @@ The basic command to access cached logs is:
 
 Here are some ways you can use Log Cache to filter logs:
 
-* `--start-time`: Displays the start of the cache or the start of a time period you specify. Results display as a UNIX timestamp, in seconds. Pair with `--end-time` to view logs within a time period.
-* `--end-time`: Displays the end of the cache or the end of a time period you specify. Results display as a UNIX timestamp, in seconds. Pair with `--start-time` to view logs within a time period.
+* `--start-time`: Displays the start of the cache or the start of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `--end-time` to view logs within a time period.
+* `--end-time`: Displays the end of the cache or the end of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `--start-time` to view logs within a time period.
 * `--json`: Output logs in JSON. 
 * `--follow`: Append exported logs to `stdout`.
 
@@ -90,12 +90,12 @@ The basic command to access and filter cached logs is:
 
 Append the following parameters to the `GET` to customize logs: 
 
-* `start_time`: Displays the start of the cache or the start of a time period you specify. Results display as a UNIX timestamp, in seconds. Pair with `end_time` to view logs within a time period.
-* `end_time`: Displays the end of the cache or the end of a time period you specify. Results display as a UNIX timestamp, in seconds. Pair with `start_time` to view logs within a time period.
+* `start_time`: Displays the start of the cache or the start of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `end_time` to view logs within a time period.
+* `end_time`: Displays the end of the cache or the end of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `start_time` to view logs within a time period.
 * `envelope_types`: Filters by Envelope Type. The available filters are: `LOG`, `COUNTER`, `GAUGE`, `TIMER`, and `EVENT`. Set an envelope type filter to emit logs of only that type. Specify this parameter multiple times to include more types.
 * `limit`: Sets a maximum number of envelopes to request. The max limit is 1000. This value defaults to 100.
 
-More API parameters are available to customize emitted logs. For more information, see [Log Cache: RESTful API Gateway](https://github.com/cloudfoundry/log-cache#restful-api-via-gateway).
+More API parameters are available to customize retrieved logs. For more information, see [Log Cache: RESTful API Gateway](https://github.com/cloudfoundry/log-cache#restful-api-via-gateway).
 
 
 ## <a id='syslog-forward'></a> Enable Syslog Forwarding
