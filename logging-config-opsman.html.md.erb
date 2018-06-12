@@ -49,13 +49,13 @@ Pivotal Cloud Foundry (PCF) generates two types of logs, _system logs_ from PCF 
 
 ## <a id="log-cache"></a>Enable Log Cache
 
-Log Cache is a Loggregator feature that lets you filter and query logs through a CLI or API endpoints. Cached logs are available on demand; you do not need to stream them continuously.
+Log Cache is a Loggregator feature that lets you filter and query app logs through a CLI plugin or API endpoints. Cached app logs are available on demand; you do not need to stream them continuously.
 
-<p class="note breaking"><strong>Breaking Change</strong>: App Autoscaler is dependent on Log Cache. If you disable Log Cache, App Autoscaler will fail. For more information, see <a href="../../pcf-release-notes/breaking-changes.html#autoscaler-log-cache">App Autoscaler Fails When Loggregator’s Log Cache Is Disabled</a>.</p>
+<p class="note breaking"><strong>Breaking Change</strong>: App Autoscaler is dependent on Log Cache. When you disable Log Cache, App Autoscaler fails.</p>
 
 ### <a id="log-cache-pas"></a>Log Cache in PAS
 
-To begin generating queryable logs, you must enable Log Cache in the PAS tile.
+To begin generating queryable app logs, you must enable Log Cache in the PAS tile.
 
 <%= image_tag 'enable-log-cache.png' %>
 
@@ -65,16 +65,18 @@ To enable Log Cache:
 1. Select the **Enable Log Cache** checkbox.
 1. Click **Save**.
 
-After you have enabled Log Cache, use the CLI or API to query and filter logs.
+After you have enabled Log Cache, use the CLI plugin or API to query and filter app logs.
 
-### <a id="log-cache-cli-examples"></a>Example uses of the Log Cache CLI
+### <a id="log-cache-cli-examples"></a>Example uses of the Log Cache CLI Plugin
 
-[Download the Log Cache CLI](https://plugins.cloudfoundry.org/). 
+To access cached logs with the Log Cache CLI plugin, you must first download and install the plugin.
 
-The basic command to access cached logs is:
+[Download the Log Cache CLI plugin](https://plugins.cloudfoundry.org/). 
+
+One you have installed the plugin, the basic command to access cached app logs is:
 <pre class="terminal">$ cf tail [OPTIONS] [SOURCE ID/APP]</pre>
 
-Here are some ways you can use Log Cache to filter logs:
+Here are some ways you can use Log Cache to filter app logs:
 
 * `--start-time`: Displays the start of the cache or the start of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `--end-time` to view logs within a time period.
 * `--end-time`: Displays the end of the cache or the end of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `--start-time` to view logs within a time period.
@@ -85,17 +87,19 @@ For more information on using the Log Cache CLI, see [Log Cache CLI: Usage](http
 
 ### <a id="log-cache-api-examples"></a>Example uses of the Log Cache API
 
-The basic command to access and filter cached logs is: 
-<pre class="terminal">GET /v1/read/[SOURCE-ID]</pre>
+The Log Cache API is hosted on PCF, and references your system domain to return responses. The root URL for API calls is `https://log-cache.[YOUR-SYSTEM-DOMAIN].`
 
-Append the following parameters to the `GET` to customize logs: 
+The basic call to access and filter cached app logs is: 
+<pre class="terminal">GET https://log-cache.[YOUR-SYSTEM-DOMAIN]/v1/read/[SOURCE-ID]</pre>. To 
+
+Append the following parameters to the `GET` to customize app logs: 
 
 * `start_time`: Displays the start of the cache or the start of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `end_time` to view logs within a time period.
 * `end_time`: Displays the end of the cache or the end of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `start_time` to view logs within a time period.
 * `envelope_types`: Filters by Envelope Type. The available filters are: `LOG`, `COUNTER`, `GAUGE`, `TIMER`, and `EVENT`. Set an envelope type filter to emit logs of only that type. Specify this parameter multiple times to include more types.
 * `limit`: Sets a maximum number of envelopes to request. The max limit is 1000. This value defaults to 100.
 
-More API parameters are available to customize retrieved logs. For more information, see [Log Cache: RESTful API Gateway](https://github.com/cloudfoundry/log-cache#restful-api-via-gateway).
+More API parameters are available to customize retrieved app logs. For more information, see [Log Cache: RESTful API Gateway](https://github.com/cloudfoundry/log-cache#restful-api-via-gateway).
 
 
 ## <a id='syslog-forward'></a> Enable Syslog Forwarding
