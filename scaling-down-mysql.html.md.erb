@@ -103,7 +103,7 @@ In PAS v2.1 and earlier, internal system MySQL databases ran [MariaDB](http://ww
 
 This procedure migrates PAS internal MySQL databases from the less secure MariaDB infrastructure to a TLS-encrypted Percona stack.
 
-<p class="note warning"><strong>WARNING</strong>: This procedure causes temporary downtime of PAS system functions, as described in <a href="#mysql-downtime">MySQL Downtime</a>. It does not interrupt apps hosted by PAS.</p>
+<p class="note warning"><strong>WARNING</strong>: This procedure causes temporary downtime of PAS system functions, as described in <a href="#mysql-downtime">MySQL Downtime</a>. It does not interrupt apps hosted by PAS, unless they use TCP routing. Applications using TCP routes will not be routable during the migration.</p>
 
 1. **Scale Down Your Cluster**: If your internal databases MySQL cluster runs three or more nodes, scale it down to a single node before you migrate. In the PAS tile > **Resource Config** > **MySQL Server** settings, set **Instances** to `1`. Click **Save**.
 
