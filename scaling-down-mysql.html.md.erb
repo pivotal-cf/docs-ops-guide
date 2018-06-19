@@ -97,7 +97,7 @@ Before scaling down your MySQL cluster, perform the following actions to ensure 
 1. Delete your test organization with the following cf CLI command:
 	<pre class="terminal">$ cf delete-org data-integrity-test-organization</pre>
 
-## <a id='migrate'></a>Migrate to TLS Communication
+## <a id='migrate'></a>Migrate to Internal Percona MySQL
 
 In PAS v2.1 and earlier, internal system MySQL databases ran [MariaDB](http://www.mariadb.org) and [Galera](http://galeracluster.com), with cluster nodes communicating over plaintext. PAS v2.2 supports the same database stack plus a [Percona Server](https://www.percona.com/software/mysql-database/percona-server) database that uses TLS to encrypt communication between server cluster nodes.
 
@@ -124,4 +124,6 @@ The length of downtime depends on multiple factors, including database size, per
 
 During internal MySQL server downtime, the Cloud Controller and other platform components that use system databases become unavailable. This prevents users from pushing apps, scaling apps, and running other cf CLI commands.
 
-If the PAS UAA is configured to use an internal database, then the UAA also becomes unavailable, which temporarily prevents users from signing into PAS orgs and spaces, Apps Manager, and other PAS interfaces.
+If the PAS UAA is configured to use an internal database, then the UAA also becomes unavailable. This outage temporarily prevents users from signing into PAS orgs and spaces, Apps Manager, and other PAS interfaces.
+
+The PAS UAA outage also prevents users from logging into PAS apps that use the Single Sign-On (SSO) service.
