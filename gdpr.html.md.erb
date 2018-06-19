@@ -40,8 +40,11 @@ Pivotal has performed a review of PCF components and determined that personal da
 + [Diego](#diego)
 + [Notifications Service](#cf-notifications)
 
+##<a id='where'></a>Where Personal Data May Reside
 
-##<a id='uaa'></a>User Account and Authentication (UAA)
+The following sections explain how different PCF components collect personal data.
+
+###<a id='uaa'></a>User Account and Authentication (UAA)
 
 UAA is an open-source Cloud Foundry component that provides identity management features
 and identity-based security for applications and APIs.
@@ -211,7 +214,7 @@ For more information, see <a href="../uaa/index.html">User Account and Authentic
 </tbody>
 </table>
 
-##<a id="capi"></a> Cloud Foundry API
+###<a id="capi"></a> Cloud Foundry API
 
 The Cloud Foundry API release contains several components, including the Cloud Controller.
 For more information, see the Cloud Foundry API release [readme](https://github.com/cloudfoundry/capi-release).
@@ -333,11 +336,13 @@ For more information, see the Cloud Foundry API release [readme](https://github.
 </tbody>
 </table>
 
-##<a id='routing'></a>Routing
+###<a id='routing'></a>Routing
 
 By default, the [Gorouter](../concepts/architecture/router.html) logs include the `X-Forwarded-For` header,
 which may include the originating client IP.
 Under GDPR, client IP addresses should be considered personal data.
+
+####<a id='disable-client-ip-logging'></a>Disable Client IP Logging
 
 In Pivotal Application Service (PAS) v2.0 and later and Elastic Runtime v1.12,
 operators can disable logging of client IP addresses in the Gorouter.
@@ -354,7 +359,7 @@ To disable logging of client IP addresses, perform the following steps:
 1. Click **Save**.
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to redeploy.
 
-##<a id='diego'></a>Diego
+###<a id='diego'></a>Diego
 
 Diego is the container management system for PCF. 
 For more information, see [Diego Components and Architecture](https://docs.pivotal.io/pivotalcf/concepts/diego/diego-architecture.html).
@@ -408,7 +413,7 @@ For more information, see [Diego Components and Architecture](https://docs.pivot
 </tr>
 </table>
 
-##<a id='cf-notifications'></a>Notifications Service
+###<a id='cf-notifications'></a>Notifications Service
 
 The Notifications Service enables operators to configure components of Cloud Foundry to send emails to end users.
 For more information, see [Getting Started with the Notifications Service](../adminguide/notifications.html). 
