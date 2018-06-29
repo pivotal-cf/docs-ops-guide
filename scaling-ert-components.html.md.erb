@@ -9,8 +9,6 @@ This topic discusses how to scale Pivotal Application Service (PAS) for differen
 
 If you want to make a PCF configuration highly available, see the [High Availability in Cloud Foundry](./../concepts/high-availability.html) topic.
 
-To make a PCF configuration highly available, you must configure an external load balancer. See the [Configure a Load Balancer](http://docs.pivotal.io/p-mysql/1-10/installing.html#load-balancer) section of the _Installing MySQL for PCF_ topic for more information.
-
 <p class="note"><strong>Note</strong>: In PCF v1.11 and later, PAS defaults to a highly available resource configuration.</p>
 
 
@@ -118,7 +116,7 @@ If you need to change back to this configuration, choose the values shown below 
 <p class="note"><strong>Note:</strong> Apps that do not use MySQL for PCF are not affected by the scaling process when you redeploy PAS.
 In addition, redeploying PAS with the MySQL cluster means that the PCF API will not be available for a brief period of time. For example, you are not able to push apps or query their state during this time.</p>
 
-<p class='note'><strong>Note:</strong> For MySQL high availability, you need to configure an external load balancer. For more information, see the <a href="http://docs.pivotal.io/p-mysql/1-10/installing.html#load-balancer">Configure a Load Balancer</a> section of the <em>Installing MySQL for PCF</em> topic.</p>
+<p class='note'><strong>Note:</strong> For MySQL high availability, you need to configure an external load balancer. For more information about configuring a load balancer for MariaDB-based deployments, see the <a href="http://docs.pivotal.io/p-mysql/1-10/installing.html#load-balancer">Configure a Load Balancer</a> section of the <em>Installing MySQL for PCF</em> topic.</p>
 
 ###<a id='external-blobstore'></a> Deployments Using an External Blobstore
 
