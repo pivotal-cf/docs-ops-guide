@@ -110,7 +110,7 @@ App traffic logging generates log messages as follows:
 
 ###<a id="log-format"></a>App Traffic Log Format and Contents
 
-App traffic logs are formatted as described in the [cf-networking-release Traffic logging](https://github.com/cloudfoundry-incubator/cf-networking-release/blob/develop/docs/traffic_logging.md) documentation, following the `iptables-logger` format but without line breaks. For example, the first part of an app traffic log line looks like: `{"timestamp": "1500924070.182554722", "source": "cfnetworking.iptables", "message": "cfnetworking.iptables.ingress-allowed", "log_level": 1, "data": { "destination": { "container_id": "d5978989-1401-49ff-46cd-33e5","app_guid": "bc6f229d-5e4a-4c41-a63f-e8795496c283",`.
+App traffic logs are formatted as described in the [cf-networking-release Traffic logging](https://github.com/cloudfoundry-incubator/cf-networking-release/blob/v1.10.x/docs/traffic_logging.md) documentation, following the `iptables-logger` format but without line breaks. For example, the first part of an app traffic log line looks like: `{"timestamp": "1500924070.182554722", "source": "cfnetworking.iptables", "message": "cfnetworking.iptables.ingress-allowed", "log_level": 1, "data": { "destination": { "container_id": "d5978989-1401-49ff-46cd-33e5","app_guid": "bc6f229d-5e4a-4c41-a63f-e8795496c283",`.
 
 Each log message includes the following:
 
@@ -124,7 +124,7 @@ Each log message includes the following:
   - C2C policy allowed packet to enter destination app container
   - ASG prevented packet from exiting source app container
   - C2C policy prevented packet from entering destination app container
-* Additional information described in the [cf-networking-release](https://github.com/cloudfoundry-incubator/cf-networking-release/blob/develop/docs/traffic_logging.md).
+* Additional information described in the [cf-networking-release](https://github.com/cloudfoundry-incubator/cf-networking-release/blob/v1.10.x/docs/traffic_logging.md).
 
 ####<a id="denied-packet"></a>Denied Packet Causes
 
