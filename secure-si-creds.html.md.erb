@@ -69,51 +69,16 @@ You must configure the PAS tile to support securing service instance credentials
 
 <p class="note"><strong>Note:</strong> CredHub supports multiple encryption key providers and requires at least one.</p>
 
-From the PAS tile in Ops Manager, complete the following steps: 
+To configure the PAS tile, follow the instructions in the PAS installation topic for your IaaS:
 
-<ol>
-  <li>Select the <strong>CredHub</strong> pane. 
-  <%= image_tag('images/credhub-db-internal-external.png') %></li>
-  <li>Choose the location of your CredHub Database. PAS includes this CredHub database for services to store their service instance credentials. If you chose <strong>External</strong>, enter the following:
-    <ul>
-      <li><strong>Hostname</strong>: The IP address of your database server.</li>
-      <li><strong>TCP Port</strong>: The port of your database server, such as <code>3306</code>.</li>
-      <li><strong>Username</strong>: A unique username that can access this specific database on the database server.</li>
-      <li><strong>Password</strong>: The password corresponding to the username you provided.</li>
-      <li><strong>Database CA Certificate</strong>: A certificate to use when encrypting traffic to and from the database.</li>
-    </ul>
-  </li>
-  <%= image_tag('images/credhub-hsm-config.png') %></li>
-  <li>(Optional) To configure CredHub to use an HSM, enter the following:
-    <ul>
-      <li><strong>HSM Provider Partition</strong>: This is a text string you created on the HSM.</li>
-      <li><strong>HSM Provider Partition Password</strong>: The password corresponding to the HSM Provider Partition.</li>
-      <li><strong>HSM Provider Client Certificate</strong>: You provided this certificate to the HSM during configuration. For more information, see <a href="../customizing/hsm-config.html#create-register-hsm">Create and Register HSM Clients</a>.</li>
-      <li>In the <strong>HSM Provider Server</strong> field, click <strong>Add</strong> to add a new HSM. You can add multiple HSMs by clicking <strong>Add</strong> multiple times. <br/>
-      <img src="images/credhub-hsm-provider-servers.png" alt="this image shows the fields for the HSM provider servers configuration options, which are listed in the following step"></li>
-      <li>For each HSM, complete the following fields:<br/>
-        <ul>
-          <li><Strong>HSM Host Address</Strong></li>
-          <li><Strong>HSM Port Address</Strong>. Enter your HSM port address. If you do not know your port address, enter <code>1792</code>.</li>
-          <li><Strong>Partition Serial Number</Strong></li>
-          <li><Strong>HSM Certificate:</Strong> The certificate that the HSM presents to CredHub to establish a two-way TLS connection.</li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>Under <strong>Encryption Keys</strong>, specify one or more keys to use for encrypting and decrypting the values stored in the CredHub database.
-    <ul>
-      <li><strong>Name</strong>: Enter the name of the key.</li>
-      <li><strong>Provider</strong>: Designate keys with provider <code>Internal</code> to store them internally, or <code>HSM</code> to store them in the HSMs configured above. Multiple HSMs act as a single cluster, storing all encryption keys collectively.</li>
-      <li><strong>Key</strong>: Enter a key that is at least 20 characters in length.</li>
-      <li><strong>Primary</strong>: Select this checkbox to use this key as your primary key.</li>
-    </ul>
-    <p class="note"><strong>Note</strong>: Only mark one key as <strong>Primary</strong>. The UI includes an <strong>Add</strong> button to add more keys to support key rotation, but you should mark only one key as <strong>Primary</strong>.</p>
-  </li>
-  <li>If your deployment uses any PCF services that support storing service instance credentials in CredHub and you want to enable this feature, select the <strong>Secure Service Instance Credentials</strong> checkbox.</li>
-  <li>Select the <strong>Resource Config</strong> pane.</li>
-  <li>In the <strong>CredHub</strong> row, under the <strong>Job</strong> column, set the number of instances to at least <code>2</code>. This is the minimum instance count required for high availability.</li>
-</ol> 
+* [Manually Configuring PAS for AWS](https://docs.pivotal.io/pivotalcf/2-1/customizing/pcf-aws-manual-er-config.html#credhub)
+* [Deploying PAS on AWS using Terraform](https://docs.pivotal.io/pivotalcf/2-1/customizing/aws-er-config-terraform.html#credhub)
+* [Deploying PAS on Azure](https://docs.pivotal.io/pivotalcf/2-1/customizing/azure-er-config.html#credhub)
+* [Deploying PAS on Azure using Terraform](https://docs.pivotal.io/pivotalcf/2-1/customizing/azure-er-config-terraform.html#credhub)
+* [Deploying PAS on GCP](https://docs.pivotal.io/pivotalcf/2-1/customizing/gcp-er-config.html#credhub)
+* [Deploying PAS on GCP using Terraform](https://docs.pivotal.io/pivotalcf/2-1/customizing/gcp-er-config-terraform.html#credhub)
+* [Installing PAS after Deploying PCF on OpenStack](https://docs.pivotal.io/pivotalcf/2-1/customizing/openstack-er-config.html#credhub)
+* [Configuring PAS for vSphere](https://docs.pivotal.io/pivotalcf/2-1/customizing/config-er-vmware.html#credhub)
 
 ## <a id='asgs'></a> Step 2: Create Application Security Groups
 
