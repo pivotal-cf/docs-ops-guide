@@ -1,0 +1,129 @@
+---
+title: Managing Internal Databases
+owner: MySQL
+---
+
+This topic describes two procedures for managing the internal MySQL databases used by Pivotal Application Service (PAS) system components: scaling down your MySQL cluster, and migrating the cluster to a database stack that uses TLS encryption.
+
+These procedures do not apply to databases configured as external in the PAS tile **Databases** pane.
+
+PAS components that use system databases include the Cloud Controller, Diego brain, Gorouter, and the User Authorization and Authentication (UAA) server. See [Cloud Foundry Components](../concepts/architecture/index.html).
+
+## <a id='scale-down'></a>Scale Down Your MySQL Cluster
+
+This procedure explains how to safely scale your MySQL cluster down to a single node. If you are already running the MySQL cluster with a single node, you do not need to perform these steps.
+
+By default, internal MySQL deploys as a single node. To take advantage of the high availability features of MySQL, you may have scaled the configuration up to three or more server nodes.
+
+### <a id="check-health"></a>Check the Health of Your Cluster
+
+Before scaling down your MySQL cluster, perform the following actions to ensure the cluster is healthy.
+
+1. Use the Cloud Foundry Command Line Interface (cf CLI) to target the API endpoint of your Pivotal Cloud Foundry (PCF) deployment:
+	<pre class="terminal">
+	$ cf api api.YOUR-SYSTEM-DOMAIN
+	Setting api endpoint to api.YOUR-SYSTEM-DOMAIN...
+	OK
+
+	API endpoint:   http<span>s:</span>//api.YOUR-SYSTEM-DOMAIN... (API version: 2.54.0)
+	Not logged in. Use 'cf login' to log in.
+	</pre>
+
+1. Log in with your User Account and Authentication (UAA) Administrator user credentials. Obtain these credentials by clicking the **Credentials** tab of the Pivotal Application Service (PAS) tile, locating the **Admin Credentials** entry in the **UAA** section, and clicking **Link to Credential**.
+	<pre class="terminal">
+	$ cf login -u admin
+	API endpoint: http<span>s:</span>//api.YOUR-SYSTEM-DOMAIN
+
+	Password>
+	Authenticating...
+	OK
+	</pre>
+
+1. Create a test organization to verify the database across all nodes:
+	<pre class="terminal">
+	$ cf create-org data-integrity-test-organization
+	Creating org data-integrity-test-organization as admin...
+	OK
+
+	Assigning role OrgManager to user admin in org data-integrity-test-organization ...
+	OK
+
+	TIP: Use 'cf target -o data-integrity-test-organization' to target new org
+	</pre>
+
+1. Obtain the IP addresses of your MySQL server by performing the following steps:
+  1. From the PCF **Installation Dashboard**, click the **Pivotal Application Service** tile.
+  1. Click the **Status** tab.
+  1. Record the IP addresses for all instances of the **MySQL Server** job.
+
+1. Retrieve Cloud Controller database credentials from CredHub using the Ops Manager API:
+	1. Perform the procedures in the [Using the Ops Manager API](../customizing/ops-man-api.html) topic to authenticate and access the Ops Manager API.
+	1. Use the `GET /api/v0/deployed/products` endpoint to retrieve a list of deployed products, replacing `UAA-ACCESS-TOKEN` with the access token recorded in the previous step:
+	  <pre class="terminal">$ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/deployed/products" \
+	    -X GET \
+	    -H "Authorization: Bearer UAA-ACCESS-TOKEN"</pre>
+	1. In the response to the above request, locate the product with an `installation_name` starting with `cf-` and copy its `guid`.
+	1. Run the following `curl` command, replacing `PRODUCT-GUID` with the value of `guid` from the previous step:
+	  <pre class="terminal">$ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/deployed/products/PRODUCT-GUID/variables?name=cc-db-credentials" \
+	    -X GET \
+	    -H "Authorization: Bearer UAA-ACCESS-TOKEN"</pre>
+	1. Record the Cloud Controller database `username` and `password` from the response to the above request.
+
+1. SSH into the Ops Manager VM. Because the procedures vary by IaaS, review the [SSH into Ops Manager](../customizing/trouble-advanced.html#ssh) section of the Advanced Troubleshooting with the BOSH CLI topic for specific instructions.
+
+1. For each of the MySQL server IP addresses recorded above, perform the following steps from the Ops Manager VM:
+	1. Query the new organization with the following command, replacing `YOUR-IP` with the IP address of the MySQL server and `YOUR-IDENTITY` with the `identity` value of the CCDB credentials obtained above:
+		<pre class="terminal">
+		$ mysql -h YOUR-IP -u YOUR-IDENTITY -D ccdb -p -e "select created_at, name from organizations where name = 'data-integrity-test-organization'"
+		</pre>
+	1. When prompted, provide the `password` value of the CCDB credentials obtained above.
+	1. Examine the output of the `mysql` command and verify the `created_at` date is recent.
+		<pre class="terminal">
+		+---------------------+----------------------------------+
+		| created_at          | name                             |
+		+---------------------+----------------------------------+
+		| 2016-05-28 01:11:42 | data-integrity-test-organization |
+		+---------------------+----------------------------------+
+		</pre>
+
+1. If each MySQL server instance does not return the same `created_at` result, contact [Pivotal Support](https://support.pivotal.io/) before proceeding further or making any changes to your deployment. If each MySQL server instance does return the same result, then you can safely proceed to scaling down your cluster to a single node by performing the steps in the following section.
+
+### <a id="scale-down"></a>Set Server Instance Count to 1
+
+1. From the PCF **Installation Dashboard**, click the **Pivotal Application Service** tile.
+1. Select **Resource Config**.
+1. Use the drop-down menu to change the **Instances** count for **MySQL Server** to `1`.
+1. Click **Save** and **Apply Changes** to apply the changes.
+1. Delete your test organization with the following cf CLI command:
+	<pre class="terminal">$ cf delete-org data-integrity-test-organization</pre>
+
+## <a id='migrate'></a>Migrate to Internal Percona MySQL
+
+In PAS v2.1 and earlier, internal system MySQL databases ran [MariaDB](http://www.mariadb.org) with cluster nodes communicating over plaintext. PAS v2.2 offers a second option for internal databases: a [Percona Server](https://www.percona.com/software/mysql-database/percona-server) that uses TLS to encrypt communication between server cluster nodes.
+
+This procedure migrates PAS internal MySQL databases from the less secure MariaDB infrastructure to a TLS-encrypted Percona stack.
+
+<p class="note warning"><strong>WARNING</strong>: This procedure causes temporary downtime of PAS system functions, as described in <a href="#mysql-downtime">MySQL Downtime</a>. It does not interrupt apps hosted by PAS, unless they use TCP routing. Applications using TCP routes will not be routable during the migration.</p>
+
+1. **Scale Down Your Cluster**: If your internal databases MySQL cluster runs three or more nodes, scale it down to a single node before you migrate. In the PAS tile > **Resource Config** > **MySQL Server** settings, set **Instances** to `1`. Click **Save**.
+
+1. **Change the System Databases Location**: In the PAS tile > **Databases** pane, under **Choose the location of your system databases**, select to **Internal Databases - MySQL - Percona XtraDB Cluster**.  Click **Save**.
+<%= image_tag("system-db-tls.png") %>
+
+1. **Migrate the Database**: Return to the **Installation Dashboard**, and click **Apply Changes** to re-deploy PAS with the new internal database. Internal system databases become temporarily unavailable to PAS components during this migration step, but PAS apps continue to run. See [MySQL Migration Downtime](#mysql-downtime) for details.
+
+1. **Scale the Cluster Back Up**: If you want to scale the database cluster back up to multiple server nodes, increase the instance count under **Resource Config** > **MySQL Server**. Then click **Save** to save the change and **Apply Changes** in the Installation Dashboard to re-deploy.
+
+### <a id='mysql-downtime'></a>MySQL Migration Downtime
+
+Upgrading existing internal system databases to the new option of **Internal Databases - MySQL - Percona XtraDB Cluster** causes temporary downtime of PAS system functions. It does not interrupt apps hosted by PAS.
+
+The length of downtime depends on multiple factors, including database size, persistent disk type, CPU and disk capacity of VMs, and PAS configuration.
+
+#### <a id='downtime-effects'></a>Effects of MySQL Downtime
+
+During internal MySQL server downtime, the Cloud Controller and other platform components that use system databases become unavailable. This prevents users from pushing apps, scaling apps, and running other cf CLI commands.
+
+If the PAS UAA is configured to use an internal database, then the UAA also becomes unavailable. This outage temporarily prevents users from signing into PAS orgs and spaces, Apps Manager, and other PAS interfaces.
+
+PAS UAA downtime caused by internal MySQL migration also temporarily prevents users from logging into any PAS apps that use the [Single Sign-On (SSO)](https://docs.pivotal.io/p-identity/index.html) service.
