@@ -3,7 +3,7 @@ title: Migrating to Internal Percona MySQL
 owner: MySQL
 ---
 
-This topic describes the procedure for migrating PAS internal MySQL databases from the less secure MariaDB infrastructure to a TLS-encrypted Percona stack.
+This topic describes the procedure for migrating Pivotal Application Service (PAS) internal MySQL databases from the less secure MariaDB infrastructure to a TLS-encrypted Percona stack.
 
 In PAS v2.1 and earlier, internal system MySQL databases ran [MariaDB](http://www.mariadb.org) with cluster nodes communicating over plaintext. PAS v2.2 offers a second option for internal databases: a [Percona Server](https://www.percona.com/software/mysql-database/percona-server) that uses TLS to encrypt communication between server cluster nodes.
 
@@ -26,9 +26,9 @@ In PAS v2.1 and earlier, internal system MySQL databases ran [MariaDB](http://ww
 
 Upgrading existing internal system databases to the new option of **Internal Databases - MySQL - Percona XtraDB Cluster** causes temporary downtime of PAS system functions. It does not interrupt apps hosted by PAS.
 
-The length of downtime depends on multiple factors, including database size, persistent disk type, CPU and disk capacity of VMs, and PAS configuration. During the migration, there are two downtime events. The first is when scaling down and migrating, and is observed once the single node is updated and the data is migrating. The second is when scaling back up and is observed when updating the first node to make it part of a three-node cluster.
+The length of downtime depends on multiple factors, including database size, persistent disk type, CPU and disk capacity of VMs, and PAS configuration. During the migration, there are two downtime events. The first happens as you scale down and migrate the database, once the single node is updated and the data is migrating. The second happens as you scale back up when updating the first node to make it part of a three-node cluster.
 
-During migration, BOSH orphans the two disks used by the scaled-down nodes. This does not increase the risk of losing data that was written before the migration, and these orphaned disks can act as a backup, should the migration fail. If the migration fails, contact [Pivotal Support](https://pivotal.io/support).
+During migration, BOSH orphans the two disks used by the scaled-down nodes. This does not increase the risk of losing data written before the migration, and these orphaned disks can act as a backup, should the migration fail. If the migration fails, contact [Pivotal Support](https://pivotal.io/support).
 
 #### <a id='downtime-effects'></a> Effects of MySQL Downtime
 
