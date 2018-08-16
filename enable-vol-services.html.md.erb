@@ -37,13 +37,13 @@ To enable NFS volume services in PCF, perform the following steps:
     <%= image_tag('er-config-app-vol-svc.png') %>
 1. (Optional) To configure LDAP for NFSv3 volume services, perform the following steps:
   <p class="note"><strong>Note</strong>: If you already use an LDAP server with your network-attached storage (NAS) file server, enter its information below. This ensures that the indentities known to the file server match those checked by the PCF NFS driver.</p>
-  * For **LDAP Service Account User**, enter the username of the service account in LDAP that  will manage volume services.
+  * For **LDAP Service Account User**, enter either the full domain name (DN) for the service account or the username of the service account that manages volume services, depending on how your LDAP server is configured. This value needs to be exactly what you would enter when binding the account to your LDAP server.
   * For **LDAP Service Account Password**, enter the password for the service account.
   * For **LDAP Server Host**, enter the hostname or IP address of the LDAP server.
   * For **LDAP Server Port**, enter the LDAP server port number. If you do not specify a port number, Ops Manager uses 389.
   * For **LDAP Server Protocol**, enter the server protocol. If you do not specify a protocol, Ops Manager uses TCP.
-  * For **LDAP User Fully-Qualified Domain Name**, enter the fully qualified path to the LDAP service account. For example, if you have a service account called `volume-services` that belongs to organizational units (OU) called `service-accounts` and `my-company`, and your domain is called `domain`, the fully qualified path looks like the following:
-  <pre>CN=volume-services,OU=service-accounts,OU=my-company,DC=domain,DC=com</pre>
+  * For **LDAP User Fully-Qualified Domain Name**, enter the full DN to the base organizational unit (OU) where your users exist in the LDAP tree. The NFS driver searches for users in this OU and the subtree beneath it using the search filter `(&(objectClass=User)(cn=USERNAME))`. This filter is not configurable.  
+  For example, if your users belong to an OU `users` and your domain is `example.com`, the full DN to enter would be: `OU=users,DC=example,DC=com`.
 1. Click **Save**.
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to redeploy.
 1. Using the cf CLI, enable access to the service:
