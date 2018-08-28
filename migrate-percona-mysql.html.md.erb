@@ -15,7 +15,7 @@ In PAS v2.1 and earlier, internal system MySQL databases ran [MariaDB](http://ww
 1. **Scale Down Your Cluster**: If your internal databases MySQL cluster runs three or more nodes, scale it down to a single node before you migrate. In the PAS tile > **Resource Config** > **MySQL Server** settings, set **Instances** to `1`. Click **Save**.
 <p class='note'><strong>Note:</strong> Do not click <strong>Apply Changes</strong> yet.</p>
 
-1. **Change the System Databases Location**: In the PAS tile > **Databases** pane, under **Choose the location of your system databases**, select to **Internal Databases - MySQL - Percona XtraDB Cluster**.  Click **Save**.
+1. **Change the System Databases Location**: In the PAS tile > **Databases** pane, under **Choose the location of your system databases**, select to **Internal Databases - MySQL - Percona XtraDB Cluster**. Click **Save**.
 <%= image_tag("system-db-tls.png") %>
 
 1. **Migrate the Database**: Return to the **Installation Dashboard**, and click **Apply Changes** to re-deploy PAS with the new internal database. Internal system databases become temporarily unavailable to PAS components during this migration step, but PAS apps continue to run. See [MySQL Migration Downtime](#mysql-downtime) for details. You do not need to run any errands for this step.
@@ -40,3 +40,9 @@ During internal MySQL server downtime, the Cloud Controller and other platform c
 If the PAS UAA is configured to use an internal database, then the UAA also becomes unavailable. This outage temporarily prevents users from signing into PAS orgs and spaces, Apps Manager, and other PAS interfaces.
 
 PAS UAA downtime caused by internal MySQL migration also temporarily prevents users from logging into any PAS apps that use the [Single Sign-On (SSO)](https://docs.pivotal.io/p-identity/index.html) service.
+
+#### <a id='migration-length'></a> Migration Length
+
+There is no way to know how long migration of your database will take. However, if you perform a manual backup, you can get an estimate of the minimum amount of time the migration may take.
+
+For more information on how to perform a manual backup, see the [Manual Backup](../../p-mysql/backup-and-restore.html#manual-backup) section of the _Backing Up and Restoring On-Demand MySQL for PCF_ topic.
