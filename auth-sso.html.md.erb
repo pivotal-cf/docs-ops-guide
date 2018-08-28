@@ -157,27 +157,27 @@ To integrate the UAA with one or more LDAP servers, configure PAS with your LDAP
 
 1. Under **Configure your UAA**, select **LDAP Server**.
 
-1. For **Server URL**, enter the URL(s) that point your LDAP server(s). With 
-multiple LDAP servers, separate their URLs with spaces. Each URL must include 
+* For **Server URL**, enter the URL that point your LDAP server. With
+multiple LDAP servers, separate their URLs with spaces. Each URL must include
 one of the following protocols:
-    * `ldap://`: This specifies that the LDAP server uses an unencrypted 
+    * `ldap://`: This specifies that the LDAP server uses an unencrypted
 connection.
     * `ldaps://`: This specifies that the LDAP server uses SSL for an encrypted connection and requires that the LDAP server holds a trusted certificate or that you import a trusted certificate to the JVM truststore.
 
-1. For **LDAP Credentials**, enter the LDAP Distinguished Name (DN) and 
+* For **LDAP Credentials**, enter the LDAP Distinguished Name (DN) and 
 password for binding to the LDAP Server. Example DN: `cn=administrator,ou=Users,dc=example,dc=com`
     <p class="note"><strong>Note</strong>: Pivotal recommends that you provide LDAP credentials that grant read-only permissions on the LDAP Search Base and the LDAP Group Search Base. In addition to this, if the bind user belongs to a different search base, you must use the full DN.</p>
 
     <p class="note warning"><strong>WARNING: </strong>Pivotal recommends against reusing LDAP service accounts across environments. LDAP service accounts should not be subject to manual lockouts, such as, lockouts that result from users utilizing the same account. Also, LDAP service accounts should not be subject to automated deletions, since disruption to these service accounts could prevent user logins.
     </p>
 
-1. For **User Search Base**, enter the location in the LDAP directory tree from 
+* For **User Search Base**, enter the location in the LDAP directory tree from 
 which any LDAP User search begins. The typical LDAP Search Base matches your 
 domain name.
 <br><br>
 For example, a domain named "cloud.example.com" typically uses the following LDAP User Search Base: `ou=Users,dc=example,dc=com`
 
-1. For **User Search Filter**, enter a string that defines LDAP User search 
+* For **User Search Filter**, enter a string that defines LDAP User search 
 criteria. These search criteria allow LDAP to perform more effective and 
 efficient searches. For example, the standard LDAP search filter `cn=Smith` 
 returns all objects with a common name equal to `Smith`.
@@ -190,7 +190,7 @@ In addition to `cn`, other attributes commonly searched for and returned are
 `mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
     <p class="note"><strong>Note</strong>: For instructions for testing and troubleshooting your LDAP search filters, see the [Configuring LDAP Integration with Pivotal Cloud Foundry](https://discuss.zendesk.com/hc/en-us/articles/204140418-Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry-) Knowledge Base article.</p>
 
-1. For **Group Search Base**, enter the location in the LDAP directory tree 
+* For **Group Search Base**, enter the location in the LDAP directory tree 
 from which the LDAP Group search begins.
 <br><br>
 For example, a domain named "cloud.example.com" typically uses the following 
@@ -203,30 +203,31 @@ groups under this search base to admin roles in PAS.
     <p class="note"><strong>Note</strong>: Refer to the <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a PCF Deployment</a> topic to on-board individual LDAP users and map 
 them to PAS Roles.</p>
 
-1. For **Group Search Filter**, enter a string that defines LDAP Group search 
+* For **Group Search Filter**, enter a string that defines LDAP Group search 
 criteria. The standard value is `member={0}`.
 
-1. For **Server SSL Cert**, paste in the root certificate from your CA 
+* For **Server SSL Cert**, paste in the root certificate from your CA 
 certificate or your self-signed certificate.
 
-1. If you are using `ldaps://` with a self-signed certificate, enter a Subject 
+* If you are using `ldaps://` with a self-signed certificate, enter a Subject 
 Alternative Name for your certificate under **Server SSL Cert AltName**. 
 Otherwise, leave this field blank.
 
-1. For **First Name Attribute** and **Last Name Attribute**, enter the 
+* For **First Name Attribute** and **Last Name Attribute**, enter the 
 attribute names in your LDAP directory that correspond to the first and last 
 names in each user record, for example `cn` and `sn`.
 
-1. For **Email Attribute**, enter the attribute name in your LDAP directory 
+* For **Email Attribute**, enter the attribute name in your LDAP directory 
 that corresponds to the email address in each user record, for example `mail`.
 
-1. For **Email Domain(s)**, enter a comma-separated list of the email domains 
+* For **Email Domain(s)**, enter a comma-separated list of the email domains 
 for external users who will receive invitations to Apps Manager.
 
-1. For **LDAP Referrals**, choose how the UAA handles LDAP server referrals out 
-to other external user stores. The UAA can follow the external referrals, 
-ignore them without returning errors, or throw an error for each external 
-referral and abort the authentication.
+1. For **LDAP Referrals**, select how the UAA handles LDAP server referrals out
+to other external user stores. The UAA can: 
+    * **Automatically follow any referrals**.
+    * **Ignore referrals and return parital result**. 
+    * **Throw exception for each referral and abort.**
 
 1. Click **Save**.
 
