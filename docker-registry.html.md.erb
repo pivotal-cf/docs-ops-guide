@@ -33,7 +33,7 @@ If you provide your root CA certificate in the Ops Manager configuration, follow
 
 1. Choose one of the following:
   - If you are configuring Ops Manager for the first time, return to your specific IaaS installation instructions ([AWS](../customizing/aws.html), [Azure](../customizing/azure.html), [GCP](../customizing/gcp.html), [OpenStack](../customizing/openstack.html), [vSphere](../customizing/vsphere.html)) to continue the installation process.
-  - If you are modifying an existing Ops Manager installation, return to the Ops Manager Installation Dashboard and click **Apply Changes**.
+  - If you are modifying an existing Ops Manager installation, return to the Ops Manager Installation Dashboard, click **Review Pending Changes**, and click **Apply Changes**.
 
 After configuration, BOSH propagates your CA certificate to all application containers in your deployment. You can then push and pull images from your Docker registries.
 
@@ -65,7 +65,7 @@ If you choose not to provide a CA certificate, you must provide the IP address o
 
 1. Choose one of the following:
 	- If you are configuring Pivotal Application Service (PAS) for the first time, return to your specific IaaS installation instructions ([AWS](../customizing/aws.html), [Azure](../customizing/azure.html), [GCP](../customizing/gcp.html), [OpenStack](../customizing/openstack.html), [vSphere](../customizing/vsphere.html)) to continue the installation process.
-	- If you are modifying an existing PAS installation, return to the Ops Manager Installation Dashboard and click **Apply Changes**.
+	- If you are modifying an existing PAS installation, return to the Ops Manager Installation Dashboard, click **Review Pending Changes**, and click **Apply Changes**.
 
 After configuration, PAS allows Docker images to pass through the specified IP address without checking certificates.
 
@@ -90,4 +90,4 @@ To configure PCF to access a Docker registry through a proxy, do the following:
 
 1. Click **Update**.
 
-1. Return to the Ops Manager dashboard and click **Apply Changes**.
+1. Return to the Ops Manager dashboard, click **Review Pending Changes**, and click **Apply Changes**.

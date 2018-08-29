@@ -5,15 +5,16 @@ owner: Diego Persistence
 
 This topic describes how Pivotal Cloud Foundry (PCF) operators can deploy NFS volume services. 
 
-## <a id='overview'></a>Overview
+
+## <a id='overview'></a> Overview
 
 A volume service gives apps access to a persistent filesystem, such as NFS. By performing the procedures in this topic, operators can add a volume service to the [Marketplace](../devguide/services/index.html) that provides an NFSv3 filesystem. 
 
 Developers can then use the [Cloud Foundry Command Line Interface](../cf-cli/index.html) (cf CLI) to create service instances of the volume service and bind them to their apps. For more information, see the [Using an External File System (Volume Services)](../devguide/services/using-vol-services.html) topic.
 
-<p class="note"><strong>Note</strong>: You must have an NFS server running to enable NFS volume services. If you want to use NFS and do not currently have a server available, you can <a href="https://github.com/cloudfoundry-incubator/nfs-volume-release#deploying-the-test-nfs-server-optional">deploy the test NFS server</a> bundled with the NFS Volume release or enable NFS volume services with the NFS Broker Errand for Pivotal Application Service. You can enable this errand during PAS configuration.</p>
+<p class="note"><strong>Note:</strong> You must have an NFS server running to enable NFS volume services. If you want to use NFS and do not currently have a server available, you can <a href="https://github.com/cloudfoundry-incubator/nfs-volume-release#deploying-the-test-nfs-server-optional">deploy the test NFS server</a> bundled with the NFS Volume release or enable NFS volume services with the NFS Broker Errand for Pivotal Application Service. You can enable this errand during PAS configuration.</p>
 
-### <a id='security'></a>Security
+### <a id='security'></a> Security
 
 When it comes to securing your NFS server against traffic apps running on PCF, you can use ASGs and LDAP:
 
@@ -25,18 +26,23 @@ When it comes to securing your NFS server against traffic apps running on PCF, y
 
 The Diego cells running on PCF must be able to reach your LDAP server on the port you use for connections, which are typically `389` or `636`. You cannot limit which Diego cells have access to your NFS or LDAP servers.   
 
-## <a id='enable'></a>Enable Volume Services
 
-To enable NFS volume services in PCF, perform the following steps:
+## <a id='enable'></a> Enable Volume Services
+
+To enable NFS volume services in PCF, do the following:
 
 1. Navigate to the Ops Manager Installation Dashboard.
+
 1. Click the **Pivotal Application Service** tile.
+
 1. Click **Application Containers**.
+
 1. Under **Enabling NFSv3 volume services**, select **Enable**.
-  <p class="note"><strong>Note</strong>: In a clean install, NFSv3 volume services are enabled by default. In an upgrade, NFSv3 volume services match the setting of the previous deployment.</p>
+  <p class="note"><strong>Note:</strong> In a clean install, NFSv3 volume services are enabled by default. In an upgrade, NFSv3 volume services match the setting of the previous deployment.</p>
     <%= image_tag('er-config-app-vol-svc.png') %>
+
 1. (Optional) To configure LDAP for NFSv3 volume services, perform the following steps:
-  <p class="note"><strong>Note</strong>: If you already use an LDAP server with your network-attached storage (NAS) file server, enter its information below. This ensures that the indentities known to the file server match those checked by the PCF NFS driver.</p>
+  <p class="note"><strong>Note:</strong> If you already use an LDAP server with your network-attached storage (NAS) file server, enter its information below. This ensures that the indentities known to the file server match those checked by the PCF NFS driver.</p>
   * For **LDAP Service Account User**, enter either the full domain name (DN) for the service account or the username of the service account that manages volume services, depending on how your LDAP server is configured. This value needs to be exactly what you would enter when binding the account to your LDAP server.
   * For **LDAP Service Account Password**, enter the password for the service account.
   * For **LDAP Server Host**, enter the hostname or IP address of the LDAP server.
@@ -44,8 +50,11 @@ To enable NFS volume services in PCF, perform the following steps:
   * For **LDAP Server Protocol**, enter the server protocol. If you do not specify a protocol, Ops Manager uses TCP.
   * For **LDAP User Search Base**, enter the location in the LDAP directory tree from which any LDAP User search begins. The typical LDAP Search Base matches your domain name. <br>For example, a domain named `cloud.example.com` typically uses the following LDAP User Search Base: `ou=Users,dc=example,dc=com`. 
   * For **LDAP Server CA Cert**, you can optionally enter a certificate if your LDAP server supports TLS and you want to enable TLS connections from the NFS driver to your LDAP server. Paste in the root certificate from your CA certificate or your self-signed certificate.
+
 1. Click **Save**.
-1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to redeploy.
+
+1. Return to the Ops Manager Installation Dashboard, click **Review Pending Changes**, and click **Apply Changes** to redeploy.
+
 1. Using the cf CLI, enable access to the service:
 	<pre class="terminal">$ cf enable-service-access nfs</pre>
 	To limit access to a specific org, use the `-o` flag, followed by the name of the org where you want to enable access. For more information, see the [Access Control](../services/access-control.html) topic.

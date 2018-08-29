@@ -35,7 +35,7 @@ To scale up PAS instances, do the following:
 
 1. Click **Save**.
 
-1. Return to the **Installation Dashboard** and click **Apply Changes**.
+1. Return to the **Installation Dashboard**, click **Review Pending Changes**, and click **Apply Changes**.
 
 
 ## <a id='scaledown'></a> Scaling Down PAS
@@ -53,13 +53,14 @@ To scale down your deployment, do the following:
 
 1. In  the **Resource Config** screen, decrease the number of **Instances** for each job. Choose the suggested values outlined in [Scaling Recommendations](#scalingtable), or in the [Scaling Recommendations for Specific Deployment Configurations](#deployscenarios) and click **Save**.
 
-1. Return to the **Installation Dashboard** and click **Apply Changes**.
+1. Return to the **Installation Dashboard**, click **Review Pending Changes**, and click **Apply Changes**.
 
 ### <a id="diskscale"></a> Scaling Down Jobs with Persistent Disk
 
 If you scale down or delete a job that uses persistent disk, PAS marks the disk as **orphaned**. Orphaned disks are not attached to any job, and PAS deletes them after five days. 
 
 Use the BOSH CLI to list and recover orphaned disks. Follow the instructions in the [Prepare to Use the BOSH CLI](../customizing/trouble-advanced.html#prepare) section of the _Advanced Troubleshooting with the BOSH CLI_ topic to log in to the BOSH Director, and then follow the procedures in [Orphaned Disks](http://bosh.io/docs/persistent-disks.html#orphaned-disks) in the BOSH documentation.
+
 
 ## <a id="deployscenarios"></a> Scaling Recommendations for Specific Deployment Configurations
  

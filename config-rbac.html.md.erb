@@ -5,10 +5,9 @@ owner: Ops Manager
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to customize role-based access control (RBAC) in Ops Manager.
-Use RBAC to manage which operators in your organization can make deployment changes, view credentials, and manage user roles in Ops Manager.
+This topic describes how to customize role-based access control (RBAC) in Ops Manager. Use RBAC to manage which operators in your organization can make deployment changes, view credentials, and manage user roles in Ops Manager.
 
-For information about configuring Ops Manager to use internal authentication or SAML authentication, refer to the Ops Manager configuration topic for your IaaS:
+For information about configuring Ops Manager to use internal authentication or SAML authentication, see the Ops Manager configuration topic for your IaaS:
 
   * [Configuring Ops Manager on AWS](../customizing/aws-om-config-terraform.html#access-om)
   * [Configuring Ops Manager on Azure](../customizing/azure-om-config.html#access-om)
@@ -16,23 +15,22 @@ For information about configuring Ops Manager to use internal authentication or 
   * [Configuring Ops Manager on OpenStack](../customizing/openstack-om-config.html#log-in)
   * [Configuring Ops Manager on vSphere](../customizing/vsphere-config.html#set-up)
 
-## <a id="about"></a>Understand Roles in Ops Manager
+
+## <a id="about"></a> Understand Roles in Ops Manager
 
 You can assign the following roles to determine which operators in your organization make deployment changes, view credentials, and manage user roles in Ops Manager:
 
 <img class="no-border" src="images/roles-diagram.png" alt="Ops Manager roles diagram">
 
-Ops Manager administrators can use the roles defined in the diagram above to meet the security needs of their organization.
-The roles provide a range of privileges that are appropriate for different types of users.
-For example, assign either **Restricted Control** or **Restricted View** to an operator to prevent access to all Ops Manager credentials.
+Ops Manager administrators can use the roles defined in the diagram above to meet the security needs of their organization. The roles provide a range of privileges that are appropriate for different types of users. For example, assign either **Restricted Control** or **Restricted View** to an operator to prevent access to all Ops Manager credentials.
 
 See the following table for more information about each role:
 
 | **Ops Manager Role** | **Role Definition** | **UAA Scope** |
 |----------------------+---------------------+---------------|
 | **Ops Manager Administrator** | Administrators can make configuration changes in Ops Manager, view credentials in the **Credentials** tab and Ops Manager API endpoints, change the authentication method, and assign roles to other operators. | `opsman.admin` |
-| **Full Control** | Operators can make configuration changes in Ops Manager, click **Apply Changes**, and view credentials in the **Credentials** tab and Ops Manager API endpoints. | `opsman.full_control` |
-| **Restricted Control** | Operators can make configuration changes in Ops Manager and click **Apply Changes**. They cannot view credentials in the **Credentials** tab or Ops Manager API endpoints. | `opsman.restricted_control` |
+| **Full Control** | Operators can make configuration changes in Ops Manager, click **Review Pending Changes**, click **Apply Changes**, and view credentials in the **Credentials** tab and Ops Manager API endpoints. | `opsman.full_control` |
+| **Restricted Control** | Operators can make configuration changes in Ops Manager, click **Review Pending Changes**, and click **Apply Changes**. They cannot view credentials in the **Credentials** tab or Ops Manager API endpoints. | `opsman.restricted_control` |
 | **Full View** | Operators can view Ops Manager configuration settings and view credentials in the **Credentials** tab and Ops Manager API endpoints. They cannot make configuration changes in Ops Manager. | `opsman.full_view` |
 | **Restricted View** | Operators can view Ops Manager configuration settings. They cannot make configuration changes or view credentials in the **Credentials** tab or Ops Manager API endpoints. | `opsman.restricted_view` |
 
@@ -42,20 +40,20 @@ To assign one of the above roles to an operator, follow the procedure for granti
 
 <p class="note"><strong>Note:</strong> Multiple <strong>Restricted View</strong> and <strong>Full View</strong> operators can be logged in to Ops Manager at the same time. However, other roles with write access cannot be logged in simultaneously.</p>
 
-## <a id="enable"></a>Enable RBAC in Ops Manager After Upgrade
+
+## <a id="enable"></a> Enable RBAC in Ops Manager After Upgrade
 
 When you install a new instance of Ops Manager, RBAC is permanently enabled by default.
 
 If your organization has operators who are devoted to managing certain services like MySQL for PCF, you can use RBAC to assign those services operators a more restricted role.
 
-If you upgrade from an older Ops Manager instance, you must enable RBAC and assign roles to users before they can access Ops Manager.
-If you do not assign any roles to a user, they cannot log in to Ops Manager.
+If you upgrade from an older Ops Manager instance, you must enable RBAC and assign roles to users before they can access Ops Manager. If you do not assign any roles to a user, they cannot log in to Ops Manager.
 
-<p class="note warning"><strong>WARNING</strong>: Do not assign roles before you enable RBAC.</p>
+<p class="note warning"><strong>WARNING:</strong> Do not assign roles before you enable RBAC.</p>
 
-### <a id="enable-internal"></a>Enable RBAC with Internal Authentication
+### <a id="enable-internal"></a> Enable RBAC with Internal Authentication
 
-If you are upgrading from an older version of Ops Manager and use internal authentication, perform the following steps to enable RBAC:
+If you are upgrading from an older version of Ops Manager and use internal authentication, do the following to enable RBAC:
 
 1. Log in to the Ops Manager dashboard.
 
@@ -64,42 +62,46 @@ If you are upgrading from an older version of Ops Manager and use internal authe
 1. Click **Advanced**.
 
 1. Click **Enable RBAC**. When the confirmation dialog box appears, click **Confirm and Logout**.
-  <div class="note"><strong>Notes</strong>:
+  <div class="note"><strong>Notes:</strong>
     <ul>
       <li>Enabling RBAC is permanent. You cannot undo this action. When you upgrade Ops Manager, your RBAC settings remain configured.</li>
       <li>You will not see this dialog box if RBAC is already configured. With new instances of Ops Manager, RBAC is permanently configured by default.</li>
     </li>
   </div>
 
-### <a id="enable-saml"></a>Enable RBAC with SAML Authentication
+### <a id="enable-saml"></a> Enable RBAC with SAML Authentication
 
-If you are upgrading from an older version of Ops Manager and use SAML authentication, perform the steps in this section to enable RBAC.
-To enable RBAC in Ops Manager when using SAML authentication, you must configure groups in SAML for admins and non-admins and then map the admin group to Ops Manager.
+If you are upgrading from an older version of Ops Manager and use SAML authentication, perform the steps in this section to enable RBAC. To enable RBAC in Ops Manager when using SAML authentication, you must configure groups in SAML for admins and non-admins and then map the admin group to Ops Manager.
 
-#### <a id="admin-saml"></a>Step 1: Configure SAML Groups
+#### <a id="admin-saml"></a> Step 1: Configure SAML Groups
 
-Perform the following steps to gather information from your SAML dashboard:
+To gather information from your SAML dashboard, do the following:
 
 1. Log in to your SAML provider dashboard.
+
 1. Create or identify the name of the SAML group that contains Ops Manager admin users.
+
 1. Identify the groups attribute tag you configured for your SAML server.
 
-#### <a id="enable-om-saml"></a>Step 2: Enable RBAC in Ops Manager
+#### <a id="enable-om-saml"></a> Step 2: Enable RBAC in Ops Manager
 
 Perform the steps above in [Enable RBAC with Internal Authentication](#enable-internal) to configure Ops Manager to recognize your SAML admin user group.
-<p class="note"><strong>Note:</strong>: When RBAC is enabled, only users with the Ops Manager Administrator role can edit SAML configuration.</p>
 
-## <a id="create-users"></a>Create User Accounts in Ops Manager
+<p class="note"><strong>Note:</strong> When RBAC is enabled, only users with the Ops Manager Administrator role can edit SAML configuration.</p>
+
+
+## <a id="create-users"></a> Create User Accounts in Ops Manager
 
 To assign RBAC roles to operators, you must first create user accounts for them. For more information about creating user accounts in Ops Manager with the User Account and Authentication (UAA) module, see [Creating and Managing Ops Manager User Accounts](../customizing/opsman-users.html).
 
-## <a id="manage-roles"></a>Manage RBAC Roles in Ops Manager
+
+## <a id="manage-roles"></a> Manage RBAC Roles in Ops Manager
 
 You can assign the roles defined in [Understanding Roles in Ops Manager](#about) to determine which operators in your organization make deployment changes, view credentials, and manage user roles in Ops Manager.
 
-### <a id="write-internal"></a>Manage Roles with Internal Authentication
+### <a id="write-internal"></a> Manage Roles with Internal Authentication
 
-If you configured Ops Manager to use internal authentication, perform the steps in this section to configure roles using the [UAA Command Line Interface (UAAC)](../uaa/uaa-user-management.html).
+If you configured Ops Manager to use internal authentication, do the following to configure roles using the [UAA Command Line Interface (UAAC)](../uaa/uaa-user-management.html):
 
 1. Target your UAA server and log in as an admin: 
     <pre class="terminal">
@@ -126,9 +128,9 @@ If you configured Ops Manager to use internal authentication, perform the steps 
     * **Restricted View**:
       <pre class="terminal">uaac member add opsman.restricted_view USERNAME</pre>
 
-### <a id="write-saml"></a>Manage Roles with SAML Authentication
+### <a id="write-saml"></a> Manage Roles with SAML Authentication
 
-If you configured Ops Manager with SAML authentication, perform the steps in this section to assign non-admin user roles using UAAC.
+If you configured Ops Manager with SAML authentication, do the following to assign non-admin user roles using UAAC:
 
 1. Target your UAA server and log in as an admin: 
     <pre class="terminal">
@@ -149,6 +151,6 @@ If you configured Ops Manager with SAML authentication, perform the steps in thi
     </pre>
   Replace the placeholder text as follows:
   * `SAML-GROUP`: Replace with name of the SAML group the user belongs to.
-  * `OPSMAN-SCOPE`: Replace with an Ops Manager UAA scope. Refer to the table in [Understand Roles in Ops Manager](#about) to determine which UAA scope to use.
+  * `OPSMAN-SCOPE`: Replace with an Ops Manager UAA scope. See the table in [Understand Roles in Ops Manager](#about) to determine which UAA scope to use.
 
 1. Add new and existing users to the appropriate SAML groups in the SAML provider dashboard. Users must log out of both Ops Manager and the SAML provider for role changes to take effect.
