@@ -68,7 +68,7 @@ To designate PCF as your SAML service provider (SP) in ADFS, do the following:
 
 1. (Optional) If you are using a self-signed certificate and want to disable CRL checks, do the following:
   1. Open **Windows Powershell** as an Administrator.
-  1. Execute the following command: `set-ADFSRelyingPartyTrust -TargetName "RELYING-PARTY-TRUST" -SigningCertificateRevocationCheck None`
+  1. Run the following command: `set-ADFSRelyingPartyTrust -TargetName "RELYING-PARTY-TRUST" -SigningCertificateRevocationCheck None`
 
 1. To add claim rules for your relying party trust, select your relying party trust and click **Edit Claim Rules…**.
 
