@@ -58,5 +58,8 @@ To enable NFS volume services in PCF, do the following:
 1. Using the cf CLI, enable access to the service:
 	<pre class="terminal">$ cf enable-service-access nfs</pre>
 	To limit access to a specific org, use the `-o` flag, followed by the name of the org where you want to enable access. For more information, see the [Access Control](../services/access-control.html) topic.
+1. (Optional) Enable access to the `nfs-experimental` service. See [NFS Volume Service](../devguide/services/using-vol-services.html#nfs) for details about the differences between the two `nfs` services. 
+  <pre class="terminal">$ cf enable-service-access nfs-experimental</pre>
+
 
 After completing these steps, developers can use the cf CLI to create service instances of the `nfs` service and bind them to their apps.
