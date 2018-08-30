@@ -47,27 +47,30 @@ Pivotal Cloud Foundry (PCF) generates two types of logs, _system logs_ from PCF 
 
 <strong>App traffic logs are system logs.</strong> When app containers communicate, or attempt to communicate, their host cells generate _app traffic logs_. App traffic logs are system logs, not app logs. These logs come from host cells, not apps, and they carry no information from within the app. App traffic logs only show app communication behavior, as detected from outside by the host cell.
 
-## <a id="log-cache"></a>Enable Log Cache
+
+## <a id="log-cache"></a> Enable Log Cache
 
 Log Cache is a Loggregator feature that lets you filter and query app logs through a CLI plugin or API endpoints. Cached app logs are available on demand; you do not need to stream them continuously.
 
-<p class="note breaking"><strong>Breaking Change</strong>: App Autoscaler is dependent on Log Cache. When you disable Log Cache, App Autoscaler fails.</p>
+<p class="note breaking"><strong>Breaking Change:</strong> App Autoscaler is dependent on Log Cache. When you disable Log Cache, App Autoscaler fails.</p>
 
-### <a id="log-cache-pas"></a>Log Cache in PAS
+### <a id="log-cache-pas"></a> Log Cache in PAS
 
 To begin generating queryable app logs, you must enable Log Cache in the PAS tile.
 
 <%= image_tag 'enable-log-cache.png' %>
 
-To enable Log Cache:
+To enable Log Cache, do the following:
 
 1. From the Pivotal Application Service (PAS) tile, select **Advanced Features**. 
+
 1. Select the **Enable Log Cache** checkbox.
+
 1. Click **Save**.
 
 After you have enabled Log Cache, use the CLI plugin or API to query and filter app logs.
 
-### <a id="log-cache-cli-examples"></a>Example uses of the Log Cache CLI Plugin
+### <a id="log-cache-cli-examples"></a> Example uses of the Log Cache CLI Plugin
 
 To access cached logs with the Log Cache CLI plugin, you must first download and install the plugin.
 
@@ -85,7 +88,7 @@ Here are some ways you can use Log Cache to filter app logs:
 
 For more information on using the Log Cache CLI, see [Log Cache CLI: Usage](https://github.com/cloudfoundry/log-cache-cli/blob/develop/README.md).
 
-### <a id="log-cache-api-examples"></a>Example uses of the Log Cache API
+### <a id="log-cache-api-examples"></a> Example uses of the Log Cache API
 
 The Log Cache API is hosted on PCF, and references your system domain to return responses. The root URL for API calls is <code>ht<span>tps:</span>//log-cache.[YOUR-SYSTEM-DOMAIN]</code>.
 
@@ -104,17 +107,22 @@ More API parameters are available to customize retrieved app logs. For more info
 
 ## <a id='syslog-forward'></a> Enable Syslog Forwarding
 
-To forward system log messages to an external Reliable Event Logging Protocol (RELP) server, complete the following steps:
+To forward system log messages to an external Reliable Event Logging Protocol (RELP) server, do the following:
 
 1. From the Pivotal Application Service (PAS) tile, select **System Logging**.
 	<%= image_tag 'sys-logging.png' %>
-1. To include security events in your log stream, select the **Enable Cloud Controller security event logging** checkbox.
-This logs all API requests, including the endpoint, user, source IP, and request result, in the Common Event Format (CEF).
+
+1. To include security events in your log stream, select the **Enable Cloud Controller security event logging** checkbox. This logs all API requests, including the endpoint, user, source IP, and request result, in the Common Event Format (CEF).
+
 1. Enter the IP address of your syslog server in **External Syslog Aggregator Hostname** and its port in **External Syslog Aggregator Port**. The default port for a syslog server is `514`.
-<p class="note"><strong>Note</strong>: The host must be reachable from the PAS network, accept TCP connections, and use the RELP protocol. Ensure your syslog server listens on external interfaces.</p>
+  <p class="note"><strong>Note:</strong> The host must be reachable from the PAS network, accept TCP connections, and use the RELP protocol. Ensure your syslog server listens on external interfaces.</p>
+
 1. Select TCP, RELP, or UDP as your **External Syslog Network Protocol** to use when forwarding logs.
-1. For the **Syslog Drain Buffer Size**, enter the number of messages the Doppler server can hold from Metron agents before the server starts to drop them. See the [Loggregator Guide for Cloud Foundry Operators](../loggregator/log-ops-guide.html) topic for more details.
+
+1. For the **Syslog Drain Buffer Size**, enter the number of messages the Doppler server can hold from Metron agents before the server starts to drop them. For more information, see [Loggregator Guide for Cloud Foundry Operators](../loggregator/log-ops-guide.html).
+
 1. For the **Custom rsyslog Configuration**, enter your [custom syslog rules](../customizing/custom-syslog-rules.html).
+
 1. Click **Save**.
 
 To configure Ops Manager for system logging, see the [Settings](../../pcf-interface.html#settings) section in the _Understanding the Ops Manager Interface_ topic.
@@ -142,14 +150,17 @@ Follow the instructions below to scale the Loggregator system. For guidance on m
 ### <a id="instances"></a> Add Component VM Instances
 
 1. From the PAS tile, select **Resource Config**.
+
 1. Increase the number in the **Instances** column of the component you want to scale. You can add instances for the following Loggregator components: 
 	* **Loggregator Traffic Controller**
-		<p class="note"><strong>Note</strong>: The <a href="../loggregator/architecture.html#rlp">Reverse Log Proxy (RLP)</a> BOSH job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more logs for syslog drains, you can add instances of the Traffic Controller.</p>
-		<p class="note"><strong>Note</strong>: The <a href="../loggregator/architecture.html#bosh-metrics">BOSH System Metrics Forwarder</a> job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more BOSH component metrics, you can add instances of the Traffic Controller.</p>
+		<p class="note"><strong>Note:</strong> The <a href="../loggregator/architecture.html#rlp">Reverse Log Proxy (RLP)</a> BOSH job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more logs for syslog drains, you can add instances of the Traffic Controller.</p>
+		<p class="note"><strong>Note:</strong> The <a href="../loggregator/architecture.html#bosh-metrics">BOSH System Metrics Forwarder</a> job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more BOSH component metrics, you can add instances of the Traffic Controller.</p>
 	* **Syslog Adapter**
 	* **Doppler Server**
   <%= image_tag 'loggregator-vms.png' %>
+
 1. Click **Save**.
+
 1. Click **Apply Changes**.
 
 
@@ -161,7 +172,7 @@ App traffic logging lets network security teams audit C2C traffic, by seeing all
 
 ### <a id="enable-app-traffic-log"></a> Enable App Traffic Logging
 
-To enable app traffic logging:
+To enable app traffic logging, do the following:
 
 1. From Ops Manager, navigate to the **Pivotal Application Service** tile > **Networking** pane.
 
