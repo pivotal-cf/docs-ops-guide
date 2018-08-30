@@ -7,23 +7,19 @@ owner: Ops Manager
 
 This topic describes how to configure disk cleanup scheduling on Diego cells in Pivotal Cloud Foundry (PCF).
 
+
 ## <a id='what'></a> What is Disk Cleanup
 
-PCF isolates application instances (AIs) from each other using containers that run inside Diego cells. 
-Containers enforce a set of isolation layers including file system isolation.
-A PCF container file system can either be a PCF stack or the result of pulling a Docker image.
+PCF isolates application instances (AIs) from each other using containers that run inside Diego cells. Containers enforce a set of isolation layers including file system isolation. A PCF container file system can either be a PCF stack or the result of pulling a Docker image.
 
-For performance reasons, the cells cache the Docker image layers and the PCF stacks used by running AIs.
-When PCF destroys an AI or reschedules an AI to a different cell, a chance exist that certain Docker image layers or an old PCF stack becomes unused.
-If PCF does not clean these unused layers, the cell ephemeral disk will slowly fill.
+For performance reasons, the cells cache the Docker image layers and the PCF stacks used by running AIs. When PCF destroys an AI or reschedules an AI to a different cell, a chance exist that certain Docker image layers or an old PCF stack becomes unused. If PCF does not clean these unused layers, the cell ephemeral disk will slowly fill.
 
-Disk cleanup is the process of removing unused layers from the cell disk.
-The disk cleanup process removes all unused Docker image layers and old PCF Stacks, regardless of their size or age.
+Disk cleanup is the process of removing unused layers from the cell disk. The disk cleanup process removes all unused Docker image layers and old PCF Stacks, regardless of their size or age.
+
 
 ## <a id='options'></a> Options for Disk Cleanup
 
-PCF provides the following options for scheduling the disk cleanup process
-on Diego cells: 
+PCF provides the following options for scheduling the disk cleanup process on Diego cells: 
 
 * **Never clean up the Cell Disk**: Pivotal does not recommend using this option for production environments.
 * **Routinely clean up the Cell Disk**: This option makes the cell schedule a disk cleanup whenever a container is created. Running the disk cleanup process this frequently can result in a negative impact on the cell performance.
@@ -41,12 +37,9 @@ For PCF installations that primarily run Docker images, or both Docker images an
 
 ### <a id='choosing-a-threshold'></a> Calculating a Threshold
 
-To calculate a realistic value when configuring the disk cleanup threshold,
-you must identify some of the most frequently used Docker images in your PCF installation. 
-Docker images tend to be constructed by creating layers over existing, base, images. 
-In some cases, you may find it easier to identify which base Docker images are most frequently used.  
+To calculate a realistic value when configuring the disk cleanup threshold, you must identify some of the most frequently used Docker images in your PCF installation. Docker images tend to be constructed by creating layers over existing, base, images. In some cases, you may find it easier to identify which base Docker images are most frequently used.  
 
-Follow the steps below to calculate the disk cleanup threshold:
+To calculate the disk cleanup threshold, do the following:
 
 1. Identify the most frequently used Docker images or base Docker images. 
 
@@ -70,12 +63,12 @@ nginx            1.13         3448f27c273f      5 days ago          109 MB
 <br><br>
 For example, using the output above, the sample threshold calculation is: (&nbsp;391&nbsp;MB&nbsp;+&nbsp;586&nbsp;MB&nbsp;+&nbsp;109&nbsp;MB&nbsp;)&nbsp;*&nbsp;1.2&nbsp;=&nbsp;1303.2&nbsp;MB
 
+
 ## <a id='applying-configuration'></a> Configure Disk Cleanup Scheduling
 
 1. Navigate to the PCF Operations Manager **Installation Dashboard**.
 
-1. Click the **Pivotal Elastic Runtime** tile,
-  and navigate to the **Application Containers** tab.
+1. Click the **Pivotal Elastic Runtime** tile, and navigate to the **Application Containers** tab.
   <%= image_tag("images/docker-registry-ert.png") %>
 
 1. Under **Docker Images Disk-Cleanup Scheduling on Cell VMs**, select an option.
