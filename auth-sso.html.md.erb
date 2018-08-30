@@ -53,8 +53,8 @@ To configure PAS to use a SAML IdP, do the following:
 1. Retrieve the metadata from your Identity Provider and copy it into either the **Provider Metadata** or the **Provider Metadata URL** fields, depending on whether your Identity Provider exposes a Metadata URL or not. Refer to the [Configure SAML as an Identity Provider for PAS](#configure-saml-for-pcf) section of this topic for more information. Pivotal recommends that you use the Provider Metadata URL rather than Provider Metadata because the metadata can change. You can do this in either of the following ways:
     * If your Identity Provider exposes a Metadata URL, provide the Metadata URL.
     * Download your Identity Provider metadata and paste this XML into the **Provider Metadata** area.
-    <p class='note'><strong>Not:</strong> You only need to select one of the above configurations. If you configure both, your Identity Provider defaults to the <strong>(OR) Provider Metadata URL</strong>.</p>
-    <p class="note"><strong>Note:</strong> Refer to the <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a PCF Deployment</a> topic for information about on-boarding SAML users and mapping them to PAS user roles.</p>
+    <p class='note'><strong>Note:</strong> You only need to select one of the above configurations. If you configure both, your Identity Provider defaults to the <strong>(OR) Provider Metadata URL</strong>.</p>
+    <p class="note"><strong>Note:</strong> See <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a PCF Deployment</a> for information about on-boarding SAML users and mapping them to PAS user roles.</p>
 
 1. Select the **Name ID Format** for your SAML Identity Provider. This translates to `username` on PAS. The default is `Email Address`.
 
@@ -151,7 +151,7 @@ In addition to `cn`, other attributes commonly searched for and returned are `ma
 For example, a domain named "cloud.example.com" typically uses the following LDAP Group Search Base: `ou=Groups,dc=example,dc=com`
 <br><br>
 Follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) section of _Creating and Managing Users with the UAA CLI (UAAC)_ to map the groups under this search base to admin roles in PAS.
-    <p class="note"><strong>Note</strong>: Refer to the <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a PCF Deployment</a> topic to on-board individual LDAP users and map them to PAS Roles.</p>
+    <p class="note"><strong>Note:</strong> See <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a PCF Deployment</a> to on-board individual LDAP users and map them to PAS Roles.</p>
 
 * For **Group Search Filter**, enter a string that defines LDAP Group search criteria. The standard value is `member={0}`.
 
