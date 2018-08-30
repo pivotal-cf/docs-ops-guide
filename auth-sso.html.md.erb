@@ -50,7 +50,7 @@ To configure PCF to use a SAML IdP, do the following:
 1. Enter a **Display Name**. Your provider display name appears as a link on your Pivotal login page, which you can access at `https://login.YOUR-SYSTEM-DOMAIN`.
     <%= image_tag("login-page.png") %>
 
-1. Retrieve the metadata from your Identity Provider and copy it into either the **Provider Metadata** or the **Provider Metadata URL** fields, depending on whether your Identity Provider exposes a Metadata URL. Refer to the [Configure SAML as an Identity Provider for PCF](#configure-saml-for-pcf) section of this topic for more information. Pivotal recommends that you use the Provider Metadata URL rather than Provider Metadata because the metadata can change. You can do this in either of the following ways:
+1. Retrieve the metadata from your Identity Provider and copy it into either the **Provider Metadata** or the **Provider Metadata URL** fields, depending on whether your Identity Provider exposes a Metadata URL. See the [Configure SAML as an Identity Provider for PCF](#configure-saml-for-pcf) section of this topic for more information. Pivotal recommends that you use the Provider Metadata URL rather than Provider Metadata because the metadata can change. You can do this in either of the following ways:
     * If your Identity Provider exposes a Metadata URL, provide the Metadata URL.
     * Download your Identity Provider metadata and paste this XML into the **Provider Metadata** area.
     <p class='note'><strong>Note:</strong> You only need to select one of the above configurations. If you configure both, your Identity Provider defaults to the <strong>(OR) Provider Metadata URL</strong>.</p>
@@ -143,7 +143,7 @@ For example, a domain named "cloud.example.com" typically uses the following LDA
 In the LDAP search filter string that you use to configure Elastic Runtime,	use `{0}` instead of the username. For example, use `cn={0}` to return all LDAP objects with the same common name as the username.
 <br><br>
 In addition to `cn`, other attributes commonly searched for and returned are `mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
-<p class="note"><strong>Note:</strong> For instructions for testing and troubleshooting your LDAP search filters, see the [Configuring LDAP Integration with Pivotal Cloud Foundry](https://discuss.zendesk.com/hc/en-us/articles/204140418-Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry-) Knowledge Base article.</p>
+<p class="note"><strong>Note:</strong> For instructions for testing and troubleshooting your LDAP search filters, see the <a href="https://discuss.zendesk.com/hc/en-us/articles/204140418-Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry-)">Configuring LDAP Integration with Pivotal Cloud Foundry</a> Knowledge Base article.</p>
 
 * For **Group Search Base**, enter the location in the LDAP directory tree from which the LDAP Group search begins.
 <br><br>
