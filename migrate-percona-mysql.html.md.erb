@@ -44,3 +44,5 @@ PAS UAA downtime caused by internal MySQL migration also temporarily prevents us
 #### <a id='migration-length'></a> Migration Length
 
 There is no way to know how long migration of your database will take. However, if you perform a manual backup, you can get an estimate of the minimum amount of time the migration may take.
+
+To perform a manual backup, run the command `time /var/vcap/packages/mariadb/bin/mysqldump -u root -p \ --all-databases > dev.null`. Appending `time` to the beginning of the command times the process. BOSH runs additional processes before and after a MySQL migration, but the total time the migration takes is not much longer than the manual backup.
