@@ -40,3 +40,9 @@ During internal MySQL server downtime, the Cloud Controller and other platform c
 If the PAS UAA is configured to use an internal database, then the UAA also becomes unavailable. This outage temporarily prevents users from signing into PAS orgs and spaces, Apps Manager, and other PAS interfaces.
 
 PAS UAA downtime caused by internal MySQL migration also temporarily prevents users from logging into any PAS apps that use the [Single Sign-On (SSO)](https://docs.pivotal.io/p-identity/index.html) service.
+
+#### <a id='migration-length'></a> Migration Length
+
+There is no way to know how long migration of your database will take. However, if you perform a manual backup, you can get an estimate of the minimum amount of time the migration may take.
+
+To perform a manual backup, run the command `time /var/vcap/packages/mariadb/bin/mysqldump -u root -p \ --all-databases > dev.null`. Appending `time` to the beginning of the command times the process. BOSH runs additional processes before and after a MySQL migration, but the total time the migration takes is not much longer than the manual backup.
