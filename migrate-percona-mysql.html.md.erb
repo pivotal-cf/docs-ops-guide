@@ -45,4 +45,7 @@ PAS UAA downtime caused by internal MySQL migration also temporarily prevents us
 
 To estimate how long a database migration takes, perform a manual backup without saving the backup file.
 
-To perform a manual backup, run the command `time /var/vcap/packages/mariadb/bin/mysqldump -u root -p --all-databases > /dev/null`. Prepending `time` to the beginning of the command times the process. BOSH runs additional processes before and after a MySQL migration, but the total time the migration takes is not much longer than the manual backup.
+To perform a manual backup, run the command:
+`time /var/vcap/packages/mariadb/bin/mysqldump -u root -p --all-databases > /dev/null`
+
+BOSH runs additional processes before and after a MySQL migration, but the total time the migration takes is not much longer than the manual backup.
