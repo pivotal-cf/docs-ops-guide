@@ -8,21 +8,25 @@ owner: Routing
 
 This topic describes how to enable the TCP routing feature in a Pivotal Application Service (PAS) deployment.
 
-## <a id="enable-tcp"></a>Enable TCP Routing
+<p class=‘note breaking’><strong>Breaking Change:</strong> If you have mutual TLS app identity verification enabled, Envoy only recognizes communications from the Gorouter. Therefore, TCP no longer works.</p>
 
-TCP Routing enables applications to be run on PCF that require inbound requests on non-HTTP protocols. Before enabling TCP Routing, review the [Pre-Deployment Steps](../adminguide/enabling-tcp-routing.html) that describe required networking infrastructure changes. 
 
-1. TCP Routing is disabled by default. To enable this feature, select the **Enable TCP Routing** radio button. 
+## <a id="enable-tcp"></a> Enable TCP Routing
 
-1. In **TCP Router IPs**, enter the IP address(es) you would like assigned to the TCP Routers. The addresses must be within your subnet CIDR block. These will be the same IP addresses you configured your load balancer with in [Pre-Deployment Steps](../adminguide/enabling-tcp-routing.html), unless you configured DNS to resolve the TCP domain name directly to an IP you've chosen for the TCP router. You can enter multiple values as a comma-delimited list or as a range. For example, `10.254.0.1, 10.254.0.2` or `10.254.0.1-10.254.0.2`. 
+TCP Routing enables applications to be run on PCF that require inbound requests on non-HTTP protocols. Before enabling TCP Routing, review the [Pre-Deployment Steps](../adminguide/enabling-tcp-routing.html) that describe required networking infrastructure changes.
+
+1. TCP Routing is disabled by default. To enable this feature, select the **Enable TCP Routing** radio button.
+
+1. In **TCP Router IPs**, enter the IP address(es) you would like assigned to the TCP Routers. The addresses must be within your subnet CIDR block. These will be the same IP addresses you configured your load balancer with in [Pre-Deployment Steps](../adminguide/enabling-tcp-routing.html), unless you configured DNS to resolve the TCP domain name directly to an IP you've chosen for the TCP router. You can enter multiple values as a comma-delimited list or as a range. For example, `10.254.0.1, 10.254.0.2` or `10.254.0.1-10.254.0.2`.
 
 1. In **TCP Routing Ports**, enter a range of ports to be allocated for TCP Routes. For each TCP route you want to support, you must reserve a port. This will be the same range of ports you configured your load balancer with in [Pre-Deployment Steps](../adminguide/enabling-tcp-routing.html), unless you configured DNS to resolve the TCP domain name to the TCP router directly. This field takes a comma-delimited list of individual ports and ranges, for example `1024-1099,30000,60000-60099`. Configuration of this field is only applied on the first deploy; you may later update the port range using the CLI. For details modifying the port range, see [Router Groups](../adminguide/enabling-tcp-routing.html#router-groups).
 
-1. If you are deploying PCF to AWS, Azure or GCP, add the name of your load balancer to **TCP Router** job of the **Resource Config** page of the PAS tile. 
+1. If you are deploying PCF to AWS, Azure or GCP, add the name of your load balancer to **TCP Router** job of the **Resource Config** page of the PAS tile.
 For mor information, see the PCF installation documentation for you IaaS.
 
-## <a id="disable-tcp"></a>Disable TCP Routing
+
+## <a id="disable-tcp"></a> Disable TCP Routing
 
 1. If you want to disable TCP routing after enabling it, click **Select this option if you prefer to enable TCP Routing at a later time**.
 
-1. Manually remove the TCP routing domain. 
+1. Manually remove the TCP routing domain.
