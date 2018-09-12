@@ -7,21 +7,25 @@ owner: Diego
 
 To help troubleshoot applications hosted by a deployment, [Pivotal Cloud Foundry (PCF)](https://network.pivotal.io/products/pivotal-cf) supports SSH access into running applications. This document describes how to configure a PCF deployment to allow SSH access to application instances, and how to configure load balancing for those application SSH sessions.
 
+
 ## <a id='diego-configuration'></a> Pivotal Application Service Configuration
 
 This section describes how to configure Pivotal Application Service (PAS) to enable or disable deployment-wide SSH access to application instances. In addition to this deployment-wide configuration, Space Managers have SSH access control over their Space, and Space Developers have SSH access control over their to their Applications. For details about SSH access permissions, see the [Application SSH Overview](../devguide/deploy-apps/app-ssh-overview.html) topic.
 
-To configure PAS SSH access for application instances:
+<p class=‘note breaking’><strong>Breaking Change:</strong> If you have mutual TLS app identity verification enabled, Envoy only recognizes communications from the Gorouter. Therefore, SSH no longer works.</p>
+
+To configure PAS SSH access for app instances:
 
 1. Open the PAS tile in Ops Manager.
 
 1. Under the **Settings** tab, select the **Application Containers** section.
 
-1. Enable or disable the <strong>Allow SSH access to app containers</strong> checkbox.
+1. Enable or disable the **Allow SSH access to app containers** checkbox.
 
 1. Optionally, select **Enable SSH when an app is created** to enable SSH access for new apps by default in spaces that allow SSH. If you deselect this checkbox, developers can still enable SSH after pushing their apps by running `cf enable-ssh APP-NAME`.
 
 <%= image_tag("./images/docker-registry-ert.png") %>
+
 
 ## <a id="ssh-load-balancer-configuration"></a> SSH Load Balancer Configuration
 
