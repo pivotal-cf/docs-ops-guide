@@ -49,8 +49,6 @@ If you choose not to provide a CA certificate, you must provide the IP address o
 1. Click the **Pivotal Elastic Runtime** tile, and navigate to the **Application Containers** tab.
   <%= image_tag("images/docker-registry-ert.png") %>
 
-1. Select **Enable Custom Buildpacks** to enable custom-built application runtime buildpacks.
-
 1. Select **Allow SSH access to app containers** to enable app containers to accept SSH connections. If you use a load balancer instead of HAProxy, you must open port `2222` on your load balancer to enable SSH traffic. To open an SSH connection to an app, a user must have Space Developer privileges for the space where the app is deployed. Operators can grant those privileges in Apps Manager or using the cf CLI.
 
 1. For **Private Docker Insecure Registry Whitelist**, provide the hostname or IP address and port that point to your private Docker registry. For example, enter `198.51.100.1:80` or `mydockerregistry.com:80`. Enter multiple entries in a comma-delimited sequence. SSL validation is ignored for private Docker image registries secured with self-signed certificates at these locations.
