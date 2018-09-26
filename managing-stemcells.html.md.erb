@@ -7,24 +7,28 @@ owner: Ops Manager
 
 This topic explains how to use the Stemcell Library to import and stage stemcells to products.
 
-For more conceptual information about floating stemcells and stemcell upgrades, 
+For more conceptual information about floating stemcells and stemcell upgrades,
 see [Understanding Floating Stemcells](../customizing/understanding-stemcells.html).
 
+For a list of PCF products that are now using Xenial stemcells, see [Tiles Using Xenial Stemcells in PCF](https://docs.pivotal.io/pivotalcf/2-4/stemcells/xenial-tiles.html).
+
 ![The Stemcell Library shows a table with columns headed Product, Required, Deployed, and Staged as well as an Import Stemcell button and a Save Button](images/manage-stemcells.png)
+
 
 ## <a id="import"></a> Import and Stage a Stemcell
 
 ![The Import Stemcell button is floated to the right of the Stemcell Library header next to the Save button](images/import-stemcell.png)
 
-Download the appropriate <code>.tgz</code> stemcell file from [Pivotal Network](https://network.pivotal.io/products/pivotal-cf), then click **Import Stemcell** to permanently import a stemcell into Ops Manager.
+Download the appropriate `.tgz` stemcell file from [Pivotal Network](https://network.pivotal.io/products/pivotal-cf), then click **Import Stemcell** to permanently import a stemcell into Ops Manager.
 
 ![A modal that appears after importing a stemcell. The modal reads, **Select the products you want to stage**. The modal has a checkbox next to the product name. It also has a dismiss button and an Apply Stemcell to Products button](images/staging-modal.png)
 
 To stage your stemcell to compatible products, enable the products in the **Import Stemcell** dialog. Click **Apply Stemcell to Products** to save your selections. Click **Dismiss** to dismiss the **Import Stemcell** dialog.
 
+
 ## <a id="version"></a> Choose a Stemcell Version
 
-If you have uploaded multiple versions of a stemcell, you can use the dropdown menu in the **Staged** column to choose which version to use.
+If you have uploaded multiple versions of a stemcell, you can use the dropdown in the **Staged** column to choose which version to use.
 
 You can choose a different version until you deploy. After deployment, older stemcell versions are no longer available.
 
@@ -33,4 +37,3 @@ You can choose a different version until you deploy. After deployment, older ste
 If the stemcell displays with a green checkmark and the words **Latest stemcell** below the **Staged** dropdown, the stemcell is the latest available version on your host. An outdated stemcell displays **Stemcell out-of-date**.
 
 ![Beneath the **Staged** version dropdown, a green checkmark next to the words **Latest stemcell** appears. The stemcell in this image is the latest available version.](images/opsman-latest-stemcell.png)
-
