@@ -47,7 +47,7 @@ Operators customize Apps Manager by configuring the **Custom Branding** and **Ap
 1. By default, Apps Manager includes three sidebar links: **Marketplace**, **Docs**, and **Tools**. You can edit existing sidebar links by clicking the name of the link and editing the **Link text** and **Url** fields. Or, you can remove the link by clicking the trash icon next to its name. If you want to add a new sidebar link, click **Add** and complete the **Link text** and **Url** fields.
 	<p class="note"><strong>Note</strong>: Removing any of the default links will remove them from the sidebar for all users.</p>
 
-1. The **Apps Manager Polling Interval** field provides a temporary fix if Apps Manager usage causes degradation of the Cloud Controller API. Pivotal recommends that you do not keep this field modified as a long term fix because it can degrade Apps Manager performance. You can optionally do the following:	
+1. The **Apps Manager Polling Interval** field provides a temporary fix if Apps Manager usage causes degradation of the Cloud Controller. In this case, you can use this field to reduce the load on the Cloud Controller API and ensure Apps Manager remains available while you troubleshoot the Cloud Controller. Pivotal recommends that you do not keep this field modified as a long term fix because it can degrade Apps Manager performance. You can optionally do the following:	
 	* Increase the polling interval above the default of `30` seconds. 
 		<p class="note"><strong>Note</strong>: If you enter a value between <code>0</code> and <code>30</code>, the field is automatically set to <code>30</code>.</p>
 	* Disable polling by entering `0`. 
