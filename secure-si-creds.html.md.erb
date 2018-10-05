@@ -67,12 +67,16 @@ Runtime CredHub allows you to use one or more Hardware Security Modules (HSMs) t
 
 ## <a id='pas-config'></a> Step 1: Configure the PAS Tile
 
-You must configure the PAS tile to support securing service instance credentials in CredHub. CredHub configuration options include:
+To configure the PAS tile to support securing service instance credentials in CredHub, you need to:
+
+* In the **CredHub** pane, provide at least one encryption key. CredHub supports multiple encryption key providers.
+
+* In the **Resource Config** pane, set the number of **CredHub** instances to at least one.
+
+CredHub configuration options include:
 
 * Internal or external databases
 * Encryption keys stored internally, externally in a Hardware Security Module (HSM), or both
-
-<p class="note"><strong>Note:</strong> CredHub supports multiple encryption key providers and requires at least one.</p>
 
 To configure the PAS tile, follow the instructions in the PAS installation topic for your IaaS:
 
