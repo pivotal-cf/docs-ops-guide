@@ -16,7 +16,7 @@ For information about configuring Ops Manager to use internal authentication or 
   * [Configuring Ops Manager on vSphere](../customizing/vsphere-config.html#set-up)
 
 
-## <a id="about"></a> Understand Roles in Ops Manager
+## <a id="about"></a> Understanding Roles in Ops Manager
 
 You can assign the following roles to determine which operators in your organization make deployment changes, view credentials, and manage user roles in Ops Manager:
 
@@ -34,10 +34,25 @@ See the following table for more information about each role:
 | **Full View** | Operators can view Ops Manager configuration settings and view credentials in the **Credentials** tab and Ops Manager API endpoints. They cannot make configuration changes or click **Apply Changes**. | `opsman.full_view` |
 | **Restricted View** | Operators can view Ops Manager configuration settings. They cannot make configuration changes or view credentials in the **Credentials** tab or Ops Manager API endpoints. | `opsman.restricted_view` |
 
-When you install a new Ops Manager instance, all existing users have the Ops Manager Administrator role by default.
-
 To assign one of the above roles to an operator, follow the procedure for granting access using either [internal authentication](#write-internal) or [SAML authentication](#write-saml).
 
+When you install a new Ops Manager instance, all existing users have the Ops Manager Administrator role by default.
+
+<a id="multiple-write-users"></a> Understanding Simultaneous Ops Manager Administrators
+
+Ops Manager allows multiple Ops Manager Administrators to log in simultaneously. Administrators can make changes to and redeploy Ops Manager to change deployment components and behavior. 
+
+There is no maximum number of Administrators that can log into Ops Manager simultaneously. 
+
+There are no functionality restrictions placed on Administrators who are logged in simultaneously. Multiple Administrators can reconfigure the same fields at the same time. If you intend to have two or more Administrators reconfiguring the same fields, coordinate their planned actions so they do not accidentally overwrite each other's work.
+
+However, only one redeploy can occur at a time. If one Administrator clicks **Apply Changes**, all other redeploy attempts will fail until the first redeploy completes.
+
+For example: User A and User B both authenticate as Ops Manager Administrators and access the same Ops Manager instance at the same time. User A reconfigures a field in the Syslog pane of the BOSH Director, clicks **Save**, and clicks **Apply Changes** to redeploy. User A's redeploy initiates.
+
+Two minutes later, User B reconfigures a field in the Syslog pane of the BOSH Director, clicks **Save**, and clicks **Apply Changes** to redeploy. User B receives a `422` error code because the redeploy User A initiated is already in progress. User B must wait for User A's redeploy to complete before their **Apply Changes** will initiate successfully.
+
+<p class="note"><strong>Note</strong>: Some Ops Manager Administrators configure external apps to modify their Ops Manager instances. For example, continuous integration and deployment (CI/CD) pipelines can have their own Administrator accounts. These apps have Administrator user privileges identical to human Administrator user accounts. A human user's actions can be delayed or overwritten by an automated Administrator.</p>
 
 ## <a id="enable"></a> Enable RBAC in Ops Manager After Upgrade
 
