@@ -52,8 +52,8 @@ For example: User A and User B both authenticate as Ops Manager Administrators a
 
 Two minutes later, User B reconfigures a field in the Syslog pane of the BOSH Director, clicks **Save**, and clicks **Apply Changes** to deploy. User B is unable to initiate a deploy because the deploy User A initiated is already in progress. User B must wait for User A's deploy to complete before they can click **Apply Changes**.
 
-<p class="note"><strong>Note</strong>: Some Ops Manager Administrators configure external apps to modify their Ops Manager instances. For example, continuous integration and deployment (CI/CD) pipelines can have their own Administrator accounts. These apps have Administrator user privileges identical to human Administrator user accounts. 
-
+<p class="note"><strong>Note</strong>: Some Ops Manager Administrators configure external apps to modify their Ops Manager instances. For example, continuous integration and deployment (CI/CD) pipelines can have their own Administrator accounts. These apps have Administrator user privileges identical to human Administrator user accounts. </br>
+</br>
 A human Administrator's actions can be delayed or overwritten by an automated Administrator. Similarly, an automated Administrator's actions can be delayed or overwritten by a human Administrator. If you are having deployment issues or changes to your Ops Manager are not persisting correctly, confirm that your work is not conflicting with that of an automated Administrator.</p>
 
 ## <a id="enable"></a> Enable RBAC in Ops Manager After Upgrade
