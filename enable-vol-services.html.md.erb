@@ -5,14 +5,33 @@ owner: Diego Persistence
 
 This topic describes how Pivotal Cloud Foundry (PCF) operators can deploy NFS or SMB volume services.
 
+
+
+
 ## <a id='overview'></a> Overview
 
 A volume service gives apps access to a persistent filesystem, such as NFS or SMB. By performing the procedures in this topic, operators can add a volume service to the [Marketplace](../devguide/services/index.html) that provides an NFSv3 filesystem or an SMB share.
 
 Developers can then use the [Cloud Foundry Command Line Interface](../cf-cli/index.html) (cf CLI) to create service instances of the volume service and bind them to their apps. For more information, see the [Using an External File System (Volume Services)](../devguide/services/using-vol-services.html) topic.
 
-<p class="note"><strong>Note:</strong> You must have an NFS server running to enable NFS volume services. If you want to use NFS and do not currently have a server available, you can <a href="https://docs.cloudfoundry.org/running/deploy-vol-services.html#nfs-server">deploy the test NFS server</a> bundled with the NFS Volume release or enable NFS volume services with the NFS Broker Errand for Pivotal Application Service. You can enable this errand during PAS configuration.</p>
-<p class="note"><strong>Note:</strong> You must have an SMB server running to enable SMB volume services. If you want to use SMB and do not currently have a server available, you can <a href="https://docs.cloudfoundry.org/running/deploy-vol-services.html#smb-server">deploy the test SMB server</a> bundled with the SMB Volume release or enable SMB volume services with the SMB Broker Errand for Pivotal Application Service. You can enable this errand during PAS configuration.</p>
+<div class="note"><p style="margin-top: 0"><strong>Note:</strong>
+You must have an NFS or SMB server running to
+  enable NFS or SMB volume services. If you want to use NFS or SMB and do not
+  currently have a server available, you can do one of the following:</p>
+  <ul>
+    <li>Deploy the test NFS or SMB server bundled with
+    the volume release or you can enable NFS or SMB volume services with the NFS or SMB
+    Broker Errand for Pivotal Application Service (PAS). For more information, see <a
+    href="https://docs.cloudfoundry.org/running/deploy-vol-services.html">Adding Volume
+    Services to Your Deployment</a> in the Cloud Foundry documentation.
+    </li>
+    <li>Enable this errand during PAS
+    configuration.</li>
+  </ul>
+</div>
+
+
+
 
 ## <a id='nfs-enable'></a> Enable NFS Volume Services
 
@@ -50,17 +69,27 @@ To enable NFS volume services in PCF, do the following:
 
 After completing these steps, developers can use the cf CLI to create service instances of the `nfs` service and bind them to their apps.
 
+
+
+
 ### <a id='nfs-security'></a> NFS Security
 
-When it comes to securing your NFS server against traffic apps running on PCF, you can use ASGs and LDAP:
+You can use ASGs and LDAP to secure your NFS server against traffic apps running on PCF:
 
-* **Application Security Groups (ASGs)** <br/>
-  Use Application Security Groups (ASGs) to prevent apps from sending traffic directly to your NFS ports. Apps should never need to use NFS ports directly. Pivotal recommends defining an ASG that blocks direct access to your NFS server IP, especially ports 111 and 2049. For more information on setting up ASGs, see
-  [Understanding Application Security Groups](../concepts/asg.html).
-* **LDAP**  <br/>
-  In addition to ASGs, LDAP secures the NFS volume service so that app developers cannot bind to the service using an arbitrary UID and gain access to sensitive data. With LDAP support enabled, app developers must provide credentials for any user they wish to bind as.
+* **Application Security Groups (ASGs)**---Prevent apps from sending traffic directly to
+  your NFS ports. Apps should never need to use NFS ports directly. Pivotal recommends
+  defining an ASG that blocks direct access to your NFS server IP, especially ports 111 and 2049.
+  For more information on setting up ASGs, see [Understanding Application Security Groups](../concepts/asg.html).
+
+* **LDAP**---In addition to ASGs, secures the NFS volume service so that app developers
+  cannot bind to the service using an arbitrary UID. App developers also cannot gain access to sensitive data. With
+  LDAP support enabled, app developers must provide credentials for any user they wish to
+  bind as.
 
 The Diego cells running on PCF must be able to reach your LDAP server on the port you use for connections, which are typically `389` or `636`. You cannot limit which Diego cells have access to your NFS or LDAP servers.
+
+
+
 
 ## <a id='smb-enable'></a> Enable SMB Volume Services
 
