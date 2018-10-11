@@ -7,20 +7,32 @@ This topic describes how Pivotal Cloud Foundry operators can visually brand Apps
 
 Operators customize Apps Manager by configuring the **Custom Branding** and **Apps Manager Config** pages of the Pivotal Application Service (PAS) tile.
 
+
+
+
 ## <a id='generic'></a>Custom Branding Page
 
 1. In a browser, navigate to the fully qualified domain name (FQDN) of your Ops Manager and log in.
+
 1. Click **Pivotal Application Service**.
+
 1. Click the **Custom Branding** tab.
 
 	<%= image_tag 'custombranding.png' %>
 
+	
 1. For **Company Name**, enter the name of your organization. If left blank, the name defaults to **Pivotal**.
+
 1. For **Accent Color**, enter the hexadecimal code for the color used to accent various visual elements, such as the currently selected space in the sidebar. For example, `#71ffda`.
+
 1. For **Main Logo**, enter a Base64-encoded URL string for a PNG image to use as your main logo. The image can be square or wide. For example, `data:image/png;base64,iVBORw0...`. If left blank, the image defaults to the Pivotal Logo.
+
 1. For **Square Logo**, enter a Base64-encoded URL string for a PNG image to use in the Apps Manager header and in places that require a smaller logo. For example, `data:image/png;base64,iVBORw0...`. If left blank, the image defaults to the Pivotal Logo.
+
 1. For **Favicon**, enter a Base64-encoded URL string for a PNG image to use as your favicon. For example, `data:image/png;base64,iVBORw0...`. If left blank, the image defaults to the Pivotal Logo.
+
 1. For **Footer Text**, enter a string to be displayed as the footer. If left blank, the footer text defaults to **Pivotal Software Inc. All rights reserved.**.
+
 1. To add up to three footer links that appear to the right of the footer text, complete the following steps:
 	* Click **Add**.
 	* For **Link text**, enter a label for the link.
@@ -34,23 +46,43 @@ Operators customize Apps Manager by configuring the **Custom Branding** and **Ap
 
 	<p class="note"><strong>Note</strong>: The Header and Footer do not appear on the <a href="../concepts/architecture/uaa.html">User Account and Authentication (UAA)</a> login page.</p>
 
+
+
 ## <a id='apps-man'></a>Apps Manager Config Page
 
 1. In a browser, navigate to the fully qualified domain name (FQDN) of your Ops Manager and log in.
+
+
 1. Click **Pivotal Application Service**.
+
+
 1. Click the **Apps Manager Config** tab.
 
 	<%= image_tag 'config-apps-man.png' %>
 
+
 1. For **Product Name**, enter text to replace **Apps Manager** in the header and the title of Apps Manager. This text defaults to **Apps Manager** if left blank.
+
+
 1. For **Marketplace Name**, enter text to replace the header in the Marketplace pages. This text defaults to **Marketplace** if left blank.
+
+
 1. By default, Apps Manager includes three sidebar links: **Marketplace**, **Docs**, and **Tools**. You can edit existing sidebar links by clicking the name of the link and editing the **Link text** and **Url** fields. Or, you can remove the link by clicking the trash icon next to its name. If you want to add a new sidebar link, click **Add** and complete the **Link text** and **Url** fields.
 	<p class="note"><strong>Note</strong>: Removing any of the default links will remove them from the sidebar for all users.</p>
+
+
+1. (Optional) Enter your desired **Apps Manager Memory Usage** in MBs. The minimum number you can enter is `128`.
+
+
+1. (Optional) Enter your desired **Invitations Memory Usage** in MBs. This is the memory
+limit used to deploy the Invitations app. The minimum number you can enter is `256`.
+
 
 1. The **Apps Manager Polling Interval** field provides a temporary fix if Apps Manager usage degrades Cloud Controller response times. In this case, you can use this field to reduce the load on the Cloud Controller and ensure Apps Manager remains available while you troubleshoot the Cloud Controller. Pivotal recommends that you do not keep this field modified as a long term fix because it can degrade Apps Manager performance. You can optionally do the following:	
 	* Increase the polling interval above the default of `30` seconds. 
 		<p class="note"><strong>Note</strong>: If you enter a value between <code>0</code> and <code>30</code>, the field is automatically set to <code>30</code>.</p>
 	* Disable polling by entering `0`. This stops Apps Manager from refreshing data automatically, but users can update displayed data by reloading Apps Manager manually.
+
 
 1. The **App Details Polling Interval** field provides an additional way to reduce the load on the Cloud Controller when the **Apps Manager Polling Interval** field is not sufficient. This field controls the rate at which Apps Manager polls for data when a user views the **Overview** page of an app. Pivotal recommends that you do not keep this field modified as a long term fix because it can degrade Apps Manager performance. You can optionally do the following:
 	* Increase the polling interval above the default of `10` seconds. 
