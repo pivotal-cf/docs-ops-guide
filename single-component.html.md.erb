@@ -1,14 +1,26 @@
 ---
-title: PAS Component Behavior During Upgrade
+title: Understanding PCF Upgrades
 owner: Release Engineering
 ---
 
 <strong><%= modified_date %></strong>
 
-The **Resource Config** page of Pivotal Application Service (PAS) tile in the [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF)
-Ops Manager shows the components that the BOSH Director installs.
-You can specify the number of instances for some of the components.
-We deliver the remaining resources as single components, meaning that they have a preconfigured and unchangeable value of one instance.
+This topic explains how the scale of different PCF components affects uptime during upgrades, and which components are scalable.  It also describes the order in which Ops Manager performs upgrades on individual components during a full system upgrade.
+
+## <a id= "single-components"></a>How Single-Component Scaling Affects Upgrades
+
+In [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) Ops Manager, the Pivotal Application Service (PAS) tile > **Resource Config** pane of shows the components that the BOSH Director installs:
+
+* **Scalable** component fields let you select the instance count from a range of settings or enter a custom value.
+* **Unscalable** component fields allow a maximum of one instance.
+
+When a component is scaled at a single instance, whether it's scalable or not... it can experience downtime and other limitations while the single VM restarts
+
+Affects app availability: Router, Diego cell
+
+Affects control plane availability -- You cannot push, stage, or restart an app:
+
+For more information about how the scale of each component affects upgrade behavior, see the [Upgrade Order and Limitations](#components-order-limit) table below.
 
 In a single-component environment, upgrading can cause the deployment to experience downtime and other limitations because there is no instance redundancy.
 Although this behavior might be acceptable for a test environment, you should configure the scalable components with editable instance values, such as HAProxy,
@@ -29,13 +41,20 @@ The table lists components in the order that Ops Manager upgrades each component
 
 <p class="note"><strong>Note:</strong> The table does not include the Run Smoke Tests and Run CF Acceptance Tests errands and the Compilation job. Ops Manager runs the errands after it upgrades the components and creates compilation VMs as needed during the upgrade process.</p>
 
+### <a id= "components"></a>Components
+
 <table border="1" class="nice" >
 <tr>
-  <th><strong>Upgrade Order</strong></th>
-  <th><strong>Component</strong></th>
-  <th><strong>Scalable?</strong></th>
-  <th><strong>Extended Downtime?</strong></th>
-  <th><strong>Other Limitations and Information</strong></th>
+  <th rowspan=2><strong>Upgrade Order</strong></th>
+  <th rowspan=2><strong>Component</strong></th>
+  <th rowspan=2><strong>Scalable?</strong></th>
+  <th colspan=3><strong>Downtime?</strong></th>
+  <th rowspan=2><strong>Other Limitations and Information</strong></th>
+</tr>
+<tr>
+  <th><strong>Extended</strong></th>
+  <th><strong>Apps</strong></th>
+  <th><strong>Platform</strong></th>
 </tr>
 <tr>
   <td>2</td>
@@ -43,12 +62,16 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>&#10003;</td>
   <td>&#10003;</td>
   <td></td>
+  <td></td>
+  <td></td>
 </tr>
 <tr>
   <td>3</td>
   <td>File Storage</td>
   <td></td>
   <td>&#10003;</td>
+  <td></td>
+  <td></td>
   <td>
     You cannot push, stage, or restart an app when an upgrade affects the file storage server.
   </td>
@@ -58,6 +81,8 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>MySQL Proxy</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
+  <td></td>
+  <td></td>
   <td>
     The MySQL Proxy is responsible for managing failover of the MySQL Servers.
     If the Proxy becomes unavailable, then access to the MySQL Server could be broken.
@@ -68,6 +93,8 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>MySQL Server</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
+  <td></td>
+  <td></td>
   <td>
     The MySQL Server is responsible for persisting internal databases for the platform.
     If the MySQL Server becomes unavailable, then platform services that rely upon a database (Cloud Controller, UAA) will also become unavailable. See <a href="./internal-databases.html#downtime-effects">Effects of MySQL Downtime</a> for details.
@@ -79,11 +106,15 @@ The table lists components in the order that Ops Manager upgrades each component
   <td></td>
   <td></td>
   <td></td>
+  <td></td>
+  <td></td>
 </tr>
 <tr>
   <td>7</td>
   <td>UAA</td>
   <td>&#10003;</td>
+  <td></td>
+  <td></td>
   <td></td>
   <td>
     If a user has an active authorization token prior to performing an upgrade, the user can still log in using either a UI or the CLI.
@@ -94,6 +125,8 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>Cloud Controller</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
+  <td></td>
+  <td></td>
   <td>
     Your ability to manage an app when an upgrade affects the Cloud Controller depends on the number of instances that you specify for the Cloud Controller and Diego components.
     If either of these components are single components, you cannot push, stage, or restart an app during the upgrade.
@@ -104,6 +137,8 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>HAProxy</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
+  <td></td>
+  <td></td>
   <td>
     HAProxy is used to load-balance incoming requests to the Router.
     If HAProxy is unavailable, you may lose the ability to make requests to applications unless there is another routing path from your load balancer to the Router.
@@ -114,6 +149,8 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>Router</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
+  <td></td>
+  <td></td>
   <td>
     The Router is responsible for routing requests to their application containers.
     If the Router is not available, then applications cannot receive requests.
@@ -125,11 +162,15 @@ The table lists components in the order that Ops Manager upgrades each component
   <td></td>
   <td></td>
   <td></td>
+  <td></td>
+  <td></td>
 </tr>
 <tr>
   <td>12</td>
   <td>Clock Global</td>
   <td>&#10003;</td>
+  <td></td>
+  <td></td>
   <td></td>
   <td></td>
 </tr>
@@ -139,12 +180,16 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>&#10003;</td>
   <td>&#10003;</td>
   <td></td>
+  <td></td>
+  <td></td>
 </tr>
 <tr>
   <td>14</td>
   <td>Diego BBS</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
+  <td></td>
+  <td></td>
   <td>
     Your ability to manage an app when an upgrade affects the Diego BBS depends on the number of instances that you specify for the Diego BBS, Cloud Controller, and other Diego components.
     If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
@@ -155,6 +200,8 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>Diego Brain</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
+  <td></td>
+  <td></td>
   <td>
     Your ability to manage an app when an upgrade affects the Diego Brain depends on the number of instances that you specify for the Diego Brain, Cloud Controller, and other Diego components.
     If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
@@ -165,6 +212,8 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>Diego Cell</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
+  <td></td>
+  <td></td>
   <td>
     Your ability to manage an app when an upgrade affects Diego Cells depends on the number of instances that you specify for the Diego Cells, Cloud Controller, and other Diego components.
     If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
@@ -180,11 +229,15 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>
     Ops Manager operators experience 2-5 minute gaps in logging.
   </td>
+  <td></td>
+  <td></td>
 </tr>
 <tr>
   <td>18</td>
   <td>Loggregator Trafficcontroller</td>
   <td>&#10003;</td>
+  <td></td>
+  <td></td>
   <td></td>
   <td>
     Ops Manager operators experience 2-5 minute gaps in logging.
@@ -192,77 +245,55 @@ The table lists components in the order that Ops Manager upgrades each component
 </tr>
 <tr>
   <td>19</td>
-  <td>TCP Router</td>
+  <td>TCP Router (if enabled)</td>
   <td>&#10003;</td>
   <td></td>
   <td></td>
+  <td></td>
+  <td></td>
 </tr>
+</table>
+
+### <a id= "tasks"></a>One-Time Tasks
+
+After Ops Manager upgrades the components above, it runs the following tasks in the following order:
+
+<table>
 <tr>
   <td>20</td>
   <td>Push Apps Manager errand</td>
-  <td></td>
-  <td></td>
-  <td>
-    This errand runs the script to deploy the Apps Manager application.
-    <br />
-    The Apps Manager application runs in a single Diego Cell.
-  </td>
 </tr>
 <tr>
   <td>21</td>
   <td>Run Smoke Tests</td>
-  <td></td>
-  <td></td>
-  <td></td>
 </tr>
 <tr>
   <td>22</td>
   <td>Push Notifications</td>
-  <td></td>
-  <td></td>
-  <td></td>
 </tr>
 <tr>
   <td>23</td>
   <td>Push Notifications UI</td>
-  <td></td>
-  <td></td>
-  <td></td>
 </tr>
 <tr>
   <td>24</td>
   <td>Push Autoscaling</td>
-  <td></td>
-  <td></td>
-  <td></td>
 </tr>
 <tr>
   <td>25</td>
   <td>Register Autoscaling Service Broker</td>
-  <td></td>
-  <td></td>
-  <td></td>
 </tr>
 <tr>
   <td>26</td>
   <td>Destroy Autoscaling Service Broker</td>
-  <td></td>
-  <td></td>
-  <td></td>
 </tr>
 <tr>
   <td>27</td>
   <td>Bootstrap</td>
-  <td></td>
-  <td></td>
-  <td></td>
 </tr>
 <tr>
   <td>28</td>
   <td>MySQL Rejoin Unsafe Errand</td>
-  <td></td>
-  <td></td>
-  <td></td>
 </tr>
 </table>
 
