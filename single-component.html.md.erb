@@ -5,59 +5,67 @@ owner: Release Engineering
 
 <strong><%= modified_date %></strong>
 
-This topic explains how the scale of different PCF components affects uptime during upgrades, and which components are scalable.  It also describes the order in which Ops Manager performs upgrades on individual components during a full system upgrade.
+This topic describes the order in which Ops Manager upgrades components and runs tasks during a full platform upgrade. It also explains how the scale of different PCF components affects uptime during upgrades, and which components are scalable. 
 
-## <a id= "single-components"></a>How Single-Component Scaling Affects Upgrades
+## <a id= "order"></a>Upgrade Order
 
-In [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) Ops Manager, the Pivotal Application Service (PAS) tile > **Resource Config** pane of shows the components that the BOSH Director installs:
+When performing an upgrade, Ops Manager first upgrades individual components, and then runs one-time tasks.
+
+1. The [Components](#components) section describes how Ops Manager upgrades PAS components and explains how individual component upgrades affect broader PAS capabilities.
+
+2. The [One-Time Tasks](#tasks) section lists the tasks that Ops Manager runs after it upgrades the PAS components.
+
+## <a id= "components"></a>Components
+
+Ops Manager upgrades PAS components in a fixed order that honors component dependencies and minimizes downtime and other system limitations during the upgrade process.
+
+The type and duration of limitations that you can expect during a PAS upgrade depend on how your components are scaled, and reflect the component upgrade order. 
+
+### <a id= "single-components"></a>How Single-Component Scaling Affects Upgrades
+
+In [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) Ops Manager, the Pivotal Application Service (PAS) tile > **Resource Config** pane shows the components that the BOSH Director installs:
 
 * **Scalable** component fields let you select the instance count from a range of settings or enter a custom value.
 * **Unscalable** component fields allow a maximum of one instance.
 
-When a component is scaled at a single instance, whether it's scalable or not... it can experience downtime and other limitations while the single VM restarts
-
-Affects app availability: Router, Diego cell
-
-Affects control plane availability -- You cannot push, stage, or restart an app:
+When a component is scaled at a single instance, it can experience downtime and other limitations while the single VM restarts. This behavior might be acceptable for a test environment. To avoid downtime in a production environment, you should scale any scalable components, such as HAProxy, Router, and Diego cells, to more than one instance.
 
 For more information about how the scale of each component affects upgrade behavior, see the [Upgrade Order and Limitations](#components-order-limit) table below.
 
-In a single-component environment, upgrading can cause the deployment to experience downtime and other limitations because there is no instance redundancy.
-Although this behavior might be acceptable for a test environment, you should configure the scalable components with editable instance values, such as HAProxy,
-Router, and Diego cells, for optimal performance in a production environment.
-
 <p class="note"><strong>Note:</strong> A full Ops Manager upgrade may take close to two hours, and you will have limited ability to deploy an application during this time.</p>
 
-## <a id= "components-order-limit"></a>Upgrade Order and Limitations
+### <a id= "order-behavior"></a>Component Upgrade Order and Behavior
 
-The table lists components in the order that Ops Manager upgrades each component and includes the following columns:
+The table lists components in the order that Ops Manager upgrades each component. It also lists which components are scalable and explains how component downtime affects PAS app and control availability. The table includes the following columns:
 
-* **Scalable?**: Indicates whether the component has an editable value or a preconfigured and unchangeable value of one instance.
+* **Scalable**: Indicates whether the component has an editable value or a preconfigured and unchangeable value of one instance.
     <p class="note"><strong>Note:</strong> For components marked with a checkmark in this column, we recommend that you change the preconfigured instance value of 1 to a value that best supports your production environment. For more information about scaling a deployment, refer to the [Scaling Cloud Foundry topic](../concepts/high-availability.html).
-* **Extended Downtime?**: Indicates that if there is only one instance of the component, that component is unavailable for up to five minutes during an Ops Manager upgrade.
+
+* **Extended Downtime**: Indicates that if there is only one instance of the component, that component is unavailable for up to five minutes during an Ops Manager upgrade.
+
+* **Downtime Affects...**: Indicates the plane of he PAS platform that component downtime affects, if the component is scaled at single instance:
+  - **Apps**: Downtime affects app availability.
+  - **Control Plane**: Apps remain available, but you cannot push, stage, or restart apps, or run other Cloud Foundry command-line interface (cf CLI) commands.
+
 * **Other Limitations and Information**: Provides the following information:
     * Component availability, behavior, and usage during an upgrade
     * Guidance on disabling the component before an upgrade</p>
-
-<p class="note"><strong>Note:</strong> The table does not include the Run Smoke Tests and Run CF Acceptance Tests errands and the Compilation job. Ops Manager runs the errands after it upgrades the components and creates compilation VMs as needed during the upgrade process.</p>
-
-### <a id= "components"></a>Components
 
 <table border="1" class="nice" >
 <tr>
   <th rowspan=2><strong>Upgrade Order</strong></th>
   <th rowspan=2><strong>Component</strong></th>
-  <th rowspan=2><strong>Scalable?</strong></th>
-  <th colspan=3><strong>Downtime?</strong></th>
+  <th rowspan=2><strong>Scalable</strong></th>
+  <th rowspan=2><strong>Extended Downtime</strong></th>
+  <th colspan=2><strong>Downtime Affects...</strong></th>
   <th rowspan=2><strong>Other Limitations and Information</strong></th>
 </tr>
 <tr>
-  <th><strong>Extended</strong></th>
   <th><strong>Apps</strong></th>
   <th><strong>Platform</strong></th>
 </tr>
 <tr>
-  <td>2</td>
+  <td>1</td>
   <td>NATS</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -66,7 +74,7 @@ The table lists components in the order that Ops Manager upgrades each component
   <td></td>
 </tr>
 <tr>
-  <td>3</td>
+  <td>2</td>
   <td>File Storage</td>
   <td></td>
   <td>&#10003;</td>
@@ -77,7 +85,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
-  <td>4</td>
+  <td>3</td>
   <td>MySQL Proxy</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -89,7 +97,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
-  <td>5</td>
+  <td>4</td>
   <td>MySQL Server</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -101,7 +109,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
-  <td>6</td>
+  <td>5</td>
   <td>Backup Restore Node</td>
   <td></td>
   <td></td>
@@ -110,7 +118,7 @@ The table lists components in the order that Ops Manager upgrades each component
   <td></td>
 </tr>
 <tr>
-  <td>7</td>
+  <td>6</td>
   <td>UAA</td>
   <td>&#10003;</td>
   <td></td>
@@ -121,7 +129,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
-  <td>8</td>
+  <td>7</td>
   <td>Cloud Controller</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -133,7 +141,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>8</td>
   <td>HAProxy</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -145,7 +153,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>9</td>
   <td>Router</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -157,7 +165,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>10</td>
   <td>MySQL Monitor</td>
   <td></td>
   <td></td>
@@ -166,7 +174,7 @@ The table lists components in the order that Ops Manager upgrades each component
   <td></td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>11</td>
   <td>Clock Global</td>
   <td>&#10003;</td>
   <td></td>
@@ -175,7 +183,7 @@ The table lists components in the order that Ops Manager upgrades each component
   <td></td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>12</td>
   <td>Cloud Controller Worker</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -184,7 +192,7 @@ The table lists components in the order that Ops Manager upgrades each component
   <td></td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>13</td>
   <td>Diego BBS</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -196,7 +204,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
-  <td>15</td>
+  <td>14</td>
   <td>Diego Brain</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -208,7 +216,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>15</td>
   <td>Diego Cell</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
@@ -222,18 +230,18 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>16</td>
   <td>Doppler Server</td>
   <td>&#10003;</td>
+  <td></td>
+  <td></td>
   <td></td>
   <td>
     Ops Manager operators experience 2-5 minute gaps in logging.
   </td>
-  <td></td>
-  <td></td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>17</td>
   <td>Loggregator Trafficcontroller</td>
   <td>&#10003;</td>
   <td></td>
@@ -244,7 +252,7 @@ The table lists components in the order that Ops Manager upgrades each component
   </td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>18</td>
   <td>TCP Router (if enabled)</td>
   <td>&#10003;</td>
   <td></td>
@@ -254,45 +262,45 @@ The table lists components in the order that Ops Manager upgrades each component
 </tr>
 </table>
 
-### <a id= "tasks"></a>One-Time Tasks
+## <a id= "tasks"></a>One-Time Tasks
 
-After Ops Manager upgrades the components above, it runs the following tasks in the following order:
+After Ops Manager upgrades components, it performs system checks and launches UI apps and other PAS components as Cloud Foundry apps. These tasks run in the following order:
 
 <table>
 <tr>
-  <td>20</td>
+  <td>1</td>
   <td>Push Apps Manager errand</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>2</td>
   <td>Run Smoke Tests</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>3</td>
   <td>Push Notifications</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>4</td>
   <td>Push Notifications UI</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>5</td>
   <td>Push Autoscaling</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>6</td>
   <td>Register Autoscaling Service Broker</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>7</td>
   <td>Destroy Autoscaling Service Broker</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>8</td>
   <td>Bootstrap</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>9</td>
   <td>MySQL Rejoin Unsafe Errand</td>
 </tr>
 </table>
