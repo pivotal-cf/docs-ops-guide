@@ -10,7 +10,7 @@ This topic describes how Pivotal Cloud Foundry (PCF) operators can deploy NFS or
 
 ## <a id='overview'></a> Overview
 
-A volume service gives apps access to a persistent filesystem, such as NFS or SMB. By performing the procedures in this topic, operators can add a volume service to the [Marketplace](../devguide/services/index.html) that provides an NFSv3 filesystem or an SMB share.
+A volume service gives apps access to a persistent filesystem, such as NFS or SMB. By performing the procedures in this topic, operators can add a volume service to the [Marketplace](../devguide/services/index.html) that provides an NFS filesystem or an SMB share.
 
 Developers can then use the [Cloud Foundry Command Line Interface](../cf-cli/index.html) (cf CLI) to create service instances of the volume service and bind them to their apps. For more information, see the [Using an External File System (Volume Services)](../devguide/services/using-vol-services.html) topic.
 
@@ -43,11 +43,11 @@ To enable NFS volume services in PCF, do the following:
 
 1. Click **Application Containers**.
 
-1. Under **Enabling NFSv3 volume services**, select **Enable**.
-  <p class="note"><strong>Note:</strong> In a clean install, NFSv3 volume services are enabled by default. In an upgrade, NFSv3 volume services match the setting of the previous deployment.</p>
+1. Under **Enabling NFS volume services**, select **Enable**.
+  <p class="note"><strong>Note:</strong> In a clean install, NFS volume services are enabled by default. In an upgrade, NFS volume services match the setting of the previous deployment.</p>
     <%= image_tag('er-config-app-vol-svc.png') %>
 
-1. (Optional) To configure LDAP for NFSv3 volume services, perform the following steps:
+1. (Optional) To configure LDAP for NFS volume services, perform the following steps:
   <p class="note"><strong>Note:</strong> If you already use an LDAP server with your network-attached storage (NAS) file server, enter its information below. This ensures that the indentities known to the file server match those checked by the PCF NFS driver.</p>
   * For **LDAP Service Account User**, enter either the full domain name (DN) for the service account or the username of the service account that manages volume services, depending on how your LDAP server is configured. This value needs to be exactly what you would enter when binding the account to your LDAP server.
   * For **LDAP Service Account Password**, enter the password for the service account.
