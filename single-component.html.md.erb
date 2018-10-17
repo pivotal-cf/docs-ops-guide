@@ -19,7 +19,11 @@ When performing an upgrade, Ops Manager first upgrades individual components, an
 
 Ops Manager upgrades PAS components in a fixed order that honors component dependencies and minimizes downtime and other system limitations during the upgrade process.
 
-The type and duration of limitations that you can expect during a PAS upgrade depend on how your components are scaled, and reflect the component upgrade order. 
+The type and duration of downtime and other limitations that you can expect during a PAS upgrade reflect the following:
+
+* Component instance scaling. See [How Single-Component Scaling Affects Upgrades](#single-components)
+
+* Component upgrade order. See [Component Upgrade Order and Behavior](#order-behavior)
 
 ### <a id= "single-components"></a>How Single-Component Scaling Affects Upgrades
 
@@ -30,22 +34,22 @@ In [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF)
 
 When a component is scaled at a single instance, it can experience downtime and other limitations while the single VM restarts. This behavior might be acceptable for a test environment. To avoid downtime in a production environment, you should scale any scalable components, such as HAProxy, Router, and Diego cells, to more than one instance.
 
-For more information about how the scale of each component affects upgrade behavior, see the [Upgrade Order and Limitations](#components-order-limit) table below.
+For more information about how the scale of each component affects upgrade behavior, see the [Component Upgrade Order and Behavior](#order-behavior) table below.
 
 <p class="note"><strong>Note:</strong> A full Ops Manager upgrade may take close to two hours, and you will have limited ability to deploy an application during this time.</p>
 
 ### <a id= "order-behavior"></a>Component Upgrade Order and Behavior
 
-The table lists components in the order that Ops Manager upgrades each component. It also lists which components are scalable and explains how component downtime affects PAS app and control availability. The table includes the following columns:
+The table lists components in the order that Ops Manager upgrades each. It also lists which components are scalable and explains how component downtime affects PAS app and control availability. The table includes the following columns:
 
-* **Scalable**: Indicates whether the component has an editable value or a preconfigured and unchangeable value of one instance.
-    <p class="note"><strong>Note:</strong> For components marked with a checkmark in this column, we recommend that you change the preconfigured instance value of 1 to a value that best supports your production environment. For more information about scaling a deployment, refer to the [Scaling Cloud Foundry topic](../concepts/high-availability.html).
+* **Scalable**: Indicates whether the component is scalable above a single instance.
+    <p class="note"><strong>Note:</strong> For components marked with a checkmark in this column, we recommend that you change the preconfigured instance value of <code>1</code> to a value that best supports your production environment. For more information about scaling a deployment, refer to the [Scaling Cloud Foundry topic](../concepts/high-availability.html).</p>
 
 * **Extended Downtime**: Indicates that if there is only one instance of the component, that component is unavailable for up to five minutes during an Ops Manager upgrade.
 
-* **Downtime Affects...**: Indicates the plane of he PAS platform that component downtime affects, if the component is scaled at single instance:
-  - **Apps**: Downtime affects app availability.
-  - **Control Plane**: Apps remain available, but you cannot push, stage, or restart apps, or run other Cloud Foundry command-line interface (cf CLI) commands.
+* **Downtime Affects...**: Indicates the plane of the PAS platform that component downtime affects, if the component is scaled at single instance:
+  - **Apps**: Downtime can affect app availability.
+  - **Platform**: Apps remain available during component downtime, but you cannot push, stage, or restart apps, or run other Cloud Foundry command-line interface (cf CLI) commands.
 
 * **Other Limitations and Information**: Provides the following information:
     * Component availability, behavior, and usage during an upgrade
@@ -79,10 +83,8 @@ The table lists components in the order that Ops Manager upgrades each component
   <td></td>
   <td>&#10003;</td>
   <td></td>
+  <td>&#10003;</td>
   <td></td>
-  <td>
-    You cannot push, stage, or restart an app when an upgrade affects the file storage server.
-  </td>
 </tr>
 <tr>
   <td>3</td>
@@ -90,7 +92,7 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>&#10003;</td>
   <td>&#10003;</td>
   <td></td>
-  <td></td>
+  <td>&#10003;</td>
   <td>
     The MySQL Proxy is responsible for managing failover of the MySQL Servers.
     If the Proxy becomes unavailable, then access to the MySQL Server could be broken.
@@ -102,7 +104,7 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>&#10003;</td>
   <td>&#10003;</td>
   <td></td>
-  <td></td>
+  <td>&#10003;</td>
   <td>
     The MySQL Server is responsible for persisting internal databases for the platform.
     If the MySQL Server becomes unavailable, then platform services that rely upon a database (Cloud Controller, UAA) will also become unavailable. See <a href="./internal-databases.html#downtime-effects">Effects of MySQL Downtime</a> for details.
@@ -123,9 +125,9 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>&#10003;</td>
   <td></td>
   <td></td>
-  <td></td>
+  <td>&#10003;</td>
   <td>
-    If a user has an active authorization token prior to performing an upgrade, the user can still log in using either a UI or the CLI.
+    If a user has an active authorization token prior to performing an upgrade, they can still log in using either a UI or the CLI.
   </td>
 </tr>
 <tr>
@@ -134,18 +136,15 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>&#10003;</td>
   <td>&#10003;</td>
   <td></td>
+  <td>&#10003;</td>
   <td></td>
-  <td>
-    Your ability to manage an app when an upgrade affects the Cloud Controller depends on the number of instances that you specify for the Cloud Controller and Diego components.
-    If either of these components are single components, you cannot push, stage, or restart an app during the upgrade.
-  </td>
 </tr>
 <tr>
   <td>8</td>
   <td>HAProxy</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
-  <td></td>
+  <td>&#10003;</td>
   <td></td>
   <td>
     HAProxy is used to load-balance incoming requests to the Router.
@@ -157,7 +156,7 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>Router</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
-  <td></td>
+  <td>&#10003;</td>
   <td></td>
   <td>
     The Router is responsible for routing requests to their application containers.
@@ -197,11 +196,8 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>&#10003;</td>
   <td>&#10003;</td>
   <td></td>
+  <td>&#10003;</td>
   <td></td>
-  <td>
-    Your ability to manage an app when an upgrade affects the Diego BBS depends on the number of instances that you specify for the Diego BBS, Cloud Controller, and other Diego components.
-    If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
-  </td>
 </tr>
 <tr>
   <td>14</td>
@@ -209,24 +205,18 @@ The table lists components in the order that Ops Manager upgrades each component
   <td>&#10003;</td>
   <td>&#10003;</td>
   <td></td>
+  <td>&#10003;</td>
   <td></td>
-  <td>
-    Your ability to manage an app when an upgrade affects the Diego Brain depends on the number of instances that you specify for the Diego Brain, Cloud Controller, and other Diego components.
-    If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
-  </td>
 </tr>
 <tr>
   <td>15</td>
   <td>Diego Cell</td>
   <td>&#10003;</td>
   <td>&#10003;</td>
-  <td></td>
-  <td></td>
+  <td>&#10003;</td>
+  <td>&#10003;</td>
   <td>
-    Your ability to manage an app when an upgrade affects Diego Cells depends on the number of instances that you specify for the Diego Cells, Cloud Controller, and other Diego components.
-    If any of these components have only one instance, you may fail to push, stage, or restart an app during the upgrade.
-    <br/>
-    If you only have one Diego Cell, upgrading it causes downtime for the apps that run on it, including the Apps Manager app and the App Usage Service.
+    If you only have one Diego Cell, upgrading causes downtime for all apps that run on it. These include apps pushed with <code>cf push</code> and apps automatically installed by PAS, like Apps Manager and the App Usage Service.
   </td>
 </tr>
 <tr>
