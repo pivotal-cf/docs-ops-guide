@@ -9,9 +9,12 @@ To configure Gorouter behavior for handling client certificates, select one of t
 The behavior controlled by this property is global; it applies to all requests received by Gorouters so configured.
 
 If Gorouter is the first point of TLS termination (your load balancer does not terminate TLS, and passes the request through to Gorouter over TCP), consider the following:
-- Only option **Router does not request client certificates** should be used with PAS, as the Gorouters are in that product receive requests for the system domain. Many clients of CF platform APIs do not present client certificates in TLS handshakes, so the first point of TLS termination for requests to the system domain must not request them.
-- All options may be used for routers deployed with the Isolation Segment tile, as these only receive requests for app domains.
-- Options **Router requests but does not require client certificates** and **Router requires client certificates** will trigger browsers to prompt users to select a certificate if the browser is not already configured with a certificate signed by one of the CAs configured for the router.
+
+* Only option **Router does not request client certificates** should be used with PAS, as the Gorouters are in that product receive requests for the system domain. Many clients of CF platform APIs do not present client certificates in TLS handshakes, so the first point of TLS termination for requests to the system domain must not request them.
+
+* All options may be used for routers deployed with the Isolation Segment tile, as these only receive requests for app domains.
+
+* Options **Router requests but does not require client certificates** and **Router requires client certificates** will trigger browsers to prompt users to select a certificate if the browser is not already configured with a certificate signed by one of the CAs configured for the router.
 
 If Gorouter is not the first point of TLS termination, this property can be used to secure communications between the Load Balancer and Gorouter. The router must be configured with the CA used to sign the client certification the load balancer will present.
 
