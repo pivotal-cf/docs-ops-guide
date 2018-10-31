@@ -29,7 +29,7 @@ PCF provides the following options for scheduling the disk cleanup process on Di
 
 * **Never clean up the Cell Disk**: Pivotal does not recommend using this option for production environments.
 * **Routinely clean up the Cell Disk**: This option makes the cell schedule a disk cleanup whenever a container is created. Running the disk cleanup process this frequently can result in a negative impact on the cell performance.
-* **Clean up Disk space once a threshold is reached**: This option makes the cell schedule the disk cleanup process only when a configurable disk space threshold is reached or exceeded.
+* **Clean up Disk space once usage fills disk**: This option makes the cell schedule the disk cleanup process only when downloaded layers encroach on the space reserved for other jobs (configurable).
 
 See the [Configure Disk Cleanup Scheduling](#applying-configuration) section of this topic to select one of these options.
 
@@ -39,36 +39,14 @@ Selecting the best option for disk cleanup depends on the workload that the Dieg
 
 For PCF installations that primarily run buildpack-based apps, Pivotal recommends selecting the **Routinely clean up Cell Disk space** option. The **Routinely clean up Cell Disk space** option ensures that when a new stack becomes available on a cell, the old stack is dropped immediately from the cache.
 
-For PCF installations that primarily run Docker images, or both Docker images and buildpack-based apps, Pivotal recommends selecting the **Clean up Disk space once a threshold is reached** option with a reasonable threshold.
+For PCF installations that primarily run Docker images, or both Docker images and buildpack-based apps, Pivotal recommends selecting the **Clean up Disk space once usage fills disk** option with a reasonable reserve.
 
-### <a id='choosing-a-threshold'></a> Calculating a Threshold
+### <a id='choosing-a-reserve'></a> Calculating a Reserve
 
-To calculate a realistic value when configuring the disk cleanup threshold, you must identify some of the most frequently used Docker images in your PCF installation. Docker images tend to be constructed by creating layers over existing base images. In some cases, you may find it easier to identify which base Docker images are most frequently used.  
+The space reserved for other jobs will be set to a sensible default in the case that the only other component to consider is the diego-cache.
+If you are deploying with add-ons which will require space in the ephemeral disk, you may wish to increase the reserve.
 
-To calculate the disk cleanup threshold, do the following:
-
-1. Identify the most frequently used Docker images or base Docker images. 
-
-1. Using the Docker CLI, measure the size of those images.
-<br><br>
-For example, you may determine the most frequently used images in a test deployment are `openjdk:7`, `nginx:1.13`, and `php:7-apache`. In this case, you can run the following commands to pull the identified images locally, then measure their sizes:
-<pre class="terminal">
-$> docker pull openjdk:7
-$> docker pull nginx:1.13
-$> docker pull php:7-apache
-<br><br>
-$> docker images
-REPOSITORY       TAG          IMAGE ID          CREATED             SIZE
-php              7-apache     2720c02fc079      2 days ago          391 MB
-openjdk          7            f45207c01009      5 days ago          586 MB
-nginx            1.13         3448f27c273f      5 days ago          109 MB
-...
-</pre>
-
-1. Calculate the threshold as the sum of the frequently used image sizes plus a 15-20% buffer.
-<br><br>
-For example, using the output above, the sample threshold calculation is: (&nbsp;391&nbsp;MB&nbsp;+&nbsp;586&nbsp;MB&nbsp;+&nbsp;109&nbsp;MB&nbsp;)&nbsp;*&nbsp;1.2&nbsp;=&nbsp;1303.2&nbsp;MB
-
+Caution: if the reserve is set too high for "just in case scenarios", there will be less disk for Image layers. This may result in regular slowdowns of activty on Cells.
 
 ## <a id='applying-configuration'></a> Configure Disk Cleanup Scheduling
 
@@ -79,7 +57,7 @@ For example, using the output above, the sample threshold calculation is: (&nbsp
 
 1. Under **Docker Images Disk-Cleanup Scheduling on Cell VMs**, select an option.
 
-1. If you select **Clean up Disk space once threshold is reached**, you must complete the **Threshold of Disk Used (MB)** field. Enter the disk space threshold amount in MB that you calculated for your deployment, as described in [Calculating a Threshold](#choosing-a-threshold).
+1. If you select **Clean up Disk space once usage fills disk**, you must complete the **Reserved amount of Disk (MB)** field. Enter the disk space reserved amount in MB that you calculated for your deployment, as described in [Calculating a Reserve](#choosing-a-reserve).
 
 1. Click **Save**.
 
