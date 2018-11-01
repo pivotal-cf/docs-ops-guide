@@ -7,7 +7,15 @@ This topic describes the procedure for migrating Pivotal Application Service (PA
 
 In PAS v2.1 and earlier, internal system MySQL databases ran [MariaDB](http://www.mariadb.org) with cluster nodes communicating over plaintext. PAS v2.2 offers a second option for internal databases: a [Percona Server](https://www.percona.com/software/mysql-database/percona-server) that uses TLS to encrypt communication between server cluster nodes.
 
-<p class="note warning"><strong>WARNING:</strong> This procedure causes temporary downtime of PAS system functions, as described in <a href="#mysql-downtime">MySQL Downtime</a>. It does not interrupt apps hosted by PAS, unless they use TCP routing. Applications using TCP routes will not be routable during the migration.</p>
+<p class="note warning"><strong>WARNING:</strong> This procedure causes temporary downtime of PAS system functions,
+as described in <a href="#mysql-downtime">MySQL Downtime</a>. It does not interrupt apps hosted by PAS, unless they use TCP routing.
+Applications using TCP routes will not be routable during the migration.
+
+It is <strong>very important</strong> to verify your mysql server instances have adequate persistent disk space. Since twice as much space is needed during the
+migration, therefore none of the mysql server nodes should have 50% or higher persistent disk utilization. To be safe, a maximum 40% utilization
+is advised. Increase the peristent disk size adequately before starting the migration process.
+
+</p>
 
 
 ## <a id='procedure'></a> Procedure
