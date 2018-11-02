@@ -1,0 +1,75 @@
+---
+title: Scaling MySQL
+owner: MySQL
+---
+
+This topic discusses two Pivotal Application Service (PAS) Galera Clusters scaling examples. 
+
+Use this data as guidance to ensure your Galera Clusters are scaled to handle the number of application instances running on your deployment. 
+
+## Example 1: Pivotal Web Services Production Environment
+
+* IAAS: AWS
+* Application Instances: ~ 23,000
+* Average SQL Queries Per Minute: ~ 308,000
+
+### Recommended VM Sizing
+
+<table>
+	<tr>
+		<th>Setting</th>
+		<th>Value</th>
+	</tr>
+	<tr>
+		<td>VM  Type</td>
+		<td>c4.2xlarge</td>
+	</tr>
+	<tr>
+		<td>Storage Volume Type</td>
+		<td>io1</td>
+	</tr>	
+	<tr>
+		<td>Storage Volume Size</td>
+		<td>98GB</td>
+	</tr>
+	<tr>
+		<td>Storage Volume IOPS</td>
+		<td>2000</td>
+	</tr>	
+</table>
+
+The resulting load on the instance is average IOPS of 220 and 80% of the storage volume usage.
+
+## Example 2: Cloud Foundry Diego Test Environment
+
+* IAAS: GCP
+* Application Instances: 250,000
+* Average Queries Per Minute: ~5,081,900
+
+### Recommended VM Sizing
+
+<table>
+	<tr>
+		<th>Setting</th>
+		<th>Value</th>
+	</tr>
+	<tr>
+		<td>VM  Type</td>
+		<td>n1-standard-16</td>
+	</tr>	
+	<tr>
+		<td>Storage Volume Type</td>
+		<td>pd-ssd</td>
+	</tr>	
+	<tr>
+		<td>Storage Volume Size</td>
+		<td>1TB</td>
+	</tr>
+	<tr>
+		<td>Storage Volume IOPS</td>
+		<td><strong>tbd</strong></td>
+	</tr>	
+
+</table>
+
+
