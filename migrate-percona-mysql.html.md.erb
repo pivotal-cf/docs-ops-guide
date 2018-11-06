@@ -5,7 +5,7 @@ owner: MySQL
 
 This topic describes the procedure for migrating Pivotal Application Service (PAS) internal MySQL databases from the less secure MariaDB infrastructure to a TLS-encrypted Percona stack.
 
-In PAS v2.1 and earlier, internal system MySQL databases ran [MariaDB](http://www.mariadb.org) with cluster nodes communicating over plaintext. PAS v2.2 offers a second option for internal databases: a [Percona Server](https://www.percona.com/software/mysql-database/percona-server) that uses TLS to encrypt communication between server cluster nodes.
+In PAS v2.2 and PAS v2.3, you could use either [MariaDB](http://www.mariadb.org) with cluster nodes communicating over plaintext, or a [Percona Server](https://www.percona.com/software/mysql-database/percona-server) that uses TLS to encrypt communication between server cluster nodes. In PAS v2.4, MariaDB is deprecated, and you must migrate your internal databases to Percona and redeploy PAS v2.3 before you can upgrade to PAS v2.4.
 
 <p class="note warning"><strong>WARNING:</strong> This procedure causes temporary downtime of PAS system functions, as described in <a href="#mysql-downtime">MySQL Downtime</a>. It does not interrupt apps hosted by PAS, unless they use TCP routing. Applications using TCP routes will not be routable during the migration.</p>
 
