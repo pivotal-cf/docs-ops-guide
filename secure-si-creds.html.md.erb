@@ -60,24 +60,24 @@ The procedures in this document are only effective for services that support sto
 
 ## <a id='pas-config'></a> Step 1: Configure the PAS Tile
 
-You must configure the PAS tile to support securing service instance credentials in CredHub. From the PAS tile in Ops Manager, complete the following steps: 
+## <a id='pas-config'></a> Step 1: Configure the PAS Tile
 
-1. Select the **CredHub** pane.
-    <%= image_tag('images/credhub.png') %>
-1. Choose the location of your CredHub Database. PAS includes this CredHub database for services to store their service instance credentials. If you chose **External**, enter the following:
-    * **Hostname**: The IP address of your database server. 
-    * **TCP Port**: The port of your database server, such as `3306`. 
-    * **Username**: A unique username that can access this specific database on the database server. 
-    * **Password**: The password for the provided username. 
-    * **Database CA Certificate**: A certificate to use for encrypting traffic to and from the database. 
-1. Under **Encryption Keys**, specify a key to use for encrypting and decrypting the values stored in the CredHub database.
-    * **Name**: Enter the name of the key.
-    * **Key**: Enter a key that is at least 20 characters in length. 
-    * **Primary**: Select this checkbox to use this key as your primary key. 
-    <p class="note"><strong>Note</strong>: Ensure that you only mark one key as <strong>Primary</strong>. The UI includes an <strong>Add</strong> button to add more keys to support key rotation.</p>
-1. If your deployment uses any PCF services that support storing service instance credentials in CredHub and you want to enable this feature, select the **Secure Service Instance Credentials** checkbox. 
-1. Select the **Resource Config** pane.
-1. In the **CredHub** row, under the **Job** column, set the number of instances to at least `2`. This is the minimum instance count required for high availability.
+To configure the PAS tile to support securing service instance credentials in CredHub, you need to:
+
+* In the **CredHub** pane, provide at least one encryption key. CredHub supports multiple encryption key providers.
+
+* In the **Resource Config** pane, set the number of **CredHub** instances to at least one.
+
+To configure the PAS tile, follow the instructions in the PAS installation topic for your IaaS:
+
+* [Deploying PAS on AWS](../customizing/pcf-aws-manual-er-config.html#credhub)
+* [Deploying PAS on AWS using Terraform](../customizing/aws-er-config-terraform.html#credhub)
+* [Deploying PAS on Azure](../customizing/azure-er-config.html#credhub)
+* [Deploying PAS on Azure using Terraform](../customizing/azure-er-config-terraform.html#credhub)
+* [Deploying PAS on GCP](../customizing/gcp-er-config.html#credhub)
+* [Deploying PAS on GCP using Terraform](../customizing/gcp-er-config-terraform.html#credhub)
+* [Installing PAS after Deploying PCF on OpenStack](../customizing/openstack-er-config.html#credhub)
+* [Configuring PAS for vSphere](../customizing/config-er-vmware.html#credhub)
 
 ## <a id='asgs'></a> Step 2: Create Application Security Groups
 
