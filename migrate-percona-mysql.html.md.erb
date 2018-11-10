@@ -12,6 +12,10 @@ In PAS v2.1 and earlier, internal system MySQL databases ran [MariaDB](http://ww
 
 ## <a id='procedure'></a> Procedure
 
+1. **Scale Up the Persistent Disk of your Cluster**: Ensure the the MySQL Server job has a disk usage of `40%` or lower, as the migration requires twice as much space as normal.  
+	1. Check the persistent disk usage of the MySQL Server job in the **Status** tab of the PAS tile. 
+	1. Scale up the persistent disk of the MySQL Server job as necessary.
+
 1. **Scale Down Your Cluster**: If your internal databases MySQL cluster runs three or more nodes, scale it down to a single node before you migrate. In the PAS tile > **Resource Config** > **MySQL Server** settings, set **Instances** to `1`. Click **Save**.
 <p class='note'><strong>Note:</strong> Do not click <strong>Apply Changes</strong> yet.</p>
 
