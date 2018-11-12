@@ -1,12 +1,11 @@
 ---
 title: Configuring Cell Disk Cleanup Scheduling
-owner: Ops Manager
+owner: Garden
 ---
 
 <strong><%= modified_date %></strong>
 
 This topic describes how to configure disk cleanup scheduling on Diego cells in Pivotal Cloud Foundry (PCF).
-
 
 ## <a id='what'></a> What is Disk Cleanup
 
@@ -27,48 +26,44 @@ To perform a detailed analysis of disk usage in your PAS deployment, see [Examin
 
 PCF provides the following options for scheduling the disk cleanup process on Diego cells: 
 
-* **Never clean up the Cell Disk**: Pivotal does not recommend using this option for production environments.
-* **Routinely clean up the Cell Disk**: This option makes the cell schedule a disk cleanup whenever a container is created. Running the disk cleanup process this frequently can result in a negative impact on the cell performance.
-* **Clean up Disk space once a threshold is reached**: This option makes the cell schedule the disk cleanup process only when a configurable disk space threshold is reached or exceeded.
+* **Never clean up the Cell Disk**: Pivotal does not recommend selecting this option for production environments.
+* **Routinely clean up the Cell Disk**: This option makes the cell schedule a disk cleanup whenever a container is created. 
+Running the disk cleanup process this frequently can result in a negative impact on the cell performance.
+* **Clean up Disk space once usage fills disk**: This option makes the cell schedule the disk cleanup process only when disk usage 
+encroaches on the space reserved for other jobs.
 
 See the [Configure Disk Cleanup Scheduling](#applying-configuration) section of this topic to select one of these options.
 
 ### <a id='recommendations'></a> Recommendations
 
-Selecting the best option for disk cleanup depends on the workload that the Diego cells run. 
+To select the best option for disk cleanup, you must consider the workload that the Diego cells run. 
 
-For PCF installations that primarily run buildpack-based apps, Pivotal recommends selecting the **Routinely clean up Cell Disk space** option. The **Routinely clean up Cell Disk space** option ensures that when a new stack becomes available on a cell, the old stack is dropped immediately from the cache.
+For PCF installations that primarily run buildpack-based apps, 
+Pivotal recommends selecting the **Routinely clean up Cell Disk space** option. 
+The **Routinely clean up Cell Disk space** option ensures that when a new stack becomes available on a cell, 
+the old stack is dropped immediately from the cache.
 
-For PCF installations that primarily run Docker images, or both Docker images and buildpack-based apps, Pivotal recommends selecting the **Clean up Disk space once a threshold is reached** option with a reasonable threshold.
+For PCF installations that primarily run Docker images, 
+or both Docker images and buildpack-based apps, 
+Pivotal recommends selecting the **Clean up Disk space once usage fills disk** option.
 
-### <a id='choosing-a-threshold'></a> Calculating a Threshold
+### <a id='choosing-a-reserve'></a> Calculating a Reserve
 
-To calculate a realistic value when configuring the disk cleanup threshold, you must identify some of the most frequently used Docker images in your PCF installation. Docker images tend to be constructed by creating layers over existing base images. In some cases, you may find it easier to identify which base Docker images are most frequently used.  
+By default, the space reserved for other jobs is set to a reasonable value for the majority of PCF deployments. 
+The reserve default value accounts for the most typical deployment case where the only other component that 
+writes to <code>/var/vcap/data</code> is the Diego executor cache.
 
-To calculate the disk cleanup threshold, do the following:
+However, if you are deploying any BOSH add-ons that require space in the ephemeral disk,
+you may need to increase the reserve.
 
-1. Identify the most frequently used Docker images or base Docker images. 
+For more information on disk usage and garbage collection in GrootFS, 
+see [Understanding GrootFS Disk Usage](../concepts/grootfs-disk.html) 
+and [Examining GrootFS Disk Usage](../adminguide/examining_grootfs_disk.html).
 
-1. Using the Docker CLI, measure the size of those images.
-<br><br>
-For example, you may determine the most frequently used images in a test deployment are `openjdk:7`, `nginx:1.13`, and `php:7-apache`. In this case, you can run the following commands to pull the identified images locally, then measure their sizes:
-<pre class="terminal">
-$> docker pull openjdk:7
-$> docker pull nginx:1.13
-$> docker pull php:7-apache
-<br><br>
-$> docker images
-REPOSITORY       TAG          IMAGE ID          CREATED             SIZE
-php              7-apache     2720c02fc079      2 days ago          391 MB
-openjdk          7            f45207c01009      5 days ago          586 MB
-nginx            1.13         3448f27c273f      5 days ago          109 MB
-...
-</pre>
-
-1. Calculate the threshold as the sum of the frequently used image sizes plus a 15-20% buffer.
-<br><br>
-For example, using the output above, the sample threshold calculation is: (&nbsp;391&nbsp;MB&nbsp;+&nbsp;586&nbsp;MB&nbsp;+&nbsp;109&nbsp;MB&nbsp;)&nbsp;*&nbsp;1.2&nbsp;=&nbsp;1303.2&nbsp;MB
-
+<p class="note warning"><strong>Warning:</strong> Setting the reserve to an excessive value can cause garbage collection to occur more frequently.
+An increase in frequency can result in regular slowdowns in performance of apps on particular Diego Cells. 
+Pivotal recommends leaving the default value for the reserve unless you are advised to modify it.
+</p>
 
 ## <a id='applying-configuration'></a> Configure Disk Cleanup Scheduling
 
@@ -79,7 +74,10 @@ For example, using the output above, the sample threshold calculation is: (&nbsp
 
 1. Under **Docker Images Disk-Cleanup Scheduling on Cell VMs**, select an option.
 
-1. If you select **Clean up Disk space once threshold is reached**, you must complete the **Threshold of Disk Used (MB)** field. Enter the disk space threshold amount in MB that you calculated for your deployment, as described in [Calculating a Threshold](#choosing-a-threshold).
+1. If you select **Clean up Disk space once usage fills disk**, you can modify the **Reserved amount of Disk (MB)** field. 
+Pivotal recommends that you leave the default value of <code>15360</code> MB, or 15GB, 
+in **Reserved amount of Disk (MB)** unless you are instructed to change it.
+For more information, see [Calculating a Reserve](#choosing-a-reserve).
 
 1. Click **Save**.
 
