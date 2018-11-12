@@ -26,10 +26,10 @@ To perform a detailed analysis of disk usage in your PAS deployment, see [Examin
 
 PCF provides the following options for scheduling the disk cleanup process on Diego cells: 
 
-* **Never clean up the Cell Disk**: Pivotal does not recommend selecting this option for production environments.
-* **Routinely clean up the Cell Disk**: This option makes the cell schedule a disk cleanup whenever a container is created. 
+* **Never clean up the Cell disk-space**: Pivotal does not recommend selecting this option for production environments.
+* **Routinely clean up the Cell disk-space**: This option makes the cell schedule a disk cleanup whenever a container is created. 
 Running the disk cleanup process this frequently can result in a negative impact on the cell performance.
-* **Clean up Disk space once usage fills disk**: This option makes the cell schedule the disk cleanup process only when disk usage 
+* **Clean up disk-space once usage fills disk**: This option makes the cell schedule the disk cleanup process only when disk usage 
 encroaches on the space reserved for other jobs.
 
 See the [Configure Disk Cleanup Scheduling](#applying-configuration) section of this topic to select one of these options.
@@ -39,13 +39,13 @@ See the [Configure Disk Cleanup Scheduling](#applying-configuration) section of 
 To select the best option for disk cleanup, you must consider the workload that the Diego cells run. 
 
 For PCF installations that primarily run buildpack-based apps, 
-Pivotal recommends selecting the **Routinely clean up Cell Disk space** option. 
-The **Routinely clean up Cell Disk space** option ensures that when a new stack becomes available on a cell, 
+Pivotal recommends selecting the **Routinely clean up Cell disk-space** option. 
+The **Routinely clean up Cell disk-space** option ensures that when a new stack becomes available on a cell, 
 the old stack is dropped immediately from the cache.
 
 For PCF installations that primarily run Docker images, 
 or both Docker images and buildpack-based apps, 
-Pivotal recommends selecting the **Clean up Disk space once usage fills disk** option.
+Pivotal recommends selecting the **Clean up disk-space once usage fills disk** option.
 
 ### <a id='choosing-a-reserve'></a> Calculating a Reserve
 
@@ -74,7 +74,7 @@ Pivotal recommends leaving the default value for the reserve unless you are advi
 
 1. Under **Docker Images Disk-Cleanup Scheduling on Cell VMs**, select an option.
 
-1. If you select **Clean up Disk space once usage fills disk**, you can modify the **Reserved amount of Disk (MB)** field. 
+1. If you select **Clean up disk-space once usage fills disk**, you can modify the **Reserved amount of Disk (MB)** field. 
 Pivotal recommends that you leave the default value of <code>15360</code> MB, or 15GB, 
 in **Reserved amount of Disk (MB)** unless you are instructed to change it.
 For more information, see [Calculating a Reserve](#choosing-a-reserve).
