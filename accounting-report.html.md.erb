@@ -40,6 +40,7 @@ You can obtain the following system usage information:
 * [App Usage](#app-usage)
 * [Task Usage](#task-usage)
 * [Service Usage](#service-usage)
+* [All Orgs Usage](#org-usage)
 
 ### <a id='app-usage'></a> App Usage
 
@@ -191,6 +192,36 @@ $ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/system_report/service_usages" -k -v
           "service_plan_name": "fake-plan",
           "service_plan_guid": "ac09f607-f4e5-4807-af16-e95856061bd7"
         }
+</pre>
+
+### <a id='org-usage'></a> All Orgs Usage
+
+This is a variation on the App Usage command below, except here you do not need to supply an org GUID.  Omitting the org GUID will now return org-level usage for any org you have access to in the system.
+You can order_by total_instance_hours or megabyte_hours.  'order by' defaults to ascending so that in a long list of orgs those with the most usage will appear at the bottom and be visibile.
+Prepend with - to change the sort to descending.
+
+Use `curl` to make a request to `/app_usages` on the Usage Service endpoint to show system-wide organization usage data:
+
+<pre class="terminal">
+$ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/app_usages?start=2018-010-01&end=2018-11-01&order_by=total_instance_hours" -k -v \
+-H "authorization: `cf oauth-token`"
+{
+   "period_start":"2018-01-10T00:00:00Z",
+   "period_end":"2018-11-01T23:59:59Z",
+   "Organizations":[ 
+      {
+         "guid":"d5c9f947-df85-45af-abab-00a2174598f9",
+         "total_instance_hours":"91535.6",
+         "megabyte_hours":"1830712.2"
+      },
+      {
+         "guid":"a9605fa4-99da-4932-84f5-3db8698c1fc1",
+         "total_instance_hours":"99440.8",
+         "megabyte_hours":"96698582.2"
+      }
+   ]
+}
+
 </pre>
  
 ## <a id="individual_org"></a> Obtain Org Usage Information ###
