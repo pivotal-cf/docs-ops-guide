@@ -1,0 +1,36 @@
+---
+title: Identifying the Source Deployment of Metrics
+owner: 
+---
+
+This topic describes operators can identify which runtime deployment the metrics in their Pivotal Cloud Foundry (PCF) foundation are coming from. For example, an operator may want to know whether metrics are coming from Pivotal Application Service (PAS) or PCF Isolation Segment. 
+
+## <a id="metrics-prefix"></a> Tile GUIDs
+
+As the value for the `deployment` tag, metrics use `cf-` and then the GUID for your PAS tile. With a GUID, you can uniquely identify your metrics by tile. 
+
+### <a id="no-guide"></a> Configure PAS to not use GUID
+
+In PAS v2.3 and earlier, metrics have a <code>deployment</code> value of <code>cf</code>. If you have scripts that rely on the `cf` value, you can re-enable the value. Pivotal does not
+recommend re-enabling the `cf` value as a permanent solution. If you
+can resolve script dependencies, resolve them and leave the default setting.
+
+To re-enable the `cf` value, do the following:
+
+1. Go to the **Advanced Features** pane of the PAS tile. 
+
+1. Select **Use "cf" as deployment name in emitted metrics instead of unique name**.
+
+1. Click **Save**.
+
+## <a id="human-friendly-metric-tags"></a> Human-friendly Metadata
+
+PAS and other runtime tiles tag metrics with additional metadata to help operators better parse the metrics coming from their different deployments. Also, downstream monitoring products, such as [PCF Healthwatch](https://docs.pivotal.io/pcf-healthwatch), use this metadata to display human readable names. 
+
+The tags are as follows:
+
+* `product`: The value of this tag is always `Pivotal Application Service` for the PAS tile. The tags for other products are: `PCF Isolation Segment`, `PCF Small Footprint`, `Pivotal Application Service for Windows 2012R2`, and `Pivotal Application Service for Windows`.
+* `system_domain`: The value of this tag corresponds to what you set in the **System Domain** field in the **Domains** tab of a given tile. 
+* `placement_tag`: The value of this tag is always `null` for PAS. However, for PAS for Windows and PCF Isolation Segment tiles, you can configure this value using the **Segment Name** field in the **Application Containers** pane. An Operator can display capacity and other relevant metrics using the `placement_tag` name. This makes it easier to reason about the importance of a given segment when issues arise.
+
+These tags are properties of the [metron](https://docs.pivotal.io/pivotalcf/2-4/loggregator/architecture.html#metron) agent running on each VM in a deployment. 
