@@ -196,9 +196,10 @@ $ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/system_report/service_usages" -k -v
 
 ### <a id='org-usage'></a> All Orgs Usage
 
-This is a variation on the App Usage command below, except here you do not need to supply an org GUID.  Omitting the org GUID will now return org-level usage for any org you have access to in the system.
-You can order_by total_instance_hours or megabyte_hours.  'order by' defaults to ascending so that in a long list of orgs those with the most usage will appear at the bottom and be visibile.
-Prepend with - to change the sort to descending.
+This command returns org-level usage for any org you have access to in the system. The command works like the [App Usage](#org-app-usage) command, except you do not supply an org GUID.
+You can set `order_by` to either `total_instance_hours` or `megabyte_hours`.
+
+The `order_by` ordering defaults to ascending, which lists orgs with the most usage at the end of the output. To change the sort ordering to descending, prepend the `order_by` argument with a `-`, as in `order_by=-megabyte_hours`.
 
 Use `curl` to make a request to `/app_usages` on the Usage Service endpoint to show system-wide organization usage data:
 
