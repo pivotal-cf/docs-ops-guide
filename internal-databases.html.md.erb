@@ -1,15 +1,19 @@
 ---
-title: Scaling Down Your MySQL Cluster
+title: Managing Internal Databases
 owner: MySQL
 ---
 
-This topic describes how to safely scale down your MySQL cluster to a single node.
+This topic describes how to safely scale down your MySQL cluster to a single node. It also provides example sizing data from two environments that have significant load on their MySQL clusters.
 
-By default, MySQL is a single node. To take advantage of the high availability features of MySQL, you may have scaled the configuration up to three nodes.
+## <a id="scale-down-procedure"></a> Scale Down Your MySQL Cluster
 
-<p class="note"><strong>Note</strong>: If you are running the MySQL cluster with only a single node, you do not need to perform these steps.</p>
+This procedure explains how to safely scale your MySQL cluster down to a single node. If you are already running the MySQL cluster with a single node, you do not need to perform these steps.
 
-## <a id="check-health"></a>Check the Health of Your Cluster
+By default, internal MySQL deploys as a single node. To take advantage of the high availability features of MySQL, you may have scaled the configuration up to three or more server nodes.
+
+<p class="note"><strong>Note</strong>: The procedures do not apply to databases configured as external in the PAS tile **Databases** pane. </p>
+
+### <a id="check-health"></a>Check the Health of Your Cluster
 
 Before scaling down your MySQL cluster, perform the following actions to ensure the cluster is healthy.
 
@@ -82,7 +86,7 @@ Before scaling down your MySQL cluster, perform the following actions to ensure 
 
 1. If each MySQL server instance does not return the same `created_at` result, contact [Pivotal Support](https://support.pivotal.io/) before proceeding further or making any changes to your deployment. If each MySQL server instance does return the same result, then you can safely proceed to scaling down your cluster to a single node by performing the steps in the following section.
 
-## <a id="scale-down"></a>Scale Down Your Cluster
+### <a id="scale-down"></a>Scale Down Your Cluster
 
 1. From the PCF **Installation Dashboard**, click the **Pivotal Application Service** tile.
 1. Select **Resource Config**.
@@ -90,3 +94,80 @@ Before scaling down your MySQL cluster, perform the following actions to ensure 
 1. Click **Save** to apply the changes.
 1. Delete your test organization with the following cf CLI command:
 	<pre class="terminal">$ cf delete-org data-integrity-test-organization</pre>
+
+## <a id='sizing-examples'></a> MySQL Cluster Sizing Examples
+
+This topic describes two sizing examples for internal MySQL in Pivotal App Service (PAS). 
+
+Use this data as guidance to ensure your MySQL Clusters are scaled to handle the number of app instances running on your deployment. 
+
+### <a id="pws"></a> Example 1: Pivotal Web Services Production Environment
+
+The data in this section comes from the Pivotal-managed Cloud Foundry deployment, Pivotal Web Services (PWS). 
+
+<p class="note"><strong>Note</strong>: This deployment differs from most PCF deployments in that the MySQL database is used for Diego, but not the Cloud Controller. This  means that while there are a large number of queries per second, most of them are reading data, and the number of writes is not realistically reflected.</p>
+
+* **IAAS**: AWS
+* **App Instances**: ~23,000
+* **Average SQL Queries Per Minute**: ~308,000
+* **Average IOPS**: 220
+* **Storage Volume Usage**: 80%
+
+#### <a id="pws-sizing"></a> VM Sizing
+
+<table>
+	<tr>
+		<th>Setting</th>
+		<th>Value</th>
+	</tr>
+	<tr>
+		<td>VM  Type</td>
+		<td>c4.2xlarge</td>
+	</tr>
+	<tr>
+		<td>Storage Volume Type</td>
+		<td>io1</td>
+	</tr>	
+	<tr>
+		<td>Storage Volume Size</td>
+		<td>98GB</td>
+	</tr>
+	<tr>
+		<td>Storage Volume IOPS</td>
+		<td>2000</td>
+	</tr>	
+</table>
+
+The resulting load on the instance is average IOPS of 220 and 80% of the storage volume usage.
+
+### <a id="diego"></a> Example 2: Cloud Foundry Diego Test Environment
+
+The data in this section comes from an environment used by the Cloud Foundry Diego team to test the MySQL cluster with a high load similar to one generated large deployment. 
+
+* **IAAS**: GCP
+* **App Instances**: 250,000
+* **Average SQL Queries Per Minute**: ~5,100,000
+* **Average IOPS**: 
+	* **Reads**: 3.63
+	* **Writes**: 363.98
+
+#### <a id="diego-sizing"></a> VM Sizing
+
+<table>
+	<tr>
+		<th>Setting</th>
+		<th>Value</th>
+	</tr>
+	<tr>
+		<td>VM  Type</td>
+		<td>n1-standard-16</td>
+	</tr>	
+	<tr>
+		<td>Storage Volume Type</td>
+		<td>pd-ssd</td>
+	</tr>	
+	<tr>
+		<td>Storage Volume Size</td>
+		<td>1TB</td>
+	</tr>
+</table>
