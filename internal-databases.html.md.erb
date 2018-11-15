@@ -3,9 +3,9 @@ title: Managing Internal Databases
 owner: MySQL
 ---
 
-This topic describes two procedures for managing the internal MySQL databases used by Pivotal Application Service (PAS) system components: scaling down your MySQL cluster, and migrating the cluster to a database stack that uses TLS encryption.
+This topic describes two procedures for managing the internal MySQL databases used by Pivotal Application Service (PAS) system components: scaling down your MySQL cluster, and migrating the cluster to a database stack that uses TLS encryption. It also provides example sizing data from two environments that have significant load on their MySQL clusters. 
 
-These procedures do not apply to databases configured as external in the PAS tile **Databases** pane.
+<p class="note"><strong>Note</strong>: The procedures do not apply to databases configured as external in the PAS tile **Databases** pane. </p>
 
 PAS components that use system databases include the Cloud Controller, Diego brain, Gorouter, and the User Authorization and Authentication (UAA) server. See [Cloud Foundry Components](../concepts/architecture/index.html).
 
@@ -108,3 +108,82 @@ Before scaling down your MySQL cluster, perform the following actions to ensure 
 In PAS v2.1 and earlier, internal system MySQL databases ran [MariaDB](http://www.mariadb.org) with cluster nodes communicating over plaintext. PAS v2.2 offers a second option for internal databases: a [Percona Server](https://www.percona.com/software/mysql-database/percona-server) that uses TLS to encrypt communication between server cluster nodes.
 
 For more information on migrating PAS internal MySQL databases from the less secure MariaDB infrastructure to a TLS-encrypted Percona stack, see [Migrating to Internal Percona MySQL](./migrate-percona-mysql.html).
+
+## <a id='sizing-examples'></a> MySQL Cluster Sizing Examples
+
+This topic describes two sizing examples for internal MySQL in Pivotal App Service (PAS). 
+
+Use this data as guidance to ensure your MySQL Clusters are scaled to handle the number of app instances running on your deployment. 
+
+### <a id="pws"></a> Example 1: Pivotal Web Services Production Environment
+
+The data in this section comes from the Pivotal-managed Cloud Foundry deployment, Pivotal Web Services (PWS). 
+
+<p class="note"><strong>Note</strong>: This deployment differs from most PCF deployments in that the MySQL database is used for Diego, but not the Cloud Controller. This  means that while there are a large number of queries per second, most of them are reading data, and the number of writes is not realistically reflected.</p>
+
+* **IAAS**: AWS
+* **App Instances**: ~23,000
+* **Average SQL Queries Per Minute**: ~308,000
+* **Average IOPS**: 220
+* **Storage Volume Usage**: 80%
+
+#### <a id="pws-sizing"></a> VM Sizing
+
+<table>
+	<tr>
+		<th>Setting</th>
+		<th>Value</th>
+	</tr>
+	<tr>
+		<td>VM  Type</td>
+		<td>c4.2xlarge</td>
+	</tr>
+	<tr>
+		<td>Storage Volume Type</td>
+		<td>io1</td>
+	</tr>	
+	<tr>
+		<td>Storage Volume Size</td>
+		<td>98GB</td>
+	</tr>
+	<tr>
+		<td>Storage Volume IOPS</td>
+		<td>2000</td>
+	</tr>	
+</table>
+
+The resulting load on the instance is average IOPS of 220 and 80% of the storage volume usage.
+
+### <a id="diego"></a> Example 2: Cloud Foundry Diego Test Environment
+
+The data in this section comes from an environment used by the Cloud Foundry Diego team to test the MySQL cluster with a high load similar to one generated large deployment. 
+
+* **IAAS**: GCP
+* **App Instances**: 250,000
+* **Average SQL Queries Per Minute**: ~5,100,000
+* **Average IOPS**: 
+	* **Reads**: 3.63
+	* **Writes**: 363.98
+
+#### <a id="diego-sizing"></a> VM Sizing
+
+<table>
+	<tr>
+		<th>Setting</th>
+		<th>Value</th>
+	</tr>
+	<tr>
+		<td>VM  Type</td>
+		<td>n1-standard-16</td>
+	</tr>	
+	<tr>
+		<td>Storage Volume Type</td>
+		<td>pd-ssd</td>
+	</tr>	
+	<tr>
+		<td>Storage Volume Size</td>
+		<td>1TB</td>
+	</tr>
+</table>
+
+
