@@ -47,7 +47,6 @@ To enable NFS volume services in PCF, do the following:
   * For **LDAP Service Account Password**, enter the password for the service account.
   * For **LDAP Server Host**, enter the hostname or IP address of the LDAP server.
   * For **LDAP Server Port**, enter the LDAP server port number. If you do not specify a port number, Ops Manager uses 389.
-  * For **LDAP Server Protocol**, enter the server protocol. If you do not specify a protocol, Ops Manager uses TCP.
   * For **LDAP User Fully-Qualified Domain Name**, enter the full DN to the base organizational unit (OU) where your users exist in the LDAP tree. The NFS driver searches for users in this OU and the subtree beneath it using the search filter `(&(objectClass=User)(cn=USERNAME))`. This filter is not configurable.  
   For example, if your users belong to an OU `users` and your domain is `example.com`, the full DN to enter would be: `OU=users,DC=example,DC=com`.
 
@@ -61,5 +60,6 @@ To enable NFS volume services in PCF, do the following:
 
 1. (Optional) Enable access to the `nfs-experimental` service. See [NFS Volume Service](../devguide/services/using-vol-services.html#nfs) for details about the differences between the two `nfs` services. 
   <pre class="terminal">$ cf enable-service-access nfs-experimental</pre>
+
 
 After completing these steps, developers can use the cf CLI to create service instances of the `nfs` service and bind them to their apps.
