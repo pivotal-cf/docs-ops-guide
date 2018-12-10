@@ -46,11 +46,13 @@ There is no maximum number of Administrators that can log into Ops Manager simul
 
 There are no functionality restrictions placed on Administrators who are logged in simultaneously. Multiple Administrators can reconfigure the same fields at the same time. If you intend to have two or more Administrators reconfiguring the same fields, coordinate their planned actions so they do not accidentally overwrite each other's work.
 
-However, only one deploy can occur at a time. If one Administrator clicks **Apply Changes**, all other attempts to deploy will fail until the deploy currently in progress completes.
+However, only one deploy can occur at a time. If one Administrator clicks **Apply Changes**, all other attempts to deploy will fail until the deploy currently in progress completes. 
 
 For example: User A and User B both authenticate as Ops Manager Administrators and access the same Ops Manager instance at the same time. User A reconfigures a field in the Syslog pane of the BOSH Director, clicks **Save**, and clicks **Apply Changes** to deploy the BOSH Director. User A's deploy initiates.
 
 Two minutes later, User B reconfigures a field in the Syslog pane of the BOSH Director, clicks **Save**, and clicks **Apply Changes** to deploy. User B is unable to initiate a deploy because the deploy User A initiated is already in progress. User B must wait for User A's deploy to complete before they can click **Apply Changes**.
+
+Furthermore, if User B attempts to change Ops Manager fields while User A's deploy is in progress, User B's changes will be erased when User A's deploy completes successfully. User B must wait until no deploy is taking place before making changes and redeploying.
 
 <p class="note"><strong>Note</strong>: Some Ops Manager Administrators configure external apps to modify their Ops Manager instances. For example, continuous integration and deployment (CI/CD) pipelines can have their own Administrator accounts. These apps have Administrator user privileges identical to human Administrator user accounts. </br>
 </br>
