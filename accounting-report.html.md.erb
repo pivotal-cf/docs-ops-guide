@@ -35,12 +35,12 @@ To perform the procedures in this topic, you must target the endpoint of your Cl
 
 ## <a id="targetcc"></a>Obtain System Usage Information
 
-You can obtain the following system usage information:
+You can obtain the following system-wide usage information:
 
 * [App Usage](#app-usage)
 * [Task Usage](#task-usage)
 * [Service Usage](#service-usage)
-* [All Orgs Usage](#org-usage)
+* [All Orgs App Usage](#org-usage)
 
 ### <a id='app-usage'></a> App Usage
 
@@ -196,9 +196,10 @@ $ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/system_report/service_usages" -k -v
 
 ### <a id='org-usage'></a> All Orgs Usage (Beta)
 
-Calling the `app_usages` endpoint directly under your system domain returns org-level usage for any org you have access to. The command works like the [App Usage](#org-app-usage) command, except you do not supply an org GUID.
+The `app_usages` endpoint directly under your system domain returns system-wide app usage for all orgs that you have access to. The command works like the org-specific [App Usage](#org-app-usage) command, except you do not supply an org GUID.
+You can set `order_by` to either `total_instance_hours` or `megabyte_hours`.
 
-You can set `order_by` to either `total_instance_hours` or `megabyte_hours`.  The `order_by` ordering defaults to ascending, which lists orgs with the most usage at the end of the output. To change the sort ordering to descending, prepend the `order_by` argument with a `-`, as in `order_by=-megabyte_hours`.
+The `order_by` ordering defaults to ascending, which lists orgs with the most usage at the end of the output. To change the sort ordering to descending, prepend the `order_by` argument with a `-`, as in `order_by=-megabyte_hours`.
 
 Use `curl` to make a request to `/app_usages` on the Usage Service endpoint to show system-wide organization usage data:
 
@@ -229,7 +230,7 @@ This beta API endpoint may change; please try it out and help Pivotal make it be
 
 ## <a id="individual_org"></a> Obtain Org Usage Information ###
 
-You can obtain the following org usage information:
+You can obtain the following org-specific usage information:
 
 * [App Usage](#org-app-usage)
 * [Task Usage](#org-task-usage)
