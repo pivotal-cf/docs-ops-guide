@@ -5,18 +5,27 @@ owner: BAM
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to use the Cloud Foundry Command Line Interface (cf CLI) to retrieve system and org level usage information about your apps, tasks, and service instances through the Cloud Controller and Usage Service APIs.
+This topic describes how to use the Cloud Foundry Command Line Interface (cf CLI) to retrieve historical system- and org-level usage information about your apps, tasks, and service instances through the Cloud Controller and Usage Service APIs.
 
-You can also access usage information by using Apps Manager. For more information, see the [Monitoring Instance Usage with Apps Manager](accounting-report-apps-man.html) topic.
+You can also access usage information by using Apps Manager. For more information, see the [Reporting Instance Usage with Apps Manager](accounting-report-apps-man.html) topic.
 
-## <a id='target'></a>Target and Log In
+
+## <a id='target'></a> Target and Log In
 
 To perform the procedures in this topic, you must target the endpoint of your Cloud Controller and log in. If you do not have the cf CLI installed, see the [Installing the cf CLI](../cf-cli/install-go-cli.html) topic.
+
+There are two ways to target your Cloud Controller endpoint. You can run the following `curl` command to target the endpoint and log in before making each request:
+<pre class='terminal'>
+$ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/system_report/app_usages" -k -v \
+-H "authorization: `cf oauth-token`"
+</pre>
+
+You can also use `cf curl` to target the endpoint, log in, and stay logged in for each request. To target the endpoint and log in using `cf curl`, do the following:
 
  1. Target the endpoint of your Cloud Controller:
   <pre class="terminal">$ cf api api.YOUR-SYSTEM-DOMAIN</pre>
 
- 2. Log in as admin or as an Org Manager or Org Auditor for the org you want to obtain information about.
+ 1. Log in as admin or as an Org Manager or Org Auditor for the org you want to obtain information about.
   <pre class="terminal">
   $ cf login -u admin
   API endpoint:  api.YOUR-SYSTEM-DOMAIN
@@ -33,7 +42,8 @@ To perform the procedures in this topic, you must target the endpoint of your Cl
   Space:           development
   </pre>
 
-## <a id="targetcc"></a>Obtain System Usage Information
+
+## <a id="targetcc"></a> Obtain System Usage Information
 
 You can obtain the following system-wide usage information:
 
@@ -228,7 +238,7 @@ $ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/app_usages?start=2018-010-01&end=20
 This beta API endpoint may change; please try it out and help Pivotal make it better.
 
 
-## <a id="individual_org"></a> Obtain Org Usage Information ###
+## <a id="individual_org"></a> Obtain Org Usage Information
 
 You can obtain the following org-specific usage information:
 
@@ -241,7 +251,7 @@ You must have the GUID of the org you want to obtain information about in order 
 $ cf org YOUR-ORG --guid
 </pre>
 
-### <a id='org-app-usage'></a>App Usage
+### <a id='org-app-usage'></a> App Usage
 
 Use `curl` to make a request to `/app_usages` on the Usage Service endpoint to show app usage in an org. You must complete the placeholders in `start=YYYY-MM-DD&end=YYYY-MM-DD` to define a date range.
 
@@ -267,7 +277,7 @@ $ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/organizations/YOUR-ORG-GUID/app_usa
    }
 </pre>
 
-### <a id='org-task-usage'></a>Task Usage
+### <a id='org-task-usage'></a> Task Usage
 
 Use `curl` to make a request to `/task_usages` on the Usage Service endpoint to show task usage in an org. You must complete the placeholders in `start=YYYY-MM-DD&end=YYYY-MM-DD` to define a date range.
 
@@ -310,9 +320,9 @@ $ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/organizations/YOUR-ORG-GUID/task_us
 }
 </pre>
 
-<p class="note"><strong>Note</strong>: In the <code>/task_usages</code> endpoint, <code>memory_in_mb_per_instance</code> is the memory of the task.</p> 
+<p class="note"><strong>Note:</strong> In the <code>/task_usages</code> endpoint, <code>memory_in_mb_per_instance</code> is the memory of the task.</p> 
 
-### <a id='org-service-usage'></a>Service Usage
+### <a id='org-service-usage'></a> Service Usage
 
 Use `curl` to make a request to `/service_usages` on the Usage Service endpoint to show service usage in an org. You must complete the placeholders in `start=YYYY-MM-DD&end=YYYY-MM-DD` to define a date range.
 
@@ -342,195 +352,12 @@ $ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/organizations/`cf org YOUR-ORG --gu
  }
 </pre>
 
-## <a id="obtain_apps"></a> Obtain App Information ###
-
-You can obtain the following app information:
-
-* [All Apps](#all-apps)
-* [App Summary](#app-summary)
-
-### <a id="all-apps"></a> All Apps
-
-Use the `apps` endpoint to retrieve information about all of your apps:
-
-<pre class="terminal">
-$ cf curl /v2/apps
-{
- "total_results": 2,
- "total_pages": 1,
- "prev_url": null,
- "next_url": null,
- "resources": [
-    {
-        "metadata": {
-           "guid": "acf2ce33-ee92-54TY-9adb-55a596a8dcba",
-           "url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba",
-           "created_at": "2016-02-06T17:40:31Z",
-           "updated_at": "2016-02-06T18:09:17Z"
-        },
-        "entity": {
-           "name": "YOUR-APP",
- [...]
-           "space_url": "/v2/spaces/a0205ae0-a691-4667-92bc-0d0dd712b6d3",
-           "stack_url": "/v2/stacks/86205f38-84fc-4bc2-b2b8-af7f55669f04",
-           "routes_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/routes",
-           "events_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/events",
-           "service_bindings_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/service_bindings",
-          "route_mappings_url": "/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba/route_mappings"
-           }
-        },
-    {
-        "metadata": {
-           "guid": "79bb58cc-3737-43be-ac70-39a2843b5178",
-           "url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178",
-           "created_at": "2016-02-15T23:25:47Z",
-           "updated_at": "2016-03-12T21:54:59Z"
-        },
-        "entity": {
-           "name": "ANOTHER-APP",
-[...]
-           "space_url": "/v2/spaces/a0205ae0-a691-4667-92bc-0d0dd712b6d3",
-           "stack_url": "/v2/stacks/86205f38-84fc-4bc2-b2b8-af7f55669f04",
-           "routes_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/routes",
-           "events_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/events",
-           "service_bindings_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/service_bindings",
-           "route_mappings_url": "/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178/route_mappings"
-         }
-      }
-   ]
-}
-</pre>
-
-The output of this command provides the URL endpoints for each app, within the `metadata: url` section. You can use these app-specific endpoints to retrieve more information about that app. In the example above, the endpoints for the two apps are `/v2/apps/acf2ce33-ee92-54TY-9adb-55a596a8dcba` and `/v2/apps/79bb58cc-3737-4540-ac70-39a2843b5178`.
-
-### <a id="app-summary"></a> App Summary
-
-Use the `summary` endpoint under each app-specific URL to retrieve the instances and any bound services for that app:
-
-<pre class="terminal">
-$ cf curl /v2/apps/acf2ce75-ee92-4bb6-9adb-55a596a8dcba/summary
-{
-	   "guid": "acf2ce75-ee92-4bb6-9adb-55a596a8dcba",
-   "name": "YOUR-APP",
-   "routes": [
-   {
-      "guid": "7421b6af-75cb-4334-a862-bc5e1ababfe6",
-      "host": "YOUR-APP",
-      "path": "",
-      "domain": {
-         "guid": "fb6bd89f-2ed9-49d4-9ad1-97951a573135",
-         "name": "YOUR-SYSTEM-DOMAIN.io"
-     }
-  }
-],
-  "running_instances": 5,
-  "services": [
-     {
-        "guid": "b9cdr456-3c61-4f8a-a307-9b4ty836fb2e",
-        "name": "YOUR-APP-db",
-        "bound_app_count": 1,
-        "last_operation": {
-           "type": "create",
-           "state": "succeeded",
-           "description": "",
-           "updated_at": null,
-           "created_at": "2016-02-05T04:58:46Z"
-     },
-        "dashboard_url": "https://cloudfoundry.appdirect.com/api/custom/cloudfoundry/v2/sso/start?serviceUuid=b5cASDF-3c61-4f8a-a307-9bf85j45fb2e",
-        "service_plan": {
-           "guid": "fbcec3af-3e8d-4ee7-adfe-3f12a137ed66",
-           "name": "turtle",
-           "service": {
-              "guid": "34dbc753-34ed-4cf1-9a87-a255dfca5339b",
-              "label": "elephantsql",
-              "provider": null,
-              "version": null
-[...]
-</pre>
-   
-To view the `app_usages` report that covers app usage within an org during a period of time, see [Obtain Usage Information About an Org](#individual_org).
-
-## <a id="obtain_services"></a> Obtain Services Information ###
-
-Use the `service_instances?` endpoint to retrieve information about both bound and unbound service instances:
-
-<pre class="terminal">
-$ cf curl /v2/service_instances?
-{
-   "total_results": 4,
-   "total_pages": 1,
-   "prev_url": null,
-   "next_url": null,
-   "resources": [
-      {
-       "metadata": {
-           "guid": "b9cdr456-3c61-4f8a-a307-9b4ty836fb2e",
-           "url": "/v2/service_instances/b9cdr456-3c61-4f8a-a307-9b4ty836fb2e",
-           "created_at": "2016-02-05T04:58:46Z",
-           "updated_at": null
-       },
-       "entity": {
-           "name": "YOUR-BOUND-DB-INSTANCE",
-           "credentials": {},
-           "service_plan_guid": "fbcec3af-3e8d-4ee7-adfe-3f12a137ed66",
-           "space_guid": "a0205ae0-a691-4667-92bc-0d0dd712b6d3",
-           "gateway_data": null,
-           "dashboard_url": "https://cloudfoundry.appdirect.com/api/custom/cloudfoundry/v2/sso/start?serviceUuid=b9cdr456-3c61-4f8a-a307-9b4ty836fb2e",
-           "type": "managed_service_instance",
-           "last_operation": {
-               "type": "create",
-               "state": "succeeded",
-               "description": "",
-               "updated_at": null,
-               "created_at": "2016-02-05T04:58:46Z"
-            },
-            "tags": [],
-            "space_url": "/v2/spaces/a0205ae0-a691-4667-92bc-0d0dd712b6d3",
-            "service_plan_url": "/v2/service_plans/fbcec3af-3e8d-4ee7-adfe-3f12a137ed66",
-            "service_bindings_url": "/v2/service_instances/b9cdr456-3c61-4f8a-a307-9b4ty836fb2e/service_bindings",
-            "service_keys_url": "/v2/service_instances/b9cdr456-3c61-4f8a-a307-9b4ty836fb2e/service_keys",
-            "routes_url": "/v2/service_instances/b9cdr456-3c61-4f8a-a307-9b4ty836fb2e/routes"
-         }
-      },
-      {
-      "metadata": {
-           "guid": "78be3399-bdc7-4fbf-a1a4-6858a50d0ff3",
-           "url": "/v2/service_instances/78be3399-bdc7-4fbf-a1a4-6858a50d0ff3",
-           "created_at": "2016-02-15T23:45:30Z",
-           "updated_at": null
-       },
-       "entity": {
-           "name": "YOUR-UNBOUND-DB-INSTANCE",
-           "credentials": {},
-           "service_plan_guid": "fbcec3af-3e8d-4ee7-adfe-3f12a137ed66",
-           "space_guid": "a0205ae0-a691-4667-92bc-0d0dd712b6d3",
-           "gateway_data": null,
-           "dashboard_url": "https://cloudfoundry.appdirect.com/api/custom/cloudfoundry/v2/sso/start?serviceUuid=78be3399-bdc7-4fbf-a1a4-6858a50d0ff3",
-           "type": "managed_service_instance",
-           "last_operation": {
-              "type": "create",
-              "state": "succeeded",
-              "description": "",
-              "updated_at": null,
-              "created_at": "2016-02-15T23:45:30Z"
-              },
-           "tags": [],
-           "space_url": "/v2/spaces/a0205ae0-a691-4667-92bc-0d0dd712b6d3",
-           "service_plan_url": "/v2/service_plans/fbcec3af-3e8d-4ee7-adfe-3f12a137ed66",
-           "service_bindings_url": "/v2/service_instances/78be3399-bdc7-4fbf-a1a4-6858a50d0ff3/service_bindings",
-           "service_keys_url": "/v2/service_instances/78be3399-bdc7-4fbf-a1a4-6858a50d0ff3/service_keys",
-           "routes_url": "/v2/service_instances/78be3399-bdc7-4fbf-a1a4-6858a50d0ff3/routes"
-           }
-        },
-      ]
-   }
-</pre>
 
 ## <a id="database-example"></a> Example: Autogenerated Database Usage Reports
 
 For security compliance and recordkeeping, some PCF customers run a Concourse CI/CD pipeline that regularly does the following: 
 
-1. Collects data about all service instances from a PCF foundation, such as  database instance information, tile or database type, database creator, and date of creation or deletion. This data is available through the APIs in the above sections of this topic as well as the [Security Event Logging](../loggregator/cc-uaa-logging.html) topic. 
+1. Collects data about all service instances from a PCF foundation, such as database instance information, tile or database type, database creator, and date of creation or deletion. This data is available through the APIs in the above sections of this topic as well as the [Security Event Logging](../loggregator/cc-uaa-logging.html) topic. 
 
 1. Merges and formats data about services instances into a JSON output file and saves it to an S3 bucket. 
 
@@ -538,5 +365,3 @@ For security compliance and recordkeeping, some PCF customers run a Concourse CI
   1. Parses the data
   1. Eliminates duplicate entries from previous reports 
   1. Sends the data to a database compliance system through APIs
-
-
