@@ -10,39 +10,6 @@ This topic describes how to use the Cloud Foundry Command Line Interface (cf CLI
 You can also access usage information by using Apps Manager. For more information, see the [Reporting Instance Usage with Apps Manager](accounting-report-apps-man.html) topic.
 
 
-## <a id='target'></a> Target and Log In
-
-To perform the procedures in this topic, you must target the endpoint of your Cloud Controller and log in. If you do not have the cf CLI installed, see the [Installing the cf CLI](../cf-cli/install-go-cli.html) topic.
-
-There are two ways to target your Cloud Controller endpoint. You can run the following `curl` command to target the endpoint and log in before making each request:
-<pre class='terminal'>
-$ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/system_report/app_usages" -k -v \
--H "authorization: `cf oauth-token`"
-</pre>
-
-You can also use `cf curl` to target the endpoint, log in, and stay logged in for each request. To target the endpoint and log in using `cf curl`, do the following:
-
- 1. Target the endpoint of your Cloud Controller:
-  <pre class="terminal">$ cf api api.YOUR-SYSTEM-DOMAIN</pre>
-
- 1. Log in as admin or as an Org Manager or Org Auditor for the org you want to obtain information about.
-  <pre class="terminal">
-  $ cf login -u admin
-  API endpoint:  api.YOUR-SYSTEM-DOMAIN
-  Email: user<span>@</span>example.com
-  Password:
-  Authenticating...
-  OK
-  ...
-  Targeted org  YOUR-ORG
-  Targeted space  development
-  API endpoint:    http<span>s:</span>//api.YOUR-SYSTEM-DOMAIN (API version:  2.52.0)
-  User:            user<span>@</span>example.com
-  Org:             YOUR-ORG
-  Space:           development
-  </pre>
-
-
 ## <a id="targetcc"></a> Obtain System Usage Information
 
 You can obtain the following system usage information:
