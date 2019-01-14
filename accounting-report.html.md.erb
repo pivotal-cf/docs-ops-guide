@@ -52,6 +52,16 @@ $ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/system_report/app_usages" -k -v \
 }
 </pre>
 
+"average_app_instances" is calculated by taking the total "app_instance_hours" (see below) on the foundation for that time period (month or year) and dividing it by the total hours for that time period.
+
+Example January average_app_instances calculation: 100 applications running 300 hours each would be (100*300)/744 = 40.3.
+
+"maximum_app_instances" is the highest concurrent number of app instances running on the foundation for that time period (month or year).
+
+"app_instance_hours" is the total number of hours application instances have been running on the foundation for that time period (month or year).
+
+
+
 ### <a id='task-usage'></a> Task Usage
 
 Use `curl` to make a request to `/system_report/task_usages` on the Usage Service endpoint to show system-wide task usage data:
