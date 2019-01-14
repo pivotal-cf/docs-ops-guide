@@ -7,8 +7,18 @@ This topic describes the procedure for migrating Pivotal Application Service (PA
 
 In PAS v2.1 and earlier, internal system MySQL databases ran [MariaDB](http://www.mariadb.org) with cluster nodes communicating over plaintext. PAS v2.2 offers a second option for internal databases: a [Percona Server](https://www.percona.com/software/mysql-database/percona-server) that uses TLS to encrypt communication between server cluster nodes.
 
-<p class="note warning"><strong>WARNING:</strong> This procedure causes temporary downtime of PAS system functions, as described in <a href="#mysql-downtime">MySQL Downtime</a>. It does not interrupt apps hosted by PAS, unless they use TCP routing. Applications using TCP routes will not be routable during the migration.</p>
+<p class="note warning"><strong>WARNING:</strong> This procedure causes temporary downtime of PAS system functions,
+as described in <a href="#downtime-effects">Effects of MySQL Downtime</a> and <a href="#mysql-downtime">MySQL Migration Downtime</a>. It does not interrupt apps hosted by PAS, unless they use TCP routing.
+Applications using TCP routes will not be routable during the migration.
+</p>
 
+## <a id='downtime-effects'></a> Effects of MySQL Downtime
+
+During internal MySQL server downtime, the Cloud Controller and other platform components that use system databases become unavailable. This prevents users from pushing apps, scaling apps, and running other cf CLI commands.
+
+If the PAS UAA is configured to use an internal database, then the UAA also becomes unavailable. This outage temporarily prevents users from signing into PAS orgs and spaces, Apps Manager, and other PAS interfaces.
+
+PAS UAA downtime caused by internal MySQL migration also temporarily prevents users from logging into any PAS apps that use the [Single Sign-On (SSO)](https://docs.pivotal.io/p-identity/index.html) service.
 
 ## <a id='procedure'></a> Procedure
 
@@ -22,7 +32,9 @@ In PAS v2.1 and earlier, internal system MySQL databases ran [MariaDB](http://ww
 1. **Change the System Databases Location**: In the PAS tile > **Databases** pane, under **Choose the location of your system databases**, select to **Internal Databases - MySQL - Percona XtraDB Cluster**. Click **Save**.
 <%= image_tag("system-db-tls.png") %>
 
-1. **Migrate the Database**: Return to the **Installation Dashboard**, click **Review Pending Changes**, and click **Apply Changes** to re-deploy PAS with the new internal database. Internal system databases become temporarily unavailable to PAS components during this migration step, but PAS apps continue to run. See [MySQL Migration Downtime](#mysql-downtime) for details. You do not need to run any errands for this step.
+1. **Migrate the Database**: Return to the **Installation Dashboard**, click **Review Pending Changes**, and click **Apply Changes** to re-deploy PAS with the new internal database. 
+	* You do not need to run any errands for this step.
+	* Internal system databases become temporarily unavailable to PAS components during this migration step, but PAS apps continue to run. See [MySQL Migration Downtime](#mysql-downtime) for details. 
 
 1. **Scale the Cluster Back Up**: If you want to scale the database cluster back up to multiple server nodes, increase the instance count under **Resource Config** > **MySQL Server**. Then click **Save** to save the change and **Review Pending Changes** and **Apply Changes** in the Installation Dashboard to re-deploy.
 
@@ -36,14 +48,6 @@ The length of downtime depends on multiple factors, including database size, per
 - **When you scale back up**: PAS updates the first node to make it part of a three-node cluster.
 
 During migration, BOSH orphans the two disks used by the scaled-down nodes. This does not increase the risk of losing data written before the migration, and these orphaned disks can act as a backup, should the migration fail. If the migration fails, contact [Pivotal Support](https://pivotal.io/support).
-
-#### <a id='downtime-effects'></a> Effects of MySQL Downtime
-
-During internal MySQL server downtime, the Cloud Controller and other platform components that use system databases become unavailable. This prevents users from pushing apps, scaling apps, and running other cf CLI commands.
-
-If the PAS UAA is configured to use an internal database, then the UAA also becomes unavailable. This outage temporarily prevents users from signing into PAS orgs and spaces, Apps Manager, and other PAS interfaces.
-
-PAS UAA downtime caused by internal MySQL migration also temporarily prevents users from logging into any PAS apps that use the [Single Sign-On (SSO)](https://docs.pivotal.io/p-identity/index.html) service.
 
 #### <a id='migration-length'></a> Migration Length
 
