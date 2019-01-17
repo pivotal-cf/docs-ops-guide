@@ -32,7 +32,7 @@ PAS UAA downtime caused by internal MySQL migration also temporarily prevents us
 1. **Change the System Databases Location**: In the PAS tile > **Databases** pane, under **Choose the location of your system databases**, select to **Internal Databases - MySQL - Percona XtraDB Cluster**. Click **Save**.
 <%= image_tag("system-db-tls.png") %>
 
-1. **Migrate the Database**: Return to the **Installation Dashboard**, click **Review Pending Changes**, and click **Apply Changes** to re-deploy PAS with the new internal database. 
+1. **Migrate the Database**: Return to the **Installation Dashboard**, click **Review Pending Changes**, and click **Apply Changes** to re-deploy PAS with the new internal database. Consider the following when performing this step:
 	* You do not need to run any errands for this step.
 	* Internal system databases become temporarily unavailable to PAS components during this migration step, but PAS apps continue to run. See [MySQL Migration Downtime](#mysql-downtime) for details. 
 
