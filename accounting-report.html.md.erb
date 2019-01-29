@@ -13,7 +13,12 @@ You can also access usage information by using Apps Manager. For more informatio
 
 To retrieve current app and event information from the Cloud Controller, see [Retrieving App and Event Information](https://docs.cloudfoundry.org/running/managing-cf/app-event.html) in the open-source Cloud Foundry documentation.
 
-In order to use the usage service without the admin scope: 1) you need to have the usage_service.audit group and 2) your client needs to have the usage_service.audit scope. The cf client doesn't currently have this scope. 
+Your user needs cloud_controller.admin or usage_service.audit group
+
+<pre class="terminal">
+uaac member add usage_service.audit ((username))
+</pre>
+
 
 ## <a id="targetcc"></a> Obtain System Usage Information
 
