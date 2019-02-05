@@ -105,7 +105,7 @@ Refer to the table below for information about certain industry-standard Identit
   </tr>
 </table>
 
-<p class="note"><strong>Note:</strong> Some Identity Providers allow uploads of Service Provider Metadata. Other providers require you to manually enter the Service Provider Metadata into a form.</p>
+<p class="note"><strong>Note:</strong> Some Identity Providers allow uploads of Service Provider Metadata. Other providers require you to manually enter the Service Provider Metadata into a form. If your Identity Provider requires manual entry but is not listed above, see the <a href="./ca-sso-config.html">CA SiteMinder SSO Integration Guide</a>.</p>
 
 
 ## <a id="configure-ldap"></a> Configure LDAP as an Identity Provider for PAS
@@ -141,7 +141,7 @@ For example, a domain named "cloud.example.com" typically uses the following LDA
 In the LDAP search filter string that you use to configure PAS, use `{0}` instead of the username. For example, use `cn={0}` to return all LDAP objects with the same common name as the username.
 <br><br>
 In addition to `cn`, other attributes commonly searched for and returned are `mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
-    <p class="note"><strong>Note:</strong> For instructions for testing and troubleshooting your LDAP search filters, see the <a href="https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry">Configuring LDAP Integration with Pivotal Cloud Foundry</a> Knowledge Base article.</p>
+    <p class="note"><strong>Note:</strong> For instructions for testing and troubleshooting your LDAP search filters, see the [Configuring LDAP Integration with Pivotal Cloud Foundry](https://discuss.zendesk.com/hc/en-us/articles/204140418-Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry-) Knowledge Base article.</p>
 
 * For **Group Search Base**, enter the location in the LDAP directory tree from which the LDAP Group search begins.
 <br><br>
