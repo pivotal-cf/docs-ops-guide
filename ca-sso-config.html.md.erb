@@ -114,6 +114,7 @@ Partnership creation between CA and PCF involves the following steps:
 	1. Enter the Authentication URL that is protected by CA SSO under prerequisites.
 	1. For SSO Binding, click **HTTP-POST**.
 	1. In the Audience field, enter http://login.YOUR-SYSTEM-DOMAIN.
+	<p class="note"><strong>Note:</strong> The <b>Audience</b> field requires <code>http://</code> instead of <code>https://</code>. This is only a naming convention within the schema and does not determine connection security.</p>
 	1. Select **Both IDP and DP Initiated** from the Transactions Allowed dropdown. 
 	1. The Assertion Consumer Service URL field will be pre-populated using information from the service provider entity. 
 
