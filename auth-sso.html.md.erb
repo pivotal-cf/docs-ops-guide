@@ -16,7 +16,7 @@ If your enterprise user store is exposed as a SAML or LDAP Identity Provider for
 
 See the [Adding Existing SAML or LDAP Users to a PCF Deployment](./external-user-management.html) topic for information about managing user identity and pre-provisioning user roles with SAML or LDAP in PCF.
 
-For an explanation of the process used by the UAA Server when it attempts to authenticate a user through LDAP, see the [Configuring LDAP Integration with Pivotal Cloud Foundry](https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry) Knowledge Base article.
+For an explanation of the process used by the UAA Server when it attempts to authenticate a user through LDAP, see [Configuring LDAP Integration with Pivotal Cloud Foundry](https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry) in the Pivotal Knowledge Base.
 
 <p class='note'><strong>Note:</strong> When integrating with an external identity provider, such as LDAP, authentication within the UAA becomes chained. An authentication attempt with a user's credentials is first attempted against the UAA user store before the external provider, LDAP. For more information, see <a href="https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-LDAP.md#chained-authentication">Chained Authentication</a> in the <em>User Account and Authentication LDAP Integration</em> GitHub documentation.</p>
 
@@ -105,7 +105,7 @@ Refer to the table below for information about certain industry-standard Identit
   </tr>
 </table>
 
-<p class="note"><strong>Note:</strong> Some Identity Providers allow uploads of Service Provider Metadata. Other providers require you to manually enter the Service Provider Metadata into a form. If your Identity Provider requires manual entry but isn't listed above, the <a href="./ca-sso-config.html">CA SiteMinder SSO Integration Guide</a> may be good place to start.</p>
+<p class="note"><strong>Note:</strong> Some Identity Providers allow uploads of Service Provider Metadata. Other providers require you to manually enter the Service Provider Metadata into a form. If your Identity Provider requires manual entry but is not listed above, see the <a href="./ca-sso-config.html">CA SiteMinder SSO Integration Guide</a>.</p>
 
 
 ## <a id="configure-ldap"></a> Configure LDAP as an Identity Provider for PAS
@@ -142,7 +142,7 @@ For example, a domain named "cloud.example.com" typically uses the following LDA
 In the LDAP search filter string that you use to configure PAS, use `{0}` instead of the username. For example, use `cn={0}` to return all LDAP objects with the same common name as the username.
 <br><br>
 In addition to `cn`, other attributes commonly searched for and returned are `mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
-    <p class="note"><strong>Note:</strong> For instructions for testing and troubleshooting your LDAP search filters, see the [Configuring LDAP Integration with Pivotal Cloud Foundry](https://discuss.zendesk.com/hc/en-us/articles/204140418-Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry-) Knowledge Base article.</p>
+    <p class="note"><strong>Note:</strong> For instructions for testing and troubleshooting your LDAP search filters, see the [Configuring LDAP Integration with Pivotal Cloud Foundry](https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry) Knowledge Base article.</p>
 
 * For **Group Search Base**, enter the location in the LDAP directory tree from which the LDAP Group search begins.
 <br><br>
