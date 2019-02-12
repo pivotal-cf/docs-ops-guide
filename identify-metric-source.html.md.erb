@@ -9,20 +9,6 @@ This topic describes operators can identify which runtime deployment the metrics
 
 As the value for the `deployment` tag, metrics use `cf-` and then the GUID for your PAS tile. With a GUID, you can uniquely identify your metrics by tile. 
 
-### <a id="no-guide"></a> Configure PAS to not use GUID
-
-In PAS v2.3 and earlier, metrics have a <code>deployment</code> value of <code>cf</code>. If you have scripts that rely on the `cf` value, you can re-enable the value. Pivotal does not
-recommend re-enabling the `cf` value as a permanent solution. If you
-can resolve script dependencies, resolve them and leave the default setting.
-
-To re-enable the `cf` value, do the following:
-
-1. Go to the **Advanced Features** pane of the PAS tile. 
-
-1. Select **Use "cf" as deployment name in emitted metrics instead of unique name**.
-
-1. Click **Save**.
-
 ## <a id="human-friendly-metric-tags"></a> Human-friendly Metadata
 
 PAS and other runtime tiles tag metrics with additional metadata to help operators better parse the metrics coming from their different deployments. Also, downstream monitoring products, such as [PCF Healthwatch](https://docs.pivotal.io/pcf-healthwatch), use this metadata to display human readable names. 
