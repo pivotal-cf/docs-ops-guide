@@ -16,7 +16,7 @@ For information about configuring Ops Manager to use internal authentication or 
   * [Configuring BOSH Director on vSphere](../om/vsphere/config.html#set-up)
 
 
-## <a id="about"></a> Understanding Roles in Ops Manager
+## <a id="about"></a> Roles in Ops Manager
 
 You can assign the following roles to determine which operators in your organization make deployment changes, view credentials, and manage user roles in Ops Manager:
 
@@ -38,25 +38,23 @@ To assign one of the above roles to an operator, follow the procedure for granti
 
 When you install a new Ops Manager instance, all existing users have the Ops Manager Administrator role by default.
 
-## <a id="multiple-write-users"></a> Managing Simultaneous Ops Manager Administrators
+## <a id="multiple-write-users"></a> Simultaneous Ops Manager Administrators
 
-Ops Manager allows multiple Ops Manager Administrators to log in simultaneously. Administrators can make changes to and deploy Ops Manager to change its components and behavior. 
+Ops Manager allows multiple administrators to log in to Ops Manager simultaneously and make changes.
 
-There is no maximum number of Administrators that can log into Ops Manager simultaneously. 
+The interface does not provide visibility into other administrators that are logged in. Pivotal recommends that administrators communicate with each other and coordinate their changes.
 
-There are no functionality restrictions placed on Administrators who are logged in simultaneously. Multiple Administrators can reconfigure the same fields at the same time. If you intend to have two or more Administrators reconfiguring the same fields, coordinate their planned actions so they do not accidentally overwrite each other's work.
 
-However, only one deploy can occur at a time. If one Administrator clicks **Apply Changes**, all other attempts to deploy will fail until the deploy currently in progress completes. 
+### <a id="write-user-precedence"></a> Precedence for Apply Changes
 
-For example: User A and User B both authenticate as Ops Manager Administrators and access the same Ops Manager instance at the same time. User A reconfigures a field in the Syslog pane of the BOSH Director, clicks **Save**, and clicks **Apply Changes** to deploy the BOSH Director. User A's deploy initiates.
+Only one deployment takes precedence when two administrators try to deploy around the same time.
 
-Two minutes later, User B reconfigures a field in the Syslog pane of the BOSH Director, clicks **Save**, and clicks **Apply Changes** to deploy. User B is unable to initiate a deploy because the deploy User A initiated is already in progress. User B must wait for User A's deploy to complete before they can click **Apply Changes**.
+If two administrators are working at the same time, the administrator who first clicks **Apply Changes** takes precedence. Ops Manager overwrites all configurations made by other administrators during deployment.
 
-Furthermore, if User B attempts to change Ops Manager fields while User A's deploy is in progress, User B's changes will be erased when User A's deploy completes successfully. User B must wait until no deploy is taking place before making changes and redeploying.
+Pivotal recommends coordinating changes between administrators to avoid overwriting configurations.
 
-<p class="note"><strong>Note</strong>: Some Ops Manager Administrators configure external apps to modify their Ops Manager instances. For example, continuous integration and deployment (CI/CD) pipelines can have their own Administrator accounts. These apps have Administrator user privileges identical to human Administrator user accounts. </br>
-</br>
-A human Administrator's actions can be delayed or overwritten by an automated Administrator. Similarly, an automated Administrator's actions can be delayed or overwritten by a human Administrator. If you are having deployment issues or changes to your Ops Manager are not persisting correctly, confirm that your work is not conflicting with that of an automated Administrator.</p>
+
+<p class="note"><strong>Note</strong>: If you are having deployment issues or changes to your Ops Manager are not persisting correctly, confirm that your work is not conflicting with an automated administrator.</p>
 
 ## <a id="enable"></a> Enable RBAC in Ops Manager After Upgrade
 
@@ -114,7 +112,7 @@ To assign RBAC roles to operators, you must first create user accounts for them.
 
 ## <a id="manage-roles"></a> Manage RBAC Roles in Ops Manager
 
-You can assign the roles defined in [Understanding Roles in Ops Manager](#about) to determine which operators in your organization make deployment changes, view credentials, and manage user roles in Ops Manager.
+You can assign the roles defined in [Roles in Ops Manager](#about) to determine which operators in your organization make deployment changes, view credentials, and manage user roles in Ops Manager.
 
 ### <a id="write-internal"></a> Manage Roles with Internal Authentication
 
