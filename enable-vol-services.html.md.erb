@@ -20,7 +20,7 @@ When it comes to securing your NFS server against traffic apps running on PCF, y
 
 * **Application Security Groups (ASGs)** <br/>
   Use Application Security Groups (ASGs) to prevent apps from sending traffic directly to your NFS ports. Apps should never need to use NFS ports directly. Pivotal recommends defining an ASG that blocks direct access to your NFS server IP, especially ports 111 and 2049. For more information on setting up ASGs, see 
-  [Understanding Application Security Groups](../concepts/asg.html).
+  [Application Security Groups](../concepts/asg.html).
 * **LDAP**  <br/>
   In addition to ASGs, LDAP secures the NFS volume service so that app developers cannot bind to the service using an arbitrary UID and gain access to sensitive data. With LDAP support enabled, app developers must provide credentials for any user they wish to bind as.
 
@@ -57,6 +57,7 @@ To enable NFS volume services in PCF, do the following:
 1. Using the cf CLI, enable access to the service:
 	<pre class="terminal">$ cf enable-service-access nfs</pre>
 	To limit access to a specific org, use the `-o` flag, followed by the name of the org where you want to enable access. For more information, see the [Access Control](../services/access-control.html) topic.
+
 1. (Optional) Enable access to the `nfs-experimental` service. See [NFS Volume Service](../devguide/services/using-vol-services.html#nfs) for details about the differences between the two `nfs` services. 
   <pre class="terminal">$ cf enable-service-access nfs-experimental</pre>
 
