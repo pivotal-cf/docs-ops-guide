@@ -78,7 +78,7 @@ You can use ASGs and LDAP to secure your NFS server against traffic apps running
 * **Application Security Groups (ASGs)**---Prevent apps from sending traffic directly to
   your NFS ports. Apps should never need to use NFS ports directly. Pivotal recommends
   defining an ASG that blocks direct access to your NFS server IP, especially ports 111 and 2049.
-  For more information on setting up ASGs, see [Understanding Application Security Groups](../concepts/asg.html).
+  For more information on setting up ASGs, see [Application Security Groups](../concepts/asg.html).
 
 * **LDAP**---In addition to ASGs, secures the NFS volume service so that app developers
   cannot bind to the service using an arbitrary UID. App developers also cannot gain access to sensitive data. With
