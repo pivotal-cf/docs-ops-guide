@@ -13,6 +13,14 @@ You can also access usage information by using Apps Manager. For more informatio
 
 To retrieve current app and event information from the Cloud Controller, see [Retrieving App and Event Information](https://docs.cloudfoundry.org/running/managing-cf/app-event.html) in the open-source Cloud Foundry documentation.
 
+## <a id="prerequisite"></a> Prerequisite
+
+Before performing the procedures in this topic, ensure that your user is a member of the `cloud_controller.admin` or `usage_service.audit` group. For example, a UAAC admin can add a user to the `usage_service.audit` group with the following command: 
+
+<pre class="terminal">
+uaac member add usage_service.audit USERNAME
+</pre>
+
 
 ## <a id="targetcc"></a> Obtain System Usage Information
 
