@@ -1,0 +1,99 @@
+---
+title: Configuring Multi-Foundation Support in Apps Manager
+owner:
+---
+
+This topic describes how to configure **Apps Manager** to display information from multiple foundations.
+
+## <a id=""></a> Overview
+
+## <a id=""></a> Configure Multi-Foundation Support in Apps Manager
+
+Given foundation A on which you want to configure Multi-Foundation Apps Manager, and
+foundation B that you want to manage from foundation A's Apps Manager, follow these steps to
+make foundation A able to connect to foundation B
+
+### PAS Configuration
+
+
+
+To configure multi-foundation support in Apps Manager, do the following: 
+
+1. In the PAS tile of one of your foundations, select **Apps Manager**. The following image shows the **Apps Manager** page.
+    ![](images/multi-foundation-apps-man-configuration.png)
+
+1. For **Multi-foundation Configuration (BETA)**, enter a JSON object for each additional foundation that you want to manage. Use the following format:
+
+
+    ```json
+    {
+      "FOUNDATION_NAME": {
+        "ccUrl": "https://api.FOUNDATION_SYSTEM_DOMAIN.com",
+        "systemDomain": "FOUNDATION_SYSTEM_DOMAIN.com",
+        "usageServiceUrl": "https://app-usage.FOUNDATION_SYSTEM_DOMAIN.com",
+        "invitationsServiceUrl": "https://p-invitations.FOUNDATION_SYSTEM_DOMAIN.com",
+        "logoutUrl": "https://login.FOUNDATION_SYSTEM_DOMAIN.com/logout.do",
+        "metricsUrl": "https://metrics.FOUNDATION_SYSTEM_DOMAIN.com",
+        "uaaUrl": "https://login.FOUNDATION_SYSTEM_DOMAIN.com"
+      },
+    }
+    ```
+    Where:
+    - `FOUNDATION_NAME` is a name for the foundation.
+    - `FOUNDATION_SYSTEM_DOMAIN` is the system domain of the foundation. You can find this value in the **Domains** pane of the PAS tile for the foundation. 
+    - `metricsUrl` is optional. Provide a value for this field if PCF Metrics is installed on the foundation.
+
+### Configure Redirects in UAA
+
+On the `apps_manager_js` client of each additional foundation, add a redirect URI to the Apps Manager URL of the current foundation. The redirect allows Apps Manager on the current foundation to redirect to the other foundations and back when you authenticate with UAA. For more information about UAA clients and configuring valid redirect URIs, see [Client.redirect-uri](../uaa/uaa-concepts.html#redirect-uri).
+
+In UAA, the `apps_manager_js` client should have A's Apps Manager URL
+(https://apps.a-foundation-system-domain.com) as a valid redirect URI. 
+
+To configure redirects in UAA, do the following for each additional foundation:
+1. Install the UAA CLI. See [CloudFoundry UAA Command Line Client](https://github.com/cloudfoundry/cf-uaac) in GitHub.
+1. Record the UAA admin client credential: 
+	1. In the PAS tile **Credentials** tab, for **Admin Client Credentials**, click **Link to Credentials**.
+	1. Record the value in the `password` field (ADMIN_CLIENT_SECRET) B3ePt69ufPOZHz2FAqDaTqjZ_fmEG520
+1. Use the following command to generate a token for the UAA admin client:
+    ```bash
+    uaac target uaa.FOUNDATION_SYSTEM_DOMAIN.com
+    uaac token client get admin -s ADMIN_CLIENT_PASSWORD
+    ```
+    Where:
+    - `FOUNDATION_SYSTEM_DOMAIN` is the system domain of the foundation.
+    - `ADMIN_CLIENT_PASSWORD` is the password you retrieved from the **Admin Client Credentials** field.
+1. Record the UAA redirect URIs. Use the following command to view the redirect URIs from the UAA `apps_manager_js` client:(PREVIOUS_REDIRECT_URIS)
+    ```bash
+    uaac client get apps_manager_js
+    ```
+
+    redirect_uri: https://apps.sys.xboxgreen.cf-app.com/**
+
+1. Update the apps_manager_js client with Foundation A's Apps Manager URL
+    ```bash
+    uaac client update apps_manager_js --redirect_uri \
+        'PREVIOUS_REDIRECT_URIS,https://apps.a-foundation-system-domain.com/**'
+    ```
+    Where `PREVIOUS_REDIRECT_URIS` is one or more redirect URIs from the UAA `apps_manager_js` on the foundation.
+
+### Certificates
+
+1. If B is configured to use a certificate for TLS termination that is not signed by a
+globally-trusted CA, you will need to add the root CA certificate that signed B's TLS
+certificate as trusted by A's BOSH Director. This allows Apps Manager on foundation A to
+validate the certificates used on B's endpoints (e.g. B's Cloud Controller). For more
+information about setting the trusted certificates in BOSH, see [Setting Trusted
+Certificates](../customizing/trusted-certificates.html)
+
+### SAML Identity Provider
+
+1. (Optional) Pivotal recommends that you configure UAA on all foundations to use the same external SAML identity provider. This allows Apps Manager to
+automatically log in with your identity provider on each foundation. To configure all foundations to use the same SAML identity provider, ensure all foundations use the same value in the PAS tile **UAA** page for **Provider Name**. 
+
+For more information on UAA and identity providers, see [Identity Providers in
+UAA](../uaa/identity-providers.html)
+
+For more information on how to setup identity providers in UAA, see [Adding Existing SAML or
+LDAP Users to a PCF Deployment](../opsguide/external-user-management.html)
+
