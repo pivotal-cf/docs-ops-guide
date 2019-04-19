@@ -3,7 +3,7 @@ title: Configuring Multi-Foundation Support in Apps Manager
 owner:
 ---
 
-This topic describes how to configure **Apps Manager** to display information from multiple foundations.
+This topic describes how to configure **Apps Manager** so that you can manage orgs, spaces, apps, and service instances from multiple foundations.
 
 ## <a id="overview"></a> Overview
 
@@ -11,24 +11,25 @@ Configuring multi-foundation support in Apps Manager allows you to search, view,
 
 ## <a id="configure"></a> Configure Multi-Foundation Support
 
-This section describes how to configure multi-foundation support in Apps Manager. 
+This section describes the procedures for configuring multi-foundation support in Apps Manager. 
 
-To configure multi-foundation support, do the following:
+To configure multi-foundation support in Apps Manager, do the following:
+
 1. Configure PAS. See [Configure PAS](#pas).
-1. Add Redirects in UAA. See [Add Redirects in UAA](#redirects).
-1. Add Trusted Certificate Authorities. See [Add Trusted Certificate Authorities](#certificates).
+1. Add redirects. See [Add Redirects in UAA](#redirects).
+1. Add trusted Certificate Authorities. See [Add Trusted Certificate Authorities](#certificates).
 1. (Optional) Configure the SAML Identity Provider. See [(Optional) Configure the SAML Identity Provider](#saml).
 
 ### <a id="pas"> Configure PAS
 
-This section describes how to configure PAS on a foundation to enable multi-foundation support in Apps Manager.
+This section describes how to configure Pivotal Application Service (PAS) on a foundation to enable multi-foundation support in Apps Manager.
 
 To configure multi-foundation support in Apps Manager, do the following: 
 
 1. In the PAS tile of one of your foundations, select **Apps Manager**. The following image shows the **Apps Manager** page.
     ![There is a heading at the top of the Apps Manager page that says, Configure Apps Manager. There are several fields on the Apps Manager page. The Multi-foundation Configuration field is the last field on the page. A Save button is at the bottom of the page.](images/multi-foundation-apps-man-configuration.png)
 
-1. For **Multi-foundation Configuration (BETA)**, enter a JSON object for each additional foundation that you want to manage. Use the following format:
+1. For **Multi-foundation Configuration (BETA)**, enter a JSON object for each additional foundation that you want to manage. Use the following format for the JSON object:
 	```json
 	{
 	  "FOUNDATION_NAME": {
@@ -44,19 +45,17 @@ To configure multi-foundation support in Apps Manager, do the following:
 	```
 	Where:
 	- `FOUNDATION_NAME` is a name for the foundation.
-	- `FOUNDATION_SYSTEM_DOMAIN` is the system domain of the foundation. You can find this value in the **Domains** pane of the PAS tile for the foundation. 
-	- `metricsUrl` is optional. Provide a value for this field if PCF Metrics is installed on the foundation.
+	- `FOUNDATION_SYSTEM_DOMAIN` is the system domain of the foundation. The system domain is listed in the PAS tile **Domains** pane.
+	- `metricsUrl` is an optional field. If PCF Metrics is installed on the foundation, provide the PCF Metrics URL.
 
 ### <a id="redirects"></a> Add Redirects in UAA
 
-On the `apps_manager_js` client of each additional foundation, add a redirect URI to the Apps Manager URL of the current foundation. The redirect allows Apps Manager on the current foundation to redirect to the other foundations and back when you authenticate with UAA. For more information about UAA clients and configuring valid redirect URIs, see [Client.redirect-uri](../uaa/uaa-concepts.html#redirect-uri).
+You must add a redirect to the URL of the foundation on which you enabled multi-foundation support to each foundation you want to manage with Apps Manager. This allows Apps Manager to redirect to the other foundations and back when you authenticate with UAA. For more information about UAA clients and configuring valid redirect URIs, see [Client.redirect-uri](../uaa/uaa-concepts.html#redirect-uri).
 
-In UAA, the `apps_manager_js` client should have A's Apps Manager URL
-(https://apps.a-foundation-system-domain.com) as a valid redirect URI. 
+To add redirects, do the following:
 
-To add redirects in UAA, do the following on each foundation:
 1. Install the UAA CLI. See [CloudFoundry UAA Command Line Client](https://github.com/cloudfoundry/cf-uaac) in GitHub.
-1. Record the UAA admin client credentials password: 
+1. Record the UAA admin client credentials password for a foundation you want to manage with Apps Manager: 
 	1. In the PAS tile **Credentials** tab, for **Admin Client Credentials**, click **Link to Credentials**.
 	1. Record the value in the `password` field.
 1. Use the following command to generate a token for the UAA admin client:
@@ -71,14 +70,15 @@ To add redirects in UAA, do the following on each foundation:
     ```bash
     uaac client get apps_manager_js
     ```
-1. Run the following command to update the `apps_manager_js` client with the Apps Manager URL from the current foundation.
+1. Run the following command to update the `apps_manager_js` client with the URL of the foundation on which you enabled multi-foundation support:
     ```bash
     uaac client update apps_manager_js --redirect_uri \
         'PREVIOUS_REDIRECT_URIS,https://apps.FOUNDATION_SYSTEM_DOMAIN.com/**'
     ```
     Where: 
     - `PREVIOUS_REDIRECT_URIS` is one or more redirect URIs from the UAA `apps_manager_js` on the foundation.
-    - `FOUNDATION_SYSTEM_DOMAIN` is the system domain of the current foundation.
+    - `FOUNDATION_SYSTEM_DOMAIN` is the system domain of foundation on which you enabled multi-foundation support.
+1. Repeat steps 2 through 5 for each foundation you want to manage with Apps Manager. 
 
 ### <a id="certificates"></a> Add Trusted Certificate Authorities
 
@@ -95,8 +95,8 @@ Pivotal recommends that all foundations use the same external SAML identity prov
 
 To configure all foundations to use the same SAML identity provider, do the following:
 
-1. On each foundation, open the PAS tile and click **UAA**. 
-1. On the **UAA** pane, locate **Provider Name**. Verify that all foundations use the same value for **Provider Name**.
+1. On each foundation, navigate to the PAS tile **UAA** pane. 
+1. On the **UAA** pane, verify that all foundations use the same provider for **Provider Name**.
 
 For more information on UAA and identity providers, see [Identity Providers in
 UAA](../uaa/identity-providers.html)
