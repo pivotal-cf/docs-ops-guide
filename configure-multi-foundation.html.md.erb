@@ -20,17 +20,18 @@ To configure multi-foundation support in Apps Manager, do the following:
 1. Add trusted Certificate Authorities (CAs). See [Add Trusted Certificate Authorities](#certificates).
 1. (Optional) Configure the SAML Identity Provider. See [(Optional) Configure the SAML Identity Provider](#saml).
 
-### <a id="pas"> Configure PAS
+### <a id="pas"></a> Configure PAS
 
 This section describes how to configure Pivotal Application Service (PAS) on a foundation to enable multi-foundation support in Apps Manager.
 
 To configure multi-foundation support in Apps Manager, do the following: 
 
 1. In the PAS tile of one of your foundations, select **Apps Manager**. The following image shows the **Apps Manager** pane.
-    ![There is a heading at the top of the Apps Manager page that says, Configure Apps Manager. There are several fields on the Apps Manager page. The Multi-foundation Configuration field is the last field on the page. A Save button is at the bottom of the page.](images/multi-foundation-apps-man-configuration.png)
+    ![There is a heading at the top of the Apps Manager page that says, Configure Apps Manager. There are several fields on the Apps Manager page. The Multi-foundation Configuration field is the last field on the page. A Save button is at the bottom of the page.](multi-foundation-apps-man-configuration.png)
 
 1. For **Multi-foundation Configuration (BETA)**, enter a JSON object for each additional foundation that you want to manage. Use the following format for the JSON object:
-	```json
+
+	```
 	{
 	  "FOUNDATION_NAME": {
 	    "ccUrl": "https://api.FOUNDATION_SYSTEM_DOMAIN.com",
@@ -51,7 +52,7 @@ To configure multi-foundation support in Apps Manager, do the following:
 ### <a id="redirects"></a> Add Redirects in UAA
 
 The Apps Manager UAA clients on each foundation you want to manage must include a redirect to the foundation on which you enabled multi-foundation support.
-This allows Apps Manager to redirect to the other foundations and back when authenticating with UAA. For more information about UAA clients and configuring valid redirect URIs, see [Client.redirect-uri](../uaa/uaa-concepts.html#redirect-uri). 
+This allows Apps Manager to redirect to the other foundations and back when authenticating with UAA. For more information about UAA clients and configuring valid redirect URIs, see [Client.redirect-uri](../uaa/uaa-concepts.html#redirect-uri) in _UAA Concepts_. 
 
 To add redirects, do the following:
 
@@ -60,21 +61,25 @@ To add redirects, do the following:
 	1. In the PAS tile **Credentials** tab, for **Admin Client Credentials**, click **Link to Credentials**.
 	1. Record the value in the `password` field.
 1. Use the following command to target UAA on the foundation:
-    ```bash
+
+    ```
     uaac target uaa.FOUNDATION_SYSTEM_DOMAIN.com
     ```
     Where `FOUNDATION_SYSTEM_DOMAIN` is the system domain of the foundation.
 1. Use the following command to generate a token for the UAA admin client:
-	```bash    
+
+	```    
     uaac token client get admin -s ADMIN_CLIENT_PASSWORD
     ```
     Where `ADMIN_CLIENT_PASSWORD` is the **Admin Client Credentials** password you recorded in step 2.
 1. Record the UAA redirect URIs. Use the following command to view the redirect URIs on the UAA `apps_manager_js` client:
-    ```bash
+
+    ```
     uaac client get apps_manager_js
     ```
 1. Add the URI of the foundation on which you enabled multi-foundation support to the `apps_manager_js` client:
-    ```bash
+
+    ```
     uaac client update apps_manager_js --redirect_uri \
         'PREVIOUS_REDIRECT_URIS,https://apps.FOUNDATION_SYSTEM_DOMAIN.com/**'
     ```
