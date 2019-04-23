@@ -31,7 +31,7 @@ To configure multi-foundation support in Apps Manager, do the following:
 
 1. For **Multi-foundation Configuration (BETA)**, enter a JSON object for each additional foundation that you want to manage. Use the following format for the JSON object:
 
-	```
+	<pre>
 	{
 	  "FOUNDATION_NAME": {
 	    "ccUrl": "https://api.FOUNDATION_SYSTEM_DOMAIN.com",
@@ -42,8 +42,8 @@ To configure multi-foundation support in Apps Manager, do the following:
 	    "metricsUrl": "https://metrics.FOUNDATION_SYSTEM_DOMAIN.com",
 	    "uaaUrl": "https://login.FOUNDATION_SYSTEM_DOMAIN.com"
 	  },
-	}
-	```
+    }
+	</pre>
 	Where:
 	- `FOUNDATION_NAME` is a name for the foundation.
 	- `FOUNDATION_SYSTEM_DOMAIN` is the system domain of the foundation. The system domain is listed in the PAS tile **Domains** pane.
