@@ -107,25 +107,7 @@ More API parameters are available to customize retrieved app logs. For more info
 
 ## <a id='syslog-forward'></a> Enable Syslog Forwarding
 
-To forward system log messages to an external Reliable Event Logging Protocol (RELP) server, do the following:
-
-1. From the Pivotal Application Service (PAS) tile, select **System Logging**.
-	<%= image_tag 'sys-logging.png' %>
-
-1. To include security events in your log stream, select the **Enable Cloud Controller security event logging** checkbox. This logs all API requests, including the endpoint, user, source IP, and request result, in the Common Event Format (CEF).
-
-1. Enter the IP address of your syslog server in **External Syslog Aggregator Hostname** and its port in **External Syslog Aggregator Port**. The default port for a syslog server is `514`.
-  <p class="note"><strong>Note:</strong> The host must be reachable from the PAS network, accept TCP connections, and use the RELP protocol. Ensure your syslog server listens on external interfaces.</p>
-
-1. Select TCP, RELP, or UDP as your **External Syslog Network Protocol** to use when forwarding logs.
-
-1. For the **Syslog Drain Buffer Size**, enter the number of messages the Doppler server can hold from Metron agents before the server starts to drop them. For more information, see [Loggregator Guide for Cloud Foundry Operators](../loggregator/log-ops-guide.html).
-
-1. For the **Custom rsyslog Configuration**, enter your [custom syslog rules](../customizing/custom-syslog-rules.html).
-
-1. Click **Save**.
-
-To configure Ops Manager for system logging, see the [Settings](../../customizing/pcf-interface.html#settings) section in the _Using the Ops Manager Interface_ topic.
+<%= partial '../customizing/system_logging' %>
 
 
 ## <a id='container-metrics'></a> Include Container Metrics in Syslog Drains
