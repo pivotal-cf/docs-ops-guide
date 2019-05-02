@@ -85,7 +85,23 @@ More API parameters are available to customize retrieved app logs. For more info
 
 ## <a id='syslog-forward'></a> Enable Syslog Forwarding
 
-<%= partial '../customizing/system_logging' %>
+To forward system log messages to an external syslog server, do the following:
+
+1. From the Pivotal Application Service (PAS) tile, select **System Logging**.
+	<%= image_tag 'sys-logging.png' %>
+
+1. To include security events in your log stream, select the **Enable Cloud Controller security event logging** checkbox. This logs all API requests, including the endpoint, user, source IP, and request result, in the Common Event Format (CEF).
+
+1. Enter the IP address of your syslog server in **External Syslog Aggregator Hostname** and its port in **External Syslog Aggregator Port**. The default port for a syslog server is `514`.
+<p class="note"><strong>Note:</strong> The host must be reachable from the PAS network and accept TCP connections. Ensure your syslog server listens on external interfaces.</p>
+
+1. Select TCP or UDP as your **External Syslog Network Protocol** to use when forwarding logs.
+
+1. For the **Custom rsyslog Configuration**, enter your [custom syslog rules](../customizing/custom-syslog-rules.html).
+
+1. Click **Save**.
+
+To configure Ops Manager for system logging, see the [Settings](../../customizing/pcf-interface.html#settings) section in the _Using the Ops Manager Interface_ topic.
 
 
 ## <a id='container-metrics'></a> Include Container Metrics in Syslog Drains
@@ -99,9 +115,9 @@ For more information, see [Including Container Metrics in Syslog Drains](../devg
 
 ## <a id='scaling'></a> Scale Loggregator
 
-Apps constantly generate app logs and PCF platform components constantly generate component metrics. The Loggregator system combines these data streams and handles them as follows. See [Loggregator Architecture](../loggregator/architecture.html) for more information. 
+Apps constantly generate app logs and PCF platform components constantly generate component metrics. The Loggregator system combines these data streams and handles them as follows. See [Overview of the Loggregator System](../loggregator/architecture.html) for more information. 
 
-* The [Loggregator](../loggregator/architecture.html#metron) agent running on each component or application VM collects and sends this data out to Doppler components. 
+* The [Metron](../loggregator/architecture.html#metron) agent running on each component or application VM collects and sends this data out to Doppler components. 
 * [Doppler](../loggregator/architecture.html#doppler) components temporarily buffer the data before periodically forwarding it to the Traffic Controller. When the log and metrics data input to a Doppler exceeds its buffer size for a given interval, data can be lost. 
 * The [Traffic Controller](../loggregator/architecture.html#traffic-controller) serves the aggregated data stream through the Firehose WebSocket endpoint.
 
