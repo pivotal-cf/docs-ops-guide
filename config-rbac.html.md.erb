@@ -173,3 +173,30 @@ If you configured Ops Manager with SAML authentication, do the following to assi
   * `OPSMAN-SCOPE`: Replace with an Ops Manager UAA scope. See the table in [Understand Roles in Ops Manager](#about) to determine which UAA scope to use.
 
 1. Add new and existing users to the appropriate SAML groups in the SAML provider dashboard. Users must log out of both Ops Manager and the SAML provider for role changes to take effect.
+
+### <a id="write-ldap"></a> Manage Roles with LDAP Authentication
+
+If you configured Ops Manager with LDAP authentication, do the following to assign non-admin user roles using UAAC:
+
+1. Target your UAA server and log in as an admin: 
+    <pre class="terminal">
+    uaac target https<span>:</span>//YOUR-OPSMAN-DOMAIN/uaa
+    uaac token sso get
+    </pre>
+
+1. When prompted, enter **Client ID** and **Passcode**, leaving **Client secret** blank:
+    <pre class="terminal">
+    Client ID: opsman
+    Client secret:
+    Passcode (from http<span>:</span>//YOUR-OPSMAN-DOMAIN/uaa/passcode): YOUR-UAA-PASSCODE
+    </pre>
+
+1. Run the following command:
+    <pre class="terminal">
+    uaac group map LDAP-GROUP --name 'OPSMAN-SCOPE'
+    </pre>
+  Replace the placeholder text as follows:
+  * `LDAP-GROUP`: Replace with name of the LDAP group the user belongs to.
+  * `OPSMAN-SCOPE`: Replace with an Ops Manager UAA scope. See the table in [Understand Roles in Ops Manager](#about) to determine which UAA scope to use.
+
+1. Add new and existing users to the appropriate LDAP groups in the LDAP provider dashboard. Users must log out of both Ops Manager and the LDAP provider for role changes to take effect.
