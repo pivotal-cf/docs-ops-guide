@@ -193,8 +193,6 @@ Create ASGs that block apps from sending traffic to the networks that host Ops M
 <p class="note warning"><strong>WARNING</strong>: In the two network layout, PAS and services share the same network. This means that each time you create an ASG that allows apps to access a new port and protocol within the network, you further expose the PAS component VMs. This is a limitation of a two network layout. For guidance on network topology, see <a href="../refarch/index.html">Reference Architectures</a>.</p>
 
 Now that you have created ASGs to secure the Ops Man, PAS, and service components, work with developers to create additional ASGs that give apps access to the services they need. 
-  
-For example, in any space where apps need to access the MySQL for PCF service, follow the steps in [Creating Application Security Groups for MySQL](http://docs.pivotal.io/p-mysql/app-security-groups.html). 
 
 For more information about creating and binding ASGs, see the following:
 
