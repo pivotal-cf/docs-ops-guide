@@ -19,6 +19,25 @@ If you want to make a PCF configuration highly available, see the [High Availabi
 
 ## <a id='scaleup'></a> Scaling Up PAS
 
+### Factors to consider when choosing a maximum size
+
+Whilst it is technically possible to scale PAS up to as many as <a href="https://content.pivotal.io/blog/250k-containers-in-production-a-real-test-for-the-real-world">250k</a> 
+application instances; the following factors could make operating a foundation at this scale impractical.
+
+<ol>
+  <li>Maintenance window length - Application load; IaaS performance characteristics and settings such as max-in-flight impact the rate at which VMs are recreated during an upgrade.
+      Pivotal recommends scaling up until the time to perform an upgrade reaches your maintenance window length.</li>
+  <li>Failure domain size - The more applications you run on a single foundation; the larger the impact of a failure.  
+      Foundation wide failures are extremely rare; but can still occur in situations such as when SSL certificates expire.  
+      Consider the risk of a few hours of downtime every couple of years when determining the maximum size of your foundation</li>
+</ol>
+
+#### Using Isolation Segments to break large foundations into logical chunks
+
+Installing multiple PAS isolation segments enables foundation upgrades to be broken into a series of discrete steps that can be run during differenty maintenance windows.
+
+### How to implement scale decisions
+
 To scale up PAS instances, do the following:
 
 1. Navigate to the Pivotal Cloud Foundry Operations Manager Installation Dashboard.
