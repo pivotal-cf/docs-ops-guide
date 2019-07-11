@@ -1,0 +1,72 @@
+---
+title: Checking PCF State after a Power Failure
+owner:
+---
+
+This topic describes how to check Pivotal Cloud Foundry (PCF) state after a power failure in an on-premises vSphere installation. 
+
+## <a id="overview"></a> Overview  
+
+PCF uses [BOSH](https://bosh.io/docs) to deploy and manage its VMs. When power returns after a failure and vSphere is running again, BOSH  automatically recovers the PCF VMs. Additionally, the [Diego](../concepts/diego/diego-architecture.html) runtime of Pivotal Application Service (PAS) recovers apps that were running on the VMs. 
+
+If you have a procedure at your company for handling power failure scenarios and would like add steps for checking that PCF is in a good state, see [Check PCF State]( #check-state).
+
+There are two scenarios that can require manual intervention:
+
+* If PAS is configured to use a MySQL cluster instead of a single node, the cluster does not recover automatically. 
+* If you have Ops Manager v2.5.3 or earlier and encounter the following known issue in the BOSH Director: [Monit inaccurately reports the health of UAA](https://docs.pivotal.io/pivotalcf/2-5/pcf-release-notes/opsmanager-rn.html#monit).
+
+
+## <a id="check-state"></a> Check PCF State  
+
+The following sections describe how to check PCF state after a power failure. 
+
+### <a id="check-vcenter"></a> Check vCenter
+
+You can check vCenter to ensure the PCF VMs are running. Do the following:
+
+1. Open vCenter and navigate to the resource pool that hosts your PCF deployment.
+
+1. Examine the **State** and **Status** of the VMs to see if any are down or have issues. 
+
+1. If All VMs are healthy, proceed to [Check BOSH](#check-bosh). Otherwise, proceed to [Troubleshoot VMs](#troubleshoot-vms). 
+
+#### <a id="troubleshoot-vms"></a> Troubleshoot VMs
+
+To troubleshoot failing VMs in your PCF deployment, do the following:
+
+1. Check the BOSH Director VM:
+	1. In a browser, navigate to the PCF Ops Manager UI and select the **BOSH Director for vSphere** tile. 
+	1. Select the **Status** tab. 
+	1. Check the **CID** of the **BOSH Director** job. If it corresponds to a failing VM in your vCenter console, it may be due to the known issue where [Monit inaccurately reports the health of UAA](https://docs.pivotal.io/pivotalcf/2-5/pcf-release-notes/opsmanager-rn.html#monit). To resolve this issue, do the following:
+		1. Follow these instructions to [SSH into the BOSH Director VM](../customizing/trouble-advanced.html#bosh-director-ssh). 
+		1. Run `monit summary` to see that all processes are running. 
+		1. If the `uaa` process is not running, run `monit restart UAA`. 
+
+1. Check the PAS MySQL VM: 
+	1. Navigate to the Ops Manager **Installation Dashboard** and select the **Pivotal Application Service** tile.
+	1. Select the **Status** tab. 
+	1. Check the **CID** of the **MySQL Server** job. If it corresponds to a failing VM in your vCenter console, it may be because MySQL is a cluster and not a single node. If this is the case, follow the procedure in [Recovering From MySQL Cluster Downtime](./mysql/bootstrap-myql.html). 
+
+1. If any other PCF VMs are not running, restart them in vCenter.  
+
+1. If All VMs are healthy, proceed to [Check BOSH](#check-bosh). Otherwise,  contact [Pivotal Support](https://pivotal.io/support) for assistance. 
+
+### <a id="check-bosh"></a> Check BOSH
+
+Once all your VMs are running in vSphere, you can confirm the health of the VMs using BOSH. Do the following:
+
+1. Follow the instructions to [Log in to the Ops Manager VM with SSH](../customizing/trouble-advanced.html#ssh). 
+
+1. Follow the instructions to [Authenticate with the BOSH Director VM](../customizing/trouble-advanced.html#log-in). 
+
+1. Run `bosh vms` to confirm that VMs are running. If any VMs are not running, contact [Pivotal Support](https://pivotal.io/support) for assistance.
+
+
+### <a id="check-apps"></a> Check Apps
+
+To further confirm that PCF is running, you can do the following:
+
+1. Check the status of an app your company runs on PCF. To do this, run any healthchecks that the app has, or visit the URL of the app to see that it is working. 
+
+1. Push an app to PCF. You can push one of your company's apps, or one of the [Cloud Foundry Sample Applications](https://github.com/cloudfoundry-samples). 
