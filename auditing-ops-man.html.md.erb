@@ -1,0 +1,217 @@
+---
+title: Auditing User Activity in Ops Manager
+owner: Ops Man
+---
+
+This topic describes how operators can audit user activity in Ops Manager. The sections in this topic define the relevant logs for auditing user activity and describe how to access and forward the logs.
+
+
+## <a id ='overview'></a> Overview
+
+You can audit user activity in Ops Manager to help improve security practices for your Pivotal Cloud Foundry (PCF) environment. Auditing user activity also helps you ensure that your environment is compliant with existing security standards.
+
+You can find information for auditing user activity in Ops Manager in the following Ops Manager logs:
+
+* SSH login logs
+* UAA login and failed UAA login logs
+* The Ops Manager `audit_log.txt` file
+
+For more information about the content and location of these logs, see [Logs for Auditing User Activity](#logs).
+
+
+## <a id='logs'></a> Logs for Auditing User Activity
+
+The following table describes the types of user actions that you can audit with logs. The table also lists the location of the logs. 
+
+For information about how to access the logs in the following table, see [Access Logs on the Ops Manager VM](#access-logs).
+
+<table>
+	<tr>
+		<th width="15%">User Action</th>
+		<th width="25%">Description</th>
+		<th width="30%">Location of Logs</th>
+		<th width="30%">Example Log Trace</th>
+	</tr>
+	<tr>
+		<td>SSH Logins</td>
+		<td>User logs onto the Ops Manager VM with SSH.</td>
+		<td><code>/var/log/auth.log</code></td>
+		<td>
+			<code>
+				2019-06-20T21:58:50.864147+00:00 HOSTNAME sshd[18028]: Accepted publickey for USERNAME from IPADDRESS port PORT ssh2: RSA SHA256:SIGNATURE
+				2019-06-20T21:58:50.865750+00:00 HOSTNAME sshd[18028]: pam_unix(sshd:session): session
+			</code>
+		</td>
+	</tr>
+		<td>UAA Logins</td>
+		<td>User logs into Ops Manager through UAA.</td>
+		<td><code>/var/log/opsmanager/<br/>uaa.out</code></td>
+		<td>
+			<code>
+				[2019-06-20 22:03:10.231] cloudfoundry-identity-server/uaa - ???? [http-nio-127.0.0.1-8080-exec-3] .... DEBUG --- ChainedAuthenticationManager: Attempting chained authentication of org.springframework.security.authentication.UsernamePasswordAuthenticationToken@aad621d: Principal: USERNAME; Credentials: [PROTECTED]; Authenticated: false; Details: remoteAddress=REMOTE_IP, sessionId=<SESSION>; Not granted any authorities with manager:org.cloudfoundry.identity.uaa.authentication.manager.CheckIdpEnabledAuthenticationManager@2e66138 required:null
+				...
+			</code>
+		</td>
+	<tr>
+		<td>Failed UAA Logins</td>
+		<td>User makes failed login attempt through UAA.</td>
+		<td><code>/var/log/opsmanager/<br/>uaa.out</code></td>
+		<td>
+			<code>
+				[2019-06-20 22:06:51.832] cloudfoundry-identity-server/uaa - ???? [http-nio-127.0.0.1-8080-exec-5] .... DEBUG --- ChainedAuthenticationManager: Attempting chained authentication of org.springframework.security.authentication.UsernamePasswordAuthenticationToken@23009e2d: Principal: USERNAME; Credentials: [PROTECTED]; Authenticated: false; Details: remoteAddress=REMOTE_IP, sessionId=<SESSION>; Not granted any authorities with manager:org.cloudfoundry.identity.uaa.authentication.manager.CheckIdpEnabledAuthenticationManager@2e66138 required:null
+				...
+			</code>
+		</td>
+	</tr>
+	<tr>
+		<td>User Requests</td>
+		<td>User makes requests in the Ops Manager app. The <code>audit_log.txt</code> file includes metadata about user requests in the Ops Manager app.</td>
+		<td><code>/var/log/opsmanager/<br/>audit_log.txt</code></td>
+		<td>
+			See <a href=#audit-logs-text-file>Ops Manager Audit Logs Text File</a> for information about the properties in the <code>audit_log.txt</code> file.
+		</td>
+	</tr>
+
+</table>	
+
+
+## <a id='audit-logs-text-file'></a> Audit Logs Text File
+
+The Ops Manager `audit_log.txt` file includes metadata about actions taken by users in the Ops Manager app in JSON format.
+
+The following is an example of the content in the `audit_log.txt` file:
+
+```
+	"timestamp":"2019-07-13T00:43:08.783+00:00",
+	"component":"Ops Manager 2.7.0-build.87",
+	"component_scheme":"https",
+	"component_host":"pcf.example.opsmanager.cf-app.com",
+	"component_port":443,
+	"result":200,
+	"target":"/proxy_settings",
+	"event_type":"PUT",
+	"origination":"123.456.789",
+	"user_identification":"admin",
+	"uaa_authentication_mechanism":"uaa",
+	"request_body":{ 
+		"authenticity_token":"[FILTERED]",
+		"proxy_settings":{ 
+			"http_proxy":"http://example.com",
+			"https_proxy":"https://example.com",
+			"no_proxy":"1.2.3.4"
+		}	
+	}
+```
+
+The following table describes the properties in the `audit_log.txt` file. It also provides example values for each property. 
+
+<table>
+	<tr>
+		<th width="35%">User Action Property</th>
+		<th width="35%">Description</th>
+		<th width="30%">Example Value</th>
+	</tr>
+	<tr>
+		<td>user_identification</td>
+		<td>The username or client ID that submitted a request.</td>
+		<td><code>admin</code></td>
+	</tr>
+	<tr>
+		<td>uaa_authentication_mechanism</td>
+		<td>The authentication method used to make the request. 
+		<br/><br/>
+		<code>(unauthenticated)</code> for unauthenticated requests, <code>uaa</code> for a UAA user login, or <code>client_authenticated</code> for an API-only client.</td>
+		<td><code>uaa</code></td>
+	</tr>
+	<tr>
+		<td>origination</td>
+		<td>The IP address that made the request to the server.</td>
+		<td><code>198.10.1.25</code></td>
+	</tr>
+	<tr>
+		<td>timestamp</td>
+		<td>The time that the server received the request.</td>
+		<td><code>2019-07-21 08:34:00</code></td>
+	</tr>
+	<tr>
+		<td>target</td>
+		<td>The relative URL path associated with the request.</td>
+		<td><code>/infrastructure/director/resource_config/edit</code></td>
+	</tr>
+	<tr>
+		<td>event_type</td>
+		<td>The HTTP verb associated with the request.</td>
+		<td><code>GET</code></td>
+	</tr>
+	<tr>
+		<td>result</td>
+		<td>The HTTP response code associated with the request.
+		<br/><br/> 
+		Results beginning with <code>2</code> indicate a successful request. Results beginning with <code>4</code> indicate a failed request due to user error. Results beginning with <code>5</code> indicate a server error.</td>
+		<td><code>200</code></td>
+	</tr>
+	<tr>
+		<td>component</td>
+		<td>The version of Ops Manager on which the request was made.</td>
+		<td><code>Ops Manager 2.7.0-build.234</code></td>
+	</tr>
+	<tr>
+		<td>component_scheme</td>
+		<td>The transport protocol used for the request.</td>
+		<td><code>HTTPS</code></td>
+	</tr>
+	<tr>
+		<td>component_host</td>
+		<td>The domain name used for the request.</td>
+		<td><code>pcf.my-ops-manager.com</code></td>
+	</tr>
+	<tr>
+		<td>component_port</td>
+		<td>The port used for the request.</td>
+		<td><code>443</code></td>
+	</tr>
+	<tr>
+		<td>request_body</td>
+		<td>A JSON object that contains the contents of the query paramaters, request body, and routing parameters for the request. Any credentials sent within the request are replaced with the value <code>[FILTERED]</code>. Any file uploads are excluded.</td>
+		<td>
+			<code>
+				{ "authenticity_token": "[FILTERED]",
+				  "director_configuration": {
+				    "ntp_servers_string": "ntp-server",
+				    "encryption": {
+				      "keys": "[FILTERED]"
+				    },
+				    "blobstore_type": "local"
+				  }
+				}
+			</code>	
+		</td>
+	</tr>
+</table>	
+
+
+## <a id='access-logs'></a> Access Logs on the Ops Manager VM
+
+You can access logs for auditing user activity by logging on to the Ops Manager VM using SSH. 
+
+To access logs for auditing user activity, do the following:
+
+1. SSH onto the Ops Manager VM using your private SSH key. 
+
+1. Navigate to the location of the logs and open or preview the log file. For example, to view the `audit_log.txt` file, run the following command:
+
+	```
+	cat /var/log/opsmanager/audit_log.txt
+	```
+
+## <a id='forward-syslog'></a> Forward Logs
+
+You can forward some Ops Manager logs using syslog forwarding. This allows you to forward logs to a syslog server or other third-party destination for storage and analysis. 
+
+The following logs contain relevant information for auditing user activity and can be forwarded using syslog forwarding:
+
+* `uaa.out`
+* `audit_log.txt`
+
+For more information about syslog forwarding in Ops Manager, see the [Syslog](https://docs.pivotal.io/pivotalcf/customizing/pcf-interface.html) section in the _Using the Ops Manager Interface_ topic.
+
