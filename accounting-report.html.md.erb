@@ -326,10 +326,10 @@ Pivotal recommends monitoring usage service at regular intervals with a recurrin
 
 Use the following curl command to check for failed jobs:
 
-<pre class="terminal">
+```
 $ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/heartbeat/failed_jobs" -k -v
 Ok.
-</pre>
+```
 
 The command returns HTTP status `200` if there are no failed jobs, and `500` if there are one or more failed jobs.
 
