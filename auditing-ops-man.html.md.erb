@@ -8,15 +8,30 @@ This topic describes how operators can audit user activity in Ops Manager. The s
 
 ## <a id ='overview'></a> Overview
 
-You can audit user activity in Ops Manager to help improve security practices for your Pivotal Cloud Foundry (PCF) environment. Auditing user activity also helps you ensure that your environment is compliant with existing security standards.
+You can audit user activity in Ops Manager to help improve security practices for your Pivotal Cloud Foundry (PCF) environment. Auditing user activity also helps you ensure that your environment is compliant with existing security standards. 
 
-You can find information for auditing user activity in Ops Manager in the following Ops Manager logs:
+For example, you can view the timestamp of any requests made in the Ops Man UI as well as the username of the user that made the request.
 
-* SSH login logs
-* UAA login and failed UAA login logs
-* The Ops Manager `audit_log.txt` file
+You can find relevant information for auditing user activity in Ops Manager in the following Ops Manager logs:
 
-For more information about the content and location of these logs, see [Logs for Auditing User Activity](#logs).
+* SSH login logs. See [Logs for Auditing User Activity](#logs).
+* UAA login and failed UAA login logs. See [Logs for Auditing User Activity](#logs).
+* The Ops Manager `audit_log.txt` file. See [Audit Logs Text File](audit-logs-text-file).
+
+
+## <a id='access-logs'></a> Access Logs on the Ops Manager VM
+
+You can access logs for auditing user activity by logging on to the Ops Manager VM using SSH. 
+
+To access logs for auditing user activity, do the following:
+
+1. SSH onto the Ops Manager VM using your private SSH key. 
+
+1. Navigate to the location of the logs and open or preview the log file. For example, to view the `audit_log.txt` file, run the following command:
+
+	```
+	cat /var/log/opsmanager/audit_log.txt
+	```
 
 
 ## <a id='logs'></a> Logs for Auditing User Activity
@@ -82,6 +97,7 @@ The Ops Manager `audit_log.txt` file includes metadata about actions taken by us
 The following is an example of the content in the `audit_log.txt` file:
 
 ```
+{
 	"timestamp":"2019-07-13T00:43:08.783+00:00",
 	"component":"Ops Manager 2.7.0-build.87",
 	"component_scheme":"https",
@@ -101,6 +117,7 @@ The following is an example of the content in the `audit_log.txt` file:
 			"no_proxy":"1.2.3.4"
 		}	
 	}
+}	
 ```
 
 The following table describes the properties in the `audit_log.txt` file. It also provides example values for each property. 
@@ -190,20 +207,6 @@ The following table describes the properties in the `audit_log.txt` file. It als
 </table>	
 
 
-## <a id='access-logs'></a> Access Logs on the Ops Manager VM
-
-You can access logs for auditing user activity by logging on to the Ops Manager VM using SSH. 
-
-To access logs for auditing user activity, do the following:
-
-1. SSH onto the Ops Manager VM using your private SSH key. 
-
-1. Navigate to the location of the logs and open or preview the log file. For example, to view the `audit_log.txt` file, run the following command:
-
-	```
-	cat /var/log/opsmanager/audit_log.txt
-	```
-
 ## <a id='forward-syslog'></a> Forward Logs
 
 You can forward some Ops Manager logs using syslog forwarding. This allows you to forward logs to a syslog server or other third-party destination for storage and analysis. 
@@ -213,5 +216,5 @@ The following logs contain relevant information for auditing user activity and c
 * `uaa.out`
 * `audit_log.txt`
 
-For more information about syslog forwarding in Ops Manager, see the [Syslog](https://docs.pivotal.io/pivotalcf/customizing/pcf-interface.html) section in the _Using the Ops Manager Interface_ topic.
+For more information about syslog forwarding in Ops Manager, see the [Syslog](https://docs.pivotal.io/pivotalcf/customizing/pcf-interface.html#syslog) section in the _Using the Ops Manager Interface_ topic.
 
