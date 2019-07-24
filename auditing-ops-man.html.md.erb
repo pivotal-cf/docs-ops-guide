@@ -108,15 +108,7 @@ The following is an example of the content in the `audit_log.txt` file:
 	"event_type":"PUT",
 	"origination":"123.456.789",
 	"user_identification":"admin",
-	"uaa_authentication_mechanism":"uaa",
-	"request_body":{ 
-		"authenticity_token":"[FILTERED]",
-		"proxy_settings":{ 
-			"http_proxy":"http://example.com",
-			"https_proxy":"https://example.com",
-			"no_proxy":"1.2.3.4"
-		}	
-	}
+	"uaa_authentication_mechanism":"uaa"
 }	
 ```
 
@@ -186,23 +178,6 @@ The following table describes the properties in the `audit_log.txt` file. It als
 		<td>component_port</td>
 		<td>The port used for the request.</td>
 		<td><code>443</code></td>
-	</tr>
-	<tr>
-		<td>request_body</td>
-		<td>A JSON object that contains the contents of the query paramaters, request body, and routing parameters for the request. Any credentials sent within the request are replaced with the value <code>[FILTERED]</code>. Any file uploads are excluded.</td>
-		<td>
-			<code>
-				{ "authenticity_token": "[FILTERED]",
-				  "director_configuration": {
-				    "ntp_servers_string": "ntp-server",
-				    "encryption": {
-				      "keys": "[FILTERED]"
-				    },
-				    "blobstore_type": "local"
-				  }
-				}
-			</code>	
-		</td>
 	</tr>
 </table>	
 
