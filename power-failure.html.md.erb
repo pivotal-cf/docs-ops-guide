@@ -7,16 +7,16 @@ This topic describes how to check Pivotal Cloud Foundry (PCF) state after a powe
 
 ## <a id="overview"></a> Overview  
 
-PCF uses [BOSH](https://bosh.io/docs) to deploy and manage its VMs. When power returns after a failure and vSphere HA has recovered VMs, BOSH automatically acts to ensure the processes on those VMs are healthy, with the exception of the Ops Manager VM. Additionally, the [Diego](../concepts/diego/diego-architecture.html) runtime of Pivotal Application Service (PAS) recovers apps that were running on the VMs. 
+PCF uses [BOSH](https://bosh.io/docs) to deploy and manage its VMs. When power returns after a failure and vSphere HA has recovered VMs, BOSH automatically acts to ensure the processes on those VMs are healthy, with the exception of the Ops Manager VM and the BOSH VM itself. Additionally, the [Diego](../concepts/diego/diego-architecture.html) runtime of Pivotal Application Service (PAS) recovers apps that were running on the VMs. 
 
-While PCF on vSphere can automatically recover from a power failure, there are two scenarios that can require manual intervention:
+While PCF on vSphere can automatically recover from a power failure, there are two scenarios that can require manual intervention. The procedure in this topic includes more detail about addressing these scenarios, which are as follows:
 
 * If PAS is configured to use a MySQL cluster instead of a single node, the cluster does not recover automatically. 
 * If you have Ops Manager v2.5.3 or earlier and encounter the following known issue in the BOSH Director: [Monit inaccurately reports the health of UAA](https://docs.pivotal.io/pivotalcf/2-5/pcf-release-notes/opsmanager-rn.html#monit). 
 
-Use the checklist in the following section to ensure PCF is in a good state after a power outage. 
-
 ### <a id="checklist"></a> Checklist  
+
+Use the checklist in this section to ensure PCF is in a good state after a power failure. It includes links to sections that contain more detail about each phase. 
 
 This checklist assumes your PCF on vSphere installation is set up for vSphere HA and you have the BOSH Resurrector enabled.
 
@@ -29,37 +29,37 @@ This checklist assumes your PCF on vSphere installation is set up for vSphere HA
 <tr>
 <td>1</td>
 <td>vSphere</td>
-<td>Ensure vSphere is Running</td>
+<td><a href="#check-vSphere">Ensure vSphere is Running</a></td>
 </tr>
 <tr>
 <td>2</td>
 <td>Ops Manager</td>
-<td>Ensure Ops Manager is Running</td>
+<td><a href="#check-ops-manager">Ensure Ops Manager is Running</a></td>
 </tr>
 <tr>
 <td>3</td>
 <td>BOSH Director</td>
-<td>Ensure BOSH Director is Running</td>
+<td><a href="#check-bosh">Ensure BOSH Director is Running</a></td>
 </tr>
 <tr>
 <td>4</td>
 <td>BOSH Director</td>
-<td>Ensure BOSH Resurrector Finished Recovering</td>
+<td><a href="#resurrector">Ensure BOSH Resurrector Finished Recovering</a></td>
 </tr>
 <tr>
 <td>5</td>
 <td>PAS</td>
-<td>Ensure PAS VMs are Running (This may include manually recovering the MySQL cluster)</td>
+<td><a href="check-pas">Ensure PAS VMs are Running</a> (This may include manually recovering the MySQL cluster)</td>
 </tr>
 <tr>
 <td>6</td>
 <td>PAS</td>
-<td>Ensure Apps Hosted on PAS are Running</td>
+<td><a href="#check-apps">Ensure Apps Hosted on PAS are Running</a></td>
 </tr>
 <tr>
 <td>7</td>
 <td>PCF Healthwatch</td>
-<td>Check the Healtwatch for PCF Dashboard</td>
+<td><a href="#check-hw">Check the Healthwatch Dashboard</a></td>
 </tr>
 </table>
 
@@ -67,7 +67,9 @@ This checklist assumes your PCF on vSphere installation is set up for vSphere HA
 
 Ensure that vSphere is running and has fully recovered from the power failure. Check your internal vSphere monitoring dashboard. 
 
-## <a id="check-vcenter"></a> Phase 2: Ensure Ops Manager is Running
+## <a id="check-ops-manager"></a> Phase 2: Ensure Ops Manager is Running
+
+To ensure Ops Manager is running, do the following:
 
 1. Open vCenter and navigate to the resource pool that hosts your PCF deployment.
 
@@ -79,14 +81,16 @@ Ensure that vSphere is running and has fully recovered from the power failure. C
 
 ## <a id="check-bosh"></a> Phase 3: Ensure BOSH Director is Running
 
+To ensure BOSH Director is running, do the following:
+
 1. In a browser, navigate to the PCF Ops Manager UI and select the **BOSH Director for vSphere** tile. 
 	<p class="note"><strong>Note</strong>: If you do not know the URL of the Ops Manager VM, you can use the IP address from vCenter.</p>
 
 1. Select the **Status** tab. 
 
-1. Record the **CID**, or container ID, of the **BOSH Director** job. 
+1. Record the **CID**, or cloud ID, of the **BOSH Director** job. 
 
-1. Navigate to the vCenter resource pool that hosts your PCF deployment.
+1. Navigate to the vCenter resource pool or cluster that hosts your PCF deployment.
 
 1. Select the **Related Objects** tab, and then **Virtual Machines**.
 
@@ -103,6 +107,8 @@ Ensure that vSphere is running and has fully recovered from the power failure. C
 
 ## <a id="resurrector"></a> Phase 4: Ensure BOSH Resurrector Finished Recovering
 
+To ensure BOSH Resurrector finished recovering, do the following:
+
 If enabled, the BOSH Resurrector re-creates any VMs in a problematic state after being recovered by vSphere HA. 
 
 1. Follow the instructions to [Log in to the Ops Manager VM with SSH](../customizing/trouble-advanced.html#ssh). 
@@ -114,6 +120,8 @@ If enabled, the BOSH Resurrector re-creates any VMs in a problematic state after
 ## <a id="check-pas"></a> Phase 5: Ensure PAS VMs are Running
 
 <p class="note"><strong>Note</strong>: If you have PCF service tiles installed, such as Redis for PCF, you can use the steps in this section to also check the VMs for those services. To further ensure the health of any PCF services installed, use the PCF Healthwatch dashboard and the documentation for each service.</p>
+
+To ensure PAS VMs are running, do the following:
 
 1. Run `bosh vms` to confirm that VMs are running. BOSH lists VMs by deployment. The deployment with the `cf-` prefix is the PAS deployment. 
 .
@@ -129,6 +137,8 @@ If enabled, the BOSH Resurrector re-creates any VMs in a problematic state after
 
 ### <a id="check-mysql"></a> Manually Recover PAS MySQL (Clusters Only)
 
+To manually recover PAS MySQL, do the following:
+
 1. In a browser, navigate to the PCF Ops Manager UI and select the **Pivotal Application Service** tile. 
 
 1. Select the **Resource Config** pane. 
@@ -139,11 +149,13 @@ If enabled, the BOSH Resurrector re-creates any VMs in a problematic state after
 
 ## <a id="check-apps"></a> Phase 7: Ensure Apps Hosted on PAS are Running
 
+To ensure apps hosted on PAS are running, do the following:
+
 1. Check the status of an app your company runs on PCF. To do this, run any healthchecks that the app has, or visit the URL of the app to see that it is working. 
 
 1. Push an app to PCF. You can push one of your company's apps, or one of the [Cloud Foundry Sample Applications](https://github.com/cloudfoundry-samples). 
 
 
-## <a id="check-hw"></a> Phase 8: Check PCF Healthwatch Dashboard
+## <a id="check-hw"></a> Phase 8: Check the Healthwatch Dashboard
 
 You can further assess the state of your PCF installation use PCF Healthwatch. For more information, see [Using PCF Healthwatch](https://docs.pivotal.io/pcf-healthwatch/using.html). 
