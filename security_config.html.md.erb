@@ -43,16 +43,16 @@ To create a certificate, you can use a wide variety of tools including OpenSSL, 
 In either case for either self-signed or trusted single certificates, apply the following rules when creating the CSR:
 
 * Specify your registered wildcard domain as the `Common Name`. For example, `*.yourdomain.com`.
-* If you are using a split domain setup that separates the domains for `apps` and `system` components (recommended), then enter the following values in the `Subject Alternative Name` of the certificate:
+* If you are using a split domain setup that separates the domains for `apps` and `sys` components (recommended), then enter the following values in the `Subject Alternative Name` of the certificate:
     * `*.apps.yourdomain.com`
-    * `*.system.yourdomain.com`
-    * `*.login.system.yourdomain.com`
-    * `*.uaa.system.yourdomain.com`
+    * `*.sys.yourdomain.com`
+    * `*.login.sys.yourdomain.com`
+    * `*.uaa.sys.yourdomain.com`
 * If you are using a single domain setup, then use the following values as the `Subject Alternative Name` of the certificate:
-    * `*.login.system.yourdomain.com`
-    * `*.uaa.system.yourdomain.com`
+    * `*.login.sys.yourdomain.com`
+    * `*.uaa.sys.yourdomain.com`
 
-    <p class="note"><strong>Note</strong>: TLS certificates generated for wildcard DNS records only work for a single domain name component or component fragment. For example, a certificate generated for <code>*.EXAMPLE.com</code> does not work for <code>*.apps.EXAMPLE.com</code> and <code>*.system.EXAMPLE.com</code>. The certificate must have both <code>*.apps.EXAMPLE.com</code> and <code>*.system.EXAMPLE.com</code> attributed to it. </p>
+    <p class="note"><strong>Note</strong>: TLS certificates generated for wildcard DNS records only work for a single domain name component or component fragment. For example, a certificate generated for <code>*.EXAMPLE.com</code> does not work for <code>*.apps.EXAMPLE.com</code> and <code>*.sys.EXAMPLE.com</code>. The certificate must have both <code>*.apps.EXAMPLE.com</code> and <code>*.sys.EXAMPLE.com</code> attributed to it. </p>
     
 ### <a id="ert_certgen"></a> Generating a RSA Certificate in PAS
 
@@ -64,13 +64,13 @@ In either case for either self-signed or trusted single certificates, apply the 
  
 1. Click **Generate RSA Certificate** to populate the **Certificate and Private Key for HAProxy and Router** fields with RSA certificate and private key information.
   
-1. If you are using a split domain setup that separates the domains for `apps` and `system` components (recommended), then enter the following domains for the certificate:
+1. If you are using a split domain setup that separates the domains for `apps` and `sys` components (recommended), then enter the following domains for the certificate:
     * `*.yourdomain.com`
     * `*.apps.yourdomain.com`
-    * `*.system.yourdomain.com`
-    * `*.login.system.yourdomain.com`
-    * `*.uaa.system.yourdomain.com`
+    * `*.sys.yourdomain.com`
+    * `*.login.sys.yourdomain.com`
+    * `*.uaa.sys.yourdomain.com`
     
-    For example, `*.example.com`, `*.apps.example.com`, `*.system.example.com`, `*.login.system.example.com`, `*.uaa.system.example.com`
+    For example, `*.example.com`, `*.apps.example.com`, `*.sys.example.com`, `*.login.sys.example.com`, `*.uaa.sys.example.com`
 
     <%= image_tag("generate-cert.png") %>
