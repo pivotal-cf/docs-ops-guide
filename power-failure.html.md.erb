@@ -3,18 +3,28 @@ title: Checking PCF State after a Power Failure on vSphere
 owner:
 ---
 
-This topic describes how to check Pivotal Cloud Foundry (PCF) state after a power failure in an on-premises vSphere installation. If you have a procedure at your company for handling power failure scenarios and would like add steps for checking that PCF is in a good state, you can use this procedure as a template.  
+This topic describes how to check Pivotal Cloud Foundry (PCF) state after a power failure in an on-premises vSphere installation. 
+
+If you have a procedure at your company for handling power failure scenarios and would to like add steps for checking that PCF is in a good state, you can use this procedure as a template.  
 
 ## <a id="overview"></a> Overview  
 
-PCF uses [BOSH](https://bosh.io/docs) to deploy and manage its VMs. When power returns after a failure and vSphere HA has recovered VMs, BOSH automatically acts to ensure the processes on those VMs are healthy, with the exception of the Ops Manager VM and the BOSH VM itself. Additionally, the [Diego](../concepts/diego/diego-architecture.html) runtime of Pivotal Application Service (PAS) recovers apps that were running on the VMs. 
 
-While PCF on vSphere can automatically recover from a power failure, there are two scenarios that can require manual intervention. The procedure in this topic includes more detail about addressing these scenarios, which are as follows:
+
+When power returns after a failure, vSphere and PCF automatically do the following to recover your environment:
+
+1. vSphere High Availability (HA) recovers VMs
+2. BOSH ensures the processes on those VMs are healthy, with the exception of the Ops Manager VM and the BOSH VM itself. PCF uses BOSH to deploy and manage its VMs. For more information, see [BOSH](https://bosh.io/docs). 
+3. The [Diego](../concepts/diego/diego-architecture.html) runtime of Pivotal Application Service (PAS) recovers apps that were running on the VMs. 
+
+However, there are two scenarios that can require manual intervention when recovering your environment after a power failure:
 
 * If PAS is configured to use a MySQL cluster instead of a single node, the cluster does not recover automatically. 
 * If you have Ops Manager v2.5.3 or earlier and encounter the following known issue in the BOSH Director: [Monit inaccurately reports the health of UAA](https://docs.pivotal.io/pivotalcf/2-5/pcf-release-notes/opsmanager-rn.html#monit). 
 
-### <a id="checklist"></a> Checklist  
+The procedure in this topic includes more detail about addressing these scenarios.
+
+## <a id="checklist"></a> Checklist  
 
 Use the checklist in this section to ensure PCF is in a good state after a power failure. It includes links to sections that contain more detail about each phase. 
 
@@ -88,7 +98,7 @@ To ensure BOSH Director is running, do the following:
 
 1. Select the **Status** tab. 
 
-1. Record the **CID**, or cloud ID, of the **BOSH Director** job. 
+1. In the **BOSH Director** row, record the **CID**. The CID is the cloud ID and corresponds to the VM name in vSphere. 
 
 1. Navigate to the vCenter resource pool or cluster that hosts your PCF deployment.
 
