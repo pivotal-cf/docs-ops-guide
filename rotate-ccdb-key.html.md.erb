@@ -1,0 +1,75 @@
+---
+title: Rotating the Cloud Controller Database Encryption Key
+owner: CAPI
+---
+
+This topic describes how to rotate the Cloud Controller database (CCDB) encryption key. 
+
+## <a id="overview"></a> Overview
+
+The Cloud Controller is the primary API of Pivotal Application Service (PAS). It has its own database, the CCDB, in which it stores information about objects in PAS. The CCDB encryption key is used to encrypt sensitive data at rest in the CCDB, such as app environment variables. 
+
+The CCDB encryption key is automatically generated when you first deploy PAS. You can rotate the CCDB encryption key as described in this topic. For example, you may want to perform this procedure if your existing key is leaked. 
+
+##  <a id="rotate"></a> Rotate the CCDB Encryption Key
+
+<p class="note warning"><strong>Warning</strong>: Do not modify the <strong>Cloud Controller DB Encryption Key</strong> field in the PAS tile. This field is only for use when restoring PAS from a backup. If you modify this value at a time other than restore, commands such as <code>cf push</code> may fail. Instead, change keys using the <strong>Encryption key ledger</strong> as described below.</p>
+
+To rotate the CCDB encryption key, do the following: 
+
+1. Navigate to the PAS tile in Ops Manager and select the **Cloud Controller** pane. 
+
+1. In the **Encryption key ledger** field, do the following:
+	1. Click **Add**. 
+	1. Enter values for **Encryption key label** and **Encryption key**. 
+	1. Select the checkbox to mark this as your **Primary** key. 
+	<p class="note"><strong>Note</strong>: Do not remove any existing keys until after you complete this procedure.</p>
+	
+1. Click **Save**. 
+
+1. Select the **Errands** pane. 
+
+1. Set the **Rotate CC Database Key** errand to **On**. 
+
+1. Click **Save**. 
+
+1. Redeploy PAS. Once PAS deploys successfully, you can remove any previously specified CCDB encryption keys. 
+
+##  <a id="troubleshoot"></a> Troubleshoot Errors
+
+This section describes how to troubleshoot errors that you may encounter while rotation the CCDB encryption key. 
+
+### <a id="values-changed"></a> Encryption key(s) have had their values changed
+
+
+<table>
+<tr>
+	<th>Error</th>
+	<td>The PAS deploy fails with the following message: <code>Encryption key(s) mykey have had their values changed. Label and value pairs should not change, rather a new label and value pair should be added.</code></td>
+ </tr>
+ <tr>
+	<th>Cause</th>
+	<td>A previously existing key was edited in the PAS UI. For example, a key with the name <code>key-name</code> previously had the value <code>key-value-1</code> and now it is <code>key-value-2</code>.</td>
+</tr>
+<tr>
+	<th>Solution</th>
+	<td>Replace the value for the key with its original value and follow the rotation procedure to add a new key. </td>
+</tr>
+</table>
+
+### <a id=""></a> Encryption key(s) are still in use but not present in 'cc.database_encryption.keys'
+
+<table>
+<tr>
+	<th>Error</th>
+	<td>The PAS deploy fails with the following message: <code>Encryption key(s) mykey are still in use but not present in 'cc.database_encryption.keys'</code></td>
+ </tr>
+ <tr>
+	<th>Cause</th>
+	<td>The previously used key was removed from the ledger in the PAS UI before the key rotation errand ran.</td>
+</tr>
+<tr>
+	<th>Solution</th>
+	<td>Add the previously used key back to the ledger and redeploy PAS. You can find it in the <strong>Credentials</strong> tab of the PAS tile as <strong>Db Encryption Credentials</strong>. You can remove the key after the redeploy is complete.</td>
+</tr>
+</table>
