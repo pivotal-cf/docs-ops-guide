@@ -19,12 +19,14 @@ To rotate the CCDB encryption key, do the following:
 
 1. Navigate to the PAS tile in Ops Manager and select the **Cloud Controller** pane. 
 
+1. Review the **Encryption key ledger** field. If you previously added a key and selected the **Primary** checkbox, deselect the checkbox. The PAS deploy will fail if there is more than one key with the **Primary** checkbox selected. 
+
 1. In the **Encryption key ledger** field, do the following:
+	<p class="note"><strong>Note</strong>: Do not remove any existing keys. This causes the PAS deploy to fail.</p>
 	1. Click **Add**. 
 	1. Enter values for **Encryption key label** and **Encryption key**. 
 	1. Select the checkbox to mark this as your **Primary** key. 
-	<p class="note"><strong>Note</strong>: Do not remove any existing keys until after you complete this procedure.</p>
-	
+
 1. Click **Save**. 
 
 1. Select the **Errands** pane. 
@@ -37,7 +39,7 @@ To rotate the CCDB encryption key, do the following:
 
 ##  <a id="troubleshoot"></a> Troubleshoot Errors
 
-This section describes how to troubleshoot errors that you may encounter while rotation the CCDB encryption key. 
+This section describes how to troubleshoot errors that you may encounter while rotating the CCDB encryption key. 
 
 ### <a id="values-changed"></a> Encryption key(s) have had their values changed
 
@@ -45,15 +47,15 @@ This section describes how to troubleshoot errors that you may encounter while r
 <table>
 <tr>
 	<th>Error</th>
-	<td>The PAS deploy fails with the following message: <code>Encryption key(s) mykey have had their values changed. Label and value pairs should not change, rather a new label and value pair should be added.</code></td>
+	<td>The PAS deploy fails a Cloud Controller error. The Cloud Controller logs include the following message: <code>Encryption key(s) mykey have had their values changed. Label and value pairs should not change, rather a new label and value pair should be added.</code></td>
  </tr>
  <tr>
 	<th>Cause</th>
-	<td>A previously existing key was edited in the PAS UI. For example, a key with the name <code>key-name</code> previously had the value <code>key-value-1</code> and now it is <code>key-value-2</code>.</td>
+	<td>A previously existing key was edited in the PAS UI. For example, a key with the name <code>key-name</code> previously had the value <code>key-value-1</code> and now it is <code>key-value-2</code>. PAS does not support editing key names or values in the ledger.</td>
 </tr>
 <tr>
 	<th>Solution</th>
-	<td>Replace the value for the key with its original value and follow the rotation procedure to add a new key. </td>
+	<td>Replace the value for the key with its original value and follow the rotation procedure to add a new key. <br>You may need to find the original value of the key using the steps in <a href="#view">View Encryption Keys</</td>
 </tr>
 </table>
 
@@ -62,14 +64,39 @@ This section describes how to troubleshoot errors that you may encounter while r
 <table>
 <tr>
 	<th>Error</th>
-	<td>The PAS deploy fails with the following message: <code>Encryption key(s) mykey are still in use but not present in 'cc.database_encryption.keys'</code></td>
+	<td>The PAS deploy fails with a Cloud Controller error. The Cloud Controller logs include the following message: <code>Encryption key(s) mykey are still in use but not present in 'cc.database_encryption.keys'</code></td>
  </tr>
  <tr>
 	<th>Cause</th>
-	<td>The previously used key was removed from the ledger in the PAS UI before the key rotation errand ran.</td>
+	<td>The previous <strong>Primary</strong> key was removed from the ledger in the PAS UI before the key rotation errand ran.</td>
 </tr>
 <tr>
 	<th>Solution</th>
-	<td>Add the previously used key back to the ledger and redeploy PAS. You can find it in the <strong>Credentials</strong> tab of the PAS tile as <strong>Db Encryption Credentials</strong>. You can remove the key after the redeploy is complete.</td>
+	<td>Add the previously used key back to the ledger and redeploy PAS. <br>You may need to find the value of the previously used key using the steps in <a href="#view">View Encryption Keys</a>.
+	</td>
 </tr>
 </table>
+
+##  <a id="view"></a> View Encryption Keys
+
+The section describes how to retrieve the value of an existing or previous encryption key. You may need to due this when troubleshooting a failed key rotation. 
+
+
+### <a id="actual-installation"></a> Ops Manager actual-installation.yml
+
+The Ops Manager `actual-installation.yml` file shows properties from the most recent successful deploy. To view the encryption keys listed in this file, do the following:
+
+1. Follow the steps in <a href="../customizing/modify-ops-man.html#installation">Modify the Installation Files</a> to decrypt the <code>actual-installation.yml</code> file.
+1. Open the <code>actual-installation.yml</code> file and view the <code>cloud_controller_encryption_keys</code> property. 
+
+### <a id="credhub"></a>  CredHub 
+
+To view current and previous encryption keys using CredHub, do the following:
+
+1. Follow the steps in the article <a href="https://community.pivotal.io/s/article/How-to-Access-CredHub-with-the-CredHub-CLI">How to access CredHub with the CredHub CLI</a> to log in to the CredHub CLI.
+1. Run the following command to view the five most recent encryption keys: 
+<pre>credhub get -n /opsmgr/PAS-GUID/cloud_controller/INDEX/encryption_keys --versions=5</pre>
+	Where: 
+	* <code>PAS-GUID</code> is the GUID of your PAS BOSH deployment.
+	* <code>INDEX</code> is the zero-based index of the key. This corresponds to the order of the **Encryption key ledger** in the Ops Manager UI. 
+
