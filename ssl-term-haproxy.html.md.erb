@@ -9,7 +9,7 @@ Both Pivotal Application Service (PAS) and Isolation Segments for Pivotal Cloud 
 
 HAProxy is appropriate to use in a deployment when features are needed that are offered by HAProxy but are not offered by the CF Routers or IaaS-provided load balancers such as with Azure load balancers. These include filtering of protected domains from trusted networks. 
 
-While HAProxy instances provide load balancing for the Gorouters, HAProxy is not itself highly available. For production environments, use a highly-available load balancer to scale HAProxy horizontally. The load balancer does not need to terminate TLS or even operate at layer 7 (HTTP); it can simply provide layer 4 load balancing of TCP connections. Use of HAProxy does not remove the need for CF Routers; the Gorouter must always be deployed for HTTP applications, and TCP Router for non-HTTP applications.
+While HAProxy instances provide load balancing for the Gorouters, HAProxy is not itself highly available. For production environments, use a highly-available load balancer to scale HAProxy horizontally. The load balancer does not need to terminate TLS or even operate at layer 7 (HTTP), as it can provide layer 4 load balancing of TCP connections. Use of HAProxy does not remove the need for CF Routers. The Gorouter must always be deployed for HTTP applications, and TCP Router for non-HTTP applications.
 
 You can generate a self-signed certificate for HAProxy if you do not want to obtain a signed certificate from a well-known certificate authority.
 

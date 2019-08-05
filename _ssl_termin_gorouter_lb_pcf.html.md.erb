@@ -53,7 +53,7 @@ your load balancer.
      1. Under **HAProxy forwards requests to Router over TLS**, select **Disable**.
      1. In the **Configure the CF Router support for the X-Forwarded-Client-Cert header** field, select any of the available options depending on your client application needs. For more information about XFCC header forwarding, see [Forward Client Certificate to Applications](../concepts/http-routing.html#forward-client-cert).
      1. In the PAS tile, click **Resource Config**. 
-     1. In the **Instances** drop down for the **HAPRoxy** job, select `0` instances.
+     1. In the **Instances** drop down for the **HAProxy** job, select `0` instances.
      1. Click **Save**.
      
 1. (Optional) If you are not using SSL encryption or if you are using self-signed certificates, you can select **Disable SSL certificate verification for this environment**. Selecting this checkbox also disables SSL verification for route services. 
