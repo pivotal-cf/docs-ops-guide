@@ -7,7 +7,7 @@ This topic describes how to rotate the Cloud Controller database (CCDB) encrypti
 
 ## <a id="overview"></a> Overview
 
-The Cloud Controller is the primary API of Pivotal Application Service (PAS). It has its own database, the CCDB, in which it stores information about objects in PAS. The CCDB encryption key is used to encrypt sensitive data at rest in the CCDB, such as app environment variables. 
+The Cloud Controller is the primary API of Pivotal Application Service (PAS). It has its own database, the CCDB, in which it stores information about objects in PAS such as apps. The CCDB encryption key is used to encrypt sensitive data at rest in the CCDB such as app environment variables. 
 
 The CCDB encryption key is automatically generated when you first deploy PAS. You can rotate the CCDB encryption key as described in this topic. For example, you may want to perform this procedure if your existing key is leaked. 
 
