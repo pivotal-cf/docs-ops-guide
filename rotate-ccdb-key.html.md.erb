@@ -77,19 +77,19 @@ This section describes how to troubleshoot errors that you may encounter while r
 </tr>
 </table>
 
-##  <a id="view"></a> View Encryption Keys
+###  <a id="view"></a> View Encryption Keys
 
 The section describes how to retrieve the value of an existing or previous encryption key. You may need to do this when troubleshooting a failed key rotation. 
 
 
-### <a id="actual-installation"></a> Ops Manager actual-installation.yml
+#### <a id="actual-installation"></a> Ops Manager actual-installation.yml
 
 The Ops Manager `actual-installation.yml` file shows properties from the most recent successful deploy. To view the encryption keys listed in this file, do the following:
 
 1. Follow the steps in <a href="../customizing/modify-ops-man.html#installation">Modify the Installation Files</a> to decrypt the <code>actual-installation.yml</code> file.
 1. Open the <code>actual-installation.yml</code> file and view the <code>cloud_controller_encryption_keys</code> property. 
 
-### <a id="credhub"></a>  CredHub 
+#### <a id="credhub"></a>  CredHub 
 
 To view current and previous encryption keys using CredHub, do the following:
 
