@@ -110,9 +110,7 @@ To ensure BOSH Director is running, do the following:
 
 1. Locate the VM with the name that corresponds to the **CID** value you copied. 
 
-1. Review the **State** and **Status** columns for the VM. 
-
-1. If the **State** is not **Powered On**, restart the VM. 
+1. Review the **State** and **Status** columns for the VM. If the **State** is not **Powered On**, restart the VM. 
 
 1. If the VM is **Powered On** but **Status** does not display **Normal**, it may be due the following known issue: [Monit inaccurately reports the health of UAA](https://docs.pivotal.io/pivotalcf/2-5/pcf-release-notes/opsmanager-rn.html#monit). To resolve this issue, do the following:
 	1. SSH into the BOSH Director VM using the instructions in [SSH into the BOSH Director VM](../customizing/trouble-advanced.html#bosh-director-ssh). 
