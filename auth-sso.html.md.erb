@@ -4,26 +4,27 @@ title: Configuring Authentication and Enterprise SSO for PAS
 owner: Identity
 ---
 
+This topic describes Pivotal Application Service (PAS) authentication and single sign-on configuration with Lightweight Directory Access Protocol (LDAP) and Security Assertion Markup Language (SAML).
 
 
-This topic describes [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) Pivotal Application Service (PAS) authentication and single sign-on configuration with Lightweight Directory Access Protocol (LDAP) and Security Assertion Markup Language (SAML).
+## <a id='overview'></a> Overview
 
-Refer to the instructions below to configure your deployment with SAML or LDAP.
-
-Connecting Pivotal Application Service (PAS) to either the LDAP or SAML external user store allows the User Account and Authentication (UAA) server to delegate authentication to existing enterprise user stores.
+Connecting PAS to either the LDAP or SAML external user store allows the User Account and Authentication (UAA) server to delegate authentication to existing enterprise user stores.
 
 If your enterprise user store is exposed as a SAML or LDAP Identity Provider for single sign-on (SSO), you can configure SSO to allow users to access the Apps Manager and Cloud Foundry Command Line Interface (cf CLI) without creating a new account or, if using SAML, without re-entering credentials.
 
-See the [Adding Existing SAML or LDAP Users to a PCF Deployment](./external-user-management.html) topic for information about managing user identity and pre-provisioning user roles with SAML or LDAP in PCF.
+For information about managing user identity and pre-provisioning user roles with SAML or LDAP, see [Adding Existing SAML or LDAP Users to a PCF Deployment](./external-user-management.html).
 
 For an explanation of the process used by the UAA Server when it attempts to authenticate a user through LDAP, see [Configuring LDAP Integration with Pivotal Cloud Foundry](https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry) in the Pivotal Knowledge Base.
 
 <p class='note'><strong>Note:</strong> When integrating with an external identity provider, such as LDAP, authentication within the UAA becomes chained. An authentication attempt with a user's credentials is first attempted against the UAA user store before the external provider, LDAP. For more information, see <a href="https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-LDAP.md#chained-authentication">Chained Authentication</a> in the <em>User Account and Authentication LDAP Integration</em> GitHub documentation.</p>
 
+Follow one of the procedures below to configure your deployment with SAML or LDAP.
+
 
 ## <a id="configure-saml"></a> Configure PAS to Use a SAML Identity Provider
 
-In SAML terminology, the SAML protocol communicates user data between an identity provider (IdP) and a service provider (SP).
+In SAML terminology, the SAML protocol communicates user data between an identity provider and a service provider.
 
 To connect PAS with SAML, do the following:
 
@@ -33,42 +34,43 @@ To connect PAS with SAML, do the following:
 
 ### <a id="configure-pcf-for-saml"></a> Configure PAS as a Service Provider for SAML
 
-To configure PAS to use a SAML IdP, do the following:
+To configure PAS to use a SAML identity provider, do the following:
 
 1. From the **Installation Dashboard**, click the PAS tile.
 
-1. Select the **Domains** tab and record your system domain.
+1. Select the **Domains** pane and record your system domain.
     <%= image_tag("new-domains.png") %>
 
-1. Select **Authentication and Enterprise SSO**.
+1. Select the **Authentication and Enterprise SSO** pane.
 
-1. Select **SAML Identity Provider**.
+1. Select **SAML identity provider**.
     <%= image_tag("sso-ert.png") %>
+    <p class='note'><strong>Note:</strong> You must manually disable a SAML identity provider created by PAS when you no longer require it.</p>
 
-1. Set the **Provider Name**. This is a unique name you create for the Identity Provider. This name can include only alphanumeric characters, `+`, `_`, and `-`. You should not change this name after deployment because all external users use it to link to the provider.
+1. Set the **Provider name**. This is a unique name you create for the identity provider. This name can include only alphanumeric characters, `+`, `_`, and `-`. You should not change this name after deployment because all external users use it to link to the provider.
 
-1. Enter a **Display Name**. Your provider display name appears as a link on your Pivotal login page, which you can access at `https://login.YOUR-SYSTEM-DOMAIN`.
+1. Enter a **Display name**. Your provider display name appears as a link on your Pivotal login page, which you can access at `https://login.YOUR-SYSTEM-DOMAIN`.
     <%= image_tag("login-page.png") %>
 
-1. Retrieve the metadata from your Identity Provider and copy it into either the **Provider Metadata** or the **Provider Metadata URL** fields, depending on whether your Identity Provider exposes a Metadata URL or not. Refer to the [Configure SAML as an Identity Provider for PAS](#configure-saml-for-pcf) section of this topic for more information. Pivotal recommends that you use the Provider Metadata URL rather than Provider Metadata because the metadata can change. You can do this in either of the following ways:
-    * If your Identity Provider exposes a Metadata URL, provide the Metadata URL.
+1. Retrieve the metadata from your identity provider and copy it into either the **Provider metadata** or the **Provider metadata URL** fields, depending on whether your identity provider exposes a metadata URL or not. Refer to the [Configure SAML as an Identity Provider for PAS](#configure-saml-for-pcf) section of this topic for more information. Pivotal recommends that you use the provider metadata URL rather than provider metadata because the metadata can change. You can do this in either of the following ways:
+    * If your identity provider exposes a metadata URL, provide the metadata URL.
     * Download your Identity Provider metadata and paste this XML into the **Provider Metadata** area.
-    <p class='note'><strong>Note:</strong> You only need to select one of the above configurations. If you configure both, your Identity Provider defaults to the <strong>(OR) Provider Metadata URL</strong>.</p>
-    <p class="note"><strong>Note:</strong> See <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a PCF Deployment</a> for information about on-boarding SAML users and mapping them to PAS user roles.</p>
+    <p class='note'><strong>Note:</strong> You only need to select one of the above configurations. If you configure both, your identity provider defaults to the <strong>Provider metadata URL</strong>.</p>
+    <p class="note"><strong>Note:</strong> For information about onboarding SAML users and mapping them to PAS user roles, see <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a PCF Deployment</a>.</p>
 
-1. Select the **Name ID Format** for your SAML Identity Provider. This translates to `username` on PAS. The default is `Email Address`.
+1. Select the **Name ID format** for your SAML identity provider. This translates to `username` on PAS. The default is `Email Address`.
 
-1. For **Email Domain(s)**, enter a comma-separated list of the email domains for external users who will receive invitations to Apps Manager.
+1. For **Email domain(s)**, enter a comma-separated list of the email domains for external users who will receive invitations to Apps Manager.
 
-1. For **First Name Attribute** and **Last Name Attribute**, enter the attribute names in your SAML database that correspond to the first and last names in each user record, for example `first_name` and `last_name`. This field is case sensitive. 
+1. For **First name attribute** and **Last name attribute**, enter the attribute names in your SAML database that correspond to the first and last names in each user record. For example, `first_name` and `last_name`. This field is case-sensitive. 
 
-1. For **Email Attribute**, enter the attribute name in your SAML assertion that corresponds to the email address in each user record, for example `EmailID`. This field is case sensitive. 
+1. For **Email attribute**, enter the attribute name in your SAML assertion that corresponds to the email address in each user record. For example, `EmailID`. This field is case-sensitive. 
 
-1. For **External Groups Attribute**, enter the attribute name in your SAML database that defines the groups that a user belongs to, for example `group_memberships`. To map the groups from the SAML assertion to admin roles in PAS, follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) section of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic. This field is case sensitive. 
+1. For **External groups attribute**, enter the attribute name in your SAML database that defines the groups that a user belongs to. For example, `group_memberships`. To map the groups from the SAML assertion to admin roles in PAS, follow the procedure in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) section of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic. This field is case-sensitive. 
 
-1. By default, all SAML Authentication Request from PAS are signed. To change this, disable the **Sign Authentication Requests** checkbox and configure your Identity Provider to verify SAML authentication requests.
+1. By default, all SAML authentication requests from PAS are signed. To change this, disable the **Sign authentication requests** checkbox and configure your identity provider to verify SAML authentication requests.
 
-1. To validate the signature for the incoming SAML assertions, enable the **Required Signed Assertions** checkbox and configure your Identity Provider to send signed SAML assertions.
+1. To validate the signature for the incoming SAML assertions, enable the **Required signed assertions** checkbox and configure your identity provider to send signed SAML assertions.
 
 1. Click **Save**.
 
@@ -80,12 +82,11 @@ To configure PAS to use a SAML IdP, do the following:
 
 ### <a id="configure-saml-for-pcf"></a> Configure SAML as an Identity Provider for PAS
 
-The following procedure configures a SAML IdP to designate PAS as an SP.
+To configure a SAML identity provider to designate PAS as a service provider, do the following:
 
-Download the Service Provider Metadata from `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata`. Consult the documentation from your Identity Provider for configuration instructions.
+1. Download the service provider metadata from `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata`. See the documentation from your identity provider for configuration instructions.
 
-Refer to the table below for information about certain industry-standard Identity Providers and how to integrate them with PAS:
-
+1. See the table below for information about certain industry-standard identity providers and how to integrate them with PAS:
 <table border="1">
   <tr>
     <th>Solution Name</th>
@@ -105,71 +106,72 @@ Refer to the table below for information about certain industry-standard Identit
   </tr>
 </table>
 
-<p class="note"><strong>Note:</strong> Some Identity Providers allow uploads of Service Provider Metadata. Other providers require you to manually enter the Service Provider Metadata into a form. If your Identity Provider requires manual entry but is not listed above, see the <a href="./ca-sso-config.html">CA SiteMinder SSO Integration Guide</a>.</p>
+<p class="note"><strong>Note:</strong> Some identity providers allow uploads of service provider metadata. Other providers require you to manually enter the service provider metadata into a form. If your identity provider requires manual entry but is not listed above, see the <a href="./ca-sso-config.html">CA SiteMinder SSO Integration Guide</a>.</p>
 
 
 ## <a id="configure-ldap"></a> Configure LDAP as an Identity Provider for PAS
 
-To integrate the UAA with one or more LDAP servers, configure PAS with your LDAP endpoint information as follows:
+To integrate the UAA with one or more LDAP servers, do the following:
 
-1. Log into the Operations Manager web interface.
+1. Log in to Ops Manager.
 
 1. On the Product Dashboard, select the PAS tile.
 
     <%=image_tag("uaa/er-tile.png")%>
 
-1. In the left navigation menu, select **Authentication and Enterprise SSO**.
+1. In the left navigation menu, select the **Authentication and Enterprise SSO** pane.
 
     <%=image_tag("uaa/ldap-config.png")%>
 
-1. Under **Configure your UAA**, select **LDAP Server**.
+1. Under **Configure your UAA user account store with either internal or external authentication mechanisms**, select **LDAP server**.
 
-* For **Server URL**, enter the URL that point your LDAP server. With multiple LDAP servers, separate their URLs with spaces. Each URL must include one of the following protocols:
+1. For **Server URL**, enter the URL that points your LDAP server. For multiple LDAP servers, enter a space-separated list. Each URL must include one of the following protocols:
     * `ldap://`: This specifies that the LDAP server uses an unencrypted connection.
     * `ldaps://`: This specifies that the LDAP server uses SSL for an encrypted connection and requires that the LDAP server holds a trusted certificate or that you import a trusted certificate to the JVM truststore.
 
-* For **LDAP Credentials**, enter the LDAP Distinguished Name (DN) and password for binding to the LDAP Server. Example DN: `cn=administrator,ou=Users,dc=example,dc=com`
-    <p class="note"><strong>Note:</strong> Pivotal recommends that you provide LDAP credentials that grant read-only permissions on the LDAP Search Base and the LDAP Group Search Base. In addition to this, if the bind user belongs to a different search base, you must use the full DN.</p>
-    <p class="note warning"><strong>WARNING:</strong> Pivotal recommends against reusing LDAP service accounts across environments. LDAP service accounts should not be subject to manual lockouts, such as lockouts that result from users utilizing the same account. Also, LDAP service accounts should not be subject to automated deletions, since disruption to these service accounts could prevent user logins.
-    </p>
+1. For **LDAP credentials**, enter the LDAP distinguished name (DN) and password for binding to the LDAP Server. For example: `cn=administrator,ou=Users,dc=example,dc=com`
+    <p class="note"><strong>Note:</strong> Pivotal recommends that you provide LDAP credentials that grant read-only permissions on the LDAP search base and the LDAP group search base. Additionally, if the bind user belongs to a different search base, you must use the full DN.</p>
+    <p class="note warning"><strong>Warning:</strong> Pivotal recommends against reusing LDAP service accounts across environments. LDAP service accounts should not be subject to manual lockouts, such as lockouts that result from users utilizing the same account. Also, LDAP service accounts should not be subject to automated deletions, since disruption to these service accounts could prevent user logins.</p>
 
-* For **User Search Base**, enter the location in the LDAP directory tree from which any LDAP User search begins. The typical LDAP Search Base matches your domain name.
+1. For **User search base**, enter the location in the LDAP directory tree from which any LDAP user search begins. The typical LDAP search base matches your domain name.
 <br><br>
-For example, a domain named "cloud.example.com" typically uses the following LDAP User Search Base: `ou=Users,dc=example,dc=com`
+For example, a domain named "cloud.example.com" typically uses the following LDAP user search base: `ou=Users,dc=example,dc=com`
 
-* For **User Search Filter**, enter a string that defines LDAP User search criteria. These search criteria allow LDAP to perform more effective and efficient searches. For example, the standard LDAP search filter `cn=Smith` returns all objects with a common name equal to `Smith`.
+1. For **User search filter**, enter a string that defines LDAP user search criteria. These search criteria allow LDAP to perform more effective and efficient searches. For example, the standard LDAP search filter `cn=Smith` returns all objects with a common name equal to `Smith`.
 <br><br>
 In the LDAP search filter string that you use to configure PAS, use `{0}` instead of the username. For example, use `cn={0}` to return all LDAP objects with the same common name as the username.
 <br><br>
 In addition to `cn`, other attributes commonly searched for and returned are `mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
     <p class="note"><strong>Note:</strong> For instructions for testing and troubleshooting your LDAP search filters, see the [Configuring LDAP Integration with Pivotal Cloud Foundry](https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry) Knowledge Base article.</p>
 
-* For **Group Search Base**, enter the location in the LDAP directory tree from which the LDAP Group search begins.
+1. For **Group search base**, enter the location in the LDAP directory tree from which the LDAP group search begins.
 <br><br>
-For example, a domain named "cloud.example.com" typically uses the following LDAP Group Search Base: `ou=Groups,dc=example,dc=com`
+For example, a domain named "cloud.example.com" typically uses the following LDAP group search base: `ou=Groups,dc=example,dc=com`
 <br><br>
-Follow the instructions in the [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) section of _Creating and Managing Users with the UAA CLI (UAAC)_ to map the groups under this search base to admin roles in PAS.
-    <p class="note"><strong>Note:</strong> See <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a PCF Deployment</a> to on-board individual LDAP users and map them to PAS Roles.</p>
+This is required if you are mapping LDAP groups to an admin role. To map the groups under this search base to admin roles in PAS, see the [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) section of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic.
+    <p class="note"><strong>Note:</strong> To onboard individual LDAP users and map them to PAS roles, see <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a PCF Deployment</a>.</p>
 
-* For **Group Search Filter**, enter a string that defines LDAP Group search criteria. The standard value is `member={0}`.
+1. For **Group search filter**, enter a string that defines LDAP group search criteria. The standard value is `member={0}`. This is required if you are mapping LDAP groups to an admin role.
 
-* For **Server SSL Cert**, paste in the root certificate from your CA certificate or your self-signed certificate.
+1. For **Maximum group search depth**, enter a value between `1` and `10` that sets the maximum LDAP group search depth. The default value, `1`, turns off nested group search.
 
-* For **First Name Attribute** and **Last Name Attribute**, enter the attribute names in your LDAP directory that correspond to the first and last names in each user record, for example `cn` and `sn`.
+1. For **Server SSL certificate**, paste in the root certificate from your CA certificate or your self-signed certificate. This is required only for `ldaps://` URLs.
 
-* For **Email Attribute**, enter the attribute name in your LDAP directory that corresponds to the email address in each user record, for example `mail`.
+1. For **First name attribute** and **Last name attribute**, enter the attribute names in your LDAP directory that correspond to the first and last names in each user record. For example, `cn` and `sn`.
 
-* For **Email Domain(s)**, enter a comma-separated list of the email domains for external users who will receive invitations to Apps Manager.
+1. For **Email attribute**, enter the attribute name in your LDAP directory that corresponds to the email address in each user record. For example, `mail`.
 
-1. For **LDAP Referrals**, select how the UAA handles LDAP server referrals out to other external user stores. The UAA can: 
+1. For **Email domain(s)**, enter a comma-separated list of the email domains for external users who will receive invitations to Apps Manager.
+
+1. For **LDAP referrals**, select how the UAA handles LDAP server referrals out to other external user stores. The UAA can: 
     * **Automatically follow any referrals**.
     * **Ignore referrals and return partial result**. 
-    * **Throw exception for each referral and abort.**
+    * **Throw exception for each referral and abort**.
 
-* Click **Save**.
+1. Click **Save**.
 
-* Return to the **Installation Dashboard** by clicking the link.
+1. Return to the **Installation Dashboard**.
 
-* On the Installation Dashboard, click **Review Pending Changes**, then **Apply Changes**.
+1. On the Installation Dashboard, click **Review Pending Changes**, then **Apply Changes**.
 
     <%=image_tag("uaa/apply-changes.png")%>

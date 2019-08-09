@@ -4,11 +4,10 @@ title: Configuring UAA Password Policy
 owner: Identity
 ---
 
-
-
 If your Pivotal Cloud Foundry (PCF) deployment uses the internal user store for authentication, you can configure its password policy within the Pivotal Application Service (PAS) tile.
 
-##<a id="config-access"></a>Open the Internal UAA Configuration
+
+## <a id="config-access"></a> Open the Internal UAA Configuration
 
 1. In a browser, navigate to the fully qualified domain name (FQDN) of your Ops Manager and log in.
 
@@ -20,12 +19,17 @@ If your Pivotal Cloud Foundry (PCF) deployment uses the internal user store for 
 
 1. Confirm that the **Internal UAA** option is selected.
 
-##<a id="pw-requirements"></a>Set Password Requirements and Entry Attempts
 
-1. For **Minimum Password Length**, enter the minimum number of characters for a valid password.
-1. For **Minimum Uppercase Characters Required for Password**, enter the minimum number of uppercase characters required for a valid password.
-1. For **Minimum Lowercase Characters Required for Password**, enter the minimum number of lowercase characters required for a valid password.
-1. For **Minimum Numerical Digits Required for Password**, enter the minimum number of digits required for a valid password.
-1. For **Minimum Special Characters Required for Password**, enter the minimum number of special characters required for a valid password.
-1. For **Maximum Password Entry Attempts Allowed**, enter the maximum number of failures allowed to enter a password within a five-minute timespan before the account is locked.
+## <a id="pw-requirements"></a> Set Password Requirements and Entry Attempts
 
+1. For **Minimum password length**, enter the minimum number of characters for a valid password.
+
+1. For **Minimum uppercase characters required for password**, enter the minimum number of uppercase characters required for a valid password.
+
+1. For **Minimum lowercase characters required for password**, enter the minimum number of lowercase characters required for a valid password.
+
+1. For **Minimum numerical digits required for password**, enter the minimum number of digits required for a valid password.
+
+1. For **Minimum special characters required for password**, enter the minimum number of special characters required for a valid password.
+
+1. For **Maximum password entry attempts allowed**, enter the maximum number of failures allowed to enter a password within a five-minute timespan before the account is locked.
