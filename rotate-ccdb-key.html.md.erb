@@ -7,7 +7,7 @@ This topic describes how to rotate the Cloud Controller database (CCDB) encrypti
 
 ## <a id="overview"></a> Overview
 
-The Cloud Controller is the primary API of Pivotal Application Service (PAS). It has its own database, the CCDB, in which it stores information about objects in PAS. The CCDB encryption key is used to encrypt sensitive data at rest in the CCDB, such as app environment variables. 
+The Cloud Controller is the primary API of Pivotal Application Service (PAS). It has its own database, the CCDB, in which it stores information about objects in PAS such as apps. The CCDB encryption key is used to encrypt sensitive data at rest in the CCDB such as app environment variables. 
 
 The CCDB encryption key is automatically generated when you first deploy PAS. You can rotate the CCDB encryption key as described in this topic. For example, you may want to perform this procedure if your existing key is leaked. 
 
@@ -19,10 +19,10 @@ To rotate the CCDB encryption key, do the following:
 
 1. Navigate to the PAS tile in Ops Manager and select the **Cloud Controller** pane. 
 
-1. Review the **Encryption key ledger** field. If you previously added a key and selected the **Primary** checkbox, deselect the checkbox. The PAS deploy will fail if there is more than one key with the **Primary** checkbox selected. 
+1. Review the **Encryption key ledger** field. If you previously added a key and selected the **Primary** checkbox, deselect the checkbox. The PAS deploy fails if there is more than one key with the **Primary** checkbox selected. 
 
 1. In the **Encryption key ledger** field, do the following:
-	<p class="note"><strong>Note</strong>: Do not remove any existing keys. This causes the PAS deploy to fail.</p>
+	<p class="note"><strong>Note</strong>: Do not remove any existing keys until after you complete the last step of this procedure. This causes the PAS deploy to fail.</p>
 	1. Click **Add**. 
 	1. Enter values for **Encryption key label** and **Encryption key**. 
 	1. Select the checkbox to mark this as your **Primary** key. 
@@ -35,7 +35,7 @@ To rotate the CCDB encryption key, do the following:
 
 1. Click **Save**. 
 
-1. Redeploy PAS. Once PAS deploys successfully, you can remove any previously specified CCDB encryption keys. 
+1. Redeploy PAS. Once PAS deploys and the errand runs successfully, you can remove any previously specified CCDB encryption keys in the ledger. 
 
 ##  <a id="troubleshoot"></a> Troubleshoot Errors
 
@@ -51,11 +51,11 @@ This section describes how to troubleshoot errors that you may encounter while r
  </tr>
  <tr>
 	<th>Cause</th>
-	<td>A previously existing key was edited in the PAS UI. For example, a key with the name <code>key-name</code> previously had the value <code>key-value-1</code> and now it is <code>key-value-2</code>. PAS does not support editing key names or values in the ledger.</td>
+	<td> PAS does not support editing key names or values in the ledger. A previously existing key was edited in the PAS UI. For example, a key with the name <code>key-name</code> previously had the value <code>key-value-1</code> and now it is <code>key-value-2</code>.</td>
 </tr>
 <tr>
 	<th>Solution</th>
-	<td>Replace the value for the key with its original value and follow the rotation procedure to add a new key. <br>You may need to find the original value of the key using the steps in <a href="#view">View Encryption Keys</</td>
+	<td>Replace the value for the key with its original value and follow the rotation procedure to add a new key. <br>You may need to find the original value of the key using the steps in <a href="#view">View Encryption Keys</a>.</td>
 </tr>
 </table>
 
@@ -68,7 +68,7 @@ This section describes how to troubleshoot errors that you may encounter while r
  </tr>
  <tr>
 	<th>Cause</th>
-	<td>The previous <strong>Primary</strong> key was removed from the ledger in the PAS UI before the key rotation errand ran.</td>
+	<td>A previous key was removed from the ledger in the PAS UI before the key rotation errand ran.</td>
 </tr>
 <tr>
 	<th>Solution</th>
@@ -77,19 +77,19 @@ This section describes how to troubleshoot errors that you may encounter while r
 </tr>
 </table>
 
-##  <a id="view"></a> View Encryption Keys
+###  <a id="view"></a> View Encryption Keys
 
-The section describes how to retrieve the value of an existing or previous encryption key. You may need to due this when troubleshooting a failed key rotation. 
+The section describes how to retrieve the value of an existing or previous encryption key. You may need to do this when troubleshooting a failed key rotation. 
 
 
-### <a id="actual-installation"></a> Ops Manager actual-installation.yml
+#### <a id="actual-installation"></a> Ops Manager actual-installation.yml
 
 The Ops Manager `actual-installation.yml` file shows properties from the most recent successful deploy. To view the encryption keys listed in this file, do the following:
 
 1. Follow the steps in <a href="../customizing/modify-ops-man.html#installation">Modify the Installation Files</a> to decrypt the <code>actual-installation.yml</code> file.
 1. Open the <code>actual-installation.yml</code> file and view the <code>cloud_controller_encryption_keys</code> property. 
 
-### <a id="credhub"></a>  CredHub 
+#### <a id="credhub"></a>  CredHub 
 
 To view current and previous encryption keys using CredHub, do the following:
 
