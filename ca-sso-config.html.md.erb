@@ -5,7 +5,7 @@ owner: Identity
 
 This topic explains how to configure single sign-on (SSO) between CA and <%= vars.first_product_name  %>.
 
-Partnership creation between CA and PCF involves the following steps:
+Partnership creation between CA and <%= vars.product_name  %> involves the following steps:
 
 1. Installing and configuring the prerequisites
 
@@ -24,11 +24,11 @@ Partnership creation between CA and PCF involves the following steps:
 	* Domain
 	* Realm
 	* Rules and policy
-* PCF environment at https://console.YOUR-SYSTEM-DOMAIN
-<p class="note"><strong>Note:</strong> Replace YOUR-SYSTEM-DOMAIN with the name of your PCF installation.</p>
+* <%= vars.product_name  %> environment at https://console.YOUR-SYSTEM-DOMAIN
+<p class="note"><strong>Note:</strong> Replace YOUR-SYSTEM-DOMAIN with the name of your <%= vars.product_name  %> installation.</p>
 
 
-## <a id='identity-provider'></a> Configuring CA as the SAML 2.0 Identity Provider on PCF 
+## <a id='identity-provider'></a> Configuring CA as the SAML 2.0 Identity Provider on <%= vars.product_name  %> 
 
 1. Download the service provider metadata.
 	1. Navigate `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata` and log in to CA SSO.
@@ -37,7 +37,7 @@ Partnership creation between CA and PCF involves the following steps:
 	1. In the Actions menu, select **Export Metadata**.
 	1. Save the exported metadata in an XML file.
 
-1. Follow the steps in [Configuring Authentication and Enterprise SSO for Elastic Runtime](./auth-sso.html#configure-pcf-for-saml) to set the identity provider metadata on PCF. 
+1. Follow the steps in [Configuring Authentication and Enterprise SSO for Elastic Runtime](./auth-sso.html#configure-pcf-for-saml) to set the identity provider metadata on <%= vars.product_name  %>. 
 
 1. Paste the contents of the XML file into the **Identity Provider Metadata** field. 
 
@@ -46,7 +46,7 @@ Partnership creation between CA and PCF involves the following steps:
 1. Click **Review Pending Changes**, then **Apply Changes**.
 
 
-## <a id='service-provider'></a> Configuring PCF as the SAML 2.0 Service Provider on CA Single Sign-On
+## <a id='service-provider'></a> Configuring <%= vars.product_name  %> as the SAML 2.0 Service Provider on CA Single Sign-On
 
 ### <a id='idp-sp-config'></a> Configure Identity Provider and Service Provider Entities
 
@@ -75,10 +75,10 @@ Partnership creation between CA and PCF involves the following steps:
 	1. Browse and select the saved XML Metadata you downloaded in the previous step. 
 	1. Provide a name for the Remote Service Provider Entity.
 	1. Provide an alias for the Signing Certificate imported from the metadata. 
-	<p class="note"><strong>Note:</strong> PCF signs the outgoing SAML authentication requests.</p>
+	<p class="note"><strong>Note:</strong> <%= vars.product_name  %> signs the outgoing SAML authentication requests.</p>
 	1. Click **Save**.
 
-### <a id='ca-sso-pcf-config'></a> Configure Partnership Between CA SSO and PCF
+### <a id='ca-sso-pcf-config'></a> Configure Partnership Between CA SSO and <%= vars.product_name  %>
 
 1. Navigate to `https://login.YOUR-SYSTEM-DOMAIN/` and log in to CA SSO.
 
@@ -106,7 +106,7 @@ Partnership creation between CA and PCF involves the following steps:
 1. To complete the Name ID Format section:
 	1. Select **Email Address** from the Name ID Format dropdown.
 	1. Select **User Attribute** from the Name ID Type dropdown. 
-	<p class="note"><strong>Note:</strong> PCF does not support processing SAML Assertion Attributes at this time. You can skip filling out the Assertion Attributes fields.</p>
+	<p class="note"><strong>Note:</strong> <%= vars.product_name  %> does not support processing SAML Assertion Attributes at this time. You can skip filling out the Assertion Attributes fields.</p>
 
 1. Click **Next**.
 
@@ -124,7 +124,7 @@ Partnership creation between CA and PCF involves the following steps:
 	1. In the **Signing Private Key Alias** dropdown, verify that the correct Private Key Alias is selected. 
 	1. Verify that the correct Verification Certificate Alias is selected in the **Verification Certificate Analysis** dropdown. This alias should be the same certificate created when you import the [Remote Service Provider Entity ID](#ca-sso).
 	1. Select **Sign Both** from the Post Signature Options dropdown. 
-	<p class="note"><strong>Note:</strong> PCF does not support encryption options at this time.</p>
+	<p class="note"><strong>Note:</strong> <%= vars.product_name  %> does not support encryption options at this time.</p>
 	1. Click **Finish**.
 
 1. To activate the partnership, expand the Action dropdown for your partnership and click **Activate**.

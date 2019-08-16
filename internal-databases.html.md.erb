@@ -53,7 +53,7 @@ Before scaling down your MySQL cluster, perform the following actions to ensure 
 	</pre>
 
 1. Obtain the IP addresses of your MySQL server by performing the following steps:
-  1. From the PCF **Installation Dashboard**, click the **Pivotal Application Service** tile.
+  1. From the <%= vars.product_name  %> **Installation Dashboard**, click the **Pivotal Application Service** tile.
   1. Click the **Status** tab.
   1. Record the IP addresses for all instances of the **MySQL Server** job.
 
@@ -91,7 +91,7 @@ Before scaling down your MySQL cluster, perform the following actions to ensure 
 
 ### <a id="scale-down"></a> Set Server Instance Count to 1
 
-1. From the PCF **Installation Dashboard**, click the **Pivotal Application Service** tile.
+1. From the <%= vars.product_name  %> **Installation Dashboard**, click the **Pivotal Application Service** tile.
 
 1. Select **Resource Config**.
 
@@ -113,7 +113,7 @@ Use this data as guidance to ensure your MySQL Clusters are scaled to handle the
 
 The information in this section comes from the Pivotal-managed Cloud Foundry deployment, Pivotal Web Services (PWS). 
 
-<p class="note"><strong>Note</strong>: This deployment differs from most PCF deployments in that the MySQL database is used for Diego, but not the Cloud Controller. This  means that while there are a large number of queries per second, most of them are reading data, and the number of writes is not realistically reflected.</p>
+<p class="note"><strong>Note</strong>: This deployment differs from most <%= vars.product_name  %> deployments in that the MySQL database is used for Diego, but not the Cloud Controller. This  means that while there are a large number of queries per second, most of them are reading data, and the number of writes is not realistically reflected.</p>
 
 * **IAAS**: AWS
 * **App Instances**: ~23,000

@@ -8,7 +8,7 @@ owner: Identity
 This topic describes the process of configuring Active Directory Federation Services (ADFS) as your identity provider (IdP) in <%= vars.first_product_name  %> and ADFS.
 
 
-## <a id='idp'></a> Configure SAML Integration in PCF
+## <a id='idp'></a> Configure SAML Integration in <%= vars.product_name  %>
 
 You can use ADFS as your SAML IdP for Ops Manager and Pivotal Application Service (PAS):
 
@@ -33,7 +33,7 @@ To configure Ops Manager to use ADFS as your SAML IdP, do the following:
   * [Configuring BOSH Director on OpenStack](../om/openstack/config.html#idp)
   * [Configuring BOSH Director on vSphere](../om/vsphere/config.html#idp)
 
-<p class="note"><strong>Note:</strong> You can set up SAML access for Ops Manager during the initial PCF installation or later by navigating to <strong>Settings</strong> in the user menu on the Ops Manager Installation Dashboard, configuring the <strong>Authentication Method</strong> pane, and then clicking <strong>Review Pending Changes</strong> and <strong>Apply Changes</strong>.</p>
+<p class="note"><strong>Note:</strong> You can set up SAML access for Ops Manager during the initial <%= vars.product_name  %> installation or later by navigating to <strong>Settings</strong> in the user menu on the Ops Manager Installation Dashboard, configuring the <strong>Authentication Method</strong> pane, and then clicking <strong>Review Pending Changes</strong> and <strong>Apply Changes</strong>.</p>
 
 ### <a id='pas'></a> Configure SAML Integration in PAS
 
@@ -41,13 +41,13 @@ To configure PAS to use ADFS as your SAML IdP, do the following:
 
 1. Download your IdP metadata from `https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml`.
 
-1. Perform the steps in the [Configure PCF as a Service Provider for SAML
+1. Perform the steps in the [Configure <%= vars.product_name  %> as a Service Provider for SAML
 ](./auth-sso.html#configure-pcf-for-saml) section of the _Configuring Authentication and Enterprise SSO for PAS_ topic.
 
 
 ## <a id='adfs'></a> Configure SAML Integration in ADFS
 
-To designate PCF as your SAML service provider (SP) in ADFS, do the following:
+To designate <%= vars.product_name  %> as your SAML service provider (SP) in ADFS, do the following:
 
 1. Download your SP metadata from `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata`.
 
@@ -93,6 +93,6 @@ To designate PCF as your SAML service provider (SP) in ADFS, do the following:
   1. Select **Permit or Deny Users Based on an Incoming Claim** for **Claim rule template** and click **Next**.
   1. Enter a **Claim rule name**.
   1. Select **Group SID** for **Incoming claim type**.
-  1. Click **Browse** and locate the security group in your domain that PCF developers are a part of and click **OK**.
+  1. Click **Browse** and locate the security group in your domain that <%= vars.product_name  %> developers are a part of and click **OK**.
   1. Ensure **Permit access to users with this incoming claim** is selected.
   1. Click **Finish**.

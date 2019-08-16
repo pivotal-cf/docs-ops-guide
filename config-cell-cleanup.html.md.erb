@@ -9,22 +9,22 @@ This topic describes how to configure disk cleanup scheduling on Diego cells in 
 
 ## <a id='what'></a> What is Disk Cleanup
 
-PCF isolates application instances (AIs) from each other using containers that run inside Diego cells. 
+<%= vars.product_name  %> isolates application instances (AIs) from each other using containers that run inside Diego cells. 
 Containers enforce a set of isolation layers including file system isolation.
-A PCF container file system can either be a PCF stack or the result of pulling a Docker image.
+A <%= vars.product_name  %> container file system can either be a <%= vars.product_name  %> stack or the result of pulling a Docker image.
 
-For performance reasons, the cells cache the Docker image layers and the PCF stacks used by running AIs.
-When PCF destroys an AI or reschedules an AI to a different cell, a chance exist that certain Docker image layers or an old PCF stack becomes unused.
-If PCF does not clean these unused layers, the cell ephemeral disk will slowly fill.
+For performance reasons, the cells cache the Docker image layers and the <%= vars.product_name  %> stacks used by running AIs.
+When <%= vars.product_name  %> destroys an AI or reschedules an AI to a different cell, a chance exist that certain Docker image layers or an old <%= vars.product_name  %> stack becomes unused.
+If <%= vars.product_name  %> does not clean these unused layers, the cell ephemeral disk will slowly fill.
 
 Disk cleanup is the process of removing unused layers from the cell disk.
-The disk cleanup process removes all unused Docker image layers and old PCF Stacks, regardless of their size or age.
+The disk cleanup process removes all unused Docker image layers and old <%= vars.product_name  %> Stacks, regardless of their size or age.
 
 To perform a detailed analysis of disk usage in your PAS deployment, see [Examining GrootFS Disk Usage](../adminguide/examining_grootfs_disk.html).
 
 ## <a id='options'></a> Options for Disk Cleanup
 
-PCF provides the following options for scheduling the disk cleanup process on Diego cells: 
+<%= vars.product_name  %> provides the following options for scheduling the disk cleanup process on Diego cells: 
 
 * **Never clean up the Cell disk-space**: Pivotal does not recommend selecting this option for production environments.
 * **Routinely clean up the Cell disk-space**: This option makes the cell schedule a disk cleanup whenever a container is created. 
@@ -38,18 +38,18 @@ See the [Configure Disk Cleanup Scheduling](#applying-configuration) section of 
 
 To select the best option for disk cleanup, you must consider the workload that the Diego cells run. 
 
-For PCF installations that primarily run buildpack-based apps, 
+For <%= vars.product_name  %> installations that primarily run buildpack-based apps, 
 Pivotal recommends selecting the **Routinely clean up Cell disk-space** option. 
 The **Routinely clean up Cell disk-space** option ensures that when a new stack becomes available on a cell, 
 the old stack is dropped immediately from the cache.
 
-For PCF installations that primarily run Docker images, 
+For <%= vars.product_name  %> installations that primarily run Docker images, 
 or both Docker images and buildpack-based apps, 
 Pivotal recommends selecting the **Clean up disk-space once usage fills disk** option.
 
 ### <a id='choosing-a-reserve'></a> Calculating a Reserve
 
-By default, the space reserved for other jobs is set to a reasonable value for the majority of PCF deployments. 
+By default, the space reserved for other jobs is set to a reasonable value for the majority of <%= vars.product_name  %> deployments. 
 The reserve default value accounts for the most typical deployment case where the only other component that 
 writes to <code>/var/vcap/data</code> is the Diego executor cache.
 
@@ -67,7 +67,7 @@ Pivotal recommends leaving the default value for the reserve unless you are advi
 
 ## <a id='applying-configuration'></a> Configure Disk Cleanup Scheduling
 
-1. Navigate to the PCF Operations Manager **Installation Dashboard**.
+1. Navigate to the <%= vars.product_name  %> Operations Manager **Installation Dashboard**.
 
 1. Click the Pivotal Application Service (PAS) tile, and navigate to the **Application Containers** tab.
   <%= image_tag("images/docker-registry-ert.png") %>
@@ -85,4 +85,4 @@ For more information, see [Calculating a Reserve](#choosing-a-reserve).
 
 If you are configuring PAS for the first time, return to your specific IaaS configuration to continue the installation process.
 
-If you are modifying an existing PAS installation, return to the **PCF Ops Manager Installation Dashboard**, click **Review Pending Changes**, and click **Apply Changes**.
+If you are modifying an existing PAS installation, return to the **<%= vars.product_name  %> Ops Manager Installation Dashboard**, click **Review Pending Changes**, and click **Apply Changes**.

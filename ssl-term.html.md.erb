@@ -5,7 +5,7 @@ owner: Ops Manager
 
 
 
-To use SSL termination in [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF), you must
+To use SSL termination in [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (<%= vars.product_name  %>), you must
 configure the Pivotal-deployed HAProxy load balancer or your own load balancer.
 
 Pivotal recommends that you use HAProxy in lab and test environments only.
@@ -17,10 +17,10 @@ configure Pivotal Application Service (PAS).
 
 ##<a id="haproxy"></a>Using the Pivotal HAProxy Load Balancer##
 
-PCF deploys with a single instance of HAProxy for use in lab and test
+<%= vars.product_name  %> deploys with a single instance of HAProxy for use in lab and test
 environments.
 You can use this HAProxy instance for SSL termination and load balancing to the
-PCF Routers.
+PAS Routers.
 HAProxy can generate a self-signed certificate if you do not want to obtain a
 signed certificate from a well-known certificate authority.
 <%= partial '../customizing/known-issue-self-signed-certs' %>
@@ -64,7 +64,7 @@ should return your HAProxy IP address.
     anything.cf.example.com has address 203.0.113.1
 	</pre>
 
-1. From the PCF Ops Manager Dashboard, click on the PAS tile.
+1. From the <%= vars.product_name  %> Ops Manager Dashboard, click on the PAS tile.
 
 1. Select **Networking**.
 
@@ -82,13 +82,13 @@ Production environments should use a highly-available customer-provided load
 balancing solution that does the following:
 
 * Provides SSL termination with wildcard DNS location
-* Provides load balancing to each of the PCF Router IPs
+* Provides load balancing to each of the PAS router IPs
 * Adds appropriate `x-forwarded-for` and `x-forwarded-proto` HTTP headers
 
-You must register static IP addresses for PCF with your load balancer and
+You must register static IP addresses for <%= vars.product_name  %> with your load balancer and
 configure three fields in the PAS product tile.
 
-1. Register one or more static IP address for PCF with your load
+1. Register one or more static IP address for <%= vars.product_name  %> with your load
 balancer.
 
 1. Create an A record in your DNS that points to your load balancer IP address.
@@ -117,16 +117,16 @@ your load balancer.
     </table>
 
 
-1. From the PCF Ops Manager Dashboard, click on the PAS tile.
+1. From the <%= vars.product_name  %> Ops Manager Dashboard, click on the PAS tile.
 
 1. Select **Networking**.
 
-1. In the **Router IPs** field, enter the static IP address for PCF that you have registered with your load balancer.
+1. In the **Router IPs** field, enter the static IP address for <%= vars.product_name  %> that you have registered with your load balancer.
 
 1. Leave the **HAProxy IPs** field blank.
 
 1. Provide your SSL certificate in the **SSL Termination Certificate and Private Key** field. See [Providing a Certificate for your SSL Termination Point](./security_config.html#config) for details.
 
-<p class='note'><strong>Note</strong>: When adding or removing PCF routers, you must update your load balancing solution configuration with the appropriate IP addresses.</p>
+<p class='note'><strong>Note</strong>: When adding or removing <%= vars.product_name  %> routers, you must update your load balancing solution configuration with the appropriate IP addresses.</p>
 
 [Return to the Installing Pivotal Cloud Foundry Guide](../installing/index.html)

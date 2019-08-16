@@ -5,16 +5,16 @@ owner: Routing
 
 This topic describes how to globally configure proxy settings for all applications in your <%= vars.first_product_name  %> deployment. 
 Some environments restrict access to the Internet by requiring traffic to pass through an HTTP or HTTPS proxy. 
-PCF operators can use the Cloud Foundry Command Line Interface (cf CLI) to provide the proxy settings to all applications, including system applications and service brokers.
+<%= vars.product_name  %> operators can use the Cloud Foundry Command Line Interface (cf CLI) to provide the proxy settings to all applications, including system applications and service brokers.
 
 <p class="note"><strong>Note</strong>: Incorrectly configuring proxy settings can prevent applications from connecting to the Internet or accessing required resources. 
 They can also cause errands to fail and break system applications and service brokers. 
 Although errands, system applications, and service brokers do not need to connect to the Internet, 
-they often need to access other resources on PCF. Incorrect proxy settings can break these connections.</p>
+they often need to access other resources on <%= vars.product_name  %>. Incorrect proxy settings can break these connections.</p>
 
 ##<a id='set-env-variables'></a> Set Environment Variables ##
 
-To globally configure proxy settings for PCF applications, perform the following steps to set three environment variables for both 
+To globally configure proxy settings for <%= vars.product_name  %> applications, perform the following steps to set three environment variables for both 
 the staging environment variable group and the running environment variable group. 
 
 For more information about variable groups, see the [Environment Variable Groups](../devguide/deploy-apps/environment-variable.html#evgroups) section in 
@@ -87,7 +87,7 @@ Refer to the following example.
 
 ### Check Proxy Settings 
 
-If you have set up your proxy so that it can only send traffic to the Internet, then a request to an internal resource like PCF fails. You must set `no_proxy` so that traffic destined for PCF and other internal resources is sent directly and does not go through the proxy. For instance, setting `no_proxy` to include your system and application domains will ensure that requests destined for those domains are sent directly. 
+If you have set up your proxy so that it can only send traffic to the Internet, then a request to an internal resource like <%= vars.product_name  %> fails. You must set `no_proxy` so that traffic destined for <%= vars.product_name  %> and other internal resources is sent directly and does not go through the proxy. For instance, setting `no_proxy` to include your system and application domains will ensure that requests destined for those domains are sent directly. 
 
 ### Verify Interpretation
 
