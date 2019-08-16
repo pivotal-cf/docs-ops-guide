@@ -1,5 +1,5 @@
 ---
-breadcrumb: Pivotal Cloud Foundry Documentation
+breadcrumb: <%= vars.product_name_full %> Documentation
 title: Configuring Authentication and Enterprise SSO for PAS
 owner: Identity
 ---
@@ -15,7 +15,7 @@ If your enterprise user store is exposed as a SAML or LDAP Identity Provider for
 
 For information about managing user identity and pre-provisioning user roles with SAML or LDAP, see [Adding Existing SAML or LDAP Users to a <%= vars.product_name %> Deployment](./external-user-management.html).
 
-For an explanation of the process used by the UAA Server when it attempts to authenticate a user through LDAP, see [Configuring LDAP Integration with Pivotal Cloud Foundry](https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry) in the Pivotal Knowledge Base.
+For an explanation of the process used by the UAA Server when it attempts to authenticate a user through LDAP, see [Configuring LDAP Integration with <%= vars.product_name_full %>](https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry) in the Pivotal Knowledge Base.
 
 <p class='note'><strong>Note:</strong> When integrating with an external identity provider, such as LDAP, authentication within the UAA becomes chained. An authentication attempt with a user's credentials is first attempted against the UAA user store before the external provider, LDAP. For more information, see <a href="https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-LDAP.md#chained-authentication">Chained Authentication</a> in the <em>User Account and Authentication LDAP Integration</em> GitHub documentation.</p>
 
@@ -142,7 +142,7 @@ For example, a domain named "cloud.example.com" typically uses the following LDA
 In the LDAP search filter string that you use to configure PAS, use `{0}` instead of the username. For example, use `cn={0}` to return all LDAP objects with the same common name as the username.
 <br><br>
 In addition to `cn`, other attributes commonly searched for and returned are `mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
-    <p class="note"><strong>Note:</strong> For instructions for testing and troubleshooting your LDAP search filters, see the [Configuring LDAP Integration with Pivotal Cloud Foundry](https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry) Knowledge Base article.</p>
+    <p class="note"><strong>Note:</strong> For instructions for testing and troubleshooting your LDAP search filters, see the [Configuring LDAP Integration with <%= vars.product_name_full %>](https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry) Knowledge Base article.</p>
 
 1. For **Group search base**, enter the location in the LDAP directory tree from which the LDAP group search begins.
 <br><br>

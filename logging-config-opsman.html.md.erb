@@ -108,7 +108,7 @@ Apps constantly generate app logs and <%= vars.product_name %> platform componen
 * [Doppler](../loggregator/architecture.html#doppler) components temporarily buffer the data before periodically forwarding it to the Traffic Controller. When the log and metrics data input to a Doppler exceeds its buffer size for a given interval, data can be lost. 
 * The [Traffic Controller](../loggregator/architecture.html#traffic-controller) serves the aggregated data stream through the Firehose WebSocket endpoint.
 
-Follow the instructions below to scale the Loggregator system. For guidance on monitoring and capacity planning, see [Monitoring Pivotal Cloud Foundry](../monitoring/).
+Follow the instructions below to scale the Loggregator system. For guidance on monitoring and capacity planning, see [Monitoring <%= vars.product_name_full %>](../monitoring/).
 
 ### <a id="instances"></a> Add Component VM Instances
 
