@@ -3,7 +3,7 @@ title: Enabling Volume Services
 owner: Diego Persistence
 ---
 
-This topic describes how Pivotal Cloud Foundry (PCF) operators can deploy NFS or SMB volume services.
+This topic describes how <%= vars.first_product_name  %> operators can deploy NFS or SMB volume services.
 
 
 
@@ -35,7 +35,7 @@ You must have an NFS or SMB server running to
 
 ## <a id='nfs-enable'></a> Enable NFS Volume Services
 
-To enable NFS volume services in PCF, do the following:
+To enable NFS volume services in <%= vars.product_name  %>, do the following:
 
 1. Navigate to the Ops Manager Installation Dashboard.
 
@@ -48,7 +48,7 @@ To enable NFS volume services in PCF, do the following:
     <%= image_tag('er-config-app-vol-svc.png') %>
 
 1. (Optional) To configure LDAP for NFS volume services, perform the following steps:
-  <p class="note"><strong>Note:</strong> If you already use an LDAP server with your network-attached storage (NAS) file server, enter its information below. This ensures that the identities known to the file server match those checked by the PCF NFS driver.</p>
+  <p class="note"><strong>Note:</strong> If you already use an LDAP server with your network-attached storage (NAS) file server, enter its information below. This ensures that the identities known to the file server match those checked by the <%= vars.product_name  %> NFS driver.</p>
   * For **LDAP Service Account User**, enter either the full domain name (DN) for the service account or the username of the service account that manages volume services, depending on how your LDAP server is configured. This value needs to be exactly what you would enter when binding the account to your LDAP server.
   * For **LDAP Service Account Password**, enter the password for the service account.
   * For **LDAP Server Host**, enter the hostname or IP address of the LDAP server.
@@ -73,7 +73,7 @@ After completing these steps, developers can use the cf CLI to create service in
 
 ### <a id='nfs-security'></a> NFS Security
 
-You can use ASGs and LDAP to secure your NFS server against traffic apps running on PCF:
+You can use ASGs and LDAP to secure your NFS server against traffic apps running on <%= vars.product_name  %>:
 
 * **Application Security Groups (ASGs)**: Prevent apps from sending traffic directly to
   your NFS ports. Apps should never need to use NFS ports directly. Pivotal recommends
@@ -85,14 +85,14 @@ You can use ASGs and LDAP to secure your NFS server against traffic apps running
   LDAP support enabled, app developers must provide credentials for any user they wish to
   bind as.
 
-The Diego cells running on PCF must be able to reach your LDAP server on the port you use for connections, which are typically `389` or `636`. You cannot limit which Diego cells have access to your NFS or LDAP servers.
+The Diego cells running on <%= vars.product_name  %> must be able to reach your LDAP server on the port you use for connections, which are typically `389` or `636`. You cannot limit which Diego cells have access to your NFS or LDAP servers.
 
 
 
 
 ## <a id='smb-enable'></a> Enable SMB Volume Services
 
-To enable SMB volume services in PCF, do the following:
+To enable SMB volume services in <%= vars.product_name  %>, do the following:
 
 1. Navigate to the Ops Manager Installation Dashboard.
 

@@ -3,7 +3,7 @@ title: General Data Protection Regulation
 owner: Legal
 ---
 
-This topic provides an overview of the General Data Protection Regulation (GDPR) and where Pivotal Cloud Foundry (PCF) may store personal data.
+This topic provides an overview of the General Data Protection Regulation (GDPR) and where <%= vars.first_product_name  %> may store personal data.
 
 
 ## <a id='overview'></a> Overview
@@ -23,7 +23,7 @@ Article 4, Section 1 of the GDPR defines personal data as follows:
 
 For more information, see the GDPR [text](http://www.privacy-regulation.eu/en/article-4-definitions-GDPR.htm).
 
-Personal data can be collected, stored, and processed in a PCF deployment. Pivotal has performed a review of PCF components and determined that personal data may reside in the following areas: 
+Personal data can be collected, stored, and processed in a <%= vars.product_name  %> deployment. Pivotal has performed a review of <%= vars.product_name  %> components and determined that personal data may reside in the following areas: 
 
 + [User Account and Authentication (UAA)](#uaa)
 + [Cloud Foundry API](#capi)
@@ -34,7 +34,7 @@ Personal data can be collected, stored, and processed in a PCF deployment. Pivot
 
 ## <a id='where'></a> Where Personal Data May Reside
 
-The following sections explain how different PCF components collect personal data.
+The following sections explain how different <%= vars.product_name  %> components collect personal data.
 
 ### <a id='uaa'></a> User Account and Authentication (UAA)
 
@@ -227,7 +227,7 @@ The Cloud Foundry API release contains several components, including the Cloud C
 <td>The first time a user makes a request to the API</td>
 <td>Cloud Controller DB</td>
 <td>It is used to identify permissions for the user</td>
-<td>PCF operator </td>
+<td><%= vars.product_name  %> operator </td>
 <td>As long as the user is part of the system</td>
 </tr>
 <tr>
@@ -244,15 +244,15 @@ The Cloud Foundry API release contains several components, including the Cloud C
 <td>
 <ul>
 <li>Local VM:<br />component and logs </li>
-<li>Log aggregator used by PCF operator</li>
+<li>Log aggregator used by <%= vars.product_name  %> operator</li>
 </ul>
 </td>
 <td> n/a</td>
-<td>PCF operator</td>
+<td><%= vars.product_name  %> operator</td>
 <td>
 <ul>
 <li>Local VM:<br />4 week maximum by default</li>
-<li>Log aggregator as configured by PCF operator</li>
+<li>Log aggregator as configured by <%= vars.product_name  %> operator</li>
 </ul>
  </td>
 </tr>
@@ -271,7 +271,7 @@ The Cloud Foundry API release contains several components, including the Cloud C
 <td> n/a</td>
 <td>
 <ul>
-<li>PCF operator</li>
+<li><%= vars.product_name  %> operator</li>
 <li>Users that can view the resource that had an audited change</li>
 </ul>
 </td>
@@ -291,15 +291,15 @@ The Cloud Foundry API release contains several components, including the Cloud C
 <td>
 <ul>
 <li>Local VM:<br />CEF logs</li>
-<li>Log aggregator used by PCF operator</li>
+<li>Log aggregator used by <%= vars.product_name  %> operator</li>
 </ul>
 </td>
 <td>n/a </td>
-<td>PCF operator </td>
+<td><%= vars.product_name  %> operator </td>
 <td>
 <ul>
 <li>Local VM:<br />4 week maximum by default</li>
-<li>Log aggregator as configured by PCF operator</li>
+<li>Log aggregator as configured by <%= vars.product_name  %> operator</li>
 </ul>
 </td>
 </tr>
@@ -317,7 +317,7 @@ The Cloud Foundry API release contains several components, including the Cloud C
 <td>n/a</td>
 <td>
 <ul>
-<li>PCF operator</li>
+<li><%= vars.product_name  %> operator</li>
 <li>Users that can view the resource</li></ul>
 </td>
 <td>As long as the resource exists</td>
@@ -351,7 +351,7 @@ To disable logging of client IP addresses, do the following:
 
 ### <a id='diego'></a> Diego
 
-Diego is the container management system for PCF. For more information, see [Diego Components and Architecture](../concepts/diego/diego-architecture.html).
+Diego is the container management system for <%= vars.product_name  %>. For more information, see [Diego Components and Architecture](../concepts/diego/diego-architecture.html).
 
 <table>
 <tbody>

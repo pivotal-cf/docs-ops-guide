@@ -3,14 +3,14 @@ title: Securing Services Instance Credentials with Runtime CredHub
 owner: CredHub
 ---
 
-This topic describes how Pivotal Cloud Foundry (PCF) operators can ensure service instance credentials are securely stored in CredHub.
+This topic describes how <%= vars.first_product_name  %> operators can ensure service instance credentials are securely stored in CredHub.
 
 * **What is runtime CredHub?**
   * The Pivotal Application Service (PAS) tile includes its own CredHub component, separate from the CredHub component included with the BOSH Director tile. For more information about this centralized credential management component, see the [CredHub](../credhub/index.html) documentation.
 * **What is runtime CredHub used for?**
-  * Runtime CredHub exists to securely store service instance credentials. Previously, PCF could only use the Cloud Controller database for storing these credentials.
+  * Runtime CredHub exists to securely store service instance credentials. Previously, <%= vars.product_name  %> could only use the Cloud Controller database for storing these credentials.
 * **What are service instance credentials**? 
-  * When developers want their app to use a service, such as those provided by the Spring Cloud Services tile for PCF, they must bind their app to an instance of that service. Service bindings include credentials that developers can use to access the service from their app. For more information, see [Binding Credentials](../services/binding-credentials.html). 
+  * When developers want their app to use a service, such as those provided by the Spring Cloud Services tile for <%= vars.product_name  %>, they must bind their app to an instance of that service. Service bindings include credentials that developers can use to access the service from their app. For more information, see [Binding Credentials](../services/binding-credentials.html). 
 * **How can I ensure that service instance credentials are stored in runtime CredHub?** 
   * You must configure PAS to enable this functionality by following the procedure below. Not all services support the use of runtime CredHub.  
 * **Can I use runtime CredHub to store service instance credentials if some of my services do not support the use of runtime CredHub?**
@@ -18,11 +18,11 @@ This topic describes how Pivotal Cloud Foundry (PCF) operators can ensure servic
 * **Can I rotate service instance credentials in runtime CredHub?**
   * Runtime CredHub supports credential rotation. For more information, see [Rotating Runtime CredHub Encryption Keys](../opsguide/credential-rotation.html).
 
-## <a id='services'></a> PCF Services that Use Secure Binding Credentials
+## <a id='services'></a> <%= vars.product_name  %> Services that Use Secure Binding Credentials
 
 The procedures in this document are only effective for services that support storing their instance credentials in runtime CredHub. To learn whether a service supports this feature, see the table below or the documentation for that service.
 
-[//]: # (add RabbitMQ for PCF v1.12 and later when avail)
+[//]: # (add RabbitMQ for <%= vars.product_name  %> v1.12 and later when avail)
 
 <table id='service-table' border="1" class="nice" >
   <tr>
@@ -31,35 +31,35 @@ The procedures in this document are only effective for services that support sto
     <th>Pivotal Network Listing</th>
   </tr>
   <tr>
-    <td>CredHub Service Broker for PCF</td>
+    <td>CredHub Service Broker for <%= vars.product_name  %></td>
     <td>All</td>
-    <td><a href="https://network.pivotal.io/products/credhub-service-broker">CredHub Service Broker for PCF</a></td>
+    <td><a href="https://network.pivotal.io/products/credhub-service-broker">CredHub Service Broker for <%= vars.product_name  %></a></td>
   </tr>
   <tr>
-    <td>MySQL for PCF v2</td>
+    <td>MySQL for <%= vars.product_name  %> v2</td>
     <td>v2.3 and later (available to user groups only)</td>
-    <td><a href="https://network.pivotal.io/products/pivotal-mysql">MySQL for PCF v2</a></td>
+    <td><a href="https://network.pivotal.io/products/pivotal-mysql">MySQL for <%= vars.product_name  %> v2</a></td>
   </tr>
   <tr>
-    <td>Spring Cloud Services for PCF</td>
+    <td>Spring Cloud Services for <%= vars.product_name  %></td>
     <td>v1.5 and later</td>
-    <td><a href="https://network.pivotal.io/products/p-spring-cloud-services">Spring Cloud Services for PCF</a></td>
+    <td><a href="https://network.pivotal.io/products/p-spring-cloud-services">Spring Cloud Services for <%= vars.product_name  %></a></td>
   </tr>
   <tr>
-    <td>RabbitMQ for PCF</td>
+    <td>RabbitMQ for <%= vars.product_name  %></td>
     <td>v1.12 and later</td>
-    <td><a href="https://network.pivotal.io/products/p-rabbitmq">RabbitMQ for PCF</a></td>
+    <td><a href="https://network.pivotal.io/products/p-rabbitmq">RabbitMQ for <%= vars.product_name  %></a></td>
   </tr>
   <tr>
-    <td>Redis for PCF</td>
+    <td>Redis for <%= vars.product_name  %></td>
     <td>v1.13 and later</td>
-    <td><a href="https://network.pivotal.io/products/p-redis">Redis for PCF</a></td>
+    <td><a href="https://network.pivotal.io/products/p-redis">Redis for <%= vars.product_name  %></a></td>
   </tr>
 </table>
 
 ## <a id='prereq'></a> Prerequisites
 
-<p class="note breaking"><strong>Breaking Change</strong>: If you opt out of the <a href="http://docs.pivotal.io/pivotalcf/2-0/pcf-release-notes/runtime-rn.html#bosh-dns">BOSH DNS feature</a>, your PCF deployment cannot support Secure Service Instance Credentials.</p>
+<p class="note breaking"><strong>Breaking Change</strong>: If you opt out of the <a href="http://docs.pivotal.io/pivotalcf/2-0/pcf-release-notes/runtime-rn.html#bosh-dns">BOSH DNS feature</a>, your <%= vars.product_name  %> deployment cannot support Secure Service Instance Credentials.</p>
 
 Runtime CredHub allows you to use one or more Hardware Security Modules (HSMs) to store encryption keys. If you wish to use an HSM with CredHub, you must configure the HSM before completing the procedures below. For more information, see [Preparing CredHub HSMs for Configuration](../customizing/hsm-config.html).
 
@@ -82,7 +82,7 @@ To configure the PAS tile, follow the instructions in [Configuring PAS](../custo
 
 Application Security Groups (ASGs) are network policy rules specifying protocols, ports, and IP ranges that apply to outbound network connections initiated from apps. You must follow the steps below to ensure the ASGs for your deployment allow apps to communicate with the runtime CredHub API.  
 
-<p class="note"><strong>Note</strong>: The default ASGs in PCF allow apps running on your deployment to send traffic to almost any IP address. This step is only required if your ASGs restrict network access from apps to the network that PAS runs on, as documented in <a href="./app-sec-groups.html">Restricting App Access to Internal PCF Components</a>.</p>
+<p class="note"><strong>Note</strong>: The default ASGs in <%= vars.product_name  %> allow apps running on your deployment to send traffic to almost any IP address. This step is only required if your ASGs restrict network access from apps to the network that PAS runs on, as documented in <a href="./app-sec-groups.html">Restricting App Access to Internal <%= vars.product_name  %> Components</a>.</p>
 
 1. From the PAS tile, click **Assign AZs and Networks** and record the selected Network where the tile is installed.
 
