@@ -7,9 +7,9 @@ owner: RelEng
 
 This topic discusses how to scale Pivotal Application Service (PAS) for different deployment scenarios. To increase the capacity and availability of the <%= vars.first_product_name  %> platform, and to decrease the chances of downtime, you can scale a deployment up using the instructions below.
 
-If you want to make a <%= vars.product_name  %> configuration highly available, see the [High Availability in Cloud Foundry](./../concepts/high-availability.html) topic.
+If you want to make a <%= vars.product_name %> configuration highly available, see the [High Availability in Cloud Foundry](./../concepts/high-availability.html) topic.
 
-<p class="note"><strong>Note:</strong> In <%= vars.product_name  %> v1.11 and later, PAS defaults to a highly available resource configuration.</p>
+<p class="note"><strong>Note:</strong> In <%= vars.product_name %> v1.11 and later, PAS defaults to a highly available resource configuration.</p>
 
 
 ## <a id='scalingtable'></a> Scaling Recommendations
@@ -29,7 +29,7 @@ To scale up PAS instances, do the following:
 <%= image_tag("images/scaling-ert.png") %>
 
 1. To scale your deployment horizontally, increase the number of **Instances** of a job.  See [Scaling Recommendations](#scalingtable) for guidance about the number of job instances required to ensure high availability.
-  <p class="note"><strong>Note:</strong> In <%= vars.product_name  %> v1.12, you cannot scale the Autoscaler job to greater than one instance.</p>
+  <p class="note"><strong>Note:</strong> In <%= vars.product_name %> v1.12, you cannot scale the Autoscaler job to greater than one instance.</p>
 
 1. To scale your deployment vertically, adjust the **Persistent Disk Type** and **VM Type** of a job to allocate more disk space and memory. If you choose **Automatic** from the dropdown, PAS uses the recommended amount of resources for the job.
 
@@ -40,7 +40,7 @@ To scale up PAS instances, do the following:
 
 ## <a id='scaledown'></a> Scaling Down PAS
  
-If you are deploying a <%= vars.product_name  %> configuration that does not need to be highly available, Pivotal recommends scaling down job instances to the minimum number required for a functional deployment.
+If you are deploying a <%= vars.product_name %> configuration that does not need to be highly available, Pivotal recommends scaling down job instances to the minimum number required for a functional deployment.
 
 To scale down your deployment, do the following: 
 
@@ -115,9 +115,9 @@ If you need to change back to this configuration, choose the values shown below 
       </tr>
 </table>
 
-<p class="note"><strong>Note:</strong> Apps that do not use MySQL for <%= vars.product_name  %> are not affected by the scaling process when you redeploy PAS. In addition, redeploying PAS with the MySQL cluster means that the <%= vars.product_name  %> API will not be available for a brief period of time. For example, you are not able to push apps or query their state during this time.</p>
+<p class="note"><strong>Note:</strong> Apps that do not use MySQL for <%= vars.product_name %> are not affected by the scaling process when you redeploy PAS. In addition, redeploying PAS with the MySQL cluster means that the <%= vars.product_name %> API will not be available for a brief period of time. For example, you are not able to push apps or query their state during this time.</p>
 
-<p class='note'><strong>Note:</strong> For MySQL high availability, you need to configure an external load balancer. For more information about configuring a load balancer for MariaDB-based deployments, see the <a href="http://docs.pivotal.io/p-mysql/1-10/installing.html#load-balancer">Configure a Load Balancer</a> section of the <em>Installing MySQL for <%= vars.product_name  %></em> topic.</p>
+<p class='note'><strong>Note:</strong> For MySQL high availability, you need to configure an external load balancer. For more information about configuring a load balancer for MariaDB-based deployments, see the <a href="http://docs.pivotal.io/p-mysql/1-10/installing.html#load-balancer">Configure a Load Balancer</a> section of the <em>Installing MySQL for <%= vars.product_name %></em> topic.</p>
 
 ### <a id='external-blobstore'></a> Deployments Using an External Blobstore
 

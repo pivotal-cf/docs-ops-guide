@@ -10,7 +10,7 @@ This topic describes the types of logs that <%= vars.first_product_name  %> gene
 
 ## <a id='types'></a> System Logs, App Logs, App Traffic Logs
 
-<%= vars.first_product_name  %> generates two types of logs, _system logs_ from <%= vars.product_name  %> components and _app logs_ from hosted apps, as differentiated in the table below:
+<%= vars.first_product_name  %> generates two types of logs, _system logs_ from <%= vars.product_name %> components and _app logs_ from hosted apps, as differentiated in the table below:
 
 <table id='log-types' border="1" class="nice" >
   <tr>
@@ -71,7 +71,7 @@ For more information on using the Log Cache CLI, see [Log Cache CLI: Usage](http
 
 ### <a id="log-cache-api-examples"></a> Example Uses of the Log Cache API
 
-The Log Cache API is hosted on <%= vars.product_name  %>, and references your system domain to return responses. The root URL for API calls is <code>ht<span>tps:</span>//log-cache.[YOUR-SYSTEM-DOMAIN]</code>.
+The Log Cache API is hosted on <%= vars.product_name %>, and references your system domain to return responses. The root URL for API calls is <code>ht<span>tps:</span>//log-cache.[YOUR-SYSTEM-DOMAIN]</code>.
 
 The basic call to access and filter cached app logs is: 
 <pre class="terminal">GET ht<span>tps:</span>//log-cache.[YOUR-SYSTEM-DOMAIN]/v1/read/[SOURCE-ID]</pre> 
@@ -102,7 +102,7 @@ For more information, see [Including Container Metrics in Syslog Drains](../devg
 
 ## <a id='scaling'></a> Scale Loggregator
 
-Apps constantly generate app logs and <%= vars.product_name  %> platform components constantly generate component metrics. The Loggregator system combines these data streams and handles them as follows. See [Loggregator Architecture](../loggregator/architecture.html) for more information. 
+Apps constantly generate app logs and <%= vars.product_name %> platform components constantly generate component metrics. The Loggregator system combines these data streams and handles them as follows. See [Loggregator Architecture](../loggregator/architecture.html) for more information. 
 
 * The [Loggregator](../loggregator/architecture.html#metron) agent running on each component or application VM collects and sends this data out to Doppler components. 
 * [Doppler](../loggregator/architecture.html#doppler) components temporarily buffer the data before periodically forwarding it to the Traffic Controller. When the log and metrics data input to a Doppler exceeds its buffer size for a given interval, data can be lost. 
@@ -179,8 +179,8 @@ You can determine whether a denied-packet log resulted from a container networki
 
 ### <a id="scope-app-traffic-log"></a> Global vs. ASG-Level App Traffic Logging
 
-<%= vars.product_name  %> supports two mechanisms for enabling app traffic logging. [Setting](#enable-app-traffic-logging) **Log traffic** to **Enable** in Ops Manager enables app traffic logging globally for all ASGs and container policies. Setting the [`log` property](../concepts/asg.html#asg-logging-prereq) of an ASG to `true` enables app traffic logging at the individual ASG level.
+<%= vars.product_name %> supports two mechanisms for enabling app traffic logging. [Setting](#enable-app-traffic-logging) **Log traffic** to **Enable** in Ops Manager enables app traffic logging globally for all ASGs and container policies. Setting the [`log` property](../concepts/asg.html#asg-logging-prereq) of an ASG to `true` enables app traffic logging at the individual ASG level.
 
-Because these two mechanisms operate independently, <%= vars.product_name  %> generates duplicate logs when app traffic logging is enabled globally and an ASG's `log` property is set to `true`. To avoid duplicate logs, Pivotal recommends setting the `log` property to `false` for all ASGs, or leaving it out entirely, when app traffic logging is [enabled globally](#app-traffic-log).
+Because these two mechanisms operate independently, <%= vars.product_name %> generates duplicate logs when app traffic logging is enabled globally and an ASG's `log` property is set to `true`. To avoid duplicate logs, Pivotal recommends setting the `log` property to `false` for all ASGs, or leaving it out entirely, when app traffic logging is [enabled globally](#app-traffic-log).
 
 To focus on specific ASGs for log analysis, Pivotal recommends enabling app traffic logs globally and using a logging platform to filter traffic logs by ASG, rather than setting `log` at the individual ASG level.

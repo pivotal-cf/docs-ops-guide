@@ -13,7 +13,7 @@ Connecting PAS to either the LDAP or SAML external user store allows the User Ac
 
 If your enterprise user store is exposed as a SAML or LDAP Identity Provider for single sign-on (SSO), you can configure SSO to allow users to access the Apps Manager and Cloud Foundry Command Line Interface (cf CLI) without creating a new account or, if using SAML, without re-entering credentials.
 
-For information about managing user identity and pre-provisioning user roles with SAML or LDAP, see [Adding Existing SAML or LDAP Users to a <%= vars.product_name  %> Deployment](./external-user-management.html).
+For information about managing user identity and pre-provisioning user roles with SAML or LDAP, see [Adding Existing SAML or LDAP Users to a <%= vars.product_name %> Deployment](./external-user-management.html).
 
 For an explanation of the process used by the UAA Server when it attempts to authenticate a user through LDAP, see [Configuring LDAP Integration with Pivotal Cloud Foundry](https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry) in the Pivotal Knowledge Base.
 
@@ -56,7 +56,7 @@ To configure PAS to use a SAML identity provider, do the following:
     * If your identity provider exposes a metadata URL, provide the metadata URL.
     * Download your Identity Provider metadata and paste this XML into the **Provider Metadata** area.
     <p class='note'><strong>Note:</strong> You only need to select one of the above configurations. If you configure both, your identity provider defaults to the <strong>Provider metadata URL</strong>.</p>
-    <p class="note"><strong>Note:</strong> For information about onboarding SAML users and mapping them to PAS user roles, see <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a <%= vars.product_name  %> Deployment</a>.</p>
+    <p class="note"><strong>Note:</strong> For information about onboarding SAML users and mapping them to PAS user roles, see <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a <%= vars.product_name %> Deployment</a>.</p>
 
 1. Select the **Name ID format** for your SAML identity provider. This translates to `username` on PAS. The default is `Email Address`.
 
@@ -149,7 +149,7 @@ In addition to `cn`, other attributes commonly searched for and returned are `ma
 For example, a domain named "cloud.example.com" typically uses the following LDAP group search base: `ou=Groups,dc=example,dc=com`
 <br><br>
 This is required if you are mapping LDAP groups to an admin role. To map the groups under this search base to admin roles in PAS, see the [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) section of the _Creating and Managing Users with the UAA CLI (UAAC)_ topic.
-    <p class="note"><strong>Note:</strong> To onboard individual LDAP users and map them to PAS roles, see <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a <%= vars.product_name  %> Deployment</a>.</p>
+    <p class="note"><strong>Note:</strong> To onboard individual LDAP users and map them to PAS roles, see <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a <%= vars.product_name %> Deployment</a>.</p>
 
 1. For **Group search filter**, enter a string that defines LDAP group search criteria. The standard value is `member={0}`. This is required if you are mapping LDAP groups to an admin role.
 
