@@ -26,7 +26,7 @@ Follow one of the procedures below to configure your deployment with SAML or LDA
 
 In SAML terminology, the SAML protocol communicates user data between an identity provider and a service provider.
 
-To connect PAS with SAML, do the following:
+To connect PAS with SAML, follow both of these procedures:
 
 * [Configure PAS as a Service Provider for SAML](#configure-pcf-for-saml)
 
@@ -34,7 +34,7 @@ To connect PAS with SAML, do the following:
 
 ### <a id="configure-pcf-for-saml"></a> Configure PAS as a Service Provider for SAML
 
-To configure PAS to use a SAML identity provider, do the following:
+To configure PAS to use a SAML identity provider:
 
 1. From the **Installation Dashboard**, click the PAS tile.
 
@@ -52,13 +52,13 @@ To configure PAS to use a SAML identity provider, do the following:
 1. Enter a **Display name**. Your provider display name appears as a link on your Pivotal login page, which you can access at `https://login.YOUR-SYSTEM-DOMAIN`.
     <%= image_tag("login-page.png") %>
 
-1. Retrieve the metadata from your identity provider and copy it into either the **Provider metadata** or the **Provider metadata URL** fields, depending on whether your identity provider exposes a metadata URL or not. Refer to the [Configure SAML as an Identity Provider for PAS](#configure-saml-for-pcf) section of this topic for more information. Pivotal recommends that you use the provider metadata URL rather than provider metadata because the metadata can change. You can do this in either of the following ways:
+1. Retrieve the metadata from your identity provider and copy it into either the **Provider metadata** or the **Provider metadata URL** fields, depending on whether your identity provider exposes a metadata URL or not. For more information, see [Configure SAML as an Identity Provider for PAS](#configure-saml-for-pcf). Pivotal recommends that you use the provider metadata URL rather than provider metadata because the metadata can change. You can do this in either of the following ways:
     * If your identity provider exposes a metadata URL, provide the metadata URL.
-    * Download your Identity Provider metadata and paste this XML into the **Provider Metadata** area.
+    * Download your identity provider metadata and paste this XML into the **Provider metadata** field.
     <p class='note'><strong>Note:</strong> You only need to select one of the above configurations. If you configure both, your identity provider defaults to the <strong>Provider metadata URL</strong>.</p>
     <p class="note"><strong>Note:</strong> For information about onboarding SAML users and mapping them to PAS user roles, see <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a <%= vars.product_name  %> Deployment</a>.</p>
 
-1. Select the **Name ID format** for your SAML identity provider. This translates to `username` on PAS. The default is `Email Address`.
+1. Select the **Name ID format** for your SAML identity provider. This translates to `username` in PAS. The default is **Email Address**.
 
 1. For **Email domain(s)**, enter a comma-separated list of the email domains for external users who will receive invitations to Apps Manager.
 
@@ -82,7 +82,7 @@ To configure PAS to use a SAML identity provider, do the following:
 
 ### <a id="configure-saml-for-pcf"></a> Configure SAML as an Identity Provider for PAS
 
-To configure a SAML identity provider to designate PAS as a service provider, do the following:
+To configure a SAML identity provider to designate PAS as a service provider:
 
 1. Download the service provider metadata from `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata`. See the documentation from your identity provider for configuration instructions.
 
@@ -106,12 +106,12 @@ To configure a SAML identity provider to designate PAS as a service provider, do
   </tr>
 </table>
 
-<p class="note"><strong>Note:</strong> Some identity providers allow uploads of service provider metadata. Other providers require you to manually enter the service provider metadata into a form. If your identity provider requires manual entry but is not listed above, see the <a href="./ca-sso-config.html">CA SiteMinder SSO Integration Guide</a>.</p>
+<p class="note"><strong>Note:</strong> Some identity providers allow uploads of service provider metadata. Other providers require you to manually enter the service provider metadata into a form. If your identity provider requires manual entry but is not listed above, see <a href="./ca-sso-config.html">CA SiteMinder SSO Integration Guide</a>.</p>
 
 
 ## <a id="configure-ldap"></a> Configure LDAP as an Identity Provider for PAS
 
-To integrate the UAA with one or more LDAP servers, do the following:
+To integrate the UAA with one or more LDAP servers:
 
 1. Log in to Ops Manager.
 
@@ -129,7 +129,7 @@ To integrate the UAA with one or more LDAP servers, do the following:
     * `ldap://`: This specifies that the LDAP server uses an unencrypted connection.
     * `ldaps://`: This specifies that the LDAP server uses SSL for an encrypted connection and requires that the LDAP server holds a trusted certificate or that you import a trusted certificate to the JVM truststore.
 
-1. For **LDAP credentials**, enter the LDAP distinguished name (DN) and password for binding to the LDAP Server. For example: `cn=administrator,ou=Users,dc=example,dc=com`
+1. For **LDAP credentials**, enter the LDAP distinguished name (DN) and password for binding to the LDAP server. For example: `cn=administrator,ou=Users,dc=example,dc=com`
     <p class="note"><strong>Note:</strong> Pivotal recommends that you provide LDAP credentials that grant read-only permissions on the LDAP search base and the LDAP group search base. Additionally, if the bind user belongs to a different search base, you must use the full DN.</p>
     <p class="note warning"><strong>Warning:</strong> Pivotal recommends against reusing LDAP service accounts across environments. LDAP service accounts should not be subject to manual lockouts, such as lockouts that result from users utilizing the same account. Also, LDAP service accounts should not be subject to automated deletions, since disruption to these service accounts could prevent user logins.</p>
 
@@ -142,7 +142,7 @@ For example, a domain named "cloud.example.com" typically uses the following LDA
 In the LDAP search filter string that you use to configure PAS, use `{0}` instead of the username. For example, use `cn={0}` to return all LDAP objects with the same common name as the username.
 <br><br>
 In addition to `cn`, other attributes commonly searched for and returned are `mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
-    <p class="note"><strong>Note:</strong> For instructions for testing and troubleshooting your LDAP search filters, see the [Configuring LDAP Integration with Pivotal Cloud Foundry](https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry) Knowledge Base article.</p>
+    <p class="note"><strong>Note:</strong> For instructions for testing and troubleshooting your LDAP search filters, see [Configuring LDAP Integration with Pivotal Cloud Foundry](https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry) in the Pivotal Knowledge Base.</p>
 
 1. For **Group search base**, enter the location in the LDAP directory tree from which the LDAP group search begins.
 <br><br>
