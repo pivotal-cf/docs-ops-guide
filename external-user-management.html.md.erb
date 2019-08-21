@@ -1,11 +1,11 @@
 ---
-title: Adding Existing SAML or LDAP Users to a <%= vars.product_name  %> Deployment
+title: Adding Existing SAML or LDAP Users to a <%= vars.product_name %> Deployment
 owner: Identity
 ---
 
-This topic describes the procedure for adding existing SAML or LDAP users to a [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (<%= vars.product_name  %>) deployment enabled with SAML or LDAP.
+This topic describes the procedure for adding existing SAML or LDAP users to a [<%= vars.product_name_full %>](https://network.pivotal.io/products/pivotal-cf) (<%= vars.product_name %>) deployment enabled with SAML or LDAP.
 
-The following two ways exist to add existing SAML or LDAP users to your <%= vars.product_name  %> deployment:
+The following two ways exist to add existing SAML or LDAP users to your <%= vars.product_name %> deployment:
 
 * [Option 1: Import Users in Bulk](#bulk-import)
 * [Option 2: Add Users Manually](#manual)
@@ -14,7 +14,7 @@ The following two ways exist to add existing SAML or LDAP users to your <%= vars
 
 You must have the following to perform the procedures in this topic:
 
-* Admin access to the Ops Manager Installation Dashboard for your <%= vars.product_name  %> deployment
+* Admin access to the Ops Manager Installation Dashboard for your <%= vars.product_name %> deployment
 * The [Cloud Foundry Command Line Interface](../cf-cli/install-go-cli.html) (cf CLI) v6.23.0 or later
 
 ## <a id='bulk-import'></a>Option 1: Import Users in Bulk ##
@@ -23,13 +23,13 @@ You can import SAML or LDAP users in bulk by using the UAA Bulk Import Tool. See
 
 ## <a id='manual'></a>Option 2: Add Users Manually ##
 
-Perform the procedures below to add existing SAML or LDAP users to your <%= vars.product_name  %> deployment manually.
+Perform the procedures below to add existing SAML or LDAP users to your <%= vars.product_name %> deployment manually.
 
 ### <a id='step-id'></a>Step 1: Create User ##
 
 Perform the following steps to add a SAML or LDAP user:
 
-1. Run `cf target https://api.YOUR-SYSTEM-DOMAIN` to target the API endpoint for your <%= vars.product_name  %> deployment. Replace `YOUR-SYSTEM-DOMAIN` with your system domain. For example: 
+1. Run `cf target https://api.YOUR-SYSTEM-DOMAIN` to target the API endpoint for your <%= vars.product_name %> deployment. Replace `YOUR-SYSTEM-DOMAIN` with your system domain. For example: 
     <pre class="terminal">$ cf target http<span>s</span>://api.example.com</pre>
 1. Run `cf login` and provide credentials for an account with the [Admin user role](../concepts/roles.html#roles): 
     <pre class="terminal">$ cf login</pre>

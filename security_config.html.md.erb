@@ -10,7 +10,7 @@ This topic describes how to configure Transport Layer Security (TLS) termination
 
 ## <a id="ssl_term"></a> Configure TLS Termination
 
-When you deploy <%= vars.product_name  %>, you must configure the TLS termination for HTTP traffic in your PAS configuration. You can terminate TLS at all of the following points:
+When you deploy <%= vars.product_name %>, you must configure the TLS termination for HTTP traffic in your PAS configuration. You can terminate TLS at all of the following points:
 
 * Load Balancer
 * Load Balancer and Gorouter
@@ -22,14 +22,14 @@ Follow the guidance in [Securing Traffic into Cloud Foundry](../adminguide/secur
 
 ##<a id="certs"></a> Obtain TLS Certificates
 
-To secure traffic into <%= vars.product_name  %>, you must obtain at least one TLS certificate. See [Certificate Requirements](../adminguide/securing-traffic.html#certtypes) for general certificate requirements for deploying <%= vars.product_name  %>.
+To secure traffic into <%= vars.product_name %>, you must obtain at least one TLS certificate. See [Certificate Requirements](../adminguide/securing-traffic.html#certtypes) for general certificate requirements for deploying <%= vars.product_name %>.
 
 See the following sections for additional IaaS-specific certificate requirements:
 
 * **AWS**: [Certificate Requirements on AWS](../customizing/aws.html#aws_certs)
 * **GCP**: [Certificate Requirements on GCP](../customizing/gcp.html#gcp_certs)
 
-##<a id="create_or_obtain_certs"></a> Creating a Wildcard Certificate for <%= vars.product_name  %> Deployments
+##<a id="create_or_obtain_certs"></a> Creating a Wildcard Certificate for <%= vars.product_name %> Deployments
 
 This section describes how to create or generate a certificate for your PAS environment. If you are deploying to a production environment, you should obtain a certificate from a trusted authority (CA).
 

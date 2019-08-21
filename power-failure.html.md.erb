@@ -1,22 +1,22 @@
 ---
-title: Checking <%= vars.product_name  %> State after a Power Failure on vSphere
+title: Checking <%= vars.product_name %> State after a Power Failure on vSphere
 owner:
 ---
 
 This topic describes how to check <%= vars.first_product_name  %> state after a power failure in an on-premises vSphere installation. 
 
-If you have a procedure at your company for handling power failure scenarios and would to like add steps for checking that <%= vars.product_name  %> is in a good state, you can use this procedure as a template.  
+If you have a procedure at your company for handling power failure scenarios and would to like add steps for checking that <%= vars.product_name %> is in a good state, you can use this procedure as a template.  
 
 ## <a id="overview"></a> Overview  
 
-This section describes the process used by <%= vars.product_name  %> to recover from power failures and exceptions to that process.
+This section describes the process used by <%= vars.product_name %> to recover from power failures and exceptions to that process.
 
 ### <a id="recovery-process"></a> Automatic Recovery Process   
 
-When power returns after a failure, vSphere and <%= vars.product_name  %> automatically do the following to recover your environment:
+When power returns after a failure, vSphere and <%= vars.product_name %> automatically do the following to recover your environment:
 
 1. vSphere High Availability (HA) recovers VMs. 
-2. BOSH ensures the processes on those VMs are healthy, with the exception of the Ops Manager VM and the BOSH VM itself. <%= vars.product_name  %> uses BOSH to deploy and manage its VMs. For more information, see [BOSH](https://bosh.io/docs). 
+2. BOSH ensures the processes on those VMs are healthy, with the exception of the Ops Manager VM and the BOSH VM itself. <%= vars.product_name %> uses BOSH to deploy and manage its VMs. For more information, see [BOSH](https://bosh.io/docs). 
 3. The Diego runtime of Pivotal Application Service (PAS) recovers apps that were running on the VMs. For more information, see [Diego](../concepts/diego/diego-architecture.html). 
 
 ### <a id="manual-recovery-scenarios"></a> Scenarios that Require Manual Intervention
@@ -30,9 +30,9 @@ The procedure in this topic includes more detail about addressing these scenario
 
 ## <a id="checklist"></a> Checklist  
 
-Use the checklist in this section to ensure <%= vars.product_name  %> is in a good state after a power failure. It includes links to sections that contain more detail about each phase. 
+Use the checklist in this section to ensure <%= vars.product_name %> is in a good state after a power failure. It includes links to sections that contain more detail about each phase. 
 
-This checklist assumes your <%= vars.product_name  %> on vSphere installation is set up for vSphere HA and you have the BOSH Resurrector enabled.
+This checklist assumes your <%= vars.product_name %> on vSphere installation is set up for vSphere HA and you have the BOSH Resurrector enabled.
 
 <table>
 <tr>
@@ -72,7 +72,7 @@ This checklist assumes your <%= vars.product_name  %> on vSphere installation is
 </tr>
 <tr>
 <td>7</td>
-<td><%= vars.product_name  %> Healthwatch</td>
+<td><%= vars.product_name %> Healthwatch</td>
 <td><a href="#check-hw">Check the Healthwatch Dashboard</a></td>
 </tr>
 </table>
@@ -85,7 +85,7 @@ Ensure that vSphere is running and has fully recovered from the power failure. C
 
 To ensure Ops Manager is running, do the following:
 
-1. Open vCenter and navigate to the resource pool that hosts your <%= vars.product_name  %> deployment.
+1. Open vCenter and navigate to the resource pool that hosts your <%= vars.product_name %> deployment.
 
 1. Select the **Related Objects**, and then **Virtual Machines**. 
 
@@ -97,14 +97,14 @@ To ensure Ops Manager is running, do the following:
 
 To ensure BOSH Director is running, do the following:
 
-1. In a browser, navigate to the <%= vars.product_name  %> Ops Manager UI and select the **BOSH Director for vSphere** tile. 
+1. In a browser, navigate to the <%= vars.product_name %> Ops Manager UI and select the **BOSH Director for vSphere** tile. 
 	<p class="note"><strong>Note</strong>: If you do not know the URL of the Ops Manager VM, you can use the IP address from vCenter.</p>
 
 1. Select **Status**. 
 
 1. In the **BOSH Director** row, record the **CID**. The CID is the cloud ID and corresponds to the VM name in vSphere. 
 
-1. Navigate to the vCenter resource pool or cluster that hosts your <%= vars.product_name  %> deployment.
+1. Navigate to the vCenter resource pool or cluster that hosts your <%= vars.product_name %> deployment.
 
 1. Select **Related Objects**, and then **Virtual Machines**.
 
@@ -145,7 +145,7 @@ To ensure BOSH Resurrector finished recovering, do the following:
 
 ## <a id="check-pas"></a> Phase 5: Ensure PAS VMs are Running
 
-<p class="note"><strong>Note</strong>: You can also apply the steps in this section to any <%= vars.product_name  %> services. To further ensure the health of <%= vars.product_name  %> services, use the <%= vars.product_name  %> Healthwatch dashboard and the documentation for each service.</p>
+<p class="note"><strong>Note</strong>: You can also apply the steps in this section to any <%= vars.product_name %> services. To further ensure the health of <%= vars.product_name %> services, use the <%= vars.product_name %> Healthwatch dashboard and the documentation for each service.</p>
 
 To ensure PAS VMs are running, do the following:
 
@@ -169,13 +169,13 @@ To ensure PAS VMs are running, do the following:
 1. If you cannot get all VMs running, contact [Pivotal Support](https://support.pivotal.io) for assistance. Provide the following information:
 	* You have started this checklist to recover from a power failure on vSphere
 	* A list of failing VMs
-	* Your <%= vars.product_name  %> version
+	* Your <%= vars.product_name %> version
 
 ### <a id="check-mysql"></a> Manually Recover PAS MySQL (Clusters Only)
 
 To manually recover PAS MySQL, do the following:
 
-1. In a browser, navigate to the <%= vars.product_name  %> Ops Manager UI and select the **Pivotal Application Service** tile. 
+1. In a browser, navigate to the <%= vars.product_name %> Ops Manager UI and select the **Pivotal Application Service** tile. 
 
 1. Select the **Resource Config** pane. 
 
@@ -185,11 +185,11 @@ To manually recover PAS MySQL, do the following:
 
 To ensure apps hosted on PAS are running, do the following:
 
-1. Check the status of an app your company runs on <%= vars.product_name  %>. Run any healthchecks that the app has  or visit the URL of the app to see that it is working. 
+1. Check the status of an app your company runs on <%= vars.product_name %>. Run any healthchecks that the app has  or visit the URL of the app to see that it is working. 
 
-1. Push an app to <%= vars.product_name  %>. 
+1. Push an app to <%= vars.product_name %>. 
 
 
 ## <a id="check-hw"></a> Phase 8: Check the Healthwatch Dashboard
 
-You can use <%= vars.product_name  %> Healthwatch to further assess the state of <%= vars.product_name  %>. For more information, see [Using <%= vars.product_name  %> Healthwatch](https://docs.pivotal.io/pcf-healthwatch/using.html). 
+You can use <%= vars.product_name %> Healthwatch to further assess the state of <%= vars.product_name %>. For more information, see [Using <%= vars.product_name %> Healthwatch](https://docs.pivotal.io/pcf-healthwatch/using.html). 

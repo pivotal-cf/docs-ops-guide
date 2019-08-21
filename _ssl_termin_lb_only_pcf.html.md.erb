@@ -33,7 +33,7 @@ address of your load balancer.
 
 1. Click **Networking**.
 
-1. For <%= vars.product_name  %> deployments on OpenStack or vSphere, choose IP addresses for the Gorouters from the subnet configured for Ops Manager and enter them in the **Router IPs** field. Then configure your load balancer to forward requests for the above domains to these IP addresses. For more information, see [Configuring PAS](../customizing/configure-pas.html#networking)  
+1. For <%= vars.product_name %> deployments on OpenStack or vSphere, choose IP addresses for the Gorouters from the subnet configured for Ops Manager and enter them in the **Router IPs** field. Then configure your load balancer to forward requests for the above domains to these IP addresses. For more information, see [Configuring PAS](../customizing/configure-pas.html#networking)  
 
 1. In the **Certificates and Private Keys for HAProxy and Router** field, click the **Add** button to define one certificate keypair for HAProxy and Router. Since you have opted for unencrypted traffic behind the load balancer, then you can generate an RSA certificate in PAS.
 
@@ -52,7 +52,7 @@ address of your load balancer.
 
 1. Click **Save**.
 
-1. After you complete the configuration in <%= vars.product_name  %>, add your certificate or certificates to your load balancer, and configure its listening port. The procedures vary depending on your IaaS.
+1. After you complete the configuration in <%= vars.product_name %>, add your certificate or certificates to your load balancer, and configure its listening port. The procedures vary depending on your IaaS.
 
 1. Configure your load balancer to append the `X-Forwarded-For` and `X-Forwarded-Proto` headers to client requests.
 

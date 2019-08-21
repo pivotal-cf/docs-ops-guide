@@ -5,14 +5,14 @@ owner: Ops Manager
 
 
 
-This topic describes how to configure <%= vars.first_product_name  %> to access Docker registries such as [Docker Hub](http://hub.docker.com), by using either a root certificate authority (CA) certificate or by adding its IP address to a whitelist. It also explains how to configure <%= vars.product_name  %> to access Docker registries through a proxy.
+This topic describes how to configure <%= vars.first_product_name  %> to access Docker registries such as [Docker Hub](http://hub.docker.com), by using either a root certificate authority (CA) certificate or by adding its IP address to a whitelist. It also explains how to configure <%= vars.product_name %> to access Docker registries through a proxy.
 
-Docker registries store Docker container images. <%= vars.product_name  %> uses these images to create the Docker containers that it runs apps in.
+Docker registries store Docker container images. <%= vars.product_name %> uses these images to create the Docker containers that it runs apps in.
 
 
 ## <a id='prerequisite'></a> Prerequisite: Enable Docker Support
 
-<%= vars.product_name  %> can only access Docker registries if an operator has enabled Docker support with the `cf enable-feature-flag diego_docker` command, as described in the [Using Docker in Cloud Foundry](../adminguide/docker.html#enable) topic.
+<%= vars.product_name %> can only access Docker registries if an operator has enabled Docker support with the `cf enable-feature-flag diego_docker` command, as described in the [Using Docker in Cloud Foundry](../adminguide/docker.html#enable) topic.
 
 With Docker enabled, developers can push an app with a Docker image using the Cloud Foundry Command Line Interface (cf CLI). For more information, see the [Deploying an App with Docker](../devguide/deploy-apps/push-docker.html) topic.
 
@@ -68,11 +68,11 @@ If you choose not to provide a CA certificate, you must provide the IP address o
 After configuration, PAS allows Docker images to pass through the specified IP address without checking certificates.
 
 
-## <a id='proxy'></a> Configure <%= vars.product_name  %> to Access Proxies for Docker Registries
+## <a id='proxy'></a> Configure <%= vars.product_name %> to Access Proxies for Docker Registries
 
-If you have proxies already set up for Docker registries, you should configure <%= vars.product_name  %> to access your Docker registries through a proxy.
+If you have proxies already set up for Docker registries, you should configure <%= vars.product_name %> to access your Docker registries through a proxy.
 
-To configure <%= vars.product_name  %> to access a Docker registry through a proxy, do the following:
+To configure <%= vars.product_name %> to access a Docker registry through a proxy, do the following:
 
 1. On the Installation Dashboard, navigate to USERNAME > **Settings** > **Proxy Settings**.
   <%= image_tag("install-dash-settings.png") %>
