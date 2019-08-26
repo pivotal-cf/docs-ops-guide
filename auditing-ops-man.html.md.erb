@@ -58,22 +58,26 @@ For information about how to access the logs in the following table, see [Access
 			</code>
 		</td>
 	</tr>
+	<tr>
 		<td>UAA Logins</td>
 		<td>User logs into Ops Manager through UAA.</td>
-		<td><code>/var/log/opsmanager/<br/>uaa.out</code></td>
+		<td><code>/home/tempest-web/uaa/<br />tomcat/logs/uaa.log</code></td>
 		<td>
 			<code>
-				[2019-06-20 22:03:10.231] cloudfoundry-identity-server/uaa - ???? [http-nio-127.0.0.1-8080-exec-3] .... DEBUG --- ChainedAuthenticationManager: Attempting chained authentication of org.springframework.security.authentication.UsernamePasswordAuthenticationToken@aad621d: Principal: USERNAME; Credentials: [PROTECTED]; Authenticated: false; Details: remoteAddress=REMOTE_IP, sessionId=<SESSION>; Not granted any authorities with manager:org.cloudfoundry.identity.uaa.authentication.manager.CheckIdpEnabledAuthenticationManager@2e66138 required:null
+				[2019-08-01 07:57:45.830] uaa - 5320 [http-nio-127.0.0.1-8080-exec-7] ....  INFO --- Audit: IdentityProviderAuthenticationSuccess ('admin'): principal=1df75be4-7875-4e7e-97fa-fe76dbff4a41, origin=[remoteAddress=127.0.0.1, sessionId=<SESSION>], identityZoneId=[uaa], authenticationType=[uaa]
+				[2019-08-01 07:57:45.832] uaa - 5320 [http-nio-127.0.0.1-8080-exec-7] ....  INFO --- Audit: UserAuthenticationSuccess ('admin'): principal=1df75be4-7875-4e7e-97fa-fe76dbff4a41, origin=[remoteAddress=127.0.0.1, sessionId=<SESSION>], identityZoneId=[uaa]
 				...
 			</code>
 		</td>
+	</tr>
 	<tr>
 		<td>Failed UAA Logins</td>
 		<td>User makes failed login attempt through UAA.</td>
-		<td><code>/var/log/opsmanager/<br/>uaa.out</code></td>
+		<td><code>/home/tempest-web/uaa/<br />tomcat/logs/uaa.log</code></td>
 		<td>
 			<code>
-				[2019-06-20 22:06:51.832] cloudfoundry-identity-server/uaa - ???? [http-nio-127.0.0.1-8080-exec-5] .... DEBUG --- ChainedAuthenticationManager: Attempting chained authentication of org.springframework.security.authentication.UsernamePasswordAuthenticationToken@23009e2d: Principal: USERNAME; Credentials: [PROTECTED]; Authenticated: false; Details: remoteAddress=REMOTE_IP, sessionId=<SESSION>; Not granted any authorities with manager:org.cloudfoundry.identity.uaa.authentication.manager.CheckIdpEnabledAuthenticationManager@2e66138 required:null
+				[2019-07-31 23:13:48.437] uaa - 1184 [http-nio-127.0.0.1-8080-exec-5] ....  INFO --- Audit: IdentityProviderAuthenticationFailure ('admin'): principal=null, origin=[remoteAddress=209.234.137.222, sessionId=<SESSION>], identityZoneId=[uaa], authenticationType=[uaa]
+				[2019-07-31 23:13:48.438] uaa - 1184 [http-nio-127.0.0.1-8080-exec-5] ....  INFO --- Audit: UserAuthenticationFailure ('admin'): principal=2bdf7f2a-862d-47d7-bf7f-ba92da6850c0, origin=[remoteAddress=209.234.137.222, sessionId=<SESSION>], identityZoneId=[uaa]
 				...
 			</code>
 		</td>
@@ -188,8 +192,11 @@ You can forward some Ops Manager logs using syslog forwarding. This allows you t
 
 The following logs contain relevant information for auditing user activity and can be forwarded using syslog forwarding:
 
-* `uaa.out`
 * `audit_log.txt`
+
+The following logs contain relevant information for auditing user activity but are **not** currently forwarded using syslog forwarding:
+
+* `/home/tempest-web/uaa/tomcat/logs/uaa.log`
 
 For more information about syslog forwarding in Ops Manager, see the [Syslog](https://docs.pivotal.io/pivotalcf/customizing/pcf-interface.html#syslog) section in the _Using the Ops Manager Interface_ topic.
 
