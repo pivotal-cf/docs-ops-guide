@@ -215,13 +215,8 @@ The following table describes the properties in the `audit_log.txt` file. It als
 
 You can forward some Ops Manager logs using syslog forwarding. This allows you to forward logs to a syslog server or other third-party destination for storage and analysis. 
 
-The following logs contain relevant information for auditing user activity and can be forwarded using syslog forwarding:
+The logs in `audit_log.txt` contain relevant information for auditing user activity and can be forwarded using syslog forwarding. However, the logs in `/home/tempest-web/uaa/tomcat/logs/uaa.log` cannot be forwarded using syslog forwarding. 
 
-* `audit_log.txt`
-
-The following logs contain relevant information for auditing user activity but are **not** currently forwarded using syslog forwarding:
-
-* `/home/tempest-web/uaa/tomcat/logs/uaa.log`
 
 For more information about syslog forwarding in Ops Manager, see the [Syslog](../customizing/pcf-interface.html#syslog) section in the _Using the Ops Manager Interface_ topic.
 
