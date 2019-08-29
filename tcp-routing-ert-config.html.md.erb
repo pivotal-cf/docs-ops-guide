@@ -13,9 +13,9 @@ This topic describes how to enable the TCP routing feature in a Pivotal Applicat
 
 ## <a id="enable-tcp"></a> Enable TCP Routing
 
-TCP Routing enables applications to be run on PCF that require inbound requests on non-HTTP protocols. Before enabling TCP Routing, review the [Pre-Deployment Steps](../adminguide/enabling-tcp-routing.html) that describe required networking infrastructure changes.
+TCP Routing enables applications and services to be run on PCF that require inbound requests on non-HTTP protocols. Before enabling TCP Routing, review the [Pre-Deployment Steps](../adminguide/enabling-tcp-routing.html) that describe required networking infrastructure changes.
 
-1. TCP Routing is disabled by default. To enable this feature, select the **Enable TCP Routing** radio button.
+1. TCP Routing is disabled by default. To enable this feature, go to the "Networking" tab and select the **Enable TCP Routing** radio button.
 
 1. In **TCP Router IPs**, enter the IP address(es) you would like assigned to the TCP Routers. The addresses must be within your subnet CIDR block. These will be the same IP addresses you configured your load balancer with in [Pre-Deployment Steps](../adminguide/enabling-tcp-routing.html), unless you configured DNS to resolve the TCP domain name directly to an IP you've chosen for the TCP router. You can enter multiple values as a comma-delimited list or as a range. For example, `10.254.0.1, 10.254.0.2` or `10.254.0.1-10.254.0.2`.
 
