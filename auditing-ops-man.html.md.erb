@@ -105,7 +105,7 @@ The following is an example of the content in the `audit_log.txt` file:
 	"timestamp":"2019-07-13T00:43:08.783+00:00",
 	"component":"Ops Manager 2.7.0-build.87",
 	"component_scheme":"https",
-	"component_host":"pcf.example.opsmanager.cf-app.com",
+	"component_host":"<%= vars.product_name_lc %>.example.opsmanager.cf-app.com",
 	"component_port":443,
 	"result":200,
 	"target":"/proxy_settings",
@@ -184,7 +184,7 @@ The following table describes the properties in the `audit_log.txt` file. It als
 	<tr>
 		<td>component_host</td>
 		<td>The domain name used for the request.</td>
-		<td><code>pcf.my-ops-manager.com</code></td>
+		<td><code><%= vars.product_name_lc %>.my-ops-manager.com</code></td>
 	</tr>
 	<tr>
 		<td>component_port</td>
