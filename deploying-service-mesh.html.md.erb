@@ -7,46 +7,49 @@ This topic describes how to deploy service mesh for Pivotal Application Service 
 
 For more information about service mesh, see [Service Mesh (Beta)](../adminguide/service-mesh.html).
 
+
 ## <a id="configuring-pas"></a> Enable in PAS
 
 To deploy service mesh, configure PAS as follows:
 
-1. Navigate to the **Networking - Service Mesh** pane of the PAS tile. 
+1. Select **Networking - Service Mesh** in the PAS tile. 
 	![Service Mesh](servicemesh.png)
 
-1. Under **Service Mesh (Beta)**, select **Enable**. 
+1. Under **Service mesh (beta)**, select **Enable**. 
 
-1. For **IP Addresses for Ingress Router**, do the following depending on your IaaS:
-	* **vSphere**: Enter static IPs for the Istio Routers. You must configure your load balancer with these IPs as well. 
+1. For **IP addresses for Istio router**, do the following depending on your IaaS:
+	* **vSphere**: Enter static IPs for the Istio routers. You must configure your load balancer with these IPs as well. 
 	* **Other**: Leave this field blank. 
 
-1. For **External Domain**, enter the domain for Istio Routers, the default domain is mesh.app-domain.com
+1. For **External domain**, enter the domain for Istio routers, the default domain is `mesh.app-domain.com`.
 
-1. For **Ingress Router TLS Keypairs**, complete the following fields. You can add more than one keypair if desired using the **Add** button.
+1. For **Istio router TLS keypairs**, complete the following fields. You can add more than one keypair if desired using the **Add** button.
 	* **Name**: Enter a name for the keypair. 
-	* **Certificate and Private Key for Istio Router**: Enter the Private key and certificate for TLS handshakes with clients. These must be in PEM block format. 
+	* **Certificate and private key for Istio router**: Enter the private key and certificate for TLS handshakes with clients. These must be in PEM block format. 
 
 1. Click **Save**. 
+
 
 ## <a id="create-load-balancer"></a> Create a Load Balancer
 
 To configure a load balancer for service mesh, do the following. The exact procedure varies by IaaS. 
 
-1. Create a load balancer with the following:
+1. Create a load balancer with:
 	* A static IP
-	* Health check port `8002` and path `/healthcheck`
+	* Health check port 8002 and path `/healthcheck`
 	* Firewall rules to allow the following:
-		* HTTP on port `80`
-		* HTTP on port `8002`
-		* TLS on port `443`
+		* HTTP on port 80
+		* HTTP on port 8002
+		* TLS on port 443
 
-1. Navigate to your DNS provider and create a DNS name, `*.mesh.YOUR-CF-APPS-DOMAIN`, that resolves to the IP of the load balancer. This is the default domain for service mesh and it is not configurable.  
+1. Navigate to your DNS provider and create a DNS name, `*.mesh.YOUR-CF-APPS-DOMAIN`, that resolves to the IP of the load balancer. This is the default domain for service mesh and is not configurable.  
+
 
 ## <a id="resource-config"></a> Add Load Balancer to Resource Config
 
 If your deployment is on an IaaS other than vSphere, do the following after you create your load balancer:
 
-1. Navigate to the **Resource Config** pane of the PAS tile. 
+1. Select **Resource Config** in the PAS tile. 
 
 1. In the **Load Balancer** column of the **istio-router** row, enter the name of the load balancer you created. 
 

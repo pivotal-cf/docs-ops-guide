@@ -6,7 +6,8 @@ owner: <%= vars.product_name %> Documentation
 
 <% current_page.data.title = vars.product_name + " Operator Guide" %>
 
-##<a id='who'></a>For <%= vars.product_name %> Operators
+
+## <a id='overview'></a> Overview
 
 This guide shows you how to run a <%= vars.product_name %> platform. This ongoing responsibility may include but is not limited to:
 
@@ -23,24 +24,24 @@ This guide shows you how to run a <%= vars.product_name %> platform. This ongoin
 
 If you do these things, you are a <%= vars.product_name %> **operator**, and the contents of this guide are for you.
 
-##<a id='contents'></a>Guide Contents
 
-* <a href="/pivotalcf/customizing/day2.html">Day 2 Configurations</a> - Setting up internal operations and external integrations for <%= vars.product_name %>.
+## <a id='contents'></a> Guide Contents
 
-* <a href="/pivotalcf/opsguide/ongoing.html">Ongoing Operations</a> - Routine procedures for running and growing the platform, including:
+* [Day 2 Configurations](../customizing/day2.html) - Setting up internal operations and external integrations for <%= vars.product_name %>.
 
+* [Ongoing Operations](ongoing.html) - Routine procedures for running and growing the platform, including:
   - <%= vars.product_name %> Upgrades
-  - IaaS Changes
-  - Monitoring, Logging, and Reporting
-  - Platform Tuning
-  - Enabling Developers
-  - Backing Up
+  - IaaS changes
+  - Monitoring, logging, and reporting
+  - Platform tuning
+  - Enabling developers
+  - Backing up
   - Security
 
-* <a href="/pivotalcf/adminguide/index.html">Managing PAS Runtimes</a>: Procedures performed by people with administrator or manager roles in Pivotal Application Service (PAS), such as managing users, orgs, spaces, and service instances. Operators can perform these actions by [logging in with Admin credentials](../customizing/console-login.html), which grants them the role of Org Manager across all PAS orgs.
+* [Managing PAS Runtimes](../adminguide/index.html): Procedures performed by people with administrator or manager roles in PAS, such as managing users, orgs, spaces, and service instances. Operators can perform these actions by logging in with Admin credentials, which grants them the role of Org Manager across all PAS orgs. For more information, see [Logging In to Apps Manager](../customizing/console-login.html).
 
-* <a href="/pivotalcf/customizing/ops-man.html">Using Ops Manager</a>: The Ops Manager dashboard interface streamlines the installation, configuration, and upgrading of <%= vars.product_name %> platform services and add-ons.
+* [Using Ops Manager](../customizing/ops-man.html): The Ops Manager dashboard interface streamlines the installation, configuration, and upgrading of <%= vars.product_name %> platform services and add-ons.
 
-* <a href="/pivotalcf/cf-cli/index.html">Using the Cloud Foundry Command Line Interface (cf CLI)</a>: Using the cf CLI to send commands to the Cloud Controller, the executive component of PAS.
+* [Using the Cloud Foundry Command Line Interface (cf CLI)](../cf-cli/index.html): Using the cf CLI to send commands to the Cloud Controller, the executive component of PAS.
 
-* <a href="/pivotalcf/customizing/troubleshooting-diagnostics.html">Troubleshooting and Diagnostics</a>: Tools and procedures for troubleshooting <%= vars.product_name %>.
+* [Troubleshooting and Diagnostics](../customizing/troubleshooting-diagnostics.html): Tools and procedures for troubleshooting <%= vars.product_name %>.
