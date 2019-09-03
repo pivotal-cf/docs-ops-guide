@@ -5,37 +5,24 @@ owner: Ops Manager
 
 <% current_page.data.title = "Configuring " + vars.product_name_full + " SSL Termination for vSphere"  %>
 
-To use SSL termination in [<%= vars.product_name_full %>](https://network.pivotal.io/products/pivotal-cf) (<%= vars.product_name %>), you must
-configure the Pivotal-deployed HAProxy load balancer or your own load balancer.
+To use SSL termination in [<%= vars.product_name_full %>](https://network.pivotal.io/products/pivotal-cf) (<%= vars.product_name %>), you must configure the Pivotal-deployed HAProxy load balancer or your own load balancer.
 
-Pivotal recommends that you use HAProxy in lab and test environments only.
-Production environments should instead use a highly-available customer-provided
-load balancing solution.
+Pivotal recommends that you use HAProxy in lab and test environments only. Production environments should instead use a highly-available customer-provided load balancing solution.
 
-Select an SSL termination method to determine the steps you must take to
-configure Pivotal Application Service (PAS).
+Choose an SSL termination method to determine the steps you must take to configure Pivotal Application Service (PAS).
 
-##<a id="haproxy"></a>Using the Pivotal HAProxy Load Balancer##
 
-<%= vars.product_name %> deploys with a single instance of HAProxy for use in lab and test
-environments.
-You can use this HAProxy instance for SSL termination and load balancing to the
-PAS Routers.
-HAProxy can generate a self-signed certificate if you do not want to obtain a
-signed certificate from a well-known certificate authority.
+## <a id="haproxy"></a> Using the HAProxy Load Balancer
+
+<%= vars.product_name %> deploys with a single instance of HAProxy for use in lab and test environments. You can use this HAProxy instance for SSL termination and load balancing to the PAS Gorouters. HAProxy can generate a self-signed certificate if you do not want to obtain a signed certificate from a well-known certificate authority.
 <%= partial '../customizing/known-issue-self-signed-certs' %>
 
-To use the HAProxy load balancer, you must create a wildcard A record in your
-DNS and configure three fields in the PAS product tile.
+To use the HAProxy load balancer, you must create a wildcard A record in your DNS and configure three fields in the PAS product tile.
 
-1. Create an A record in your DNS that points to the HAProxy IP address. The A
-record associates the **System Domain** and **Apps Domain** that you configure
-in the **Domains** section of the PAS tile with the HAProxy IP address.
+1. Create an A record in your DNS that points to the HAProxy IP address. The A record associates the **System domain** and **Apps domain** that you configure in the **Domains** pane of the PAS tile with the HAProxy IP address.
     <br />
     <br />
-    For example, with `cf.example.com` as the main subdomain for your CF install
-	and an HAProxy IP address `203.0.113.1`, you must create an A record in your
-	DNS that serves `example.com` and points `*.cf` to `203.0.113.1`.
+    For example, with `cf.example.com` as the main subdomain for your CF install and an HAProxy IP address `203.0.113.1`, you must create an A record in your DNS that serves `example.com` and points `*.cf` to `203.0.113.1`.
 
     <table >
         <tr>
@@ -52,8 +39,7 @@ in the **Domains** section of the PAS tile with the HAProxy IP address.
         </tr>
 	</table>
 
-1. Use the Linux `host` command to test your DNS entry. The `host` command
-should return your HAProxy IP address.
+1. Use the Linux `host` command to test your DNS entry. The `host` command should return your HAProxy IP address.
 	<br />
 	<br />
 	Example:
@@ -72,34 +58,25 @@ should return your HAProxy IP address.
 
 1. Enter the IP address for HAProxy in the **HAProxy IPs** field.
 
-1. Provide your SSL certificate in the **SSL Termination Certificate and Private Key** field. See [Providing a Certificate for your SSL Termination Point](./security_config.html#config) for details.
+1. Provide your SSL certificate in the **Certificates and private keys for HAProxy and Router** fields. For more information, see Providing a Certificate for Your TLS Termination Point](./security_config.html).
 
-[Return to the Getting Started Guide](../installing/index.html)
 
-##<a id="other"></a>Using Another Load Balancer##
+## <a id="other"></a> Using Another Load Balancer
 
-Production environments should use a highly-available customer-provided load
-balancing solution that does the following:
+Production environments should use a highly-available customer-provided load balancing solution that does the following:
 
 * Provides SSL termination with wildcard DNS location
 * Provides load balancing to each of the PAS router IPs
 * Adds appropriate `x-forwarded-for` and `x-forwarded-proto` HTTP headers
 
-You must register static IP addresses for <%= vars.product_name %> with your load balancer and
-configure three fields in the PAS product tile.
+You must register static IP addresses for <%= vars.product_name %> with your load balancer and configure three fields in the PAS product tile.
 
-1. Register one or more static IP address for <%= vars.product_name %> with your load
-balancer.
+1. Register one or more static IP address for <%= vars.product_name %> with your load balancer.
 
-1. Create an A record in your DNS that points to your load balancer IP address.
-The A record associates the **System Domain** and **Apps Domain** that you
-configure in the **Domains** section of the PAS tile with the IP address of
-your load balancer.
+1. Create an A record in your DNS that points to your load balancer IP address. The A record associates the **System domain** and **Apps domain** that you configure in the **Domains** pane of the PAS tile with the IP address of your load balancer.
     <br />
     <br />
-    For example, with `cf.example.com` as the main subdomain for your CF install
-    and a load balancer IP address `198.51.100.1`, you must create an A record in
-	your DNS that serves `example.com` and points `*.cf` to `198.51.100.1`.
+    For example, with `cf.example.com` as the main subdomain for your CF install and a load balancer IP address `198.51.100.1`, you must create an A record in your DNS that serves `example.com` and points `*.cf` to `198.51.100.1`.
 
     <table border="1" class="nice" >
       <tr>
@@ -125,8 +102,6 @@ your load balancer.
 
 1. Leave the **HAProxy IPs** field blank.
 
-1. Provide your SSL certificate in the **SSL Termination Certificate and Private Key** field. See [Providing a Certificate for your SSL Termination Point](./security_config.html#config) for details.
+1. Provide your SSL certificate in the **Certificates and private keys for HAProxy and Router** fields. For more information, see Providing a Certificate for Your TLS Termination Point](./security_config.html).
 
-<p class='note'><strong>Note</strong>: When adding or removing <%= vars.product_name %> routers, you must update your load balancing solution configuration with the appropriate IP addresses.</p>
-
-[Return to the Installing <%= vars.product_name_full %> Guide](../installing/index.html)
+<p class='note'><strong>Note:</strong> When adding or removing <%= vars.product_name %> routers, you must update your load balancing solution configuration with the appropriate IP addresses.</p>
