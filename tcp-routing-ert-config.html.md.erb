@@ -4,8 +4,6 @@ title: Configuring TCP Routing in PAS
 owner: Routing
 ---
 
-
-
 This topic describes how to enable the TCP routing feature in a Pivotal Application Service (PAS) deployment.
 
 <p class=‘note breaking’><strong>Breaking Change:</strong> If you have mutual TLS app identity verification enabled, Envoy only recognizes communications from the Gorouter. Therefore, TCP no longer works.</p>
@@ -13,24 +11,25 @@ This topic describes how to enable the TCP routing feature in a Pivotal Applicat
 
 ## <a id="enable-tcp"></a> Enable TCP Routing
 
-TCP Routing enables applications to be run on <%= vars.product_name %> that require inbound requests on non-HTTP protocols. Before enabling TCP Routing, review the [Pre-Deployment Steps](../adminguide/enabling-tcp-routing.html) that describe required networking infrastructure changes.
+TCP Routing enables apps to be run on <%= vars.product_name %> that require inbound requests on non-HTTP protocols. Before enabling TCP routing, review the [Pre-Deployment Steps](../adminguide/enabling-tcp-routing.html) that describe required networking infrastructure changes.
 
-1. TCP Routing is disabled by default. To enable this feature, select the **Enable TCP Routing** radio button.
+1. TCP routing is disabled by default. To enable this feature, select **Enable TCP routing** under **Enable TCP requests to apps through specific ports on the TCP router* in the **Networking** pane of the PAS tile.
 
-1. In **TCP Router IPs**, enter the IP address(es) you would like assigned to the TCP Routers. The addresses must be within your subnet CIDR block. These will be the same IP addresses you configured your load balancer with in [Pre-Deployment Steps](../adminguide/enabling-tcp-routing.html), unless you configured DNS to resolve the TCP domain name directly to an IP you've chosen for the TCP router. You can enter multiple values as a comma-delimited list or as a range. For example, `10.254.0.1, 10.254.0.2` or `10.254.0.1-10.254.0.2`.
+1. In **TCP router IPs**, enter the IP address(es) you would like assigned to the TCP routers. The addresses must be within your subnet CIDR block. These are the same IP addresses with which you configured your load balancer in [Pre-Deployment Steps](../adminguide/enabling-tcp-routing.html), unless you configured DNS to resolve the TCP domain name directly to an IP you have chosen for the TCP router. You can enter multiple values as a comma-separated list or as a range. For example, `10.254.0.1, 10.254.0.2` or `10.254.0.1-10.254.0.2`.
 
-1. For <b>TCP Routing Ports</b>, enter a single port or a range of ports for the load balancer to forward to. This field does not accept a comma-delimited list. If you <a href="../om/aws/prepare-env-manual.html">configured AWS for <%= vars.product_name %> manually</a>, enter <code>1024-1123</code> which corresponds to the rules you created for <code><%= vars.product_name_lc %>-tcp-elb</code>.
+1. For **TCP routing ports**, enter a single port or a range of ports for the load balancer to forward to. This field does not accept a comma-separated list. If you configured AWS for <%= vars.product_name %> manually, enter `1024-1123` which corresponds to the rules you created for `<%= vars.product_name_lc %>-tcp-elb`.
 	* To support multiple TCP routes, Pivotal recommends allocating multiple ports.
 	* To allocate a list of ports rather than a range:
-        * Enter a single port in the <b>TCP Routing Ports</b> field.
-        * After deploying PAS, follow the directions in <a href="https://docs.pivotal.io/pivotalcf/2-3/pcf-release-notes/runtime-rn.html#tcp-port-config">Configuring a List of TCP Routing Ports</a> to add TCP routing ports using the cf CLI.
+        * Enter a single port in the **TCP routing ports** field.
+        * After deploying PAS, follow the procedure in [Configuring a List of TCP Routing Ports](https://docs.pivotal.io/pivotalcf/2-3/pcf-release-notes/runtime-rn.html#tcp-port-config) section of the PAS v2.3 release notes to add TCP routing ports using the cf CLI.
 
-1. If you are deploying <%= vars.product_name %> to AWS, Azure or GCP, add the name of your load balancer to **TCP Router** job of the **Resource Config** page of the PAS tile.
-For mor information, see the <%= vars.product_name %> installation documentation for you IaaS.
+1. If you are deploying <%= vars.product_name %> to AWS, Azure, or GCP, add the name of your load balancer to **TCP Router** job of the **Resource Config** page of the PAS tile. For more information, see [Configuring Load Balancing for PAS](../customizing/configure-lb.html).
 
 
 ## <a id="disable-tcp"></a> Disable TCP Routing
 
-1. If you want to disable TCP routing after enabling it, click **Select this option if you prefer to enable TCP Routing at a later time**.
+To disable TCP routing after enabling it:
+
+1. Under **Enable TCP requests to apps through specific ports on the TCP router**, select **Disable TCP routing**.
 
 1. Manually remove the TCP routing domain.
