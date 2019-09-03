@@ -3,7 +3,7 @@ title: Configuring Logging in PAS
 owner: APM
 ---
 
-This topic describes the types of logs that <%= vars.first_product_name  %> generates. It also explains how to forward system logs to an external aggregator service, how to scale Loggregator component VMs to keep up with app log volume, and how to manage app traffic logging. For more information about Loggregator components, see [Loggregator Architecture]](../loggregator/architecture.html).
+This topic describes the types of logs that <%= vars.first_product_name  %> generates. It also explains how to forward system logs to an external aggregator service, how to scale Loggregator component VMs to keep up with app log volume, and how to manage app traffic logging. For more information about Loggregator components, see [Loggregator Architecture](../loggregator/architecture.html).
 
 
 ## <a id='types'></a> System Logs, App Logs, App Traffic Logs
@@ -33,10 +33,8 @@ This topic describes the types of logs that <%= vars.first_product_name  %> gene
     <td>External data platform, optionally via nozzles</td>
     <td rowspan=3>Developers and Operators</td>
   </tr><tr>
-    <th colspan=3>(Optional) With <a href="../loggregator/architecture.html#adapter">Syslog Adapter</a></th>
-  </tr><tr>
     <td bgcolor="#FBFBFB">Converted to syslog standard</td>
-    <td bgcolor="#FBFBFB">Syslog Adapter</td>
+    <td bgcolor="#FBFBFB">Syslog Agent</td>
     <td bgcolor="#FBFBFB">External syslog drain</td>
   </tr>
 </table>
@@ -125,7 +123,6 @@ To add component VM instances for Loggregator components:
 	* **Loggregator Traffic Controller**
 		<p class="note"><strong>Note</strong>: The Reverse Log Proxy (RLP) BOSH job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more logs for syslog drains, you can add instances of the Traffic Controller. For more information, see <a href="../loggregator/architecture.html">Loggregator Architecture</a>.</p>
 		<p class="note"><strong>Note</strong>: The BOSH System Metrics Forwarder</a> job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more BOSH component metrics, you can add instances of the Traffic Controller. For more information, see the <a href="../loggregator/architecture.html#bosh-metrics">Related BOSH Components</a> section of the <em>Loggregator Architecture</em> topic.</p>
-	* **Syslog Adapter**
 	* **Doppler Server**
   <%= image_tag 'loggregator-vms.png' %>
 

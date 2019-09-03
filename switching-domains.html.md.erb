@@ -1,22 +1,19 @@
 ---
-title: Switching Application Domains
+title: Switching App Domains
 owner: Routing
 ---
 
-
-
 This topic describes how to change the domain of an existing [<%= vars.product_name_full %>](https://network.pivotal.io/products/pivotal-cf) (<%= vars.product_name %>) installation, using an example domain change from `myapps.mydomain.com` to `newapps.mydomain.com`.
 
-1. In <%= vars.product_name %> Ops Manager, select the **Pivotal Application Service** tile.
+1. In <%= vars.product_name %> Ops Manager, select the **Pivotal Application Service** (PAS) tile.
 
-1. Select **Domains** from the menu to see the current **Apps Domain** for your Pivotal Application Service (PAS) deployment. In the following example it is `myapps.mydomain.com`.
+1. Select **Domains** from the menu to see the current **Apps domain** for your PAS deployment. In the following example, it is `myapps.mydomain.com`.
 
 	<%= image_tag '../images/switching_domains/er17-switchdomains-before.png'%>
 
-1. In the terminal, run `cf login -a YOUR_API_ENDPOINT`. The cf CLI prompts you for your <%= vars.product_name %> username and password, as well as the org and space you want to access. See [Identifying the API Endpoint for your PAS Instance](../opsguide/api-endpoint.html) if you don’t know your API endpoint.
+1. In the terminal, run `cf login -a YOUR_API_ENDPOINT`. The cf CLI prompts you for your <%= vars.product_name %> username and password, as well as the org and space you want to access. If you do not know your API endpoint, see [Identifying the API Endpoint for Your PAS Instance](../opsguide/api-endpoint.html).
 
-1. Run `cf domains` to view the domains in the space. If you have more than one shared domain, ensure that the domain you want to change is at the top of the list before you apply the new domain to your PAS tile configuration. You can delete and re-create the other shared domains as necessary to push the domain you want to change to the top of the list. If you do this, make sure to [re-map the routes for each domain]
-(../devguide/deploy-apps/routes-domains.html).
+1. Run `cf domains` to view the domains in the space. If you have more than one shared domain, ensure that the domain you want to change is at the top of the list before you apply the new domain to your PAS tile configuration. You can delete and re-create the other shared domains as necessary to push the domain you want to change to the top of the list. If you do this, make sure to re-map the routes for each domain. For more information, see [Configuring Routes and Domains](../devguide/deploy-apps/routes-domains.html).
 
 	<pre class="terminal">
 		$ cf domains
@@ -26,7 +23,7 @@ This topic describes how to change the domain of an existing [<%= vars.product_n
 		myapps.mydomain.com   shared
 	</pre>
 
-1. Run `cf routes` to confirm that your apps are assigned to the domain you plan to change.
+1. Run `cf routes` to confirm that your apps are assigned to the domain you plan to change:
 
 	<pre class='terminal'>
 		$ cf routes
@@ -45,7 +42,7 @@ This topic describes how to change the domain of an existing [<%= vars.product_n
 		OK
 	</pre>
 
-1. Run `cf map-route APP_NAME NEW_DOMAIN -n HOST_NAME` to map the new domain to your app. In this example both the `NEW_DOMAIN` and `HOST_NAME` arguments are `myapp`, since this is both the name of the app to which we are mapping a route, and the intended hostname for the URL.
+1. Run `cf map-route APP_NAME NEW_DOMAIN -n HOST_NAME` to map the new domain to your app. In this example, both the `NEW_DOMAIN` and `HOST_NAME` arguments are `myapp`, since this is both the name of the app to which you are mapping a route and the intended hostname for the URL.
 
 	<pre class='terminal'>
 		$ cf map-route myapp newapps.mydomain.com -n myapp
@@ -61,8 +58,7 @@ This topic describes how to change the domain of an existing [<%= vars.product_n
 	<%= image_tag '../images/switching_domains/new_domain_confirmed1.png'%>
 
 1. Repeat the above steps for each space in your <%= vars.product_name %> installation except for the System org, beginning with logging into the org and space and ending with confirming the URL update.
-	<p class='note'><strong>Note</strong>: Ordinarily the System org contains only <%= vars.product_name %> apps that perform utility functions for your installation. Pivotal does not recommend pushing apps to this org. However, if you have pushed apps to System, you must also repeat the above steps for these apps.</p>
-
+	<p class='note'><strong>Note:</strong> Ordinarily the System org contains only <%= vars.product_name %> apps that perform utility functions for your installation. Pivotal does not recommend pushing apps to this org. However, if you have pushed apps to System, you must also repeat the above steps for these apps.</p>
 
 1. Once you have confirmed that every app in every space has been mapped to the new domain, delete the old domain by running `cf delete-shared-domain OLD_DOMAIN_TO_DELETE`:
 
@@ -77,6 +73,6 @@ This topic describes how to change the domain of an existing [<%= vars.product_n
 		OK
 	</pre>
 
-1. Configure your PAS tile to use the new domain, and apply changes. Apps that you push after your update finishes use this new domain.
+1. Configure your PAS tile to use the new domain, and apply the changes. Apps that you push after your update finishes use this new domain.
 
 	<%= image_tag '../images/switching_domains/er17-switchdomains-after.png'%>
