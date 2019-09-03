@@ -3,9 +3,7 @@ title: Configuring Logging in PAS
 owner: APM
 ---
 
-
-
-This topic describes the types of logs that <%= vars.first_product_name  %> generates. It also explains how to forward system logs to an external aggregator service, how to scale [Loggregator](../loggregator/architecture.html) component VMs to keep up with app log volume, and how to manage app traffic logging.
+This topic describes the types of logs that <%= vars.first_product_name  %> generates. It also explains how to forward system logs to an external aggregator service, how to scale Loggregator component VMs to keep up with app log volume, and how to manage app traffic logging. For more information about Loggregator components, see [Loggregator Architecture]](../loggregator/architecture.html).
 
 
 ## <a id='types'></a> System Logs, App Logs, App Traffic Logs
@@ -47,7 +45,8 @@ This topic describes the types of logs that <%= vars.first_product_name  %> gene
 
 <strong>App traffic logs are system logs.</strong> When app containers communicate, or attempt to communicate, their host cells generate _app traffic logs_. App traffic logs are system logs, not app logs. These logs come from host cells, not apps, and they carry no information from within the app. App traffic logs only show app communication behavior, as detected from outside by the host cell.
 
-## <a id="log-cache"></a>Log Cache
+
+## <a id="log-cache"></a> Log Cache
 
 Log Cache is a Loggregator feature that lets you filter and query app logs through a CLI plugin or API endpoints. Cached app logs are available on demand; you do not need to stream them continuously.
 
@@ -55,23 +54,26 @@ Log Cache is a Loggregator feature that lets you filter and query app logs throu
 
 To access cached logs with the Log Cache CLI plugin, you must first download and install the plugin.
 
-[Download the Log Cache CLI plugin](https://plugins.cloudfoundry.org/#log-cache). 
+To download the the Log Cache CLI plugin, see the [cf CLI Plugins]](https://plugins.cloudfoundry.org/#log-cache) page on Cloud Foundry. 
 
 One you have installed the plugin, the basic command to access cached app logs is:
 <pre class="terminal">$ cf tail [OPTIONS] [SOURCE ID/APP]</pre>
 
-Here are some ways you can use Log Cache to filter app logs:
+Some ways you can use Log Cache to filter app logs are:
 
 * `--start-time`: Displays the start of the cache or the start of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `--end-time` to view logs within a time period.
+
 * `--end-time`: Displays the end of the cache or the end of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `--start-time` to view logs within a time period.
+
 * `--json`: Output logs in JSON. 
+
 * `--follow`: Append exported logs to `stdout`.
 
-For more information on using the Log Cache CLI, see [Log Cache CLI: Usage](https://github.com/cloudfoundry/log-cache-cli/blob/develop/README.md).
+For more information on using the Log Cache CLI, see [Log Cache CLI: Usage](https://github.com/cloudfoundry/log-cache-cli/blob/develop/README.md) on GitHub.
 
 ### <a id="log-cache-api-examples"></a> Example Uses of the Log Cache API
 
-The Log Cache API is hosted on <%= vars.product_name %>, and references your system domain to return responses. The root URL for API calls is <code>ht<span>tps:</span>//log-cache.[YOUR-SYSTEM-DOMAIN]</code>.
+The Log Cache API is hosted on <%= vars.product_name %>, and references your system domain to return responses. The root URL for API calls is `https://log-cache.[YOUR-SYSTEM-DOMAIN]`.
 
 The basic call to access and filter cached app logs is: 
 <pre class="terminal">GET ht<span>tps:</span>//log-cache.[YOUR-SYSTEM-DOMAIN]/v1/read/[SOURCE-ID]</pre> 
@@ -79,8 +81,11 @@ The basic call to access and filter cached app logs is:
 Append the following parameters to the `GET` to customize app logs: 
 
 * `start_time`: Displays the start of the cache or the start of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `end_time` to view logs within a time period.
+
 * `end_time`: Displays the end of the cache or the end of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `start_time` to view logs within a time period.
+
 * `envelope_types`: Filters by Envelope Type. The available filters are: `LOG`, `COUNTER`, `GAUGE`, `TIMER`, and `EVENT`. Set an envelope type filter to emit logs of only that type. Specify this parameter multiple times to include more types.
+
 * `limit`: Sets a maximum number of envelopes to request. The max limit is 1000. This value defaults to 100.
 
 More API parameters are available to customize retrieved app logs. For more information, see [Log Cache: RESTful API Gateway](https://github.com/cloudfoundry/log-cache#restful-api-via-gateway).
@@ -95,29 +100,31 @@ More API parameters are available to customize retrieved app logs. For more info
 
 Developers can monitor container metrics over the syslog protocol using the [CF Drain CLI plugin](https://github.com/cloudfoundry/cf-drain-cli). With the CF Drain CLI plugin, you can use the Cloud Foundry Command Line Interface (cf CLI) tool to set the app container to deliver container metrics to a syslog drain. Developers can then monitor the app container based on those metrics.
 
-In PAS, the **Include container metrics in Syslog Drains** checkbox is enabled by default in the **System Logging** pane. If you have security concerns about streaming container metrics from your app, you can disable this checkbox.
-
-For more information, see [Including Container Metrics in Syslog Drains](../devguide/deploy-apps/streaming-logs.html#container-metrics) in _Application Logging in Cloud Foundry_.
+For more information, see [Including Container Metrics in Syslog Drains](../devguide/deploy-apps/streaming-logs.html#container-metrics) in _App Logging in Cloud Foundry_.
 
 
 ## <a id='scaling'></a> Scale Loggregator
 
-Apps constantly generate app logs and <%= vars.product_name %> platform components constantly generate component metrics. The Loggregator system combines these data streams and handles them as follows. See [Loggregator Architecture](../loggregator/architecture.html) for more information. 
+Apps constantly generate app logs and <%= vars.product_name %> platform components constantly generate component metrics. The Loggregator system combines these data streams and handles them as follows. For more information, see [Loggregator Architecture](../loggregator/architecture.html). 
 
-* The [Loggregator](../loggregator/architecture.html#metron) agent running on each component or application VM collects and sends this data out to Doppler components. 
-* [Doppler](../loggregator/architecture.html#doppler) components temporarily buffer the data before periodically forwarding it to the Traffic Controller. When the log and metrics data input to a Doppler exceeds its buffer size for a given interval, data can be lost. 
-* The [Traffic Controller](../loggregator/architecture.html#traffic-controller) serves the aggregated data stream through the Firehose WebSocket endpoint.
+* The Loggregator agent running on each component or app VM collects and sends this data out to Doppler components.
+
+* Doppler components temporarily buffer the data before periodically forwarding it to the Traffic Controller. When the log and metrics data input to a Doppler exceeds its buffer size for a given interval, data can be lost.
+
+* The Traffic Controller serves the aggregated data stream through the Firehose WebSocket endpoint.
 
 Follow the instructions below to scale the Loggregator system. For guidance on monitoring and capacity planning, see [Monitoring <%= vars.product_name_full %>](../monitoring/).
 
 ### <a id="instances"></a> Add Component VM Instances
 
+To add component VM instances for Loggregator components:
+
 1. From the PAS tile, select **Resource Config**.
 
 1. Increase the number in the **Instances** column of the component you want to scale. You can add instances for the following Loggregator components: 
 	* **Loggregator Traffic Controller**
-		<p class="note"><strong>Note</strong>: The <a href="../loggregator/architecture.html#rlp">Reverse Log Proxy (RLP)</a> BOSH job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more logs for syslog drains, you can add instances of the Traffic Controller.</p>
-		<p class="note"><strong>Note</strong>: The <a href="../loggregator/architecture.html#bosh-metrics">BOSH System Metrics Forwarder</a> job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more BOSH component metrics, you can add instances of the Traffic Controller.</p>
+		<p class="note"><strong>Note</strong>: The Reverse Log Proxy (RLP) BOSH job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more logs for syslog drains, you can add instances of the Traffic Controller. For more information, see <a href="../loggregator/architecture.html">Loggregator Architecture</a>.</p>
+		<p class="note"><strong>Note</strong>: The BOSH System Metrics Forwarder</a> job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more BOSH component metrics, you can add instances of the Traffic Controller. For more information, see the <a href="../loggregator/architecture.html#bosh-metrics">Related BOSH Components</a> section of the <em>Loggregator Architecture</em> topic.</p>
 	* **Syslog Adapter**
 	* **Doppler Server**
   <%= image_tag 'loggregator-vms.png' %>
@@ -129,7 +136,7 @@ Follow the instructions below to scale the Loggregator system. For guidance on m
 
 ## <a id="app-traffic-log"></a> App Traffic Logging
 
-App traffic logging generates logs when app containers communicate with each other directly, or attempt to communicate, as allowed by [container-to-container networking (C2C) policies](../concepts/understand-cf-networking.html#c2cvsasg) and [Application Security Groups (ASGs)](../concepts/asg.html).
+App traffic logging generates logs when app containers communicate with each other directly, or attempt to communicate, as allowed by container-to-container networking (C2C) policies and App Security Groups (ASGs). For more information about C2C policies, see the [Container-to-Container Networking versus ASGs](../concepts/understand-cf-networking.html#c2cvsasg) section of the _Container-to-Container Networking_ topic. For more information about ASGs, see [App Security Groups](../concepts/asg.html).
 
 App traffic logging lets network security teams audit C2C traffic, by seeing allowed and denied packets, without needing access to the Cloud Controller or the apps themselves.
 
@@ -137,9 +144,9 @@ App traffic logging lets network security teams audit C2C traffic, by seeing all
 
 To enable app traffic logging:
 
-1. From Ops Manager, navigate to the **Pivotal Application Service** tile > **Networking** pane.
+1. From the PAS tile, select the **Networking** pane.
 
-1. Under **Log traffic for all accepted/denied application packets**, select **Enable (will increase log volume)** or **Disable** to enable or disable app traffic logging.
+1. Enable the **Log traffic for all accepted and denied app packets** checkbox.
 
 <%= image_tag 'images/log-app-traffic-enable.png' %>
 
@@ -147,9 +154,11 @@ To enable app traffic logging:
 
 App traffic logging generates log messages as follows:
 
-  * **TCP traffic** - Logs the first packet of every new TCP connection.
-  * **UDP traffic** - Logs UDP packets sent and received, up to a maximum per-second rate for each container. Set this rate limit in the **UDP logging interval** field (default: 100).
-  * **Packets denied** - Logs packets blocked by either a container-specific [networking policy](../concepts/understand-cf-networking.html#policies) or by [Application Security Group](./app-sec-groups.html) (ASG) rules applied across the space, org, or deployment. Logs packet denials up to a maximum per-second rate for each container, set in the **Denied logging interval** field (default: 1).
+* **TCP traffic** - Logs the first packet of every new TCP connection.
+
+* **UDP traffic** - Logs UDP packets sent and received, up to a maximum per-second rate for each container. Set this rate limit in the **UDP logging interval** field. The default rate limit is `100`.
+
+* **Packets denied** - Logs packets blocked by either a container-specific networking policy or by ASG rules applied across the space, org, or deployment. Logs packet denials up to a maximum per-second rate for each container, set in the **Denied logging interval** field. The default rate is `1`. For more information about container-specific networking policies, see the [Policies](../concepts/understand-cf-networking.html#policies) section of the _Container-to-Container Networking_ topic.
 
 ### <a id="log-format"></a> App Traffic Log Format and Contents
 
@@ -158,29 +167,35 @@ App traffic logs are formatted as described in the [cf-networking-release Traffi
 Each log message includes the following:
 
 * Timestamp
+
 * The GUID for the source or destination app that sent or was designated to receive the packet
+
 * The protocol of the communication, `TCP` or `UDP`
+
 * GUIDs for the container, space, and org running the source or destination app
+
 * IP addresses and ports for both source and destination apps
+
 * A `message` field recording whether the packet was allowed or denied, with one of the following four possibilities:
   - ASG allowed packet to exit source app container
   - C2C policy allowed packet to enter destination app container
   - ASG prevented packet from exiting source app container
   - C2C policy prevented packet from entering destination app container
-* Additional information described in the [cf-networking-release](https://github.com/cloudfoundry-incubator/cf-networking-release/blob/v1.10.x/docs/traffic_logging.md).
+
+* Additional information described in the [cf-networking-release](https://github.com/cloudfoundry-incubator/cf-networking-release/blob/v1.10.x/docs/traffic_logging.md)
 
 #### <a id="denied-packet"></a> Denied Packet Causes
 
 You can determine whether a denied-packet log resulted from a container networking policy or an ASG rule as follows:
 
-  * **Container networking policy**: Log `message` string includes `ingress-denied` and `packet direction` is `ingress`.
+* **Container networking policy**: Log `message` string includes `ingress-denied` and `packet direction` is `ingress`.
 
-  * **ASG rule**: Log `message` string includes `egress-denied` and `packet direction` is `egress`.
+* **ASG rule**: Log `message` string includes `egress-denied` and `packet direction` is `egress`.
 
 ### <a id="scope-app-traffic-log"></a> Global vs. ASG-Level App Traffic Logging
 
-<%= vars.product_name %> supports two mechanisms for enabling app traffic logging. [Setting](#enable-app-traffic-logging) **Log traffic** to **Enable** in Ops Manager enables app traffic logging globally for all ASGs and container policies. Setting the [`log` property](../concepts/asg.html#asg-logging-prereq) of an ASG to `true` enables app traffic logging at the individual ASG level.
+<%= vars.product_name %> supports two mechanisms for enabling app traffic logging. Setting **Log traffic** to **Enable** in Ops Manager enables app traffic logging globally for all ASGs and container policies. Setting the `log` property of an ASG to `true` enables app traffic logging at the individual ASG level. For more information about setting the `log` property of an ASG to `true, see the [The Structure and Attributes of ASGs](../concepts/asg.html#creating-groups) section of the _App Security Groups_ topic.
 
-Because these two mechanisms operate independently, <%= vars.product_name %> generates duplicate logs when app traffic logging is enabled globally and an ASG's `log` property is set to `true`. To avoid duplicate logs, Pivotal recommends setting the `log` property to `false` for all ASGs, or leaving it out entirely, when app traffic logging is [enabled globally](#app-traffic-log).
+Because these two mechanisms operate independently, <%= vars.product_name %> generates duplicate logs when app traffic logging is enabled globally and an ASG's `log` property is set to `true`. To avoid duplicate logs, Pivotal recommends setting the `log` property to `false` for all ASGs, or leaving it out entirely, when app traffic logging is enabled globally. For more information, see [App Traffic Logging](#app-traffic-log).
 
 To focus on specific ASGs for log analysis, Pivotal recommends enabling app traffic logs globally and using a logging platform to filter traffic logs by ASG, rather than setting `log` at the individual ASG level.
