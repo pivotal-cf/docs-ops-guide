@@ -378,12 +378,14 @@ $ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/organizations/`cf org YOUR-ORG --gu
 
 The app, task, and service instance usage data returned from the Usage Service is delayed to ensure accuracy. The `/usage_availability` endpoint can be used to retrieve the date which the Usage Service data is accurate to. The Usage Service is able to provide data for time periods up to and including this date.
 
-Use the following curl command to retrieve the current usage availability timestamp.
+Use the following curl command to retrieve the current usage availability timestamp:
 
 ```
-$ curl "https://app-usage.YOUR-SYSTEM-DOMAIN/usage_availability" -k -v
+curl "https://app-usage.YOUR-SYSTEM-DOMAIN/usage_availability" -k -v
 {"date":"2019-01-01"}
 ```
+
+Where `YOUR-SYSTEM-DOMAIN` is the system domain of your PAS environment. 
 
 ## <a id="monitor-usage-service"></a> Monitor Usage Service
 
