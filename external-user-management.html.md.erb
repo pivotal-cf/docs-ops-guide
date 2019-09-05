@@ -5,7 +5,7 @@ owner: Identity
 
 <% current_page.data.title = "Adding Existing SAML or LDAP Users to a " + vars.product_name + " Deployment" %>
 
-This topic describes the procedure for adding existing SAML or LDAP users to a [<%= vars.product_name_full %>](https://network.pivotal.io/products/pivotal-cf) (<%= vars.product_name %>) deployment enabled with SAML or LDAP.
+This topic describes the procedure for adding existing SAML or LDAP users to a [<%= vars.product_name %>](https://network.pivotal.io/products/pivotal-cf) deployment enabled with SAML or LDAP.
 
 The following two ways exist to add existing SAML or LDAP users to your <%= vars.product_name %> deployment:
 
@@ -31,9 +31,9 @@ Perform the procedures below to add existing SAML or LDAP users to your <%= vars
 
 Perform the following steps to add a SAML or LDAP user:
 
-1. Run `cf target https://api.YOUR-SYSTEM-DOMAIN` to target the API endpoint for your <%= vars.product_name %> deployment. Replace `YOUR-SYSTEM-DOMAIN` with your system domain. For example: 
+1. Run `cf target https://api.YOUR-SYSTEM-DOMAIN` to target the API endpoint for your <%= vars.product_name %> deployment. Replace `YOUR-SYSTEM-DOMAIN` with your system domain. For example:
     <pre class="terminal">$ cf target http<span>s</span>://api.example.com</pre>
-1. Run `cf login` and provide credentials for an account with the [Admin user role](../concepts/roles.html#roles): 
+1. Run `cf login` and provide credentials for an account with the [Admin user role](../concepts/roles.html#roles):
     <pre class="terminal">$ cf login</pre>
 1. Run `cf create-user EXAMPLE-USERNAME --origin YOUR-PROVIDER-NAME` to create the user in UAA. Replace `EXAMPLE-USERNAME` with the username of the SAML or LDAP user you wish to add, and select one of the options below:
     - For LDAP, replace `YOUR-PROVIDER-NAME` with `ldap`. For example:
@@ -53,7 +53,7 @@ For more information about roles, see the [Roles and Permissions](../concepts/ro
 
 #### <a id='org-role'></a>Associate User with Org Role
 
-Run `cf set-org-role USERNAME YOUR-ORG ROLE` to associate the SAML or LDAP user with an Org role. Replace `USERNAME` with the name of the SAML or LDAP user, and replace `YOUR-ORG` with the name of your Org. 
+Run `cf set-org-role USERNAME YOUR-ORG ROLE` to associate the SAML or LDAP user with an Org role. Replace `USERNAME` with the name of the SAML or LDAP user, and replace `YOUR-ORG` with the name of your Org.
 
 For `ROLE`, enter one of the following:
 
@@ -65,11 +65,11 @@ Example:
 
 <pre class="terminal">
 $ cf set-org-role j.smith<span>@</span>example.com my-org OrgManager
-</pre> 
+</pre>
 
 #### <a id='space-role'></a>Associate User with Space Role
 
-Run `cf set-space-role USERNAME YOUR-ORG YOUR-SPACE ROLE` to associate the SAML or LDAP user with a Space role. Replace `USERNAME` with the name of the SAML or LDAP user, replace `YOUR-ORG` with the name of your Org, and `YOUR-SPACE` with the name of a Space in your Org. 
+Run `cf set-space-role USERNAME YOUR-ORG YOUR-SPACE ROLE` to associate the SAML or LDAP user with a Space role. Replace `USERNAME` with the name of the SAML or LDAP user, replace `YOUR-ORG` with the name of your Org, and `YOUR-SPACE` with the name of a Space in your Org.
 
 For `ROLE`, enter one of the following:
 
@@ -81,4 +81,4 @@ Example:
 
 <pre class="terminal">
 $ cf set-space-role j.smith<span>@</span>example.com my-org my-space SpaceDeveloper
-</pre> 
+</pre>
