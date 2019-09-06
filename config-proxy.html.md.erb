@@ -3,7 +3,7 @@ title: Configuring Proxy Settings for All Apps
 owner: Routing
 ---
 
-This topic describes how to globally configure proxy settings for all apps in your <%= vars.first_product_name  %> deployment. Some environments restrict access to the Internet by requiring traffic to pass through an HTTP or HTTPS proxy. <%= vars.product_name %> operators can use the Cloud Foundry Command Line Interface (cf CLI) to provide the proxy settings to all apps, including system apps and service brokers.
+This topic describes how to globally configure proxy settings for all apps in your <%= vars.product_name %> deployment. Some environments restrict access to the Internet by requiring traffic to pass through an HTTP or HTTPS proxy. <%= vars.product_name %> operators can use the Cloud Foundry Command Line Interface (cf CLI) to provide the proxy settings to all apps, including system apps and service brokers.
 
 <p class="note"><strong>Not:</strong> Incorrectly configuring proxy settings can prevent apps from connecting to the Internet or accessing required resources. They can also cause errands to fail and break system apps and service brokers. Although errands, system apps, and service brokers do not need to connect to the Internet, they often need to access other resources on <%= vars.product_name %>. Incorrect proxy settings can break these connections.</p>
 
