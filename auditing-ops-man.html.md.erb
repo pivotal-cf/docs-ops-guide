@@ -192,6 +192,10 @@ You can forward some Ops Manager logs using syslog forwarding. This allows you t
 
 The logs in `audit_log.txt` contain relevant information for auditing user activity and can be forwarded using syslog forwarding. However, the logs in `/home/tempest-web/uaa/tomcat/logs/uaa.log` cannot be forwarded using syslog forwarding. 
 
+When syslog forwarding is enabled, Ops Manager automatically forwards 
+BOSH Director access events. These events allow you to audit BOSH Director
+access and the execution of BOSH CLI commands. For more information about
+BOSH Director access events, 
+see [Logging API Access](https://bosh.io/docs/director-access-events/) in BOSH Documentation.
 
 For more information about syslog forwarding in Ops Manager, see the [Syslog](https://docs.pivotal.io/pivotalcf/customizing/pcf-interface.html#syslog) section in the _Using the Ops Manager Interface_ topic.
-
