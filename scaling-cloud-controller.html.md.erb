@@ -122,7 +122,7 @@ The cc-worker VM can safely scale horizontally in all deployments, but if your w
 
 ## <a id='clock_and_updater'></a> cloud\_controller\_clock and cc\_deployment\_updater
 
-The `cloud_controller_clock` job runs Diego sync process and schedules periodic background jobs. The `cc_deployment_updater` job is responsible for handling v3 rolling app deployments. For more information, see [Rolling App Deployments (Beta)](https://docs.cloudfoundry.org/devguide/deploy-apps/rolling-deploy.html).
+The `cloud_controller_clock` job runs Diego sync process and schedules periodic background jobs. The `cc_deployment_updater` job is responsible for handling v3 rolling app deployments. For more information, see [Rolling App Deployments](https://docs.cloudfoundry.org/devguide/deploy-apps/rolling-deploy.html).
 
 <p class='note'><strong>Note:</strong> Running <code>bosh instances --vitals</code> returns CPU values. The CPU User value corresponds with the <code>system.cpu.user</code> metric and is scaled by the number of CPUs. For example, on a 4-core <code>api</code> VM, a <code>cloud_controller_ng</code> process that is using 100% of a core is listed as using 25% in the <code>system.cpu.user</code> metric.</p>
 
