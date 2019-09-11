@@ -11,7 +11,6 @@ Pivotal recommends that you use HAProxy in lab and test environments only. Produ
 
 Choose an SSL termination method to determine the steps you must take to configure Pivotal Application Service (PAS).
 
-
 ## <a id="haproxy"></a> Using the HAProxy Load Balancer
 
 <%= vars.product_name %> deploys with a single instance of HAProxy for use in lab and test environments. You can use this HAProxy instance for SSL termination and load balancing to the PAS Gorouters. HAProxy can generate a self-signed certificate if you do not want to obtain a signed certificate from a well-known certificate authority.
@@ -50,7 +49,7 @@ To use the HAProxy load balancer, you must create a wildcard A record in your DN
     anything.cf.example.com has address 203.0.113.1
 	</pre>
 
-1. From the <%= vars.product_name %> Ops Manager Dashboard, click on the PAS tile.
+1. From the Pivotal Operations Manager Dashboard, click on the PAS tile.
 
 1. Select **Networking**.
 
@@ -94,7 +93,7 @@ You must register static IP addresses for <%= vars.product_name %> with your loa
     </table>
 
 
-1. From the <%= vars.product_name %> Ops Manager Dashboard, click on the PAS tile.
+1. From the Ops Manager Dashboard, click on the PAS tile.
 
 1. Select **Networking**.
 
