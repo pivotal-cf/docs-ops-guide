@@ -18,7 +18,7 @@ This section describes the process used by <%= vars.product_name %> to recover f
 When power returns after a failure, vSphere and <%= vars.product_name %> automatically do the following to recover your environment:
 
 1. vSphere High Availability (HA) recovers VMs. 
-2. BOSH ensures the processes on those VMs are healthy, with the exception of the Ops Manager VM and the BOSH VM itself. <%= vars.product_name %> uses BOSH to deploy and manage its VMs. For more information, see [BOSH](https://bosh.io/docs). 
+2. BOSH ensures the processes on those VMs are healthy, with the exception of the Pivotal Operations Manager VM and the BOSH VM itself. <%= vars.product_name %> uses BOSH to deploy and manage its VMs. For more information, see [BOSH](https://bosh.io/docs). 
 3. The Diego runtime of Pivotal Application Service (PAS) recovers apps that were running on the VMs. For more information, see [Diego](../concepts/diego/diego-architecture.html). 
 
 ### <a id="manual-recovery-scenarios"></a> Scenarios that Require Manual Intervention
@@ -99,7 +99,7 @@ To ensure Ops Manager is running, do the following:
 
 To ensure BOSH Director is running, do the following:
 
-1. In a browser, navigate to the <%= vars.product_name %> Ops Manager UI and select the **BOSH Director for vSphere** tile. 
+1. In a browser, navigate to the Ops Manager UI and select the **BOSH Director for vSphere** tile. 
 	<p class="note"><strong>Note</strong>: If you do not know the URL of the Ops Manager VM, you can use the IP address from vCenter.</p>
 
 1. Select **Status**. 
@@ -177,7 +177,7 @@ To ensure PAS VMs are running, do the following:
 
 To manually recover PAS MySQL, do the following:
 
-1. In a browser, navigate to the <%= vars.product_name %> Ops Manager UI and select the **Pivotal Application Service** tile. 
+1. In a browser, navigate to the Ops Manager UI and select the **Pivotal Application Service** tile. 
 
 1. Select the **Resource Config** pane. 
 
