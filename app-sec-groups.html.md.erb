@@ -1,9 +1,9 @@
 ---
-title: Restricting App Access to Internal Pivotal Platform Components
+title: Restricting App Access to Internal Pivotal Application Service Components
 owner: Security
 ---
 
-<% current_page.data.title = "Restricting App Access to Internal " + vars.product_name + " Components" %>
+<% current_page.data.title = "Restricting App Access to Internal " + vars.product_runtime + " Components" %>
 
 <style>
     .note.warning {
@@ -16,18 +16,18 @@ owner: Security
      }
 </style>
 
-This topic describes how to secure the component virtual machines (VMs) of your <%= vars.product_name %> deployment from being accessed by apps. 
+This topic describes how to secure the component virtual machines (VMs) of your <%= vars.product_name %> (<%= vars.product_short %>) deployment from being accessed by apps. 
 
 
 ## <a id='overview'></a> Overview
 
 See the following list to understand the concepts for this topic:
 
-* **How <%= vars.product_name %> determines where apps can send traffic**: 
-  * <%= vars.product_name %> uses _App Security Groups (ASGs)_, which are network policy rules specifying protocols, ports, and IP ranges that apply to outbound network connections initiated from apps. For more information, see [App Security Groups](../concepts/asg.html).
+* **How <%= vars.product_short %> determines where apps can send traffic**: 
+  * <%= vars.product_short %> uses _App Security Groups (ASGs)_, which are network policy rules specifying protocols, ports, and IP ranges that apply to outbound network connections initiated from apps. For more information, see [App Security Groups](../concepts/asg.html).
 
 * **Why you must create new rules for outbound app traffic**: 
-  * <%= vars.product_name %> installs with a default ASG that allows apps running on your deployment to send traffic to almost any IP address. This means apps are not blocked from initiating connections to most network destinations unless an administrator takes action to update the ASGs with a more restrictive policy. For more information, see the [Default ASGs](../concepts/asg.html#default-asg) section of the _App Security Groups_ topic.
+  * <%= vars.product_short %> installs with a default ASG that allows apps running on your deployment to send traffic to almost any IP address. This means apps are not blocked from initiating connections to most network destinations unless an administrator takes action to update the ASGs with a more restrictive policy. For more information, see the [Default ASGs](../concepts/asg.html#default-asg) section of the _App Security Groups_ topic.
 
 * **How you can set up new rules**: 
   * To help secure your component VMs against apps while ensuring your apps can access the services they need, follow the steps in the [Procedure](#procedure) section, which includes:
@@ -42,7 +42,7 @@ See the following list to understand the concepts for this topic:
     </tr>
     <tr>
       <td>2</td>
-      <td><a href="#bind-default">Ensure Access for <%= vars.product_name %> System Apps</a>: <br>Bind the default ASG to the <code>system</code> org so that <%= vars.product_name %> system apps can continue accessing the system components they need after you remove the deployment-wide default ASG in Step 4.</td>
+      <td><a href="#bind-default">Ensure Access for <%= vars.product_short %> System Apps</a>: <br>Bind the default ASG to the <code>system</code> org so that <%= vars.product_short %> system apps can continue accessing the system components they need after you remove the deployment-wide default ASG in Step 4.</td>
     </tr>
     <tr>
       <td>3</td>
@@ -59,7 +59,7 @@ See the following list to understand the concepts for this topic:
     </table>
 
 * **When to set up new rules**: 
-  * Pivotal recommends that you complete this procedure directly after installing <%= vars.product_name %>, prior to developers pushing apps to the platform. If you complete the procedure after apps have been pushed to the platform, you must restart all the apps in your deployment.  
+  * Pivotal recommends that you complete this procedure directly after installing <%= vars.product_short %>, prior to developers pushing apps to the platform. If you complete the procedure after apps have been pushed to the platform, you must restart all the apps in your deployment.  
 
 
 ## <a id='prerequisites'></a> Prerequisites
@@ -69,7 +69,7 @@ The procedure below requires that you have the latest release of [ASG Creator](h
 
 ## <a id='procedure'></a> Procedure
 
-This procedure outlines how to apply ASGs that prevent apps running on your deployment from accessing internal <%= vars.product_name %> components.
+This procedure outlines how to apply ASGs that prevent apps running on your deployment from accessing internal <%= vars.product_short %> components.
 
 ### <a name='network'></a> Step 1: Determine Your Network Layout
 
@@ -110,11 +110,11 @@ The procedure for securing your deployment with ASGs varies depending on your ne
     </tr>
   </table>
 
-1. If your network layout includes two or more networks, continue to [Step 2: Ensure Access for <%= vars.product_name %> System Apps](#bind-default).
+1. If your network layout includes two or more networks, continue to [Step 2: Ensure Access for <%= vars.product_short %> System Apps](#bind-default).
 
-### <a name='bind-default'></a> Step 2: Ensure Access for <%= vars.product_name %> System Apps
+### <a name='bind-default'></a> Step 2: Ensure Access for <%= vars.product_short %> System Apps
 
-Applying the default ASG to the `system` org provides network access to <%= vars.product_name %> system apps without restrictions, which enables them to continue functioning properly after you perform [Step 4: Remove the Deployment-wide Default ASG Binding](#unbind-default). To apply the default ASG to the `system` org:
+Applying the default ASG to the `system` org provides network access to <%= vars.product_short %> system apps without restrictions, which enables them to continue functioning properly after you perform [Step 4: Remove the Deployment-wide Default ASG Binding](#unbind-default). To apply the default ASG to the `system` org:
 
 1. Bind the default ASG to the staging set in the `system` org:
     <pre class="terminal">$ cf bind-staging-security-group default\_security\_group</pre>
@@ -126,7 +126,7 @@ For more information about staging and running sets, see the [ASG Sets](../conce
 
 ### <a name='initial'></a> Step 3: Create New ASGs
 
-This step outlines how to create ASGs that block apps from accessing <%= vars.product_name %> components and create any additional ASGs that allow apps to access the services they require. 
+This step outlines how to create ASGs that block apps from accessing <%= vars.product_short %> components and create any additional ASGs that allow apps to access the services they require. 
 
 #### <a name='get-cidrs'></a> Part A: Record CIDRs
 
