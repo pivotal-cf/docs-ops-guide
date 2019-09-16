@@ -1,16 +1,16 @@
 ---
-title: Configuring SSH Access for Pivotal Platform
+title: Configuring SSH Access for Pivotal Application Service
 owner: Diego
 ---
 
-<% current_page.data.title = "Configuring SSH Access for " + vars.product_name %>
+<% current_page.data.title = "Configuring SSH Access for " + vars.product_runtime %>
 
-To help troubleshoot apps hosted by a deployment, <%= vars.product_name %> supports SSH access into running apps. This document describes how to configure a <%= vars.product_name %> deployment to allow SSH access to app instances, and how to configure load balancing for those app SSH sessions.
+To help troubleshoot apps hosted by a deployment, <%= vars.product_runtime %> (<%= vars.product_short %>) supports SSH access into running apps. This document describes how to configure a <%= vars.product_short %> deployment to allow SSH access to app instances, and how to configure load balancing for those app SSH sessions.
 
 
-## <a id='diego-configuration'></a> Pivotal Application Service Configuration
+## <a id='diego-configuration'></a> <%= vars.product_short %> Configuration
 
-This section describes how to configure Pivotal Application Service (PAS) to enable or disable deployment-wide SSH access to app instances. In addition to this deployment-wide configuration, Space Managers have SSH access control over their Space, and Space Developers have SSH access control over their to their apps. For details about SSH access permissions, see [App SSH Overview](../devguide/deploy-apps/app-ssh-overview.html).
+This section describes how to configure <%= vars.product_short %> to enable or disable deployment-wide SSH access to app instances. In addition to this deployment-wide configuration, Space Managers have SSH access control over their Space, and Space Developers have SSH access control over their to their apps. For details about SSH access permissions, see [App SSH Overview](../devguide/deploy-apps/app-ssh-overview.html).
 
 To configure PAS SSH access for app instances:
 
