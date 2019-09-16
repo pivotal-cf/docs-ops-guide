@@ -1,13 +1,13 @@
 ---
-title: Adding Existing SAML or LDAP Users to a Pivotal Platform Deployment
+title: Adding Existing SAML or LDAP Users to a Pivotal Application Service Deployment
 owner: Identity
 ---
 
-<% current_page.data.title = "Adding Existing SAML or LDAP Users to a " + vars.product_name + " Deployment" %>
+<% current_page.data.title = "Adding Existing SAML or LDAP Users to a " + vars.product_runtime + " Deployment" %>
 
-This topic describes the procedure for adding existing SAML or LDAP users to a [<%= vars.product_name %>](https://network.pivotal.io/products/pivotal-cf) deployment enabled with SAML or LDAP.
+This topic describes the procedure for adding existing SAML or LDAP users to a <%= vars.product_runtime %> (<%= vars.product_short %>) deployment enabled with SAML or LDAP.
 
-The following two ways exist to add existing SAML or LDAP users to your <%= vars.product_name %> deployment:
+The following two ways exist to add existing SAML or LDAP users to your <%= vars.product_short %> deployment:
 
 * [Option 1: Import Users in Bulk](#bulk-import)
 * [Option 2: Add Users Manually](#manual)
@@ -25,7 +25,7 @@ You can import SAML or LDAP users in bulk by using the UAA Bulk Import Tool. See
 
 ## <a id='manual'></a>Option 2: Add Users Manually ##
 
-Perform the procedures below to add existing SAML or LDAP users to your <%= vars.product_name %> deployment manually.
+Perform the procedures below to add existing SAML or LDAP users to your <%= vars.product_short %> deployment manually.
 
 ### <a id='step-id'></a>Step 1: Create User ##
 
