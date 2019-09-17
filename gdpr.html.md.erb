@@ -1,10 +1,11 @@
 ---
-title: General Data Protection Regulation
+title: Application Service General Data Protection Regulation
 owner: Legal
 ---
 
-This topic provides an overview of the General Data Protection Regulation (GDPR) and where <%= vars.product_name %> may store personal data.
+<% current_page.data.title = vars.product_short + " General Data Protection Regulation" %>
 
+This topic provides an overview of the General Data Protection Regulation (GDPR) and where <%= vars.product_runtime %> (<%= vars.product_short %>) may store personal data.
 
 ## <a id='overview'></a> Overview
 
@@ -23,7 +24,7 @@ Article 4, Section 1 of the GDPR defines personal data as follows:
 
 For more information, see the GDPR [text](http://www.privacy-regulation.eu/en/article-4-definitions-GDPR.htm).
 
-Personal data can be collected, stored, and processed in a <%= vars.product_name %> deployment. Pivotal has performed a review of <%= vars.product_name %> components and determined that personal data may reside in the following areas: 
+Personal data can be collected, stored, and processed in a <%= vars.product_short %> deployment. Pivotal has performed a review of <%= vars.product_short %> components and determined that personal data may reside in the following areas: 
 
 + [User Account and Authentication (UAA)](#uaa)
 + [Cloud Foundry API](#capi)
@@ -34,7 +35,7 @@ Personal data can be collected, stored, and processed in a <%= vars.product_name
 
 ## <a id='where'></a> Where Personal Data May Reside
 
-The following sections explain how different <%= vars.product_name %> components collect personal data.
+The following sections explain how different <%= vars.product_short %> components collect personal data.
 
 ### <a id='uaa'></a> User Account and Authentication (UAA)
 
@@ -351,7 +352,7 @@ To disable logging of client IP addresses, do the following:
 
 ### <a id='diego'></a> Diego
 
-Diego is the container management system for <%= vars.product_name %>. For more information, see [Diego Components and Architecture](../concepts/diego/diego-architecture.html).
+Diego is the container management system for <%= vars.product_short %>. For more information, see [Diego Components and Architecture](../concepts/diego/diego-architecture.html).
 
 <table>
 <tbody>
