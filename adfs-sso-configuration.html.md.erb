@@ -27,11 +27,11 @@ To configure Ops Manager to use ADFS as your SAML IdP, do the following:
 1. Download your IdP metadata from `https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml`.
 
 1. Perform the steps in the _Use an Identity Provider_ section of the BOSH Director configuration topic for you IaaS:
-  * [Configuring BOSH Director on AWS](../om/aws/config-manual.html#idp)
-  * [Configuring BOSH Director on Azure Manually](../om/azure/config-manual.html#idp)
-  * [Configuring BOSH Director on GCP](../om/gcp/config-manual.html#idp)
-  * [Configuring BOSH Director on OpenStack](../om/openstack/config.html#idp)
-  * [Configuring BOSH Director on vSphere](../om/vsphere/config.html#idp)
+  * [Configuring BOSH Director on AWS](https://docs.pivotal.io/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/aws/config-manual.html#idp)
+  * [Configuring BOSH Director on Azure Manually](https://docs.pivotal.io/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/azure/config-manual.html#idp)
+  * [Configuring BOSH Director on GCP](https://docs.pivotal.io/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/gcp/config-manual.html#idp)
+  * [Configuring BOSH Director on OpenStack](https://docs.pivotal.io/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/openstack/config.html#idp)
+  * [Configuring BOSH Director on vSphere](https://docs.pivotal.io/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/vsphere/config.html#idp)
 
 <p class="note"><strong>Note:</strong> You can set up SAML access for Ops Manager during the initial <%= vars.product_name %> installation or later by navigating to <strong>Settings</strong> in the user menu on the Ops Manager Installation Dashboard, configuring the <strong>Authentication Method</strong> pane, and then clicking <strong>Review Pending Changes</strong> and <strong>Apply Changes</strong>.</p>
 
