@@ -3,13 +3,13 @@ title: Switching App Domains
 owner: Routing
 ---
 
-This topic describes how to change the domain of an existing [<%= vars.product_name %>](https://network.pivotal.io/products/pivotal-cf) installation, using an example domain change from `myapps.mydomain.com` to `newapps.mydomain.com`.
+This topic describes how to change the domain of an existing [<%= vars.product_name %>](https://network.pivotal.io/products/pivotal-cf) installation, using an example domain change from `yourapps.mydomain.com` to `newapps.mydomain.com`.
 
-1. In Pivotal Operations Manager, select the **Pivotal Application Service** (PAS) tile.
+1. In the Ops Manager Installation Dashboard, select the **Pivotal Application Service** (PAS) tile.
 
-1. Select **Domains** from the menu to see the current **Apps domain** for your PAS deployment. In the following example, it is `myapps.mydomain.com`.
+1. Select **Domains** from the menu to see the current **Apps domain** for your PAS deployment. In the following example, it is `yourapps.yourdomain.com`.
 
-	<%= image_tag '../images/switching_domains/er17-switchdomains-before.png'%>
+	<%= image_tag '../images/switching_domains/er17-switchdomains-before.png' alt: "The page header says 'Domains'. Below this header is the text 'For help configuring these fields, see the Configure Domains section of the Configuring PAS topic in the PCF documentation,' with 'Configure Domain' in blue letters to denote a clickable link. Below this text are two fields labeled 'System domain' and 'Apps domain', with red asterisks to denote that they are required fields. The 'System domain' field contains the text 'yoursystem.yourdomain.com'. The 'Apps domain' field contains the text 'yourapps.yourdomain.com'. At the bottom of the image is a rectangular blue button labeled 'Save'."%>
 
 1. In the terminal, run `cf login -a YOUR_API_ENDPOINT`. The cf CLI prompts you for your <%= vars.product_name %> username and password, as well as the org and space you want to access. If you do not know your API endpoint, see [Identifying the API Endpoint for Your PAS Instance](../opsguide/api-endpoint.html).
 
@@ -17,10 +17,10 @@ This topic describes how to change the domain of an existing [<%= vars.product_n
 
 	<pre class="terminal">
 		$ cf domains
-		Getting domains in org my-org as admin...
+		Getting domains in org your-org as admin...
 
 		name                  status
-		myapps.mydomain.com   shared
+		yourapps.yourdomain.com   shared
 	</pre>
 
 1. Run `cf routes` to confirm that your apps are assigned to the domain you plan to change:
@@ -30,26 +30,26 @@ This topic describes how to change the domain of an existing [<%= vars.product_n
 		Getting routes as admin ...
 
 		space      host    domain                apps
-		my-space   myapp   myapps.mydomain.com   myapp
+		your-space yourapp yourapps.yourdomain.com yourapp
 	</pre>
 
 1. Run `cf create-shared-domain YOUR_DESIRED_NEW_DOMAIN` to create the new domain you want to use:
 
 	<pre class='terminal'>
-		$ cf create-shared-domain newapps.mydomain.com
+		$ cf create-shared-domain newapps.yourdomain.com
 
-		Creating shared domain newapps.mydomain.com as admin...
+		Creating shared domain newapps.yourdomain.com as admin...
 		OK
 	</pre>
 
-1. Run `cf map-route APP_NAME NEW_DOMAIN -n HOST_NAME` to map the new domain to your app. In this example, both the `NEW_DOMAIN` and `HOST_NAME` arguments are `myapp`, since this is both the name of the app to which you are mapping a route and the intended hostname for the URL.
+1. Run `cf map-route APP_NAME NEW_DOMAIN -n HOST_NAME` to map the new domain to your app. In this example, both the `NEW_DOMAIN` and `HOST_NAME` arguments are `yourapp`, since this is both the name of the app to which you are mapping a route and the intended hostname for the URL.
 
 	<pre class='terminal'>
-		$ cf map-route myapp newapps.mydomain.com -n myapp
+		$ cf map-route yourapp newapps.yourdomain.com -n yourapp
 
-		Creating route myapp.newapps.mydomain.com for org my-org / space my-space as admin...
+		Creating route yourapp.newapps.yourdomain.com for org your-org / space your-space as admin...
 		OK
-		Adding route myapp.newapps.mydomain.com to app myapp in org my-org / space my-space as admin...
+		Adding route yourapp.newapps.yourdomain.com to app yourapp in org your-org / space your-space as admin...
 		OK
 	</pre>
 
@@ -63,16 +63,16 @@ This topic describes how to change the domain of an existing [<%= vars.product_n
 1. Once you have confirmed that every app in every space has been mapped to the new domain, delete the old domain by running `cf delete-shared-domain OLD_DOMAIN_TO_DELETE`:
 
 	<pre class='terminal'>
-		$ cf delete-shared-domain myapps.mydomain.com
-		Deleting domain myapps.mydomain.com as admin...
+		$ cf delete-shared-domain yourapps.yourdomain.com
+		Deleting domain yourapps.yourdomain.com as admin...
 
 		This domain is shared across all orgs.
 		Deleting it will remove all associated routes, and will make any app with this domain unreachable.
-		Are you sure you want to delete the domain myapps.mydomain.com?
+		Are you sure you want to delete the domain yourapps.yourdomain.com?
 		> yes
 		OK
 	</pre>
 
 1. Configure your PAS tile to use the new domain, and apply the changes. Apps that you push after your update finishes use this new domain.
 
-	<%= image_tag '../images/switching_domains/er17-switchdomains-after.png'%>
+	<%= image_tag '../images/switching_domains/er17-switchdomains-after.png' alt: "The page header says 'Domains'. Below this header is the text 'For help configuring these fields, see the Configure Domains section of the Configuring PAS topic in the PCF documentation,' with 'Configure Domain' in blue letters to denote a clickable link. Below this text are two fields labeled 'System domain' and 'Apps domain', with red asterisks to denote that they are required fields. The 'System domain' field contains the text 'yoursystem.yourdomain.com'. The 'Apps domain' field contains the text 'newapps.yourdomain.com'. At the bottom of the image is a rectangular blue button labeled 'Save'."%>
