@@ -64,7 +64,7 @@ In either case for either self-signed or trusted single certificates, apply the 
 
 1. Select **Networking**.
  
-1. Click **Generate RSA certificate** to populate the **Certificate and private key for HAProxy and Router** fields with RSA certificate and private key information.
+1. Click **Change** underneath the **Certificate and private key for HAProxy and Router** fields, then click **Generate RSA Certificate** to populate the **Certificate and private key for HAProxy and Router** fields with RSA certificate and private key information.
   
 1. If you are using a split domain setup that separates the domains for `apps` and `sys` components (recommended), enter the following domains for the certificate:
     * `*.yourdomain.com`
@@ -73,6 +73,6 @@ In either case for either self-signed or trusted single certificates, apply the 
     * `*.login.sys.yourdomain.com`
     * `*.uaa.sys.yourdomain.com`
     
-    For example, `*.example.com`, `*.apps.example.com`, `*.sys.example.com`, `*.login.sys.example.com`, `*.uaa.sys.example.com`
+    For example, `*.example.com`, `*.apps.example.com`, `*.sys.example.com`, `*.login.sys.example.com`, `*.uaa.sys.example.com`.
 
-    <%= image_tag("generate-cert.png") %>
+    <%= image_tag("generate-cert.png", alt: "At the top of the pop-up window is a teal checkmark and the words 'Generate RSA Certificate'. In the upper-right corner is a gray circle with a white X in the middle. Below 'Generate RSA Certificate' is a field labeled 'Example: *.app.domain.com, *.system.domain.com, *.my.webapp.com, *.domain.com, my.webapp.com, domain.com', with a red asterisk to denote that it is a required field. The field contains the text '*.apps.EXAMPLE.com, *.system.EXAMPLE.com'. Below this field are two buttons, a gray rectangular button labeled 'Cancel' and a blue rectangular button labeled 'Save'.") %>
