@@ -22,17 +22,15 @@ Before beginning your configuration, you must register three domains through you
 
 ## <a id="system-domain"></a> Step 1: Configure System and Apps Domains
 
-1. Log in to Pivotal Operations Manager.
+1. Log in to Ops Manager.
 
 1. Click the **Pivotal Application Service** tile.
-	
-	![](pas-tile.png)
 
 1. Select **Domains**.
 
 1. Enter the **System domain** and **Apps domain** defined in [Prerequisites](#prerequisites).
 
-     ![](domains.png)
+     ![The page header says 'Domains'. Below this header is the text 'For help configuring these fields, see the Configure Domains section of the Configuring PAS topic in the PCF documentation,' with 'Configure Domain' in blue letters to denote a clickable link. Below this text are two fields labeled 'System domain' and 'Apps domain', with red asterisks to denote that they are required fields. The 'System domain' field contains the ghost text 'system.example.com'. The 'Apps domain' field contains the ghost text 'apps.example.com'. At the bottom of the image is a rectangular blue button labeled 'Save'.](domains.png)
 
 1. Navigate to your DNS provider to create A records that point from your apps domains to the public IP address of your load balancer. 
 
