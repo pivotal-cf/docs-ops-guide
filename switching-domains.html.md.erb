@@ -9,7 +9,7 @@ This topic describes how to change the domain of an existing [<%= vars.product_n
 
 1. Select **Domains** from the menu to see the current **Apps domain** for your PAS deployment. In the following example, it is `yourapps.yourdomain.com`.
 
-	<%= image_tag '../images/switching_domains/er17-switchdomains-before.png' alt: "The page header says 'Domains'. Below this header is the text 'For help configuring these fields, see the Configure Domains section of the Configuring PAS topic in the PCF documentation,' with 'Configure Domain' in blue letters to denote a clickable link. Below this text are two fields labeled 'System domain' and 'Apps domain', with red asterisks to denote that they are required fields. The 'System domain' field contains the text 'yoursystem.yourdomain.com'. The 'Apps domain' field contains the text 'yourapps.yourdomain.com'. At the bottom of the image is a rectangular blue button labeled 'Save'."%>
+	<img src="./images/switching_domains/er17-switchdomains-before.png" alt="The page header says 'Domains'. Below this header is the text 'For help configuring these fields, see the Configure Domains section of the Configuring PAS topic in the PCF documentation,' with 'Configure Domain' in blue letters to denote a clickable link. Below this text are two fields labeled 'System domain' and 'Apps domain', with red asterisks to denote that they are required fields. The 'System domain' field contains the text 'yoursystem.yourdomain.com'. The 'Apps domain' field contains the text 'yourapps.yourdomain.com'. At the bottom of the image is a rectangular blue button labeled 'Save'.">
 
 1. In the terminal, run `cf login -a YOUR_API_ENDPOINT`. The cf CLI prompts you for your <%= vars.product_name %> username and password, as well as the org and space you want to access. If you do not know your API endpoint, see [Identifying the API Endpoint for Your PAS Instance](../opsguide/api-endpoint.html).
 
@@ -54,8 +54,8 @@ This topic describes how to change the domain of an existing [<%= vars.product_n
 	</pre>
 
 1. Repeat the previous step for each app in this space. Afterwards, check Apps Manager to confirm that the route URL has updated correctly for each app:
-
-	<%= image_tag '../images/switching_domains/new_domain_confirmed1.png'%>
+	 
+	<img src= "./images/switching_domains/new_domain_confirmed1.png">
 
 1. Repeat the above steps for each space in your <%= vars.product_name %> installation except for the System org, beginning with logging into the org and space and ending with confirming the URL update.
 	<p class='note'><strong>Note:</strong> Ordinarily the System org contains only <%= vars.product_name %> apps that perform utility functions for your installation. Pivotal does not recommend pushing apps to this org. However, if you have pushed apps to System, you must also repeat the above steps for these apps.</p>
@@ -75,4 +75,5 @@ This topic describes how to change the domain of an existing [<%= vars.product_n
 
 1. Configure your PAS tile to use the new domain, and apply the changes. Apps that you push after your update finishes use this new domain.
 
-	<%= image_tag '../images/switching_domains/er17-switchdomains-after.png' alt: "The page header says 'Domains'. Below this header is the text 'For help configuring these fields, see the Configure Domains section of the Configuring PAS topic in the PCF documentation,' with 'Configure Domain' in blue letters to denote a clickable link. Below this text are two fields labeled 'System domain' and 'Apps domain', with red asterisks to denote that they are required fields. The 'System domain' field contains the text 'yoursystem.yourdomain.com'. The 'Apps domain' field contains the text 'newapps.yourdomain.com'. At the bottom of the image is a rectangular blue button labeled 'Save'."%>
+	<img src="./images/switching_domains/er17-switchdomains-after.png" alt="The page header says 'Domains'. Below this header is the text 'For help configuring these fields, see the Configure Domains section of the Configuring PAS topic in the PCF documentation,' with 'Configure Domain' in blue letters to denote a clickable link. Below this text are two fields labeled 'System domain' and 'Apps domain', with red asterisks to denote that they are required fields. The 'System domain' field contains the text 'yoursystem.yourdomain.com'. The 'Apps domain' field contains the text 'newapps.yourdomain.com'. At the bottom of the image is a rectangular blue button labeled 'Save'.">
+
