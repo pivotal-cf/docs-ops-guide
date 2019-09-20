@@ -45,7 +45,7 @@ If you choose not to provide a CA certificate, you must provide the IP address o
 1. Navigate to the Ops Manager Installation Dashboard.
 
 1. Click the **Pivotal Application Service** tile and select **App Containers**.
-  <%= image_tag("images/docker-registry-ert.png") %>
+  <%= image_tag("images/docker-registry-ert.png", alt: "At the top of the image is the text 'Docker images disk cleanup scheduling on Diego Cell VMs', with a red asterisk to denote that it is a required configuration. Below this text are three radio buttons: two radio buttons labeled 'Never clean up Diego Cell disk space' and 'Routinely clean up Diego Cell disk space', and a selected radio button labeled 'Clean up disk space once usage fills disk'. Below the selected radio button is a field labeled 'Reserved disk space for other jobs ( min: 15360 )', with a red asterisk, containing the text '15360'.") %>
 
 1. Select **Allow SSH access to app containers** to enable app containers to accept SSH connections. If you use a load balancer instead of HAProxy, you must open port 2222 on your load balancer to enable SSH traffic. To open an SSH connection to an app, a user must have Space Developer privileges for the space where the app is deployed. Operators can grant those privileges in Apps Manager or using the cf CLI.
 

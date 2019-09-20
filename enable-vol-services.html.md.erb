@@ -34,7 +34,7 @@ To enable NFS volume services in <%= vars.product_name %>:
 
 1. Under **NFSv3 volume services**, select **Enable**.
   <p class="note"><strong>Note:</strong> In a clean install, NFS volume services are enabled by default. In an upgrade, NFS volume services match the setting of the previous deployment.</p>
-    <%= image_tag('er-config-app-vol-svc.png') %>
+    <%= image_tag('er-config-app-vol-svc.png', alt: "At the top of the image is the text 'NFSv3 volume services', with a red asterisk to denote that it is a required configuration. Below this text is a selected radio button labeled 'Enable'. Below this radio button are five fields labeled, from top to bottom, 'LDAP service account user', 'LDAP service account password', 'LDAP server host', 'LDAP server port', and 'LDAP user search base'. The 'LDAP service account password' field contains the ghost text 'Secret' and an icon of a dark gray padlock contained within a dark gray, circular arrow. The 'LDAP user search base' field contains the ghost text 'cn=Users,dc=corp,dc=test,dc=com'. Next is a text area labeled 'LDAP server CA certificate'. Below this text area is a radio button labeled 'Disable'.") %>
 
 1. (Optional) To configure LDAP for NFS volume services:
   <p class="note"><strong>Note:</strong> If you already use an LDAP server with your network-attached storage (NAS) file server, enter its information below. This ensures that the identities known to the file server match those checked by the <%= vars.product_name %> NFS driver.</p>
@@ -80,7 +80,6 @@ To enable SMB volume services in <%= vars.product_name %>:
 1. Select **App Containers**.
 
 1. Enable the **Enable SMB volume services** checkbox.
-    <%= image_tag('er-config-app-vol-svc-smb.png') %>
 
 1. Click **Save**.
 
