@@ -111,12 +111,12 @@ The procedure for securing your deployment with ASGs varies depending on your ne
 
 Applying the default ASG to the `system` org provides network access to PCF system apps without restrictions, which enables them to continue functioning properly after you perform [Step 4: Remove the Deployment-wide Default ASG Binding](#unbind-default). To apply the default ASG to the `system` org, do the following:
 
-1. Bind the default ASG to the [staging set](../concepts/asg.html#asg-sets) in the `system` org:
+1. Bind the default ASG to the staging set in the `system` org:
     ```
     cf bind-staging-security-group default\_security\_group system
     ```
 
-1. Bind the default ASG to the [running set](../concepts/asg.html#asg-sets) in the `system` org:
+1. Bind the default ASG to the running set in the `system` org:
     ```
     cf bind-running-security-group default\_security\_group system
     ```
