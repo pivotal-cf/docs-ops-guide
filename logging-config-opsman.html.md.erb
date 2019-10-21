@@ -52,7 +52,7 @@ Log Cache is a Loggregator feature that lets you filter and query app logs throu
 
 To access cached logs with the Log Cache CLI plugin, you must first download and install the plugin.
 
-To download the the Log Cache CLI plugin, see the [cf CLI Plugins]](https://plugins.cloudfoundry.org/#log-cache) page on Cloud Foundry. 
+To download the the Log Cache CLI plugin, see the [cf CLI Plugins](https://plugins.cloudfoundry.org/#log-cache) page on Cloud Foundry.
 
 One you have installed the plugin, the basic command to access cached app logs is:
 <pre class="terminal">$ cf tail [OPTIONS] [SOURCE ID/APP]</pre>
@@ -63,7 +63,7 @@ Some ways you can use Log Cache to filter app logs are:
 
 * `--end-time`: Displays the end of the cache or the end of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `--start-time` to view logs within a time period.
 
-* `--json`: Output logs in JSON. 
+* `--json`: Output logs in JSON.
 
 * `--follow`: Append exported logs to `stdout`.
 
@@ -73,10 +73,10 @@ For more information on using the Log Cache CLI, see [Log Cache CLI: Usage](http
 
 The Log Cache API is hosted on <%= vars.product_name %>, and references your system domain to return responses. The root URL for API calls is `https://log-cache.[YOUR-SYSTEM-DOMAIN]`.
 
-The basic call to access and filter cached app logs is: 
-<pre class="terminal">GET ht<span>tps:</span>//log-cache.[YOUR-SYSTEM-DOMAIN]/v1/read/[SOURCE-ID]</pre> 
+The basic call to access and filter cached app logs is:
+<pre class="terminal">GET ht<span>tps:</span>//log-cache.[YOUR-SYSTEM-DOMAIN]/v1/read/[SOURCE-ID]</pre>
 
-Append the following parameters to the `GET` to customize app logs: 
+Append the following parameters to the `GET` to customize app logs:
 
 * `start_time`: Displays the start of the cache or the start of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `end_time` to view logs within a time period.
 
@@ -103,7 +103,7 @@ For more information, see [Including Container Metrics in Syslog Drains](../devg
 
 ## <a id='scaling'></a> Scale Loggregator
 
-Apps constantly generate app logs and <%= vars.product_name %> platform components constantly generate component metrics. The Loggregator system combines these data streams and handles them as follows. For more information, see [Loggregator Architecture](../loggregator/architecture.html). 
+Apps constantly generate app logs and <%= vars.product_name %> platform components constantly generate component metrics. The Loggregator system combines these data streams and handles them as follows. For more information, see [Loggregator Architecture](../loggregator/architecture.html).
 
 * The Loggregator agent running on each component or app VM collects and sends this data out to Doppler components.
 
@@ -119,7 +119,7 @@ To add component VM instances for Loggregator components:
 
 1. From the PAS tile, select **Resource Config**.
 
-1. Increase the number in the **Instances** column of the component you want to scale. You can add instances for the following Loggregator components: 
+1. Increase the number in the **Instances** column of the component you want to scale. You can add instances for the following Loggregator components:
 	* **Loggregator Traffic Controller**
 		<p class="note"><strong>Note</strong>: The Reverse Log Proxy (RLP) BOSH job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more logs for syslog drains, you can add instances of the Traffic Controller. For more information, see <a href="../loggregator/architecture.html">Loggregator Architecture</a>.</p>
 		<p class="note"><strong>Note</strong>: The BOSH System Metrics Forwarder</a> job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more BOSH component metrics, you can add instances of the Traffic Controller. For more information, see the <a href="../loggregator/architecture.html#bosh-metrics">Related BOSH Components</a> section of the <em>Loggregator Architecture</em> topic.</p>
