@@ -40,7 +40,9 @@ To configure a load balancer for service mesh, do the following. The exact proce
 		* HTTP on port `8002`
 		* TLS on port `443`
 
-1. Navigate to your DNS provider and create a DNS name, `*.mesh.YOUR-CF-APPS-DOMAIN`, that resolves to the IP of the load balancer. This is the default domain for service mesh and it is not configurable.  
+1. Navigate to your DNS provider and create a DNS name that resolves to the IP of the load balancer:
+	* If you did not configure the **External Domain** field in the PAS tile, create the DNS name using the default value of `*.mesh.YOUR-CF-APPS-DOMAIN`. 
+	*  If you configured the **External Domain** field in the PAS tile, create the DNS name using the value you configured. 
 
 ## <a id="resource-config"></a> Add Load Balancer to Resource Config
 
