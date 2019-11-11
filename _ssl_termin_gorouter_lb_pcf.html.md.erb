@@ -1,9 +1,9 @@
-To configure SSL termination on the Gorouter and load balancer in <%= vars.product_name %>:
+To configure SSL termination on the Gorouter and load balancer in <%= vars.platform_name %>:
 
 1. Create an A record in your DNS that points to your load balancer IP address. The A record associates the **System domain** and **Apps domain** that you configure in the **Domains** pane of the PAS tile with the IP address of your load balancer.
     <br />
     <br />
-    For example, with `cf.example.com` as the main subdomain for your Cloud Foundry (CF) deployment and a load balancer IP address `198.51.100.1`, you must create an A record in your DNS that serves `example.com` and points `*.cf` to `198.51.100.1`.
+    For example, with `cf.example.com` as the main subdomain for your <%= vars.platform_name %> deployment and a load balancer IP address `198.51.100.1`, you must create an A record in your DNS that serves `example.com` and points `*.cf` to `198.51.100.1`.
 
     <table border="1" class="nice" >
       <tr>
@@ -26,9 +26,9 @@ To configure SSL termination on the Gorouter and load balancer in <%= vars.produ
 
 1. Click **Networking**.
 
-1. For <%= vars.product_name %> deployments on OpenStack or vSphere, choose IP addresses for the Gorouters from the subnet configured for Ops Manager and enter them in the **Router IPs** field. Then configure your load balancer to forward requests for the above domains to these IP addresses. For more information, see the [Configure Networking](../customizing/configure-pas.html#networking) section of the _Configuring PAS_ topic.
+1. For <%= vars.platform_name %> deployments on OpenStack or vSphere, choose IP addresses for the Gorouters from the subnet configured for Ops Manager and enter them in the **Router IPs** field. Then configure your load balancer to forward requests for the above domains to these IP addresses. For more information, see the [Configure Networking](../customizing/configure-pas.html#networking) section of the _Configuring PAS_ topic.
 
-1. In the **Certificates and private keys for HAProxy and Router** field, click the **Add** button to define at least one certificate keypair for HAProxy and the Gorouter. For each certificate keypair that you add, assign a name, enter the PEM-encoded certificate chain and PEM-encoded private key. You can either upload your own certificate or generate an RSA certificate in PAS. For options and instructions on creating a certificate for your wildcard domains, see [Creating a Wildcard Certificate for <%= vars.product_name %> Deployments](../opsguide/security_config.html#create_or_obtain_certs).
+1. In the **Certificates and private keys for HAProxy and Router** field, click the **Add** button to define at least one certificate keypair for HAProxy and the Gorouter. For each certificate keypair that you add, assign a name, enter the PEM-encoded certificate chain and PEM-encoded private key. You can either upload your own certificate or generate an RSA certificate in PAS. For options and instructions on creating a certificate for your wildcard domains, see [Creating a Wildcard Certificate for <%= vars.platform_name %> Deployments](../opsguide/security_config.html#create_or_obtain_certs).
 
 1. In the **Minimum version of TLS supported by HAProxy and Router**, select the minimum version of TLS to use in HAProxy and Gorouter communications. The Gorouter use TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the Gorouter, see [Cipher Suites](#ciphers). 
 
@@ -56,7 +56,7 @@ To configure SSL termination on the Gorouter and load balancer in <%= vars.produ
 
 1. Click **Save**.
 
-1. After you complete the configuration in <%= vars.product_name %>, add your certificate or certificates to your load balancer and configure its listening port. The procedures vary depending on your IaaS.
+1. After you complete the configuration in <%= vars.platform_name %>, add your certificate or certificates to your load balancer and configure its listening port. The procedures vary depending on your IaaS.
 
 1. Configure your load balancer to append the `X-Forwarded-For` and `X-Forwarded-Proto` headers to client requests.
     <br>If you cannot configure the load balancer to provide the `X-Forwarded-For` header, the Gorouter appends it in requests forwarded to apps and system components, set to the IP address of the load balancer.
