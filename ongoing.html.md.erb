@@ -1,34 +1,34 @@
 ---
 title: Ongoing Operations
-owner: <%= vars.product_name %> Documentation
+owner: <%= vars.platform_name %> Documentation
 ---
 
-This topic describes how to perform routine operations on a running <%= vars.product_name %>.
+This topic describes how to perform routine operations on a running <%= vars.platform_name %>.
 
 
-##<a id='overview'></a> Overview
+## <a id='overview'></a> Overview
 
-Ongoing operations are procedures that <%= vars.product_name %> operators routinely perform to keep the platform working as it should, or to change how it works if the platform needs to do something new or has a problem.
+Ongoing operations are procedures that <%= vars.platform_name %> operators routinely perform to keep the platform working as it should, or to change how it works if the platform needs to do something new or has a problem.
 
 Examples include:
 
-* Performing <%= vars.product_name %> upgrades
+* Performing <%= vars.platform_name %> upgrades
 * Making changes to your IaaS and external components
 * Monitoring platform health, checking logs, and generating usage reports
 * Tuning the platform to eliminate bottlenecks or increase capacity
 * Giving developers access to new software services, stacks, and app capabilities
 * Backing up and restoring the platform
 
-In addition to these tasks, <%= vars.product_name %> operators also routinely perform Day 2 configurations to configure or change platform features and integrations even well past Day 2. For more information, see [Day 2 Configurations](../customizing/day2.html).
+In addition to these tasks, <%= vars.platform_name %> operators also routinely perform Day 2 configurations to configure or change platform features and integrations even well past Day 2. For more information, see [Day 2 Configurations](../customizing/day2.html).
 
 
 ## <a id='contents'></a> Contents
 
 ### <a id='upgrading'></a> Upgrading
 
-* [Upgrading <%= vars.product_name %>](../customizing/upgrading-pcf.html)
+* [Upgrading <%= vars.platform_name %>](../customizing/upgrading-pcf.html)
 
-* [Upgrading PAS and Other <%= vars.product_name %> Products](../customizing/upgrading-products.html)
+* [Upgrading PAS and Other <%= vars.platform_name %> Products](../customizing/upgrading-products.html)
 
 * [cf push Availability During Pivotal Application Services Upgrades](../customizing/cfpush-availability-during-upgrade.html)
 
@@ -40,21 +40,21 @@ In addition to these tasks, <%= vars.product_name %> operators also routinely pe
 
 ### <a id='changes'></a> IaaS Changes
 
-* [Migrating <%= vars.product_name %> to a New Datastore in vSphere](../refarch/vsphere/vsphere_migrate_datastore.html)
+* [Migrating <%= vars.platform_name %> to a New Datastore in vSphere](../refarch/vsphere/vsphere_migrate_datastore.html)
 
-* [Upgrading vSphere without <%= vars.product_name %> Downtime](../refarch/vsphere/vsphere_upgrade.html)
+* [Upgrading vSphere without <%= vars.platform_name %> Downtime](../refarch/vsphere/vsphere_upgrade.html)
 
-* [Deleting <%= vars.product_name %> on AWS](../customizing/deleting-aws-install.html)
+* [Deleting <%= vars.platform_name %> on AWS](../customizing/deleting-aws-install.html)
 
-* [Deleting <%= vars.product_name %> on Azure](../customizing/deleting-azure-install.html)
+* [Deleting <%= vars.platform_name %> on Azure](../customizing/deleting-azure-install.html)
 
-* [Deleting <%= vars.product_name %> on GCP](../customizing/deleting-gcp-install.html)
+* [Deleting <%= vars.platform_name %> on GCP](../customizing/deleting-gcp-install.html)
 
 ### <a id='monitoring'></a> Monitoring, Logging, and Reporting
 
 * [Logs and Metrics Sources](../loggregator/data-sources.html)
 
-* [Monitoring <%= vars.product_name %>](../monitoring/index.html)
+* [Monitoring <%= vars.platform_name %>](../monitoring/index.html)
 
 	- [Key Performance Indicators](../monitoring/kpi.html)
 
@@ -64,7 +64,7 @@ In addition to these tasks, <%= vars.product_name %> operators also routinely pe
 
 * [Overview of the Loggregator System](../loggregator/architecture.html)
 
-* [Loggregator Guide for Cloud Foundry Operators](../loggregator/log-ops-guide.html)
+* [Loggregator Guide for <%= vars.app_runtime_abbr %> Operators](../loggregator/log-ops-guide.html)
 
 * [Security Event Logging](../loggregator/cc-uaa-logging.html)
 
@@ -72,9 +72,9 @@ In addition to these tasks, <%= vars.product_name %> operators also routinely pe
 
 * [Reporting App, Task, and Service Instance Usage](./accounting-report.html)
 
-* [Monitoring <%= vars.product_name %> VMs from Ops Manager](../customizing/monitoring.html)
+* [Monitoring <%= vars.platform_name %> VMs from Ops Manager](../customizing/monitoring.html)
 
-* [Monitoring <%= vars.product_name %> VMs from vSphere](../customizing/monitoring-vsphere.html)
+* [Monitoring <%= vars.platform_name %> VMs from vSphere](../customizing/monitoring-vsphere.html)
 
 ### <a id='tuning'></a> Platform Tuning
 
@@ -102,15 +102,15 @@ In addition to these tasks, <%= vars.product_name %> operators also routinely pe
 
 ### <a id='backups'></a> Backing Up
 
-* [Disaster Recovery in <%= vars.product_name %>](../customizing/backup-restore/disaster-recovery.html)
+* [Disaster Recovery in <%= vars.platform_name %>](../customizing/backup-restore/disaster-recovery.html)
 
-* [Backing Up and Restoring <%= vars.product_name %>](../customizing/backup-restore/index.html)
+* [Backing Up and Restoring <%= vars.platform_name %>](../customizing/backup-restore/index.html)
 
-* [Backing Up <%= vars.product_name %> with BBR](../customizing/backup-restore/backup-pcf-bbr.html)
+* [Backing Up <%= vars.platform_name %> with BBR](../customizing/backup-restore/backup-pcf-bbr.html)
 
 * [PAS Component Availability During Backup](../customizing/backup-restore/component-backups.html)
 
-* [Restoring <%= vars.product_name %> from Backup with BBR](../customizing/backup-restore/restore-pcf-bbr.html)
+* [Restoring <%= vars.platform_name %> from Backup with BBR](../customizing/backup-restore/restore-pcf-bbr.html)
 
 * [Stopping and Starting Virtual Machines](../adminguide/start-stop-vms.html)
 
@@ -122,7 +122,7 @@ In addition to these tasks, <%= vars.product_name %> operators also routinely pe
 
 * [Retrieving Credentials from Your Deployment](../customizing/credentials.html)
 
-* [Restricting App Access to Internal <%= vars.product_name %> Components](./app-sec-groups.html)
+* [Restricting App Access to Internal <%= vars.platform_name %> Components](./app-sec-groups.html)
 
 * [Providing a Certificate for Your SSL Termination Point](./security_config.html)
 
