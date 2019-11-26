@@ -3,134 +3,129 @@ title: Ongoing Operations
 owner: PCF Documentation
 ---
 
+This topic describes how to perform routine operations on a running <%= vars.product_full %> platform.
 
 
-The topics in this section explain how to perform routine operations on a running Pivotal Cloud Foundry (PCF) platform.
+## <a id='overview'></a> Overview
 
-##<a id='overview'></a>Overview
-
-Ongoing operations are procedures that PCF operators routinely perform to keep the platform working as it should, or to change how it works if the platform needs to do something new or has a problem.
+Ongoing operations are procedures that <%= vars.platform_name %> operators routinely perform to keep the platform working as it should, or to change how it works if the platform needs to do something new or has a problem.
 
 Examples include:
 
-* Performing PCF upgrades
+* Performing <%= vars.platform_name %> upgrades
 * Making changes to your IaaS and external components
 * Monitoring platform health, checking logs and generating usage reports
 * Tuning the platform eliminate bottlenecks or increase capacity
 * Giving developers access to new software services, stacks, and app capabilities
 * Backing up and restoring the platform
 
-In addition to these tasks, PCF operators also routinely perform [Day 2 configurations](../customizing/day2.html) to configure or change platform features and integrations even well past Day 2.
-      
-##<a id='contents'></a>Contents
+In addition to these tasks, <%= vars.platform_name %> operators also routinely perform Day 2 configurations to configure or change platform features and integrations even well past Day 2. For more information, see [Day 2 Configurations](../customizing/day2.html).
+
+
+## <a id='contents'></a> Contents
 
 ### <a id='upgrading'></a> Upgrading
 
-* <a href="/pivotalcf/customizing/upgrading-pcf.html">Upgrading Pivotal Cloud Foundry</a>
+* [Upgrading <%= vars.platform_name %>](../customizing/upgrading-pcf.html)
 
-* <a href="/pivotalcf/customizing/upgrading-products.html">Upgrading PAS and Other Pivotal Cloud Foundry Products</a>
+* [Upgrading PAS and Other <%= vars.platform_name %> Products](../customizing/upgrading-products.html)
 
-* <a href="/pivotalcf/customizing/cfpush-availability-during-upgrade.html">cf push Availability During Pivotal Application Services Upgrades</a>
+* [cf push Availability During PAS Upgrades](../customizing/cfpush-availability-during-upgrade.html)
 
-* <a href="/pivotalcf/customizing/azure-om-upgrade.html">Upgrading Ops Manager on Azure</a>
+* [Upgrading Ops Manager on Azure](../customizing/azure-om-upgrade.html)
 
-* <a href="/pivotalcf/customizing/gcp-om-upgrade.html">Upgrading Ops Manager on GCP</a>
+* [Upgrading Ops Manager on GCP](../customizing/gcp-om-upgrade.html)
 
-* <a href="/pivotalcf/opsguide/pws_upgrade_load.html">Upgrade Load Example&#58; Pivotal Web Services</a>
+* [Upgrade Load Example&#58; Pivotal Web Services](../opsguide/pws_upgrade_load.html)
 
 ### <a id='changes'></a> IaaS Changes
 
-* <a href="/pivotalcf/customizing/update-nsx.html">Updating NSX Security Group and Load Balancer Information</a>
+* [Migrating <%= vars.platform_name %> to a New Datastore in vSphere](../refarch/vsphere/vsphere_migrate_datastore.html)
 
-* <a href="/pivotalcf/refarch/vsphere/vsphere_migrate_datastore.html">Migrating PCF to a New Datastore in vSphere</a>
+* [Upgrading vSphere without <%= vars.platform_name %> Downtime](../refarch/vsphere/vsphere_upgrade.html)
 
-* <a href="/pivotalcf/refarch/vsphere/vsphere_upgrade.html">Upgrading vSphere without PCF Downtime</a>
+* [Deleting <%= vars.platform_name %> on AWS](../customizing/deleting-aws-install.html)
 
-* <a href="/pivotalcf/customizing/deleting-aws-install.html">Deleting PCF on AWS</a>
+* [Deleting <%= vars.platform_name %> on Azure](../customizing/deleting-azure-install.html)
 
-* <a href="/pivotalcf/customizing/deleting-azure-install.html">Deleting PCF on Azure</a>
-
-* <a href="/pivotalcf/customizing/deleting-gcp-install.html">Deleting PCF on GCP</a>
+* [Deleting <%= vars.platform_name %> on GCP](../customizing/deleting-gcp-install.html)
 
 ### <a id='monitoring'></a> Monitoring, Logging, and Reporting
 
-* <a href="/pivotalcf/loggregator/data-sources.html">Logs and Metrics Sources</a>
+* [Logs and Metrics Sources](../loggregator/data-sources.html)
 
-* <a href="/pivotalcf/monitoring/index.html">Monitoring Pivotal Cloud Foundry</a>
+* [Monitoring <%= vars.platform_name %>](../monitoring/index.html)
 
-	- <a href="/pivotalcf/monitoring/kpi.html">Key Performance Indicators</a>
+	- [Key Performance Indicators](../monitoring/kpi.html)
 
-	- <a href="/pivotalcf/monitoring/key-cap-scaling.html">Key Capacity Scaling Indicators</a>
+	- [Key Capacity Scaling Indicators](../monitoring/key-cap-scaling.html)
 
-	- <a href="/pivotalcf/monitoring/metrics.html">Selecting and Configuring a Monitoring System</a>
+	- [Selecting and Configuring a Monitoring System](../monitoring/metrics.html)
 
-* <a href="/pivotalcf/loggregator/architecture.html">Overview of the Loggregator System</a>
+* [Loggregator Architecture](../loggregator/architecture.html)
 
-* <a href="/pivotalcf/loggregator/log-ops-guide.html">Loggregator Guide for Cloud Foundry Operators</a>
+* [Loggregator Guide for <%= vars.app_runtime_abbr %> Operators](../loggregator/log-ops-guide.html)
 
-* <a href="/pivotalcf/loggregator/cc-uaa-logging.html">Security Event Logging</a>
+* [Security Event Logging](../loggregator/cc-uaa-logging.html)
 
-* <a href="/pivotalcf/opsguide/accounting-report-apps-man.html">Reporting Instance Usage with Apps Manager</a>
+* [Reporting Instance Usage with Apps Manager](../opsguide/accounting-report-apps-man.html)
 
-* <a href="/pivotalcf/opsguide/accounting-report.html">Reporting App, Task, and Service Instance Usage</a>
+* [Reporting App, Task, and Service Instance Usage](../opsguide/accounting-report.html)
 
-* <a href="/pivotalcf/customizing/monitoring.html">Monitoring PCF VMs from Ops Manager</a>
+* [Monitoring <%= vars.platform_name %> VMs from Ops Manager](../customizing/monitoring.html)
 
-* <a href="/pivotalcf/customizing/monitoring-vsphere.html">Monitoring PCF VMs from vSphere</a>
+* [Monitoring <%= vars.platform_name %> VMs from vSphere](../customizing/monitoring-vsphere.html)
 
 ### <a id='tuning'></a> Platform Tuning
 
-* <a href="/pivotalcf/opsguide/scaling-ert-components.html">Scaling PAS</a>
+* [Scaling PAS](../opsguide/scaling-ert-components.html)
 
-* <a href="/pivotalcf/opsguide/internal-databases.html">Managing Internal Databases</a>
+* [Managing Internal Databases](../opsguide/internal-databases.html)
 
-* <a href="/pivotalcf/adminguide/routing-keepalive.html">Router Idle Keepalive Connections</a>
+* [Router Idle Keep-Alive Connections](../adminguide/routing-keepalive.html)
 
-* <a href="/pivotalcf/concepts/high-availability.html">High Availability in Cloud Foundry</a>
+* [High Availability in <%= vars.product_short %>](../concepts/high-availability.html)
 
 ### <a id='devs'></a> Enabling Developers
 
-* <a href="/pivotalcf/customizing/add-delete.html">Adding and Deleting Products</a>
+* [Adding and Deleting Products](../customizing/add-delete.html)
 
-* <a href="/pivotalcf/adminguide/isolation-segments.html">Managing Isolation Segments</a>
+* [Managing Isolation Segments](../adminguide/isolation-segments.html)
 
-* <a href="/pivotalcf/adminguide/routing-is.html">Routing for Isolation Segments</a>
+* [Routing for Isolation Segments](../adminguide/routing-is.html)
 
-* <a href="/pivotalcf/opsguide/enable-vol-services.html">Enabling Volume Services</a>
+* [Enabling Volume Services](../opsguide/enable-vol-services.html)
 
-* <a href="/pivotalcf/devguide/deploy-apps/cf-networking.html">Configuring Container-to-Container Networking</a>
+* [Configuring Container-to-Container Networking](../devguide/deploy-apps/cf-networking.html)
 
-* <a href="/pivotalcf/opsguide/switching-domains.html">Switching Application Domains</a>
+* [Switching App Domains](../opsguide/switching-domains.html)
 
 ### <a id='backups'></a> Backing Up
 
-* <a href="/pivotalcf/customizing/backup-restore/disaster-recovery.html">Disaster Recovery in Pivotal Cloud Foundry</a>
+* [Disaster Recovery in <%= vars.platform_name %>](../customizing/backup-restore/disaster-recovery.html)
 
-* <a href="/pivotalcf/customizing/backup-restore/index.html">Backing Up and Restoring Pivotal Cloud Foundry</a>
+* [Backing Up and Restoring <%= vars.platform_name %>](../customizing/backup-restore/index.html)
 
-* <a href="/pivotalcf/customizing/backup-restore/backup-pcf-bbr.html">Backing Up Pivotal Cloud Foundry with BBR</a>
+* [Backing Up <%= vars.platform_name %> with BBR](../customizing/backup-restore/backup-pcf-bbr.html)
 
-* <a href="/pivotalcf/customizing/backup-restore/component-backups.html">PAS Component Availability During Backup</a>
+* [Restoring P<%= vars.platform_name %> from Backup with BBR](../customizing/backup-restore/restore-pcf-bbr.html)
 
-* <a href="/pivotalcf/customizing/backup-restore/restore-pcf-bbr.html">Restoring Pivotal Cloud Foundry from Backup with BBR</a>
+* [Restoring <%= vars.platform_name %> from Backup with BBR](../customizing/backup-restore/restore-pcf-bbr.html)
 
-* <a href="/pivotalcf/adminguide/start-stop-vms.html">Stopping and Starting Virtual Machines</a>
+* [Restoring a PAS Backup In-Place](../customizing/backup-restore/in-place-restore.html)
 
-* <a href="/pivotalcf/customizing/backup-restore/in-place-restore.html">Restoring an PAS Backup In-Place</a>
+* [Troubleshooting BBR](../customizing/backup-restore/troubleshooting-bbr.html)
 
-* <a href="/pivotalcf/customizing/backup-restore/troubleshooting-bbr.html">Troubleshooting BBR</a>
-
-* <a href="http://docs.cloudfoundry.org/bbr/index.html">BOSH Backup and Restore (Open-Source Documentation)</a>
+* [BOSH Backup and Restore (Open-Source Documentation)](http://docs.cloudfoundry.org/bbr/index.html)
 
 ### <a id='security'></a> Security
 
-* <a href="/pivotalcf/customizing/credentials.html">Retrieving Credentials from Your Deployment</a>
+* [Retrieving Credentials from Your Deployment](../customizing/credentials.html)
 
-* <a href="/pivotalcf/opsguide/app-sec-groups.html">Restricting App Access to Internal PCF Components</a>
+* [Restricting App Access to Internal <%= vars.platform_name %> Components](./app-sec-groups.html)
 
-* <a href="/pivotalcf/opsguide/security_config.html">Providing a Certificate for your SSL Termination Point</a>
+* [Providing a Certificate for Your TLS Termination Point](../opsguide/security_config.html)
 
-* <a href="/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html">Rotating Certificates</a>
+* [Rotating Certificates](../security/pcf-infrastructure/api-cert-rotation.html)
 
-* <a href="/pivotalcf/opsguide/credential-rotation.html">Rotating Runtime CredHub Encryption Keys</a>
-
+* [Rotating Runtime CredHub Encryption Keys](../opsguide/credential-rotation.html)
