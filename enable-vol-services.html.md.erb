@@ -48,7 +48,7 @@ To enable NFS volume services in PCF, do the following:
     <%= image_tag('er-config-app-vol-svc.png') %>
 
 1. (Optional) To configure LDAP for NFS volume services, perform the following steps:
-  <p class="note"><strong>Note:</strong> If you already use an LDAP server with your network-attached storage (NAS) file server, enter its information below. This ensures that the indentities known to the file server match those checked by the PCF NFS driver.</p>
+  <p class="note"><strong>Note:</strong> If you already use an LDAP server with your network-attached storage (NAS) file server, enter its information below. This ensures that the identities known to the file server match those checked by the PCF NFS driver.</p>
   * For **LDAP Service Account User**, enter either the full domain name (DN) for the service account or the username of the service account that manages volume services, depending on how your LDAP server is configured. This value needs to be exactly what you would enter when binding the account to your LDAP server.
   * For **LDAP Service Account Password**, enter the password for the service account.
   * For **LDAP Server Host**, enter the hostname or IP address of the LDAP server.
