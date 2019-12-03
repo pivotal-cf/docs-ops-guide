@@ -140,7 +140,7 @@ Cloud Controller emits the following metrics:
 
 The following behaviors may occur:
 
-* Diego domains are frequently unfresh. For more information, see the [Domain Freshness](https://github.com/cloudfoundry/bbs/blob/master/doc/domains.md#domain-freshness) section in the _Overview of Domains_ topic on GitHub.
+* Diego domains frequently lack freshness. For more information, see the [Domain Freshness](https://github.com/cloudfoundry/bbs/blob/master/doc/domains.md#domain-freshness) section in the _Overview of Domains_ topic on GitHub.
 * The Diego Desired LRP count is larger than the total process instance count reported through the Cloud Controller APIs.
 * Deployments are slow to increase and decrease instance count.
 
@@ -156,13 +156,13 @@ You can find the above heuristic failures in the following log files:
 Both of these jobs are singletons, so extra instances are for failover HA rather than scalability. Performance issues are likely due to database overloading or greedy neighbors on the scheduler VM.
 
 
-## <a id='blobstore_nginx'></a> blobstore\_nginx
+## <a id='blobstore_nginx'></a> blobstore_nginx
 
 The internal WebDAV blobstore that comes included with PAS by default. It is used by the platform to store `packages`, staged `droplets`, `buildpacks`, and cached app resources. Files are typically uploaded to the internal blobstore through the Cloud Controller local workers and downloaded by Diego when app instances are started.
 
 ### When to Scale
 
-When determining whether to scale `blobstore\_nginx`, look for the following:
+When determining whether to scale `blobstore_nginx`, look for the following:
 
 #### Key Metrics
 
