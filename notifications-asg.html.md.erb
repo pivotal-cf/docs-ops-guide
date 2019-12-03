@@ -116,7 +116,7 @@ If you are using the built-in HAProxy as your load balancer, follow this procedu
     $ cf create-space notifications-with-ui
     </pre>
 
-1. Bind the ASGs you created in this topic to the`notifications-with-ui` space:
+1. Bind the ASGs you created in this topic to the `notifications-with-ui` space:
     <pre class="terminal">
     $ cf bind-security-group smtp-server system notifications-with-ui
     $ cf bind-security-group load-balancer-https system notifications-with-ui
