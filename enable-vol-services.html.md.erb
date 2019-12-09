@@ -53,7 +53,11 @@ To enable NFS volume services in PCF, do the following:
   * For **LDAP Service Account Password**, enter the password for the service account.
   * For **LDAP Server Host**, enter the hostname or IP address of the LDAP server.
   * For **LDAP Server Port**, enter the LDAP server port number. If you do not specify a port number, Ops Manager uses 389.
-  * For **LDAP User Search Base**, enter the location in the LDAP directory tree from which any LDAP User search begins. The typical LDAP Search Base matches your domain name. <br>For example, a domain named `cloud.example.com` typically uses the following LDAP User Search Base: `ou=Users,dc=example,dc=com`.
+  * For **LDAP User Search Base**, enter the location in the LDAP directory tree from which any LDAP User search begins. The typical LDAP Search Base matches your domain name. <br>For example, a domain named `cloud.example.com` typically uses the following LDAP User Search Base: `ou=Users,dc=example,dc=com`. 
+  <p class="note"><strong>Note:</strong> Your LDAP user records must also be configured with an attribute `objectClass: User`, used by the PCF NFS Driver to identify records as user records, and have `uidNumber` and `gidNumber` fields, used to establish the correct UID for a named user.  
+  </p>
+    <%= image_tag('er-config-app-vol-svc.png') %>
+
   * For **LDAP Server CA Cert**, you can optionally enter a certificate if your LDAP server supports TLS and you want to enable TLS connections from the NFS driver to your LDAP server. Paste in the root certificate from your CA certificate or your self-signed certificate.
 
 1. Click **Save**.
