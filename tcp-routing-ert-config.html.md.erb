@@ -4,20 +4,29 @@ title: Configuring TCP Routing in PAS
 owner: Routing
 ---
 
-
-This topic describes how to enable the TCP routing feature in a Pivotal Application Service (PAS) deployment.
+This topic describes how to enable the TCP routing feature in a <%= vars.product_runtime %> (<%= vars.product_short %>) deployment.
 
 <p class='note breaking'><strong>Breaking Change:</strong> If you have mutual TLS app identity verification enabled, Envoy only recognizes communications from the Gorouter. Therefore, TCP no longer works.</p>
 
 
-## <a id="enable-tcp"></a> Enable TCP Routing
+## <a id="overview"></a> Overview
 
-TCP Routing enables applications to be run on PCF that require inbound requests on non-HTTP protocols. Before enabling TCP Routing, review the [Pre-Deployment Steps](../adminguide/enabling-tcp-routing.html) that describe required networking infrastructure changes.
+TCP routing enables apps that require inbound requests on non-HTTP protocols to run on <%= vars.platform_name %>.
+
+
+## <a id="prerequisite"></a> Prerequisite
+
+Before enabling TCP routing, review the pre-deployment steps that describe required networking infrastructure changes. For more information, see the [Pre-Deployment Steps](../adminguide/enabling-tcp-routing.html#pre-deploy) section of the _Enabling TCP Routing_ topic.
+
+
+## <a id="enable-tcp"></a> Enable TCP Routing
 
 <%= partial '../customizing/tcp_routing_enable' %><a id='tcp-routing-enable'></a>
 
 ## <a id="disable-tcp"></a> Disable TCP Routing
 
-1. If you want to disable TCP routing after enabling it, click **Select this option if you prefer to enable TCP Routing at a later time**.
+To disable TCP routing:
+
+1. In the **Networking** pane of the <%= vars.product_short %> tile, under **Enable TCP requests to apps through specific ports on the TCP Router...**, click **Select this option if you prefer to enable TCP Routing at a later time**.
 
 1. Manually remove the TCP routing domain.
