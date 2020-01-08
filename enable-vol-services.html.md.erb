@@ -37,13 +37,13 @@ To enable NFS volume services in <%= vars.product_short %>:
 
 1. (Optional) To configure LDAP for NFS volume services:
   <p class="note"><strong>Note:</strong> If you already use an LDAP server with your network-attached storage (NAS) file server, enter its information below. This ensures that the identities known to the file server match those checked by the NFS driver.</p>
-  * For **LDAP Service Account User**, enter either the full domain name (DN) for the service account or the username of the service account that manages volume services, depending on how your LDAP server is configured. This value needs to be exactly what you would enter when binding the account to your LDAP server.
+  * For **LDAP Service Account User**, enter either the full domain name for the service account or the username of the service account that manages volume services. This value must be what you enter when binding the account to your LDAP server.
   * For **LDAP Service Account Password**, enter the password for the service account.
   * For **LDAP Server Host**, enter the hostname or IP address of the LDAP server.
   * For **LDAP Server Port**, enter the LDAP server port number. If you do not specify a port number, Ops Manager uses 389.
   * For **LDAP User Search Base**, enter the location in the LDAP directory tree from which any LDAP user search begins. The typical LDAP search base matches your domain name. For example, a domain named `cloud.example.com` typically uses the following LDAP user search base: `ou=Users,dc=example,dc=com`.
-    <p class="note"><strong>Note:</strong> Additionally, your LDAP user records must be configured with an attribute <code>objectClass: User</code>, which is used by the NFS Driver to identify records as user records. They must also have <code>uidNumber</code> and <code>gidNumber</code> fields, which are used to establish the correct UID for a named user.</p>
-  * For **LDAP Server CA Cert**, you can optionally enter a certificate if your LDAP server supports TLS and you want to enable TLS connections from the NFS driver to your LDAP server. Paste in the root certificate from your CA certificate or your self-signed certificate.
+    <p class="note"><strong>Note:</strong> Additionally, your LDAP user records must be configured with an attribute <code>objectClass: User</code>, which is used by the NFS driver to identify records as user records. They must also have <code>uidNumber</code> and <code>gidNumber</code> fields, which are used to establish the correct UID for a named user.</p>
+  * For **LDAP Server CA Cert**, you can enter a Certificate Authority (CA) certificate if your LDAP server supports TLS. Enter a certificate if you want to enable TLS connections from the NFS driver to your LDAP server. Paste in the root certificate from your CA certificate or your self-signed certificate.
 
 1. Click **Save**.
 
