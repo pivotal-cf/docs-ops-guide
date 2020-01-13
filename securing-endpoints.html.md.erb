@@ -1,5 +1,5 @@
 ---
-title: Securing System and Application Endpoints
+title: Securing System and App Endpoints
 ---
 
 This topic describes how to create a public-facing website and an intranet microservice in the same app.
@@ -23,7 +23,7 @@ Before beginning your configuration, you will need to have registered three doma
 1. Log in to your Pivotal Cloud Foundry (PCF) Ops Manager
 
 1. Click the **Pivotal Application Service** tile.
-	
+
 	![](pas-tile.png)
 
 1. Select the **Domains** pane.
@@ -32,11 +32,11 @@ Before beginning your configuration, you will need to have registered three doma
 
      ![](domains.png)
 
-1. Navigate to your DNS provider to create A records that point from your apps domains to the public IP address of your load balancer. 
+1. Navigate to your DNS provider to create A records that point from your apps domains to the public IP address of your load balancer.
 
 1. Click **Save**.
 
-## <a id="load-balancer"></a> Step 2: Secure Apps Domain with HAProxy 
+## <a id="load-balancer"></a> Step 2: Secure Apps Domain with HAProxy
 
 <p class="warning note"><strong>WARNING: </strong> This method is easy to implement but may not be the best option for your security needs. Contact Pivotal Support if you seek a custom solution to building secure, internal services.</p>
 
