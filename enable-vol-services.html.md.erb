@@ -43,7 +43,7 @@ To enable NFS volume services in <%= vars.product_short %>:
   * For **LDAP Server Port**, enter the LDAP server port number. If you do not specify a port number, Ops Manager uses 389.
   * For **LDAP User Search Base**, enter the location in the LDAP directory tree from which any LDAP user search begins. The typical LDAP search base matches your domain name. For example, a domain named `cloud.example.com` typically uses the following LDAP user search base: `ou=Users,dc=example,dc=com`.
     <p class="note"><strong>Note:</strong> Additionally, your LDAP user records must be configured with an attribute <code>objectClass: User</code>, which is used by the NFS driver to identify records as user records. They must also have <code>uidNumber</code> and <code>gidNumber</code> fields, which are used to establish the correct UID for a named user.</p>
-  * For **LDAP Server CA Cert**, you can enter a Certificate Authority (CA) certificate if your LDAP server supports TLS. Enter a certificate if you want to enable TLS connections from the NFS driver to your LDAP server. Paste in the root certificate from your CA certificate or your self-signed certificate.
+  * (Optional) For **LDAP Server CA Cert**, you can enter a Certificate Authority (CA) certificate if your LDAP server supports TLS. Enter a certificate if you want to enable TLS connections from the NFS driver to your LDAP server. Paste in the root certificate from your CA certificate or your self-signed certificate.
 
 1. Click **Save**.
 
