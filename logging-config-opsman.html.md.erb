@@ -1,14 +1,14 @@
 ---
-title: Configuring Logging in PCF
+title: Configuring Logging in PAS
 owner: APM
 ---
 
-This topic describes the types of logs that Pivotal Cloud Foundry (PCF) generates. It also explains how to forward system logs to an external aggregator service, how to scale Loggregator component VMs to keep up with app log volume, and how to manage app traffic logging. For more information about Loggregator components, see [Loggregator Architecture](../loggregator/architecture.html).
+This topic describes the types of logs that Pivotal Application Service (PAS) generates. It also explains how to forward system logs to an external aggregator service, how to scale Loggregator component VMs to keep up with app log volume, and how to manage app traffic logging. For more information about Loggregator components, see [Loggregator Architecture](../loggregator/architecture.html).
 
 
 ## <a id='types'></a> System Logs, App Logs, App Traffic Logs
 
-Pivotal Cloud Foundry (PCF) generates two types of logs, _system logs_ from PCF components and _app logs_ from hosted apps, as differentiated in the table below:
+PAS generates two types of logs, _system logs_ from PAS components and _app logs_ from hosted apps, as differentiated in the table below:
 
 <table id='log-types' border="1" class="nice" >
   <tr>
@@ -53,7 +53,7 @@ Log Cache is a Loggregator feature that lets you filter and query app logs throu
 
 To access cached logs with the Log Cache CLI plugin, you must first download and install the plugin.
 
-To download the the Log Cache CLI plugin, see the [cf CLI Plugins](https://plugins.cloudfoundry.org/#log-cache) page on the Cloud Foundry page. 
+To download the the Log Cache CLI plugin, see the [cf CLI Plugins](https://plugins.cloudfoundry.org/#log-cache) page on the Cloud Foundry page.
 
 One you have installed the plugin, the basic command to access cached app logs is:
 
@@ -67,7 +67,7 @@ Some ways you can use Log Cache to filter app logs are:
 
 * `--end-time`: Displays the end of the cache or the end of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `--start-time` to view logs within a time period.
 
-* `--json`: Output logs in JSON. 
+* `--json`: Output logs in JSON.
 
 * `--follow`: Append exported logs to `stdout`.
 
@@ -83,7 +83,7 @@ The basic call to access and filter cached app logs is:
 GET ht<span>tps:</span>//log-cache.[YOUR-SYSTEM-DOMAIN]/v1/read/[SOURCE-ID]
 ```
 
-Append the following parameters to the `GET` to customize app logs: 
+Append the following parameters to the `GET` to customize app logs:
 
 * `start_time`: Displays the start of the cache or the start of a time period you specify. Results display as a UNIX timestamp, in nanoseconds. Pair with `end_time` to view logs within a time period.
 
@@ -112,11 +112,11 @@ For more information, see the [Including Container Metrics in Syslog Drains](../
 
 ## <a id='scaling'></a> Scale Loggregator
 
-Apps constantly generate app logs and PCF platform components constantly generate component metrics. The Loggregator system combines these data streams and handles them as follows. See [Loggregator Architecture](../loggregator/architecture.html) for more information. 
+Apps constantly generate app logs and PAS platform components constantly generate component metrics. The Loggregator system combines these data streams and handles them as follows. See [Loggregator Architecture](../loggregator/architecture.html) for more information.
 
 * The [Loggregator](../loggregator/architecture.html#metron) agent running on each component or app VM collects and sends this data out to Doppler components.
 
-* [Doppler](../loggregator/architecture.html#doppler) components temporarily buffer the data before periodically forwarding it to the Traffic Controller. When the log and metrics data input to a Doppler exceeds its buffer size for a given interval, data can be lost. 
+* [Doppler](../loggregator/architecture.html#doppler) components temporarily buffer the data before periodically forwarding it to the Traffic Controller. When the log and metrics data input to a Doppler exceeds its buffer size for a given interval, data can be lost.
 
 * The [Traffic Controller](../loggregator/architecture.html#traffic-controller) serves the aggregated data stream through the Firehose WebSocket endpoint.
 
@@ -128,7 +128,7 @@ To add component VM instances for Loggregator components:
 
 1. From the PAS tile, select **Resource Config**.
 
-1. Increase the number in the **Instances** column of the component you want to scale. You can add instances for the following Loggregator components: 
+1. Increase the number in the **Instances** column of the component you want to scale. You can add instances for the following Loggregator components:
   * **Loggregator Traffic Controller**
     <p class="note"><strong>Note:</strong> The Reverse Log Proxy (RLP) BOSH job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more logs for syslog drains, you can add instances of the Traffic Controller. For more information, see <a href="../loggregator/architecture.html">Loggregator Architecture</a>.</p>
     <p class="note"><strong>Note:</strong> The BOSH System Metrics Forwarder</a> job is colocated on the Traffic Controller VM. If you want to scale Loggregator to handle more BOSH component metrics, you can add instances of the Traffic Controller. For more information, see the <a href="../loggregator/architecture.html#bosh-metrics">Related BOSH Components</a> section of the <em>Loggregator Architecture</em> topic.</p>
@@ -200,8 +200,8 @@ You can determine whether a denied-packet log resulted from a container networki
 
 ### <a id="scope-app-traffic-log"></a> Global vs. ASG-Level App Traffic Logging
 
-PCF supports two mechanisms for enabling app traffic logging. Setting **Log traffic** to **Enable** in Ops Manager enables app traffic logging globally for all ASGs and container policies. Setting the `log` property of an ASG to `true` enables app traffic logging at the individual ASG level. For more information about setting the `log` property of an ASG to `true, see the [The Structure and Attributes of ASGs](../concepts/asg.html#creating-groups) section of the _App Security Groups_ topic.
+PAS supports two mechanisms for enabling app traffic logging. Setting **Log traffic** to **Enable** in Ops Manager enables app traffic logging globally for all ASGs and container policies. Setting the `log` property of an ASG to `true` enables app traffic logging at the individual ASG level. For more information about setting the `log` property of an ASG to `true, see the [The Structure and Attributes of ASGs](../concepts/asg.html#creating-groups) section of the _App Security Groups_ topic.
 
-Because these two mechanisms operate independently, PCF generates duplicate logs when app traffic logging is enabled globally and an ASG's `log` property is set to `true`. To avoid duplicate logs, Pivotal recommends setting the `log` property to `false` for all ASGs, or leaving it out entirely, when app traffic logging is enabled globally. For more information, see [App Traffic Logging](#app-traffic-log).
+Because these two mechanisms operate independently, PAS generates duplicate logs when app traffic logging is enabled globally and an ASG's `log` property is set to `true`. To avoid duplicate logs, Pivotal recommends setting the `log` property to `false` for all ASGs, or leaving it out entirely, when app traffic logging is enabled globally. For more information, see [App Traffic Logging](#app-traffic-log).
 
 To focus on specific ASGs for log analysis, Pivotal recommends enabling app traffic logs globally and using a logging platform to filter traffic logs by ASG, rather than setting `log` at the individual ASG level.

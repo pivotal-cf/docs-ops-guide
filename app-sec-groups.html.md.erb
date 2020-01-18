@@ -1,5 +1,5 @@
 ---
-title: Restricting App Access to Internal PCF Components
+title: Restricting App Access to Internal PAS Components
 owner: Security
 ---
 
@@ -14,18 +14,18 @@ owner: Security
      }
 </style>
 
-This topic describes how to secure the component virtual machines (VMs) of your Pivotal Cloud Foundry (PCF) deployment from being accessed by apps. 
+This topic describes how to secure the component virtual machines (VMs) of your Pivotal Cloud Foundry (PCF) deployment from being accessed by apps.
 
 
 ## <a id='overview'></a> Overview
 
 See the following list to understand the concepts for this topic:
 
-* **How PCF determines where apps can send traffic**: 
+* **How PCF determines where apps can send traffic**:
   * PCF uses _App Security Groups (ASGs)_, which are network policy rules specifying protocols, ports, and IP ranges that apply to outbound network connections initiated from apps. For more information, see [App Security Groups](../concepts/asg.html).
-* **Why you must create new rules for outbound app traffic**: 
+* **Why you must create new rules for outbound app traffic**:
   * PCF installs with a default ASG that allows apps running on your deployment to send traffic to almost any IP address. This means apps are not blocked from initiating connections to most network destinations unless an administrator takes action to update the ASGs with a more restrictive policy. For more information, see the [Default ASGs](../concepts/asg.html#default-asg) section of the _App Security Groups_ topic.
-* **How you can set up new rules**: 
+* **How you can set up new rules**:
   * To help secure your component VMs against apps while ensuring your apps can access the services they need, follow the steps in the [Procedure](#procedure) section, which includes:
     <table>
     <tr>
@@ -53,8 +53,8 @@ See the following list to understand the concepts for this topic:
       <td><a href="#restart">Restart Your Apps</a>: <br>To apply the ASG changes, you must restart all of the apps in your deployment.</td>
     </tr>
     </table>
-* **When to set up new rules**: 
-  * Pivotal recommends that you complete this procedure directly after installing PCF, prior to developers pushing apps to the platform. If you complete the procedure after apps have been pushed to the platform, you must restart all the apps in your deployment.  
+* **When to set up new rules**:
+  * Pivotal recommends that you complete this procedure directly after installing PCF, prior to developers pushing apps to the platform. If you complete the procedure after apps have been pushed to the platform, you must restart all the apps in your deployment.
 
 
 ## <a id='prerequisites'></a> Prerequisites
@@ -68,11 +68,11 @@ This procedure outlines how to apply ASGs that prevent apps running on your depl
 
 ### <a name='network'></a> Step 1: Determine Your Network Layout
 
-The procedure for securing your deployment with ASGs varies depending on your network layout. To determine your network layout, do the following: 
+The procedure for securing your deployment with ASGs varies depending on your network layout. To determine your network layout, do the following:
 
-1. Log in to Ops Manager. 
+1. Log in to Ops Manager.
 
-1. For each tile, click **Assign AZs and Networks** and record the selected **Network** that the tile is installed on. 
+1. For each tile, click **Assign AZs and Networks** and record the selected **Network** that the tile is installed on.
 
 1. Based on the information you gathered, determine which of the following network layouts you have:
   <table>
@@ -83,7 +83,7 @@ The procedure for securing your deployment with ASGs varies depending on your ne
     <tr>
       <td>One Network</td>
       <td><ul><li>One network for Ops Manager and the BOSH Director, Pivotal Application Service (PAS), and services.</li></ul>
-      <p class="note"><strong>Note:</strong> You cannot secure your deployment with ASGs if you have this network layout. Because PCF dynamically allocates IPs, they cannot be easily excluded in the case of a single network.</p>  
+      <p class="note"><strong>Note:</strong> You cannot secure your deployment with ASGs if you have this network layout. Because PCF dynamically allocates IPs, they cannot be easily excluded in the case of a single network.</p>
       </td>
     </tr>
     <tr>
@@ -125,7 +125,7 @@ For more information about staging and running sets, see the [ASG Sets](../conce
 
 ### <a name='initial'></a> Step 3: Create New ASGs
 
-This step outlines how to create ASGs that block apps from accessing PCF components and create any additional ASGs that allow apps to access the services they require. 
+This step outlines how to create ASGs that block apps from accessing PCF components and create any additional ASGs that allow apps to access the services they require.
 
 #### <a name='get-cidrs'></a> Part A: Record CIDRs
 
@@ -199,7 +199,7 @@ To create ASGs that block apps from sending traffic to the networks that host Op
 
 <p class="note warning"><strong>Warning:</strong> In the two network layout, PAS and services share the same network. This means that each time you create an ASG that allows apps to access a new port and protocol within the network, you further expose the PAS component VMs. This is a limitation of a two network layout. For guidance on network topology, see <a href="../refarch/index.html">Reference Architectures</a>.</p>
 
-Now that you have created ASGs to secure the Ops Manager, PAS, and service components, work with developers to create additional ASGs that give apps access to the services they need. 
+Now that you have created ASGs to secure the Ops Manager, PAS, and service components, work with developers to create additional ASGs that give apps access to the services they need.
 
 For more information about creating and binding ASGs, see the following:
 
@@ -225,7 +225,7 @@ To restart all of the apps in your deployment, do the following:
 
 <p class="note"><strong>Note:</strong> You do not need to restart the apps in the <code>system</code> org.</p>
 
-1. Work with developers to restart a few of their apps individually and test that they still work correctly with the new ASGs in place. If an app does not work as expected, you likely must create another ASG that allows the app to send traffic to a service it requires. 
+1. Work with developers to restart a few of their apps individually and test that they still work correctly with the new ASGs in place. If an app does not work as expected, you likely must create another ASG that allows the app to send traffic to a service it requires.
   <p class="note"><strong>Note:</strong> To quickly roll back to the original overly-permissive state, you can re-bind the <code>default\_security\_group</code> ASG to the <code>default-staging</code> and <code>default-running</code> sets. You must then restart your apps to re-apply the original ASGs.</p>
 
 1. Restart the rest of the apps running on your deployment. Optionally, you can use the [app-restarter cf CLI plugin](https://github.com/cloudfoundry-incubator/app-restarter) to restart all apps in a particular space, org, or deployment.
