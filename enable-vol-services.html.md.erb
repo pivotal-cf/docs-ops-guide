@@ -12,13 +12,7 @@ A volume service gives apps access to a persistent filesystem, such as NFS or SM
 
 Developers can then use the [Cloud Foundry Command Line Interface](../cf-cli/index.html) (cf CLI) to create service instances of the volume service and bind them to their apps. For more information, see [Using an External File System (Volume Services)](../devguide/services/using-vol-services.html).
 
-<div class="note"><p style="margin-top: 0"><strong>Note:</strong>
-You must have an NFS or SMB server running to enable NFS or SMB volume services. If you want to use NFS or SMB and do not currently have a server available, you can do one of the following:</p>
-  <ul>
-    <li>Deploy the test NFS or SMB server bundled with the volume release or you can enable NFS or SMB volume services with the NFS or SMB Broker Errand for <%= vars.product_short %>. For more information, see <a href="https://docs.cloudfoundry.org/running/deploy-vol-services.html">Adding Volume Services to Your Deployment</a> in the Cloud Foundry documentation.</li>
-    <li>Enable this errand during <%= vars.product_short %> configuration.</li>
-  </ul>
-</div>
+<p class="note"><strong>Note:</strong> You must have a running NFS or SMB server to test NFS or SMB volume services. <%= vars.product_short %> packages the necessary software to provide app connectivity to remote network-attached storage (NAS), but does not supply the NAS itself.</p>
 
 
 ## <a id='nfs-enable'></a> Enable NFS Volume Services
