@@ -39,7 +39,7 @@ To globally configure proxy settings for <%= vars.platform_name %> apps:
     Where:
     * `http_proxy`: Set this value to the proxy to use for HTTP requests.
     * `https_proxy`: Set this value to the proxy to use for HTTPS requests. In most cases, this is the same as `http_proxy`.
-    * `no_proxy`: Set this value to a comma-separated list of DNS suffixes or IP addresses that can be accessed without passing through the proxy.  Minimally, this value should contain the domain `.cf.internal`, which is used by the platform to communicate with CredHub.
+    * `no_proxy`: Set this value to a comma-separated list of DNS suffixes or IP addresses that can be accessed without passing through the proxy. This value must contain the domain `.cf.internal`, which <%= vars.platform_name %> uses to communicate with CredHub.
 
     From now on, the proxy settings are applied to apps during staging.
 
