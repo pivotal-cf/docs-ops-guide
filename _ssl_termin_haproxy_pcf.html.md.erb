@@ -1,76 +1,74 @@
-To configure SSL termination on HAProxy in <%= vars.platform_name %>:
+To configure SSL termination on HAProxy in <%= vars.app_runtime_abbr %>:
 
-1. Navigate to the Ops Manager Installation Dashboard.
+1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. Click the **Pivotal Application Service** tile in the Installation Dashboard.
+1. Click the <%= vars.app_runtime_abbr %> tile.
 
 1. Select **Networking**.
 
-1. Configure the following based on the IaaS of your <%= vars.platform_name %> deployment.
+1. Configure these fields based on the IaaS of your <%= vars.app_runtime_abbr %> deployment:
     <table>
     <tr>
-     <th>If your <%= vars.platform_name %> deployment is on:</th>
-     <th>Then configure the following:</th>
-     <th>See also:</th>
+      <th>If your <%= vars.app_runtime_abbr %> deployment is on:</th>
+      <th>Then configure:</th>
+      <th>See also:</th>
     </tr>
     <tr>
-     <td>
-     OpenStack or vSphere
-     </td>
-     <td>Decide whether you want your HAProxy to be highly available.<ul>
-      <li>If you need highly available HAProxy:
-      <ol>
-        <li>Choose an IP address for each HAProxy instance on the subnet where you deployed <%= vars.platform_name %>.</li>
-        <li>In the **HAProxy IPs** field of the **Networking** pane, enter the IP addresses you have selected for your HAProxy instances.</li>
-        <li>Configure your load balancer (for example, F5 or NSX) to forward domain names to the HAProxy IP addresses.</li>
-      </ol>
-      <li>If you do not require high availability (for example, you are setting up a development environment):
-      <ol>
-       <li>Skip setting up the load balancer.</li>
-       <li>Choose one IP address for the single HAProxy instance.</li>
-       <li>Configure DNS to point at the IP address. For more information, see [How to Set Up DNS for HAProxy](#haproxy_dns).</li>
-      </ol>
-    </ul></td>
-    <td>For more information, see the [Configure Networking](../customizing/configure-pas.html#networking) section of the _Configuring PAS_ topic. 
-    </td>
+      <td>OpenStack or vSphere</td>
+      <td>Decide whether you want your HAProxy to be highly available.
+        <ul>
+          <li>If you need highly available HAProxy:
+            <ol>
+              <li>Choose an IP address for each HAProxy instance on the subnet where you deployed PAS.</li>
+              <li>In the **HAProxy IPs** field of the **Networking** pane, enter the IP addresses you have selected for your HAProxy instances.</li>
+              <li>Configure your load balancer, such as F5 or NSX, to forward domain names to the HAProxy IP addresses.</li>
+            </ol>
+          <li>If you do not require high availability, such as if you are setting up a development environment:
+            <ol>
+              <li>Skip setting up the load balancer.</li>
+              <li>Choose one IP address for the single HAProxy instance.</li>
+              <li>Configure DNS to point at the IP address. For more information, see [How to Set Up DNS for HAProxy](#haproxy_dns).</li>
+            </ol>
+        </ul>
+      </td>
+      <td>For more information, see [Configure Networking](../customizing/configure-pas.html#networking) in _Configuring <%= vars.app_runtime_abbr %>_.</td>
     <tr>
-    <td>
-    AWS, GCP or Azure
-    </td>
-    <td><ol><li>Leave the HAProxy IP address blank.</li>
-    <li>In the **Resource Config** page of PAS tile, locate the HAProxy job.</li>
-    <li>In the **Load Balancer** column for the HAProxy job, specify the appropriate IaaS load balancer resource.</li>
-    </ol>
-    </td>
-    <td>For more information, see the [Configure Networking](../customizing/configure-pas.html#networking) section of the _Configuring PAS_ topic.
-    </td>
-     </tr>
-   </table>
+      <td>AWS, GCP or Azure</td>
+      <td>
+        <ol>
+          <li>Leave the HAProxy IP address blank.</li>
+          <li>In the **Resource Config** pane, locate the HAProxy job.</li>
+          <li>In the **Load Balancer** column for the HAProxy job, specify the appropriate IaaS load balancer resource.</li>
+        </ol>
+      </td>
+      <td>For more information, see [Configure Networking](../customizing/configure-pas.html#networking) in _Configuring <%= vars.app_runtime_abbr %>_.</td>
+    </tr>
+    </table>
 
-1. In the **Certificates and private keys for HAProxy and Router** field, click the **Add** button to define at least one certificate keypair for HAProxy and Router. For each certificate keypair that you add, assign a name, enter the PEM-encoded certificate chain and PEM-encoded private key. You can either upload your own certificate or generate an RSA certificate in PAS. For options and instructions on creating a certificate for your wildcard domains, see the [Creating a Wildcard Certificate for <%= vars.platform_name %> Deployments](../opsguide/security_config.html#create_or_obtain_certs) in the _Providing a Certificate for Your TLS Termination Point_ topic.
+1. In the **Certificates and private keys for the Gorouter and HAProxy** field, click the **Add** button to define at least one certificate keypair for the Gorouter and HAProxy. For each certificate keypair that you add, assign a name, enter the PEM-encoded certificate chain and PEM-encoded private key. You can either upload your own certificate or generate an RSA certificate in <%= vars.app_runtime_abbr %>. For options and instructions on creating a certificate for your wildcard domains, see [Creating a Wildcard Certificate for <%= vars.app_runtime_abbr %> Deployments](../opsguide/security_config.html#create_or_obtain_certs) in _Providing a Certificate for Your TLS Termination Point_.
 
-1. In the **Minimum version of TLS supported by HAProxy and Router**, select the minimum version of TLS to use in HAProxy communications. HAProxy use TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the HAProxy, see the [TLS Cipher Suites](../security/networking/tls-info.html#ciphers) section of the _TLS Connections in <%= vars.platform_name %>_ topic. 
+1. In the **Minimum version of TLS supported by the Gorouter and HAProxy**, select the minimum version of TLS to use in HAProxy communications. HAProxy use TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the HAProxy, see [TLS Cipher Suites](https://docs.pivotal.io/platform/<%= vars.current_major_version.sub('.', '-') %>/security/networking/tls-info.html#ciphers) in _TLS Connections in <%= vars.platform_name %>_.
 
-1. Under **HAProxy forwards requests to Router over TLS**, leave **Enable** selected and provide the back end certificate authority.
+1. Under **HAProxy forwards requests to the Gorouter over TLS**, leave **Enable** selected and provide the back end certificate authority.
 
-1. If you want to use a specific set of TLS ciphers for HAProxy, configure **TLS cipher suites for HAProxy**. Enter an ordered, colon-separated list of TLS cipher suites in the OpenSSL format. For example, if you have selected support for an earlier version of TLS, you can enter cipher suites supported by this version. For a list of TLS ciphers supported by the HAProxy, see the [TLS Cipher Suites](../security/networking/tls-info.html#ciphers) section of the _TLS Connections in <%= vars.platform_name %>_ topic. 
+1. To use a specific set of TLS ciphers for HAProxy, configure **TLS cipher suites for HAProxy**. Enter an ordered, colon-separated list of TLS cipher suites in the OpenSSL format. For example, if you have selected support for an earlier version of TLS, enter cipher suites supported by this version. For a list of TLS ciphers supported by the HAProxy, see [TLS Cipher Suites](https://docs.pivotal.io/platform/<%= vars.current_major_version.sub('.', '-') %>/security/networking/tls-info.html#ciphers) in _TLS Connections in <%= vars.platform_name %>_.
 
 1. If you expect requests larger than the default maximum of 16.384&nbsp;KB, enter a new value in bytes for **HAProxy request maximum buffer size**. You may need to do this, for example, to support apps that embed a large cookie or query string values in headers.
 
-1. If you want to force browsers to use HTTPS when making requests to HAProxy, select **Enable** in the **HAProxy support for HSTS** field and complete the following optional configuration steps: 
-    * **Maximum age** in seconds for the HSTS request. HAProxy will force HTTPS requests from browsers for the duration of this setting. The maximum age is one year, or 31536000 seconds.
+1. To force browsers to use HTTPS when making requests to HAProxy, select **Enable** in the **HAProxy support for HSTS** field and complete these optional configuration steps:
+    * **Maximum age** in seconds for the HSTS request. HAProxy forces HTTPS requests from browsers for the duration of this setting. The maximum age is one year, or 31536000 seconds.
     * Enable the **Include subdomains** checkbox to force browsers to use HTTPS requests for all component subdomains.
-    * Enable the **Enable preload** checkbox to force instances of Google Chrome, Firefox, and Safari that access your HAProxy to refer to their built-in lists of known hosts that require HTTPS, of which HAProxy is one. This ensures that the first contact a browser has with your HAProxy is an HTTPS request, even if the browser has not yet received an HSTS header from HAProxy.
+    * Select the **Enable preload** checkbox to force instances of Google Chrome, Firefox, and Safari that access your HAProxy to refer to their built-in lists of known hosts that require HTTPS, of which HAProxy is one. This ensures that the first contact a browser has with your HAProxy is an HTTPS request, even if the browser has not yet received an HSTS header from HAProxy.
 
-1. (Optional) If you are not using SSL encryption or if you are using self-signed certificates, you can enable the **Disable SSL certificate verification for this environment** checkbox. This also disables SSL verification for route services. 
-  <p class="note"><p class='note'><strong>Note:</strong> Use this checkbox only for development and testing environments. Do not select it for production environments.</p>
+1. (Optional) If you are not using SSL encryption or if you are using self-signed certificates, you can select the **Disable SSL certificate verification for this environment** checkbox. This also disables SSL verification for route services.
+  <p class="note"><p class='note'><strong>Note:</strong> Select this checkbox only for development and testing environments. Do not select it for production environments.</p>
 
-1. (Optional) If you do not want HAProxy or the Gorouter to accept any non-encrypted HTTP traffic, select the **Disable HTTP on HAProxy and Router** checkbox. 
+1. (Optional) If you do not want the Gorouter to accept any non-encrypted HTTP traffic, select the **Disable HTTP on the Gorouter and HAProxy** checkbox.
 
 1. Under **TLS termination point**, select **Infrastructure load balancer**.
 
-1. (Optional) If your <%= vars.platform_name %> deployment uses HAProxy and you want it to receive traffic only from specific sources, use the following fields:
-    * **HAProxy protected domains**: Enter a comma-separated list of domains from which <%= vars.platform_name %> can receive traffic.
-   * **HAProxy trusted CIDRs**: Optionally, enter a space-separated list of CIDRs to limit which IP addresses from the protected domains can send traffic to <%= vars.platform_name %>.
-     
+1. (Optional) If your <%= vars.app_runtime_abbr %> deployment uses HAProxy and you want it to receive traffic only from specific sources, configure these fields:
+    * **HAProxy protected domains**: Enter a comma-separated list of domains from which <%= vars.app_runtime_abbr %> can receive traffic.
+    * (Optional) **HAProxy trusted CIDRs**: Enter a space-separated list of CIDRs to limit which IP addresses from the protected domains can send traffic to <%= vars.app_runtime_abbr %>.
+
 1. Click **Save**. 
