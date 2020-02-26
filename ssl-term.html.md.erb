@@ -3,39 +3,25 @@ title: Configuring Pivotal Cloud Foundry SSL Termination for vSphere
 owner: Ops Manager
 ---
 
+To use SSL termination in <%= vars.product_name %>, you must configure the HAProxy load balancer or your own load balancer.
+
+<%= vars.recommended_by %> recommends that you use HAProxy in lab and test environments only. Production environments should instead use a highly-available customer-provided load balancing solution.
+
+Choose an SSL termination method to determine the steps you must take to configure <%= vars.product_name %> (<%= vars.product_short %>).
 
 
-To use SSL termination in [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF), you must
-configure the Pivotal-deployed HAProxy load balancer or your own load balancer.
+## <a id="haproxy"></a> Use the HAProxy Load Balancer
 
-Pivotal recommends that you use HAProxy in lab and test environments only.
-Production environments should instead use a highly-available customer-provided
-load balancing solution.
+<%= vars.product_name %> deploys with a single instance of HAProxy for use in lab and test environments. You can use this HAProxy instance for SSL termination and load balancing to the <%= vars.product_short %> Gorouters. HAProxy can generate a self-signed certificate if you do not want to obtain a signed certificate from a well-known Certificate Authority (CA).
 
-Select an SSL termination method to determine the steps you must take to
-configure Pivotal Application Service (PAS).
-
-##<a id="haproxy"></a>Using the Pivotal HAProxy Load Balancer##
-
-PCF deploys with a single instance of HAProxy for use in lab and test
-environments.
-You can use this HAProxy instance for SSL termination and load balancing to the
-PCF Routers.
-HAProxy can generate a self-signed certificate if you do not want to obtain a
-signed certificate from a well-known certificate authority.
 <%= partial '../customizing/known-issue-self-signed-certs' %>
 
-To use the HAProxy load balancer, you must create a wildcard A record in your
-DNS and configure three fields in the PAS product tile.
+To use the HAProxy load balancer:
 
-1. Create an A record in your DNS that points to the HAProxy IP address. The A
-record associates the **System Domain** and **Apps Domain** that you configure
-in the **Domains** section of the PAS tile with the HAProxy IP address.
+1. Create an A record in your DNS that points to the HAProxy IP address. The A record associates the **System domain** and **Apps domain** that you configure in the **Domains** pane of the <%= vars.product_short %> tile with the HAProxy IP address.
     <br />
     <br />
-    For example, with `cf.example.com` as the main subdomain for your CF install
-	and an HAProxy IP address `203.0.113.1`, you must create an A record in your
-	DNS that serves `example.com` and points `*.cf` to `203.0.113.1`.
+    For example, with `<%= vars.product_name_lc %>.example.com` as the main subdomain for your <%= vars.product_name %> installation and an HAProxy IP address `203.0.113.1`, you must create an A record in your DNS that serves `example.com` and points `*.product_name_lc` to `203.0.113.1`.
 
     <table >
         <tr>
@@ -45,88 +31,75 @@ in the **Domains** section of the PAS tile with the HAProxy IP address.
 			<th>Domain</th>
 		</tr>
 		<tr>
-		    <td>*.cf</td>
+		    <td>*.<%= vars.product_name_lc %></td>
 		    <td>A</td>
 		    <td>203.0.113.1</td>
 		    <td>example.com</td>
         </tr>
 	</table>
 
-1. Use the Linux `host` command to test your DNS entry. The `host` command
-should return your HAProxy IP address.
-	<br />
-	<br />
-	Example:
-	<pre class='terminal'>
-	$ host cf.example.com
-    cf.example.com has address 203.0.113.1
-	$ host anything.example.com
-    anything.cf.example.com has address 203.0.113.1
-	</pre>
+1. Test your DNS entry by running:
 
-1. From the PCF Ops Manager Dashboard, click on the PAS tile.
+	```
+	host
+	```
+	This command should return your HAProxy IP address.
+
+1. Navigate to the <%= vars.ops_manager_full %> Installation Dashboard.
+
+1. Click the <%= vars.product_short %> tile.
 
 1. Select **Networking**.
 
-1. Leave the **Router IPs** field blank. HAProxy assigns the router IPs internally.
+1. Leave the **Router IPs** field blank. HAProxy assigns the Gorouter IPs internally.
 
 1. Enter the IP address for HAProxy in the **HAProxy IPs** field.
 
-1. Provide your SSL certificate in the **SSL Termination Certificate and Private Key** field. See [Providing a Certificate for your SSL Termination Point](./security_config.html#config) for details.
+1. Provide your SSL certificate in the **SSL Termination Certificate and Private Key** field. For more information, see [Providing a Certificate for Your TLS Termination Point](./security_config.html).
 
-[Return to the Getting Started Guide](../installing/index.html)
 
-##<a id="other"></a>Using Another Load Balancer##
+## <a id="other"></a> Use Another Load Balancer
 
-Production environments should use a highly-available customer-provided load
-balancing solution that does the following:
+Production environments should use a highly-available customer-provided load balancing solution that:
 
 * Provides SSL termination with wildcard DNS location
-* Provides load balancing to each of the PCF Router IPs
+* Provides load balancing to each of the <%= vars.product_short %> Gorouter IPs
 * Adds appropriate `x-forwarded-for` and `x-forwarded-proto` HTTP headers
 
-You must register static IP addresses for PCF with your load balancer and
-configure three fields in the PAS product tile.
+To use your own load balancer:
 
-1. Register one or more static IP address for PCF with your load
-balancer.
+1. Register one or more static IP address for <%= vars.product_name %> with your load balancer.
 
-1. Create an A record in your DNS that points to your load balancer IP address.
-The A record associates the **System Domain** and **Apps Domain** that you
-configure in the **Domains** section of the PAS tile with the IP address of
-your load balancer.
+1. Create an A record in your DNS that points to your load balancer IP address. The A record associates the **System domain** and **Apps domain** that you configure in the **Domains** pane of the <%= vars.product_short %> tile with the IP address of your load balancer.
     <br />
     <br />
-    For example, with `cf.example.com` as the main subdomain for your CF install
-    and a load balancer IP address `198.51.100.1`, you must create an A record in
-	your DNS that serves `example.com` and points `*.cf` to `198.51.100.1`.
+    For example, with `<%= vars.product_name_lc %>.example.com` as the main subdomain for your <%= vars.product_name %> installation and a load balancer IP address `198.51.100.1`, you must create an A record in your DNS that serves `example.com` and points `*.<%= vars.product_name_lc %>` to `198.51.100.1`.
 
     <table border="1" class="nice" >
-      <tr>
-        <th>Name</th>
-			  <th>Type</th>
-			  <th>Data</th>
-			  <th>Domain</th>
-		  </tr>
-		  <tr>
-		    <td>*.cf</td>
+    	<tr>
+	        <th>Name</th>
+			<th>Type</th>
+			<th>Data</th>
+			<th>Domain</th>
+		</tr>
+		<tr>
+		    <td>*.<%= vars.product_name_lc %></td>
 		    <td>A</td>
 		    <td>198.51.100.1</td>
 		    <td>example.com</td>
-      </tr>
+      	</tr>
     </table>
 
+1. Navigate to the <%= vars.ops_manager_full %> Installation Dashboard.
 
-1. From the PCF Ops Manager Dashboard, click on the PAS tile.
+1. Click the <%= vars.product_short %> tile.
 
 1. Select **Networking**.
 
-1. In the **Router IPs** field, enter the static IP address for PCF that you have registered with your load balancer.
+1. In the **Router IPs** field, enter the static IP address for <%= vars.product_name %> that you have registered with your load balancer.
 
 1. Leave the **HAProxy IPs** field blank.
 
-1. Provide your SSL certificate in the **SSL Termination Certificate and Private Key** field. See [Providing a Certificate for your SSL Termination Point](./security_config.html#config) for details.
+1. Provide your SSL certificate in the **SSL Termination Certificate and Private Key** field. For more information, see [Providing a Certificate for Your TLS Termination Point](./security_config.html).
 
-<p class='note'><strong>Note</strong>: When adding or removing PCF routers, you must update your load balancing solution configuration with the appropriate IP addresses.</p>
-
-[Return to the Installing Pivotal Cloud Foundry Guide](../installing/index.html)
+<p class='note'><strong>Note:</strong> When adding or removing <%= vars.product_name %> Gorouters, you must update your load balancing solution configuration with the appropriate IP addresses.</p>
