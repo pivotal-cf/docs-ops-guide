@@ -1,59 +1,57 @@
 To configure SSL termination on HAProxy in <%= vars.product_name %>:
 
-1. Navigate to the Ops Manager Installation Dashboard.
+1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. Click the **Pivotal Application Service** tile in the Installation Dashboard.
+1. Click the <%= vars.product_short %> tile.
 
 1. Click **Networking**.
 
 1. Configure the following based on the IaaS of your <%= vars.product_name %> deployment.
     <table>
     <tr>
-     <th>If your <%= vars.product_name %> deployment is on:</th>
-     <th>Then configure the following:</th>
-     <th>See also:</th>
+      <th>If your <%= vars.product_name %> deployment is on:</th>
+      <th>Then configure the following:</th>
+      <th>See also:</th>
     </tr>
     <tr>
-     <td>
-     OpenStack or vSphere
-     </td>
-     <td>Decide whether you want your HAProxy to be highly available.<ul>
-      <li>If you need highly available HAProxy, then perform the following steps:
-      <ol>
-        <li>Choose an IP address for each HAProxy instance on the subnet where you deployed <%= vars.product_name %>.</li>
-        <li>In the **HAProxy IPs** field of the **Networking** pane, enter the IP addresses you have selected for your HAProxy instances.</li>
-        <li>Configure your load balancer (for example, F5 or NSX) to forward domain names to the HAProxy IP addresses.</li>
-      </ol>
-      <li>If you do not require high availability (for example, you are setting up a development environment), then perform the following steps:
-      <ol>
-       <li>Skip setting up the load balancer.</li>
-       <li>Choose one IP address for the single HAProxy instance.</li>
-       <li>Configure DNS to point at the IP address. See [How to Set Up DNS for HAProxy](#haproxy_dns).</li>
-      </ol>
-    </ul></td>
-    <td>For more information, see [Configuring PAS](../customizing/configure-pas.html#networking). 
-    </td>
+      <td>OpenStack or vSphere</td>
+      <td>Decide whether you want your HAProxy to be highly available.
+        <ul>
+          <li>If you need highly-available HAProxy:
+            <ol>
+              <li>Choose an IP address for each HAProxy instance on the subnet where you deployed <%= vars.product_name %>.</li>
+              <li>In the **HAProxy IPs** field of the **Networking** pane, enter the IP addresses you have selected for your HAProxy instances.</li>
+              <li>Configure your load balancer, such as F5 or NSX, to forward domain names to the HAProxy IP addresses.</li>
+            </ol>
+          <li>If you do not require high availability, such as if you are setting up a development environment:
+            <ol>
+              <li>Skip setting up the load balancer.</li>
+              <li>Choose one IP address for the single HAProxy instance.</li>
+              <li>Configure DNS to point at the IP address. For more information, see [How to Set Up DNS for HAProxy](#haproxy_dns).</li>
+            </ol>
+        </ul>
+      </td>
+      <td>For more information, see [Configuring <%= vars.product_short %>](../customizing/configure-pas.html#networking).</td>
     <tr>
-    <td>
-    AWS, GCP or Azure
-    </td>
-    <td><ol><li>Leave the HAProxy IP address blank.</li>
-    <li>In the **Resource Config** page of PAS tile, locate the HAProxy job.</li>
-    <li>In the **Load Balancer** column for the HAProxy job, specify the appropriate IaaS load balancer resource.</li>
-    </ol>
-    </td>
-    <td>For more information, see [Configuring PAS](../customizing/configure-pas.html#networking).
-    </td>
-     </tr>
-   </table>
+      <td>AWS, GCP or Azure</td>
+      <td>
+        <ol>
+          <li>Leave the HAProxy IP address blank.</li>
+          <li>In the **Resource Config** page of <%= vars.product_short %> tile, locate the HAProxy job.</li>
+          <li>In the **Load Balancer** column for the HAProxy job, specify the appropriate IaaS load balancer resource.</li>
+        </ol>
+      </td>
+      <td>For more information, see [Configuring <%= vars.product_short %>](../customizing/configure-pas.html#networking).</td>
+    </tr>
+    </table>
 
-1. In the **Certificates and Private Keys for HAProxy and Router** field, click the **Add** button to define at least one certificate keypair for HAProxy and Router. For each certificate keypair that you add, assign a name, enter the PEM-encoded certificate chain and PEM-encoded private key. You can either upload your own certificate or generate an RSA certificate in PAS. For options and instructions on creating a certificate for your wildcard domains, see the [Creating a Wildcard Certificate for <%= vars.product_name %> Deployments](../opsguide/security_config.html#create_or_obtain_certs) in the _Providing a Certificate for Your TLS Termination Point_ topic.
+1. In the **Certificates and Private Keys for HAProxy and Router** field, click the **Add** button to define at least one certificate keypair for HAProxy and Router. For each certificate keypair that you add, assign a name, enter the PEM-encoded certificate chain and PEM-encoded private key. You can either upload your own certificate or generate an RSA certificate in <%= vars.product_short %>. For options and instructions on creating a certificate for your wildcard domains, see [Creating a Wildcard Certificate for <%= vars.product_name %> Deployments](../opsguide/security_config.html#create_or_obtain_certs) in _Providing a Certificate for Your TLS Termination Point_.
 
-1. In the **Minimum version of TLS supported by HAProxy and Router**, select the minimum version of TLS to use in HAProxy communications. HAProxy use TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the HAProxy, see the [TLS Cipher Suites](../security/networking/tls-info.html#ciphers) section of the _TLS Connections in <%= vars.product_name %>_ topic.
+1. In the **Minimum version of TLS supported by HAProxy and Router**, select the minimum version of TLS to use in HAProxy communications. HAProxy use TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the HAProxy, see [TLS Cipher Suites](../security/networking/tls-info.html#ciphers) in _TLS Connections in <%= vars.product_name %>_.
 
 1. Under **HAProxy forwards requests to Router over TLS**, leave **Enabled** selected and provide the backend certificate authority.
 
-1. If you want to use a specific set of TLS ciphers for HAProxy, configure **TLS Cipher Suites for HAProxy**. Enter an ordered, colon-separated list of TLS cipher suites in the OpenSSL format. For example, if you have selected support for an earlier version of TLS, you can enter cipher suites supported by this version. For a list of TLS ciphers supported by the HAProxy, see the [TLS Cipher Suites](../security/networking/tls-info.html#ciphers) section of the _TLS Connections in <%= vars.product_name %>_ topic.
+1. If you want to use a specific set of TLS ciphers for HAProxy, configure **TLS Cipher Suites for HAProxy**. Enter an ordered, colon-separated list of TLS cipher suites in the OpenSSL format. For example, if you have selected support for an earlier version of TLS, you can enter cipher suites supported by this version. For a list of TLS ciphers supported by the HAProxy, see [TLS Cipher Suites](../security/networking/tls-info.html#ciphers) in _TLS Connections in <%= vars.product_name %>_.
 
 1. If you expect requests larger than the default maximum of 16&nbsp;KB, enter a new value in bytes for **HAProxy Request Max Buffer Size**. You may need to do this, for example, to support apps that embed a large cookie or query string values in headers.
 
@@ -62,12 +60,13 @@ To configure SSL termination on HAProxy in <%= vars.product_name %>:
     1. (Optional) Select the **Include Subdomains** checkbox to force browsers to use HTTPS requests for all component subdomains. 
     1. (Optional) Select the **Enable Preload** checkbox to force instances of Google Chrome, Firefox, and Safari that access your HAProxy to refer to their built-in lists of known hosts that require HTTPS, of which HAProxy is one. This ensures that the first contact a browser has with your HAProxy is an HTTPS request, even if the browser has not yet received an HSTS header from your HAProxy.
 
-1. (Optional) If you are not using SSL encryption or if you are using self-signed certificates, you can select **Disable SSL certificate verification for this environment**. Selecting this checkbox also disables SSL verification for route services.   <p class="note"><strong>Note:</strong>Use this checkbox only for development and testing environments. Do not select it for production environments.</p>u do not want HAProxy or the Gorouter to accept any non-encrypted HTTP traffic, select the **Disable HTTP on HAProxy and Router** checkbox. 
+1. (Optional) If you are not using SSL encryption or if you are using self-signed certificates, you can select **Disable SSL certificate verification for this environment**. Selecting this checkbox also disables SSL verification for route services.
+  <p class="note"><strong>Note:</strong> Use this checkbox only for development and testing environments. Do not select it for production environments.</p>u do not want HAProxy or the Gorouter to accept any non-encrypted HTTP traffic, select the **Disable HTTP on HAProxy and Router** checkbox. 
 
 1. In the **Configure the CF Router support for the X-Forwarded-Client-Cert header** field, select **Always forward the XFCC header in the request, regardless of the whether the client connection is mTLS**.
 
 1. (Optional) If your <%= vars.product_name %> deployment uses HAProxy and you want it to receive traffic only from specific sources, use the following fields:
    * **Protected Domains**: Enter a comma-separated list of domains from which <%= vars.product_name %> can receive traffic.
-   * **Trusted CIDRs**: Optionally, enter a space-separated list of CIDRs to limit which IP addresses from the protected domains can send traffic to <%= vars.product_name %>.
+   * (Optional) **Trusted CIDRs**: Enter a space-separated list of CIDRs to limit which IP addresses from the protected domains can send traffic to <%= vars.product_name %>.
      
 1. Click **Save**. 
