@@ -31,7 +31,7 @@ To enable TCP routing:
     <p class='note'><strong>Note:</strong> If you have mutual TLS app identity verification enabled, app containers accept incoming communication only from the Gorouter. This disables TCP routing.</p>
 
 1. For **TCP Routing Ports**, enter one or more ports to which the load balancer forwards requests. To support multiple TCP routes, Pivotal recommends allocating multiple ports. Do one of the following:
-    * To allocate a single port or range of ports, enter a single port or a range of ports.  
+    * To allocate a single port or range of ports, enter a single port or a range of ports.
     	<p class="note"><strong>Note:</strong> If you configured AWS for <%= vars.product_name %> manually, enter <code>1024-1123</code> which corresponds to the rules you created for <code><%= vars.product_name_lc %>-tcp-elb</code>.</p>
     * To allocate a list of ports:
     	1. Enter a single port in the **TCP routing ports** field.

@@ -1,7 +1,7 @@
-Pivotal Application Service (PAS) uses the following properties:
-	
-* **Unhealthy Threshold**: Specifies the amount of time, in seconds, that the Router continues to accept connections before shutting down. During this period, the healthcheck reports `unhealthy` to cause load balancers to fail over to other routers. You should set this value greater than or equal to the maximum amount of time it could take your load balancer to consider a router instance unhealthy, given contiguous failed healthchecks.
+<%= vars.product_runtime %> (<%= vars.product_short %>) uses these properties:
 
-* **Healthy Threshold**: Specifies the amount of time, in seconds, to wait until declaring the router instance started. This allows an external load balancer time to register the instance as `healthy`.
+* **Unhealthy Threshold**: Specifies the amount of time, in seconds, that the Gorouter continues to accept connections before shutting down. During this period, the health check reports `unhealthy` to cause load balancers to fail over to other Gorouters. You should set this value greater than or equal to the maximum amount of time it could take your load balancer to consider a Gorouter instance unhealthy, given contiguous failed health checks.
 
-You can configure these properties from the **Settings** > **Network** tab.
+* **Healthy Threshold**: Specifies the amount of time, in seconds, to wait until declaring the Gorouter instance started. This allows an external load balancer time to register the instance as `healthy`.
+
+You can configure these properties in the **Networking** pane of the <%= vars.product_short %> tile. For more information, see [Configure Networking](../customizing/configure-pas.html#networking) in _Configuring <%= vars.product_short %>_.

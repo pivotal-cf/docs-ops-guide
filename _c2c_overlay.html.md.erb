@@ -1,37 +1,39 @@
-##<a id="overlay"></a> Configure the Overlay Network
+## <a id="overlay"></a> Configure the Overlay Network
 
-Container-to-Container Networking uses an overlay network to manage communication between app instances.
-By default, each Diego cell in the overlay network is allocated a /24 range that supports 254 containers per cell, one container for each of the usable IP addresses, `.1` through `.254`.
-For more information about the overlay network, see [Overlay Network](../../concepts/understand-cf-networking.html#overlay-network) in _Container-to-Container Networking_.
+Container-to-container networking uses an overlay network to manage communication between app instances. By default, each Diego Cell in the overlay network is allocated a /24 range that supports 254 containers per Diego Cell, one container for each of the usable IP addresses, `.1` through `.254`. For more information about the overlay network, see [Overlay Network](../../concepts/understand-cf-networking.html#overlay-network) in _Container-to-Container Networking_.
 
-###<a id="cells"></a> Configure the Number of Diego Cells
+### <a id="cells"></a> Configure the Number of Diego Cells
 
-If you want to modify the number of Diego cells supported by the overlay network, follow the steps below:
+To modify the number of Diego Cells supported by the overlay network:
 
-1. In Ops Manager, select the PAS tile.
+1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
+
+1. Click the <%= vars.product_short %> tile.
+
 1. Select **Networking**.
-1. Under **Overlay Subnet**, enter an IP range for the overlay network. By default, Ops Manager uses `10.255.0.0/16`. Modifying the subnet range allocated to the overlay network changes the number of Diego cells supported in your deployment. Use the table below as a reference.
 
-<table>
-  <tr>
-    <th>Overlay subnet mask</th>
-    <th>Number of cells</th>
-    <th>Containers per cell </th>
-  </tr>
-  <tr>
-    <td>/20</td>
-    <td>15</td>
-    <td>254</td>
-  </tr>
-  <tr>
-    <td>/16</td>
-    <td>255</td>
-    <td>254</td>
-  </tr>
-  <tr>
-    <td>/12</td>
-    <td>4,095</td>
-    <td>254</td>
-  </tr>
-</table>
-<p class="note warning"><strong>Warning</strong>: The overlay network IP address range must not conflict with any other IP addresses in the network. If a conflict exists, Diego cells cannot reach any endpoint that has a conflicting IP address.</p>
+1. Under **Overlay subnet**, enter an IP range for the overlay network. By default, <%= vars.ops_manager %> uses `10.255.0.0/16`. Modifying the subnet range allocated to the overlay network changes the number of Diego Cells supported in your deployment.
+
+    <table>
+      <tr>
+        <th>Overlay subnet mask</th>
+        <th>Number of Diego Cells</th>
+        <th>Containers per Diego Cell </th>
+      </tr>
+      <tr>
+        <td>/20</td>
+        <td>15</td>
+        <td>254</td>
+      </tr>
+      <tr>
+        <td>/16</td>
+        <td>255</td>
+        <td>254</td>
+      </tr>
+      <tr>
+        <td>/12</td>
+        <td>4,095</td>
+        <td>254</td>
+      </tr>
+    </table>
+    <p class="note warning"><strong>Warning:</strong> The overlay network IP address range must not conflict with any other IP addresses in the network. If a conflict exists, Diego Cells cannot reach any endpoint that has a conflicting IP address.</p>

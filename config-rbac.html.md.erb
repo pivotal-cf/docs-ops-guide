@@ -3,200 +3,246 @@ title: Configuring Role-Based Access Control (RBAC) in Ops Manager
 owner: Ops Manager
 ---
 
+This topic describes how to customize role-based access control (RBAC) in <%= vars.ops_manager_full %>.
 
 
-This topic describes how to customize role-based access control (RBAC) in Ops Manager. Use RBAC to manage which operators in your organization can make deployment changes, view credentials, and manage user roles in Ops Manager.
+## <a id='overview'></a> Overview
 
-For information about configuring Ops Manager to use internal authentication or SAML authentication, see the Ops Manager configuration topic for your IaaS:
+You can use RBAC to manage which operators in your organization can make deployment changes, view credentials, and manage user roles in <%= vars.ops_manager %>.
 
-  * [Configuring BOSH Director on AWS](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/aws/config-terraform.html#access-om)
-  * [Configuring BOSH Director on Azure Manually](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/azure/config-manual.html#access-om)
-  * [Configuring BOSH Director on GCP](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/gcp/config-manual.html#access-om)
-  * [Configuring BOSH Director on OpenStack](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/openstack/config.html#log-in)
-  * [Configuring BOSH Director on vSphere](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/vsphere/config.html#set-up)
+For information about configuring <%= vars.ops_manager %> to use internal authentication or SAML authentication, see the BOSH Manager configuration topic for your IaaS:
+
+* [Configuring BOSH Director on AWS](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/aws/config-terraform.html#access-om)
+
+* [Configuring BOSH Director on Azure Manually](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/azure/config-manual.html#access-om)
+
+* [Configuring BOSH Director on GCP](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/gcp/config-manual.html#access-om)
+
+* [Configuring BOSH Director on OpenStack](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/openstack/config.html#log-in)
+
+* [Configuring BOSH Director on vSphere](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/vsphere/config.html#set-up)
 
 
-## <a id="about"></a> Roles in Ops Manager
+## <a id="about"></a> Roles in <%= vars.ops_manager %>
 
-You can assign the following roles to determine which operators in your organization make deployment changes, view credentials, and manage user roles in Ops Manager:
+The diagram below illustrates the roles you can assign to determine which operators in your organization make deployment changes, view credentials, and manage user roles in <%= vars.ops_manager %>:
 
 <img class="no-border" src="images/roles-diagram.png" alt="Ops Manager roles diagram">
 
-Ops Manager administrators can use the roles defined in the diagram above to meet the security needs of their organization. The roles provide a range of privileges that are appropriate for different types of users. For example, assign either **Restricted Control** or **Restricted View** to an operator to prevent access to all Ops Manager credentials.
+<%= vars.ops_manager %> admins can use these roles to meet the security needs of their organization. The roles provide a range of privileges that are appropriate for different types of users. For example, assign either **Restricted Control** or **Restricted View** to an operator to prevent access to all <%= vars.ops_manager %> credentials.
 
-See the following table for more information about each role:
+For more information about each role, see the table below:
 
-| **Ops Manager Role** | **Role Definition** | **UAA Scope** |
-|----------------------+---------------------+---------------|
-| **Ops Manager Administrator** | Administrators can make configuration changes and click **Review Pending Changes** and **Apply Changes** in Ops Manager, view credentials in the **Credentials** tab and Ops Manager API endpoints, change the authentication method, and assign roles to other operators. | `opsman.admin` |
-| **Full Control** | Operators can make configuration changes and click **Review Pending Changes** and **Apply Changes** in Ops Manager, and view credentials in the **Credentials** tab and Ops Manager API endpoints. | `opsman.full_control` |
-| **Restricted Control** | Operators can make configuration changes and click **Review Pending Changes** and **Apply Changes** in Ops Manager. They cannot view credentials in the **Credentials** tab or Ops Manager API endpoints. | `opsman.restricted_control` |
-| **Full View** | Operators can view Ops Manager configuration settings and view credentials in the **Credentials** tab and Ops Manager API endpoints. They cannot make configuration changes or click **Apply Changes**. | `opsman.full_view` |
-| **Restricted View** | Operators can view Ops Manager configuration settings. They cannot make configuration changes or view credentials in the **Credentials** tab or Ops Manager API endpoints. | `opsman.restricted_view` |
+| <%= vars.ops_manager %> Role | Role Definition | UAA Scope |
+| ---------------------------- | --------------- | --------- |
+| **<%= vars.ops_manager %> Administrator** | Admins can make configuration changes and click **Review Pending Changes** and **Apply Changes** in <%= vars.ops_manager %>, view credentials in the **Credentials** tab and <%= vars.ops_manager %> API endpoints, change the authentication method, and assign roles to other operators. | `opsman.admin` |
+| **Full Control** | Operators can make configuration changes and click **Review Pending Changes** and **Apply Changes** in <%= vars.ops_manager %>, and view credentials in the **Credentials** tab and <%= vars.ops_manager %> API endpoints. | `opsman.full_control` |
+| **Restricted Control** | Operators can make configuration changes and click **Review Pending Changes** and **Apply Changes** in <%= vars.ops_manager %>. They cannot view credentials in the **Credentials** tab or <%= vars.ops_manager %> API endpoints. | `opsman.restricted_control` |
+| **Full View** | Operators can view <%= vars.ops_manager %> configuration settings and view credentials in the **Credentials** tab and <%= vars.ops_manager %> API endpoints. They cannot make configuration changes or click **Apply Changes**. | `opsman.full_view` |
+| **Restricted View** | Operators can view <%= vars.ops_manager %> configuration settings. They cannot make configuration changes or view credentials in the **Credentials** tab or <%= vars.ops_manager %> API endpoints. | `opsman.restricted_view` |
 
-To assign one of the above roles to an operator, follow the procedure for granting access using either [internal authentication](#write-internal) or [SAML authentication](#write-saml).
+To assign one of the above roles to an operator, see [Manage Roles with Internal Authentication](#write-internal) or [Manage Roles with SAML Authentication](#write-saml).
 
-When you install a new Ops Manager instance, all existing users have the Ops Manager Administrator role by default.
+When you install a new <%= vars.ops_manager %> instance, all existing users have the <%= vars.ops_manager %> Administrator role by default.
 
-## <a id="multiple-write-users"></a> Simultaneous Ops Manager Administrators
 
-Ops Manager allows multiple administrators to log in to Ops Manager simultaneously and make changes.
+## <a id="multiple-write-users"></a> Simultaneous <%= vars.ops_manager %> Admins
 
-The interface does not provide visibility to other administrators that are logged in. Pivotal recommends that administrators communicate with each other and coordinate their changes.
+<%= vars.ops_manager %> allows multiple admins to log in to <%= vars.ops_manager %> simultaneously and make changes.
 
+The interface does not provide visibility to other admins that are logged in. <%= vars.recommended_by %> recommends that admins communicate with each other and coordinate their changes.
 
 ### <a id="write-user-precedence"></a> Precedence for Apply Changes
 
-Only one deployment takes precedence when two administrators try to deploy around the same time.
+Only one deployment takes precedence when two admins try to deploy around the same time.
 
-If two administrators are working at the same time, the administrator who first clicks **Apply Changes** takes precedence. Ops Manager overwrites all configurations made by other administrators during deployment.
+If two admins are working at the same time, the admin who first clicks **Apply Changes** takes precedence. <%= vars.ops_manager %> overwrites all configurations made by other admins during deployment.
 
-Pivotal recommends coordinating changes between administrators to avoid overwriting configurations.
+<%= vars.recommended_by %> recommends coordinating changes between admins to avoid overwriting configurations.
+
+<p class="note"><strong>Note:</strong> If you are having deployment issues or changes to your <%= vars.ops_manager %> are not persisting correctly, confirm that your work is not conflicting with an automated admin.</p>
 
 
-<p class="note"><strong>Note</strong>: If you are having deployment issues or changes to your Ops Manager are not persisting correctly, confirm that your work is not conflicting with an automated administrator.</p>
+## <a id="enable"></a> Enable RBAC in <%= vars.ops_manager %> After Upgrade
 
-## <a id="enable"></a> Enable RBAC in Ops Manager After Upgrade
-
-When you install a new instance of Ops Manager, RBAC is permanently enabled by default.
+When you install a new instance of <%= vars.ops_manager %>, RBAC is permanently enabled by default.
 
 If your organization has operators who are devoted to managing certain services like MySQL for PCF, you can use RBAC to assign those services operators a more restricted role.
 
-If you upgrade from an older Ops Manager instance, you must enable RBAC and assign roles to users before they can access Ops Manager. If you do not assign any roles to a user, they cannot log in to Ops Manager.
+If you upgrade from an older <%= vars.ops_manager %> instance, you must enable RBAC and assign roles to users before they can access <%= vars.ops_manager %>. If you do not assign any roles to a user, they cannot log in to <%= vars.ops_manager %>.
 
-<p class="note warning"><strong>WARNING:</strong> Do not assign roles before you enable RBAC.</p>
+<p class="note warning"><strong>Warning:</strong> Do not assign roles before you enable RBAC.</p>
 
 ### <a id="enable-internal"></a> Enable RBAC with Internal Authentication
 
-If you are upgrading from an older version of Ops Manager and use internal authentication, do the following to enable RBAC:
+If you are upgrading from an older version of <%= vars.ops_manager %> and use internal authentication:
 
-1. Log in to the Ops Manager dashboard.
+1. Log in to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. Click **Settings** from the user account menu.
+1. From the user account menu, click **Settings**.
 
 1. Click **Advanced**.
 
 1. Click **Enable RBAC**. When the confirmation dialog box appears, click **Confirm and Logout**.
   <div class="note"><strong>Notes:</strong>
     <ul>
-      <li>Enabling RBAC is permanent. You cannot undo this action. When you upgrade Ops Manager, your RBAC settings remain configured.</li>
-      <li>You will not see this dialog box if RBAC is already configured. With new instances of Ops Manager, RBAC is permanently configured by default.</li>
+      <li>Enabling RBAC is permanent. You cannot undo this action. When you upgrade <%= vars.ops_manager %>, your RBAC settings remain configured.</li>
+      <li>This dialog box does not appear if RBAC is already configured. With new instances of <%= vars.ops_manager %>, RBAC is permanently configured by default.</li>
     </li>
   </div>
 
 ### <a id="enable-saml"></a> Enable RBAC with SAML Authentication
 
-If you are upgrading from an older version of Ops Manager and use SAML authentication, perform the steps in this section to enable RBAC. To enable RBAC in Ops Manager when using SAML authentication, you must configure groups in SAML for admins and non-admins and then map the admin group to Ops Manager.
+If you are upgrading from an older version of <%= vars.ops_manager %> and use SAML authentication, follow the procedures in these sections to enable RBAC. To enable RBAC in <%= vars.ops_manager %> when using SAML authentication, you must configure groups in SAML for admins and non-admins and then map the admin group to <%= vars.ops_manager %>.
 
 #### <a id="admin-saml"></a> Step 1: Configure SAML Groups
 
-To gather information from your SAML dashboard, do the following:
+To gather information from your SAML dashboard:
 
 1. Log in to your SAML provider dashboard.
 
-1. Create or identify the name of the SAML group that contains Ops Manager admin users.
+1. Create or identify the name of the SAML group that contains <%= vars.ops_manager %> admin users.
 
 1. Identify the groups attribute tag you configured for your SAML server.
 
-#### <a id="enable-om-saml"></a> Step 2: Enable RBAC in Ops Manager
+#### <a id="enable-om-saml"></a> Step 2: Enable RBAC in <%= vars.ops_manager %>
 
-Perform the steps above in [Enable RBAC with Internal Authentication](#enable-internal) to configure Ops Manager to recognize your SAML admin user group.
+Follow the procedure in [Enable RBAC with Internal Authentication](#enable-internal) to configure <%= vars.ops_manager %> to recognize your SAML admin user group.
 
-<p class="note"><strong>Note:</strong> When RBAC is enabled, only users with the Ops Manager Administrator role can edit SAML configuration.</p>
-
-
-## <a id="create-users"></a> Create User Accounts in Ops Manager
-
-To assign RBAC roles to operators, you must first create user accounts for them. For more information about creating user accounts in Ops Manager with the User Account and Authentication (UAA) module, see [Creating and Managing Ops Manager User Accounts](../customizing/opsman-users.html).
-
-In addition to user accounts, you can create a client account to add to Ops Manager. Client accounts manage automation tasks, such as upgrade scripts, log management, and other behaviors that might be negatively impacted if managed by a user account. You can add a client account either before initial deployment or to an existing deployment. 
-
-For more information about client accounts, see [Creating and Managing Ops Manager User and Client Accounts](../customizing/opsman-users.html).
+<p class="note"><strong>Note:</strong> When RBAC is enabled, only users with the <%= vars.ops_manager %> Administrator role can edit SAML configuration.</p>
 
 
-## <a id="manage-roles"></a> Manage RBAC Roles in Ops Manager
+## <a id="create-users"></a> Create User Accounts in <%= vars.ops_manager %>
 
-You can assign the roles defined in [Roles in Ops Manager](#about) to determine which operators in your organization make deployment changes, view credentials, and manage user roles in Ops Manager.
+To assign RBAC roles to operators, you must first create user accounts for them. For more information about creating user accounts in <%= vars.ops_manager %> with the User Account and Authentication (UAA) module, see [Creating and Managing <%= vars.ops_manager %> User Accounts](../customizing/opsman-users.html).
+
+In addition to user accounts, you can create a client account to add to <%= vars.ops_manager %>. Client accounts manage automation tasks, such as upgrade scripts, log management, and other behaviors that might be negatively impacted if managed by a user account. You can add a client account either before initial deployment or to an existing deployment.
+
+For more information about client accounts, see [Creating and Managing <%= vars.ops_manager %> User and Client Accounts](../customizing/opsman-users.html).
+
+
+## <a id="manage-roles"></a> Manage RBAC Roles in <%= vars.ops_manager %>
+
+You can assign the roles defined in [Roles in <%= vars.ops_manager %>](#about) to determine which operators in your organization make deployment changes, view credentials, and manage user roles in <%= vars.ops_manager %>.
 
 ### <a id="write-internal"></a> Manage Roles with Internal Authentication
 
-If you configured Ops Manager to use internal authentication, do the following to configure roles using the [UAA Command Line Interface (UAAC)](../uaa/uaa-user-management.html):
+If you configured <%= vars.ops_manager %> to use internal authentication, you can configure roles using the UAA Command Line Interface (UAAC). For more information, see [Creating and Managing Users with the UAA CLI (UAAC)](../uaa/uaa-user-management.html).
 
-1. Target your UAA server and log in as an admin: 
-    <pre class="terminal">
-    uaac target https<span>:</span>//YOUR-OPSMAN-DOMAIN/uaa
+To use the UAAC to configure roles:
+
+1. Target your UAA server and log in as an admin by running:
+
+    ```
+    uaac target https://OPS-MANAGER-DOMAIN/uaa
     uaac token owner get
-    </pre>
+    ```
+    Where `OPS-MANAGER-DOMAIN` is the domain of your <%= vars.ops_manager %> deployment.
 
-1. When prompted, enter the following credentials. Enter `opsman` for  **Client ID** and leave **Client secret** blank, then enter your username and password:
-    <pre class="terminal">
+1. When prompted, enter these credentials, leaving **Client secret** blank:
+
+    ```
     Client ID: opsman
     Client secret:
     User name: USERNAME
-    Password: YOUR-PASSWORD</pre>
+    Password: PASSWORD
+    ```
+    Where:
+    * `USERNAME` is your username.
+    * `PASSWORD` is your password.
 
-1. Assign one of the following roles to a user, replacing `USERNAME` with their username.
-    * **Ops Manager Administrator**:
-      <pre class="terminal">uaac member add opsman.admin USERNAME</pre>
-    * **Full Control**:
-      <pre class="terminal">uaac member add opsman.full_control USERNAME</pre>
-    * **Restricted Control**:
-      <pre class="terminal">uaac member add opsman.restricted_control USERNAME</pre>
-    * **Full View**:
-      <pre class="terminal">uaac member add opsman.full_view USERNAME</pre>
-    * **Restricted View**:
-      <pre class="terminal">uaac member add opsman.restricted_view USERNAME</pre>
+1. To assign a role to a user, run one of these commands:
+    * **<%= vars.ops_manager %> Administrator:**
+
+        ```
+        uaac member add opsman.admin USERNAME
+        ```
+        Where `USERNAME` is the user to which you want to assign the role.
+    * **Full Control:**
+
+        ```
+        uaac member add opsman.full_control USERNAME
+        ```
+        Where `USERNAME` is the user to which you want to assign the role.
+    * **Restricted Control:**
+
+        ```
+        uaac member add opsman.restricted_control USERNAME
+        ```
+        Where `USERNAME` is the user to which you want to assign the role.
+    * **Full View:**
+
+        ```
+        uaac member add opsman.full_view USERNAME
+        ```
+        Where `USERNAME` is the user to which you want to assign the role.
+    * **Restricted View:**
+
+        ```
+        uaac member add opsman.restricted_view USERNAME
+        ```
+        Where `USERNAME` is the user to which you want to assign the role.
 
 ### <a id="write-saml"></a> Manage Roles with SAML Authentication
 
-If you configured Ops Manager with SAML authentication, do the following to assign non-admin user roles using UAAC:
+If you configured <%= vars.ops_manager %> with SAML authentication, you can assign non-admin user roles using UAAC. To assign non-admin user roles:
 
-1. Target your UAA server and log in as an admin: 
-    <pre class="terminal">
-    uaac target https<span>:</span>//YOUR-OPSMAN-DOMAIN/uaa
+1. Target your UAA server and log in as an admin by running:
+
+    ```
+    uaac target https://OPS-MANAGER-DOMAIN/uaa
     uaac token sso get
-    </pre>
+    ```
+    Where `OPS-MANAGER-DOMAIN` is the domain of your <%= vars.ops_manager %> deployment.
 
 1. When prompted, enter **Client ID** and **Passcode**, leaving **Client secret** blank:
-    <pre class="terminal">
+
+    ```
     Client ID: opsman
     Client secret:
-    Passcode (from http<span>:</span>//YOUR-OPSMAN-DOMAIN/uaa/passcode): YOUR-UAA-PASSCODE
-    </pre>
+    Passcode: UAA-PASSCODE
+    ```
+    Where `UAA-PASSCODE` is the passcode you retrieved in the previous step.
 
-1. Run the following command:
-    <pre class="terminal">
-    uaac group map SAML-GROUP --name 'OPSMAN-SCOPE' --origin 'saml'
-    </pre>
-  Replace the placeholder text as follows:
-  * `SAML-GROUP`: Replace with name of the SAML group the user belongs to.
-  * `OPSMAN-SCOPE`: Replace with an Ops Manager UAA scope. See the table in [Understand Roles in Ops Manager](#about) to determine which UAA scope to use.
+1. Run:
 
-1. Add new and existing users to the appropriate SAML groups in the SAML provider dashboard. Users must log out of both Ops Manager and the SAML provider for role changes to take effect.
+    ```
+    uaac group map SAML-GROUP --name 'OPS-MANAGER-SCOPE' --origin 'saml'
+    ```
+    Where:
+    * `SAML-GROUP` is the name of the SAML group to which the user belongs.
+    * `OPS-MANAGER-SCOPE` is the <%= vars.ops_manager %> UAA scope you want to assign to the user. To determine which UAA scope to use, see the table in [Roles in <%= vars.ops_manager %>](#about).
+
+1. Add new and existing users to the appropriate SAML groups in the SAML provider dashboard. Users must log out of both <%= vars.ops_manager %> and the SAML provider for role changes to take effect.
 
 ### <a id="write-ldap"></a> Manage Roles with LDAP Authentication
 
-If you configured Ops Manager with LDAP authentication, do the following to assign non-admin user roles using UAAC:
+If you configured <%= vars.ops_manager %> with LDAP authentication, you can assign non-admin user roles using UAAC. To assign non-admin user roles:
 
-1. Target your UAA server and log in as an admin: 
-    <pre class="terminal">
-    uaac target https<span>:</span>//YOUR-OPSMAN-DOMAIN/uaa
+1. Target your UAA server and log in as an admin by running:
+
+    ```
+    uaac target https://OPS-MANAGER-DOMAIN/uaa
     uaac token sso get
-    </pre>
+    ```
+    Where `OPS-MANAGER-DOMAIN` is the domain of your <%= vars.ops_manager %> deployment.
 
 1. When prompted, enter **Client ID** and **Passcode**, leaving **Client secret** blank:
-    <pre class="terminal">
+
+    ```
     Client ID: opsman
     Client secret:
-    Passcode (from http<span>:</span>//YOUR-OPSMAN-DOMAIN/uaa/passcode): YOUR-UAA-PASSCODE
-    </pre>
+    Passcode: UAA-PASSCODE
+    ```
+    Where `UAA-PASSCODE` is the passcode you retrieved in the previous step.
 
-1. Run the following command:
-    <pre class="terminal">
-    uaac group map LDAP-GROUP --name 'OPSMAN-SCOPE'
-    </pre>
-  Replace the placeholder text as follows:
-  * `LDAP-GROUP`: Replace with name of the LDAP group the user belongs to.
-  * `OPSMAN-SCOPE`: Replace with an Ops Manager UAA scope. See the table in [Understand Roles in Ops Manager](#about) to determine which UAA scope to use.
+1. Run:
 
-1. Add new and existing users to the appropriate LDAP groups in the LDAP provider dashboard. Users must log out of both Ops Manager and the LDAP provider for role changes to take effect.
+    ```
+    uaac group map LDAP-GROUP --name 'OPS-MANAGER-SCOPE'
+    ```
+    Where:
+    * `LDAP-GROUP` is the name of the LDAP group to which the user belongs.
+    * `OPS-MANAGER-SCOPE` is the <%= vars.ops_manager %> UAA scope you want to assign to the user. To determine which UAA scope to use, see the table in [Roles in <%= vars.ops_manager %>](#about).
+
+1. Add new and existing users to the appropriate LDAP groups in the LDAP provider dashboard. Users must log out of both <%= vars.ops_manager %> and the LDAP provider for role changes to take effect.

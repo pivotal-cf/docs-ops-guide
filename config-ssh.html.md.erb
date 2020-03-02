@@ -14,7 +14,7 @@ This section describes how to configure Pivotal Application Service (PAS) to ena
 
 To configure PAS SSH access for app instances:
 
-1. Open the PAS tile in Ops Manager.
+1. Open the PAS tile in <%= vars.ops_manager %>.
 
 1. Under the **Settings** tab, select the **Application Containers** section.
 
@@ -27,8 +27,8 @@ To configure PAS SSH access for app instances:
 
 ## <a id="ssh-load-balancer-configuration"></a> SSH Load Balancer Configuration
 
-For IaaSes where load-balancing is available as a service, you should provision a load balancer to balance load across SSH proxy instances. Configure this load balancer to forward incoming TCP traffic on port `2222` to a target pool where you deploy `diego_brain` instances.
+For IaaSes where load-balancing is available as a service, <%= vars.ops_manager %>provision a load balancer to balance load across SSH proxy instances. Configure this load balancer to forward incoming TCP traffic on port `2222` to a target pool where you deploy `diego_brain` instances.
 
 For AWS, Azure, and GCP IaaSes, you configure SSH load balancers in the **Resource Config** pane. To register SSH proxies with a load balancer, enter your load balancer name in the **Load Balancers** field in the **Diego Brain** row.
 
-Ops Manager supports an API-only `nsx_lbs` field. You can configure load balancers in vSphere using this field.
+<%= vars.ops_manager %> supports an API-only `nsx_lbs` field. You can configure load balancers in vSphere using this field.

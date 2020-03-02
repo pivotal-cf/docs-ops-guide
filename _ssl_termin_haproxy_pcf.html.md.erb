@@ -19,7 +19,7 @@ To configure SSL termination on HAProxy in <%= vars.product_name %>:
         <ul>
           <li>If you need highly-available HAProxy:
             <ol>
-              <li>Choose an IP address for each HAProxy instance on the subnet where you deployed <%= vars.product_name %>.</li>
+              <li>Choose an IP address for each HAProxy instance on the subnet where you deployed <%= vars.product_short %>.</li>
               <li>In the **HAProxy IPs** field of the **Networking** pane, enter the IP addresses you have selected for your HAProxy instances.</li>
               <li>Configure your load balancer, such as F5 or NSX, to forward domain names to the HAProxy IP addresses.</li>
             </ol>
@@ -33,7 +33,7 @@ To configure SSL termination on HAProxy in <%= vars.product_name %>:
       </td>
       <td>For more information, see [Configuring <%= vars.product_short %>](../customizing/configure-pas.html#networking).</td>
     <tr>
-      <td>AWS, GCP or Azure</td>
+      <td>AWS, GCP, or Azure</td>
       <td>
         <ol>
           <li>Leave the HAProxy IP address blank.</li>
@@ -55,20 +55,20 @@ To configure SSL termination on HAProxy in <%= vars.product_name %>:
 
 1. If you expect requests larger than the default maximum of 16&nbsp;KB, enter a new value in bytes for **HAProxy Request Max Buffer Size**. You may need to do this, for example, to support apps that embed a large cookie or query string values in headers.
 
-1. If you want to force browsers to use HTTPS when making requests to HAProxy, select **Enable** in the **HAProxy support for HSTS** field and complete the following optional configuration steps: 
-    1. (Optional) Enter a **Max Age in Seconds** for the HSTS request. By default, the age is set to one year. HAProxy will force HTTPS requests from browsers for the duration of this setting.  
-    1. (Optional) Select the **Include Subdomains** checkbox to force browsers to use HTTPS requests for all component subdomains. 
-    1. (Optional) Select the **Enable Preload** checkbox to force instances of Google Chrome, Firefox, and Safari that access your HAProxy to refer to their built-in lists of known hosts that require HTTPS, of which HAProxy is one. This ensures that the first contact a browser has with your HAProxy is an HTTPS request, even if the browser has not yet received an HSTS header from your HAProxy.
+1. (Optional) To force browsers to use HTTPS when making requests to HAProxy, select **Enable** under **HAProxy support for HSTS** and configure these fields:
+    1. **Max Age in Seconds** for the HSTS request. By default, the age is set to one year. HAProxy forces HTTPS requests from browsers for the duration of this setting.
+    1. Enable the **Include Subdomains** checkbox to force browsers to use HTTPS requests for all component subdomains.
+    1. Select the **Enable Preload** checkbox to force instances of Google Chrome, Firefox, and Safari that access your HAProxy to refer to their built-in lists of known hosts that require HTTPS, of which HAProxy is one. This ensures that the first contact a browser has with your HAProxy is an HTTPS request, even if the browser has not yet received an HSTS header from your HAProxy.
 
-1. (Optional) If you are not using SSL encryption or if you are using self-signed certificates, you can select **Disable SSL certificate verification for this environment**. Selecting this checkbox also disables SSL verification for route services.
+1. (Optional) If you are not using SSL encryption or if you are using self-signed certificates, you can select the **Disable SSL certificate verification for this environment** checkbox. This also disables SSL verification for route services.
   <p class="note"><strong>Note:</strong> Use this checkbox only for development and testing environments. Do not select it for production environments.</p>
 
-1. (Optional) If you do not want HAProxy or the Gorouter to accept any non-encrypted HTTP traffic, select the **Disable HTTP on HAProxy and Router** checkbox. 
+1. (Optional) If you do not want HAProxy or the Gorouter to accept any non-encrypted HTTP traffic, select the **Disable HTTP on HAProxy and Router** checkbox.
 
-1. In the **Configure the CF Router support for the X-Forwarded-Client-Cert header** field, select **Always forward the XFCC header in the request, regardless of the whether the client connection is mTLS**.
+1. Under **Configure the CF Router support for the X-Forwarded-Client-Cert header**, select **Always forward the XFCC header in the request, regardless of the whether the client connection is mTLS**.
 
-1. (Optional) If your <%= vars.product_name %> deployment uses HAProxy and you want it to receive traffic only from specific sources, use the following fields:
+1. (Optional) If your <%= vars.product_name %> deployment uses HAProxy and you want it to receive traffic only from specific sources, configure these fields:
    * **Protected Domains**: Enter a comma-separated list of domains from which <%= vars.product_name %> can receive traffic.
    * (Optional) **Trusted CIDRs**: Enter a space-separated list of CIDRs to limit which IP addresses from the protected domains can send traffic to <%= vars.product_name %>.
-     
-1. Click **Save**. 
+
+1. Click **Save**.
