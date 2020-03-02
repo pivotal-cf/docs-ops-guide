@@ -3,96 +3,117 @@ title: Configuring ADFS as an Identity Provider
 owner: Identity
 ---
 
+This topic describes configuring Active Directory Federation Services (AD FS) as your identity provider (IDP) in <%= vars.platform_name %> and AD FS.
 
 
-This topic describes the process of configuring Active Directory Federation Services (ADFS) as your identity provider (IdP) in <%= vars.product_name %> and ADFS.
+## <a id='idp'></a> Configure SAML Integration in <%= vars.platform_name %>
 
+You can use AD FS as your SAML IDP for <%= vars.ops_manager_full %> and <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
 
-## <a id='idp'></a> Configure SAML Integration in <%= vars.product_name %>
+* To use AD FS as your SAML IDP for <%= vars.ops_manager %>, follow these procedures:
+  * [Configure SAML Integration in <%= vars.ops_manager %>](#ops-man)
+  * [Configure SAML Integration in AD FS](#adfs)
 
-You can use ADFS as your SAML IdP for Ops Manager and Pivotal Application Service (PAS):
+* To use AD FS as your SAML IDP for <%= vars.app_runtime_abbr %>, follow these procedures:
+  * [Configure SAML Integration in <%= vars.app_runtime_abbr %>](#pas)
+  * [Configure SAML Integration in AD FS](#adfs)
 
-* If you want to use ADFS as your SAML IdP for Ops Manager, do the following:
-  * [Configure SAML Integration in Ops Manager](#ops-man)
-  * [Configure SAML Integration in ADFS](#adfs)
+### <a id='ops-man'></a> Configure SAML Integration in <%= vars.ops_manager %>
 
-* If you want to use ADFS as your SAML IdP for PAS, do the following:
-  * [Configure SAML Integration in PAS](#pas)
-  * [Configure SAML Integration in ADFS](#adfs)
+To configure <%= vars.ops_manager %> to use AD FS as your SAML IDP:
 
-### <a id='ops-man'></a> Configure SAML Integration in Ops Manager
+1. Download your IDP metadata from `https://AD-FS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml`, where `AD-FS-HOSTNAME` is the hostname of your AD FS deployment.
 
-To configure Ops Manager to use ADFS as your SAML IdP, do the following:
-
-1. Download your IdP metadata from `https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml`.
-
-1. Perform the steps in the _Use an Identity Provider_ section of the BOSH Director configuration topic for you IaaS:
+1. Follow the procedure in _Use an Identity Provider_ in the BOSH Director configuration topic for your IaaS:
   * [Configuring BOSH Director on AWS](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/aws/config-manual.html#idp)
   * [Configuring BOSH Director on Azure Manually](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/azure/config-manual.html#idp)
   * [Configuring BOSH Director on GCP](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/gcp/config-manual.html#idp)
   * [Configuring BOSH Director on OpenStack](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/openstack/config.html#idp)
   * [Configuring BOSH Director on vSphere](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/vsphere/config.html#idp)
 
-<p class="note"><strong>Note:</strong> You can set up SAML access for Ops Manager during the initial <%= vars.product_name %> installation or later by navigating to <strong>Settings</strong> in the user menu on the Ops Manager Installation Dashboard, configuring the <strong>Authentication Method</strong> pane, and then clicking <strong>Review Pending Changes</strong> and <strong>Apply Changes</strong>.</p>
+<p class="note"><strong>Note:</strong> You can set up SAML access for <%= vars.ops_manager %> during the initial <%= vars.platform_name %> installation or later by navigating to <strong>Settings</strong> in the user menu in the <%= vars.ops_manager %> Installation Dashboard, configuring the <strong>Authentication Method</strong> pane, and then clicking <strong>Review Pending Changes</strong> and <strong>Apply Changes</strong>.</p>
 
-### <a id='pas'></a> Configure SAML Integration in PAS
+### <a id='pas'></a> Configure SAML Integration in <%= vars.app_runtime_abbr %>
 
-To configure PAS to use ADFS as your SAML IdP, do the following:
+To configure <%= vars.app_runtime_abbr %> to use AD FS as your SAML IDP:
 
-1. Download your IdP metadata from `https://YOUR-ADFS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml`.
+1. Download your IDP metadata from `https://AD-FS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml`, where `AD-FS-HOSTNAME` is the hostname of your AD FS deployment.
 
-1. Perform the steps in the [Configure <%= vars.product_name %> as a Service Provider for SAML
-](./auth-sso.html#configure-pcf-for-saml) section of the _Configuring Authentication and Enterprise SSO for PAS_ topic.
+1. Follow the procedure in [Configure <%= vars.platform_name %> as a Service Provider for SAML
+](./auth-sso.html#configure-pcf-for-saml) in _Configuring Authentication and Enterprise SSO for <%= vars.app_runtime_abbr %>_.
 
 
-## <a id='adfs'></a> Configure SAML Integration in ADFS
+## <a id='adfs'></a> Configure SAML Integration in AD FS
 
-To designate <%= vars.product_name %> as your SAML service provider (SP) in ADFS, do the following:
+To designate <%= vars.platform_name %> as your SAML service provider (SP) in AD FS:
 
-1. Download your SP metadata from `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata`.
+1. Download your SP metadata from `https://login.SYSTEM-DOMAIN/saml/metadata`, where `SYSTEM-DOMAIN` is the system domain of your <%= vars.platform_name %> deployment.
 
-1. Open your **ADFS Management** console and add a relying party trust as follows:
-  1. Click **Add Relying Party Trust...** in the **Actions** pane.
+1. Open your **ADFS Management** console.
+
+1. To add a relying party trust:
+  1. Select **Actions**.
+  1. Click **Add Relying Party Trust...**.
   1. On the Welcome step, click **Start**.
-  1. Select **Import data about the relying party from a file**, import the downloaded SP metadata file, and click **Next**.
-  1. Enter a **Display name** for the new relying party trust and click **Next**.
-  1. Leave the default multi-factor authentication selection and click **Next**.
-  1. Select **Permit all users to access this relying party** and click **Next**.
-  1. Review your settings and click **Next**.
+  1. Select **Import data about the relying party from a file**.
+  1. Choose the downloaded SP metadata file.
+  1. Click **Next**.
+  1. Enter a **Display name** for the new relying party trust.
+  1. Click **Next**.
+  1. Leave the default multi-factor authentication selection.
+  1. Click **Next**.
+  1. Select **Permit all users to access this relying party**.
+  1. Click **Next**.
+  1. Review your settings.
+  1. Click **Next**.
   1. Click **Close** to finish the wizard.
 
-1. Modify your relying party trust as follows:
+1. To modify your relying party trust:
   1. Double-click the new relying party trust.
-  1. Select the **Encryption** tab and click **Remove** to remove the encryption certificate you imported.
-  1. In the **Advanced** tab, select **SHA256** for the **Secure hash algorithm**.
+  1. Select the **Encryption** tab.
+  1. Click **Remove** to remove the encryption certificate you imported.
+  1. Select the **Advanced** tab.
+  1. For the **Secure hash algorithm**, select **SHA256**.
 
-1. (Optional) If you are using a self-signed certificate and want to disable CRL checks, do the following:
+1. (Optional) If you are using a self-signed certificate and want to disable CRL checks:
   1. Open **Windows Powershell** as an Administrator.
-  1. Execute the following command: `set-ADFSRelyingPartyTrust -TargetName "RELYING-PARTY-TRUST" -SigningCertificateRevocationCheck None`
+  1. Run:
+
+      ```
+      set-ADFSRelyingPartyTrust -TargetName "RELYING-PARTY-TRUST" -SigningCertificateRevocationCheck None
+      ```
+      Where `RELYING-PARTY-TRUST` is the relying party trust for which you want to disable CRL checks.
 
 1. To add claim rules for your relying party trust, select your relying party trust and click **Edit Claim Rules…**.
 
-1. In the **Issuance Transform Rules** tab, create two claim rules as follows:
+1. In the **Issuance Transform Rules** tab, create two claim rules:
   1. Click **Add Rule**.
-  1. Select **Send LDAP Attributes as Claims** for **Claim rule template** and click **Next**.
+  1. For **Claim rule template**, select **Send LDAP Attributes as Claims**.
+  1. Click **Next**.
   1. Enter a **Claim rule name**.
-  1. Select **Active Directory** for **Attribute store**.
-  1. Select **E-Mail-Addresses** for **LDAP Attribute** and **E-Mail Address** for **Outgoing Claim Type**. Alternatively, if you do not have the email attribute configured for users, you can select **User-Principle-Name** under **LDAP Attribute**.
+  1. For **Attribute store**, select **Active Directory**.
+  1. For **LDAP Attribute**, select **E-Mail-Addresses**. If you do not have the email attribute configured for users, you can select **User-Principle-Name**.
+  1. For **Outgoing Claim Type**, select **E-Mail Address**.
   1. Click **Finish**.
   <br><br>
   1. Click **Add Rule**.
-  1. Select **Transform an Incoming Claim** for **Claim rule template** and click **Next**.
+  1. For **Claim rule template**, select **Transform an Incoming Claim**.
+  1. Click **Next**.
   1. Enter a **Claim rule name**.
-  1. Select **E-Mail Address** for **Incoming claim type**.
-  1. Select **Name ID** for **Outgoing claim type**.
-  1. Select **Email** for **Outgoing name ID format**.
+  1. For **Incoming claim type**, select **E-Mail Address**.
+  1. For **Outgoing claim type**, select **Name ID**.
+  1. For **Outgoing name ID format**, select **Email**.
   1. Click **Finish**.
 
-1. To permit access to users based on a security group, navigate to the **Issuance Authorization Rules** tab and create an authorization claim rule as follows:
+1. To permit access to users based on a security group:
+  1. Select the **Issuance Authorization Rules** tab.
   1. Click **Add Rule**.
-  1. Select **Permit or Deny Users Based on an Incoming Claim** for **Claim rule template** and click **Next**.
+  1. For **Claim rule template**, select **Permit or Deny Users Based on an Incoming Claim**.
+  1. Click **Next**.
   1. Enter a **Claim rule name**.
-  1. Select **Group SID** for **Incoming claim type**.
-  1. Click **Browse** and locate the security group in your domain that <%= vars.product_name %> developers are a part of and click **OK**.
+  1. For **Incoming claim type**, select **Group SID**.
+  1. Click **Browse**.
+  1. Locate the security group in your domain of which <%= vars.platform_name %> developers are a part.
+  1. Click **OK**.
   1. Ensure **Permit access to users with this incoming claim** is selected.
   1. Click **Finish**.

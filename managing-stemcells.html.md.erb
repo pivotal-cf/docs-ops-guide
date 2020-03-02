@@ -3,26 +3,32 @@ title: Importing and Managing Stemcells
 owner: Ops Manager
 ---
 
+This topic explains how to use the Stemcell Library in <%= vars.ops_manager_full %> to import and stage stemcells to products.
 
 
-This topic explains how to use the Stemcell Library to import and stage stemcells to products.
+## <a id='overview'></a> Overview
 
-![The Stemcell Library shows a table with columns headed Product, Required, Deployed, and Staged as well as an Import Stemcell button and a Save Button](images/manage-stemcells.png)
+The Stemcell Library imports and stages stemcells to products.
 
 For more conceptual information about floating stemcells and stemcell upgrades, see [Floating Stemcells](../customizing/understanding-stemcells.html).
 
-<p class='note warning'><strong>WARNING:</strong> Some product releases require Xenial stemcells, as listed in <a href="../../platform/stemcells/xenial-tiles.html">Tiles Using Xenial Stemcells in <%= vars.product_name %></a>. If you are importing and using Xenial stemcells for the first time, see <a href="../../pcf-release-notes/breaking-changes.html#xenial">Updates for Xenial Stemcell Support</a>.</p>
+<p class='note warning'><strong>Warning:</strong> Some product releases require Xenial stemcells, as listed in <a href="../../platform/stemcells/xenial-tiles.html">Tiles Using Xenial Stemcells in <%= vars.platform_name %></a>. If you are importing and using Xenial stemcells for the first time, see <a href="../../pcf-release-notes/breaking-changes.html#xenial">Updates for Xenial Stemcell Support</a>.</p>
 
 
 ## <a id="import"></a> Import and Stage a Stemcell
 
-![The Import Stemcell button is floated to the right of the Stemcell Library header next to the Save button](images/import-stemcell.png)
+To import and stage a stemcell:
 
-Download the appropriate `.tgz` stemcell file from [Pivotal Network](https://network.pivotal.io/products/pivotal-cf), then click **Import Stemcell** to permanently import a stemcell into Ops Manager.
+1. Download the appropriate `.tgz` stemcell file from [Pivotal Network](https://network.pivotal.io/products/pivotal-cf).
 
-![A modal that appears after importing a stemcell. The modal reads, **Select the products you want to stage**. The modal has a checkbox next to the product name. It also has a dismiss button and an Apply Stemcell to Products button](images/staging-modal.png)
+1. Click **Import Stemcell** to permanently import a stemcell into <%= vars.ops_manager %>.
 
-To stage your stemcell to compatible products, enable the products in the **Import Stemcell** dialog. Click **Apply Stemcell to Products** to save your selections. Click **Dismiss** to dismiss the **Import Stemcell** dialog.
+1. A pop-up appears for you to select which products to stage with the imported stemcell. Select the checkboxes of the products you want to stage.
+  ![A pop-up that appears after importing a stemcell. At the top of the pop-up is the header 'Import Stemcell' in gray letters. Under the header is the text "Select the products you want to stage with light-bosh-stemcell-3541.5-google-kvm-ubuntu-trusty". Below is a row containing a selected checkbox with the text "Product" in bold letters to the right of the checkbox. Below this row is another row containing another selected checkbox and the text "Ops Manager: Example Product v2.1-committed.20180209.125552-stemcell.3541.4". In the bottom-right corner of the pop-up are two buttons: one labeled "Dismiss" in gray letters, and one blue, rectangular button labeled "Apply Stemcell to Products" in white letters.](images/staging-modal.png)
+
+ 1. Click **Apply Stemcell to Products**.
+
+ 1. Click **Dismiss** to close the **Import Stemcell** pop-up.
 
 
 ## <a id="version"></a> Choose a Stemcell Version

@@ -19,7 +19,7 @@ To configure SSL termination on HAProxy in <%= vars.app_runtime_abbr %>:
         <ul>
           <li>If you need highly available HAProxy:
             <ol>
-              <li>Choose an IP address for each HAProxy instance on the subnet where you deployed PAS.</li>
+              <li>Choose an IP address for each HAProxy instance on the subnet where you deployed <%= vars.app_runtime_abbr %>.</li>
               <li>In the **HAProxy IPs** field of the **Networking** pane, enter the IP addresses you have selected for your HAProxy instances.</li>
               <li>Configure your load balancer, such as F5 or NSX, to forward domain names to the HAProxy IP addresses.</li>
             </ol>
@@ -33,7 +33,7 @@ To configure SSL termination on HAProxy in <%= vars.app_runtime_abbr %>:
       </td>
       <td>For more information, see [Configure Networking](../customizing/configure-pas.html#networking) in _Configuring <%= vars.app_runtime_abbr %>_.</td>
     <tr>
-      <td>AWS, GCP or Azure</td>
+      <td>AWS, GCP, or Azure</td>
       <td>
         <ol>
           <li>Leave the HAProxy IP address blank.</li>
@@ -55,13 +55,13 @@ To configure SSL termination on HAProxy in <%= vars.app_runtime_abbr %>:
 
 1. If you expect requests larger than the default maximum of 16.384&nbsp;KB, enter a new value in bytes for **HAProxy request maximum buffer size**. You may need to do this, for example, to support apps that embed a large cookie or query string values in headers.
 
-1. To force browsers to use HTTPS when making requests to HAProxy, select **Enable** in the **HAProxy support for HSTS** field and complete these optional configuration steps:
+1. (Optional) To force browsers to use HTTPS when making requests to HAProxy, select **Enable** in the **HAProxy support for HSTS** field and complete these fields:
     * **Maximum age** in seconds for the HSTS request. HAProxy forces HTTPS requests from browsers for the duration of this setting. The maximum age is one year, or 31536000 seconds.
     * Enable the **Include subdomains** checkbox to force browsers to use HTTPS requests for all component subdomains.
     * Select the **Enable preload** checkbox to force instances of Google Chrome, Firefox, and Safari that access your HAProxy to refer to their built-in lists of known hosts that require HTTPS, of which HAProxy is one. This ensures that the first contact a browser has with your HAProxy is an HTTPS request, even if the browser has not yet received an HSTS header from HAProxy.
 
 1. (Optional) If you are not using SSL encryption or if you are using self-signed certificates, you can select the **Disable SSL certificate verification for this environment** checkbox. This also disables SSL verification for route services.
-  <p class="note"><p class='note'><strong>Note:</strong> Select this checkbox only for development and testing environments. Do not select it for production environments.</p>
+  <p class='note'><strong>Note:</strong> Select this checkbox only for development and testing environments. Do not select it for production environments.</p>
 
 1. (Optional) If you do not want the Gorouter to accept any non-encrypted HTTP traffic, select the **Disable HTTP on the Gorouter and HAProxy** checkbox.
 
@@ -71,4 +71,4 @@ To configure SSL termination on HAProxy in <%= vars.app_runtime_abbr %>:
     * **HAProxy protected domains**: Enter a comma-separated list of domains from which <%= vars.app_runtime_abbr %> can receive traffic.
     * (Optional) **HAProxy trusted CIDRs**: Enter a space-separated list of CIDRs to limit which IP addresses from the protected domains can send traffic to <%= vars.app_runtime_abbr %>.
 
-1. Click **Save**. 
+1. Click **Save**.

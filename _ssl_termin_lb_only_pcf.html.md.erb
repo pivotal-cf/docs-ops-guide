@@ -36,7 +36,7 @@ To configure SSL termination on the load balancer only in <%= vars.app_runtime_a
 
 1. To use a specific set of TLS ciphers for HAProxy, configure **TLS cipher suites for HAProxy**. Enter an ordered, colon-separated list of TLS cipher suites in the OpenSSL format. For example, if you have selected support for an earlier version of TLS, enter cipher suites supported by this version. Otherwise, leave the default values in this field.
 
-1. Under **HAProxy forwards requests to Router over TLS**, select **Disable**.
+1. Under **HAProxy forwards all requests to the Gorouter over TLS**, select **Disable**.
 
 1. (Optional) If you are not using SSL encryption or if you are using self-signed certificates, you can select the **Disable SSL certificate verification for this environment** checkbox. Selecting this checkbox also disables SSL verification for route services.
   <p class="note"><strong>Note:</strong> Select this checkbox only for development and testing environments. Do not select it for production environments.</p>
