@@ -1,4 +1,4 @@
-To configure Gorouter behavior for handling client certificates, select one of the options in the **Gorouter behavior for client certificate validation** field of the **Networking** pane in <%= vars.app_runtime_abbr %>:
+To configure Gorouter behavior for handling client certificates, select one of the options in the **Gorouter behavior for client certificate validation** field of the **Networking** pane in the <%= vars.app_runtime_abbr %> tile:
 
 * **The Gorouter does not request client certificates:** Client certificates are not requested, so the client does not provide them, and validation of client certificates does not occur. This option is incompatible with the **TLS termination point** options **HAProxy** and **Gorouter** because these options require mutual authentication.
 
@@ -6,16 +6,16 @@ To configure Gorouter behavior for handling client certificates, select one of t
 
 * **The Gorouter requires client certificates:** The Gorouter validates that the client certificate is signed by a Certificate Authority that the Gorouter trusts. If the Gorouter cannot validate the client certificate, the TLS handshake fails.
 
-The behavior controlled by this property is global; it applies to all requests received by Gorouters so configured.
+The behavior controlled by this property is global, meaning it applies to all requests received by Gorouters so configured.
 
-If the Gorouter is the first point of TLS termination (your load balancer does not terminate TLS, and passes the request through to Gorouter over TCP), consider:
+If the Gorouter is the first point of TLS termination - that is, your load balancer does not terminate TLS, and passes the request through to Gorouter over TCP - consider:
 
-* Only the **The Gorouter does not request client certificates** option should be used with <%= vars.app_runtime_abbr %>, as the Gorouters in <%= vars.app_runtime_abbr %> receive requests for the system domain. Many clients of <%= vars.platform_name %> platform APIs do not present client certificates in TLS handshakes, so the first point of TLS termination for requests to the system domain must not request them.
+* You should use only **The Gorouter does not request client certificates** with <%= vars.app_runtime_abbr %>, as the Gorouters in <%= vars.app_runtime_abbr %> receive requests for the system domain. Many clients of <%= vars.platform_name %> platform APIs do not present client certificates in TLS handshakes, so the first point of TLS termination for requests to the system domain must not request them.
 
-* All options may be used for Gorouters deployed with the <%= vars.segment_runtime_full %> tile, as these only receive requests for app domains.
+* You may use any of the Gorouter behavior options for Gorouters deployed with the <%= vars.segment_runtime_full %> tile, as these only receive requests for app domains.
 
-* The **The Gorouter requests but does not require client certificates** and **The Gorouter requires client certificates** options trigger browsers to prompt users to select a certificate if the browser is not already configured with a certificate signed by one of the CAs configured for the Gorouter.
+* **The Gorouter requests but does not require client certificates** and **The Gorouter requires client certificates** trigger browsers to prompt users to select a certificate if the browser is not already configured with a certificate signed by one of the CAs configured for the Gorouter.
 
 If the Gorouter is not the first point of TLS termination, this property can be used to secure communications between the load balancer and Gorouter. The Gorouter must be configured with the CA used to sign the client certification the load balancer presents.
 
-<p class="note warning"><strong>Warning:</strong> Requests to the platform fail upon upgrade if your load balancer is configured to present a client certificate in the TLS handshake with the Gorouter but the Gorouter has not been configured with the certificate authority used to sign it. To mitigate this issue, select <strong>The Gorouter does not request client certificates</strong> or configure the Gorouter with the appropriate CA.</p>
+<p class="note warning"><strong>Warning:</strong> Requests to the platform fail upon upgrade if your load balancer is configured to present a client certificate in the TLS handshake with the Gorouter but the Gorouter has not been configured with the CA used to sign it. To mitigate this issue, select <strong>The Gorouter does not request client certificates</strong> or configure the Gorouter with the appropriate CA.</p>

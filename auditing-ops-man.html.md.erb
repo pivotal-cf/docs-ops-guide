@@ -3,42 +3,44 @@ title: Auditing Ops Manager User Activity
 owner: Ops Man
 ---
 
-This topic describes how operators can audit the activity of Pivotal Operations Manager users. The sections in this topic define the relevant logs for auditing user activity and describe how to access and forward the logs.
+This topic describes how operators can audit the activity of <%= vars.ops_manager_full %> users. The sections in this topic define the relevant logs for auditing user activity and describe how to access and forward the logs.
 
 
 ## <a id ='overview'></a> Overview
 
-You can audit Ops Manager user activity to help improve security practices for your <%= vars.product_name %> environment. Auditing user activity also helps you ensure that your environment is compliant with existing security standards. 
+You can audit <%= vars.ops_manager %> user activity to help improve security practices for your <%= vars.product_name %> environment. Auditing user activity also helps you ensure that your environment is compliant with existing security standards.
 
-For example, you can view the timestamp of any requests made in the Ops Manager UI as well as the username of the user that made the request.
+For example, you can view the timestamp of any requests made in the <%= vars.ops_manager %> UI as well as the username of the user that made the request.
 
-You can find relevant information for auditing user activity in Ops Manager in the following Ops Manager logs:
+You can find relevant information for auditing user activity in <%= vars.ops_manager %> in the following <%= vars.ops_manager %> logs:
 
-* SSH login logs. See [Logs for Auditing User Activity](#logs).
-* UAA login and failed UAA login logs. See [Logs for Auditing User Activity](#logs).
-* The Ops Manager `audit_log.txt` file. See [Audit Logs Text File](#audit-logs-text-file).
+* SSH login logs. For more information, see [Logs for Auditing User Activity](#logs).
+
+* UAA login and failed UAA login logs. For more information, see [Logs for Auditing User Activity](#logs).
+
+* The <%= vars.ops_manager %> `audit_log.txt` file. For more information, see [Audit Logs Text File](#audit-logs-text-file).
 
 
-## <a id='access-logs'></a> Access Logs on the Ops Manager VM
+## <a id='access-logs'></a> Access Logs on the <%= vars.ops_manager %> VM
 
-You can access logs for auditing user activity by logging on to the Ops Manager VM using SSH. 
+You can access logs for auditing user activity by logging on to the <%= vars.ops_manager %> VM using SSH.
 
-To access logs for auditing user activity, do the following:
+To access logs for auditing user activity:
 
-1. SSH onto the Ops Manager VM using your private SSH key. 
+1. SSH onto the <%= vars.ops_manager %> VM using your private SSH key.
 
-1. Navigate to the location of the logs and open or preview the log file. For example, to view the `audit_log.txt` file, run the following command:
+1. Navigate to the location of the logs and open or preview the log file. For example, to view the `audit_log.txt` file, run:
 
-	```
-	cat /var/log/opsmanager/audit_log.txt
-	```
+		```
+		cat /var/log/opsmanager/audit_log.txt
+		```
 
 
 ## <a id='logs'></a> Logs for Auditing User Activity
 
-The following table describes the types of user actions that you can audit with logs. The table also lists the location of the logs. 
+The table below describes the types of user actions that you can audit with logs and the location of the logs.
 
-For information about how to access the logs in the following table, see [Access Logs on the Ops Manager VM](#access-logs).
+For information about how to access the logs in this table, see [Access Logs on the <%= vars.ops_manager %> VM](#access-logs).
 
 <table>
 	<tr>
@@ -48,8 +50,8 @@ For information about how to access the logs in the following table, see [Access
 		<th width="30%">Example Log Trace</th>
 	</tr>
 	<tr>
-		<td>SSH Logins</td>
-		<td>User logs onto the Ops Manager VM with SSH.</td>
+		<td>SSH logins</td>
+		<td>User logs on to the <%= vars.ops_manager %> VM with SSH.</td>
 		<td><code>/var/log/auth.log</code></td>
 		<td>
 			<code>
@@ -59,8 +61,8 @@ For information about how to access the logs in the following table, see [Access
 		</td>
 	</tr>
 	<tr>
-		<td>UAA Logins</td>
-		<td>User logs into Ops Manager through UAA.</td>
+		<td>UAA logins</td>
+		<td>User logs in to <%= vars.ops_manager %> through UAA.</td>
 		<td><code>/home/tempest-web/uaa/<br />tomcat/logs/uaa.log</code></td>
 		<td>
 			<code>
@@ -71,7 +73,7 @@ For information about how to access the logs in the following table, see [Access
 		</td>
 	</tr>
 	<tr>
-		<td>Failed UAA Logins</td>
+		<td>Failed UAA logins</td>
 		<td>User makes failed login attempt through UAA.</td>
 		<td><code>/home/tempest-web/uaa/<br />tomcat/logs/uaa.log</code></td>
 		<td>
@@ -83,27 +85,24 @@ For information about how to access the logs in the following table, see [Access
 		</td>
 	</tr>
 	<tr>
-		<td>User Requests</td>
-		<td>User makes requests in the Ops Manager app. The <code>audit_log.txt</code> file includes metadata about user requests in the Ops Manager app.</td>
+		<td>User requests</td>
+		<td>User makes requests in the <%= vars.ops_manager %> app. The <code>audit_log.txt</code> file includes metadata about user requests in the <%= vars.ops_manager %> app.</td>
 		<td><code>/var/log/opsmanager/<br/>audit_log.txt</code></td>
-		<td>
-			See <a href=#audit-logs-text-file>Ops Manager Audit Logs Text File</a> for information about the properties in the <code>audit_log.txt</code> file.
-		</td>
+		<td>For information about the properties in the <code>audit_log.txt</code> file, see <a href=#audit-logs-text-file><%= vars.ops_manager %> Audit Logs Text File</a>.</td>
 	</tr>
-
-</table>	
+</table>
 
 
 ## <a id='audit-logs-text-file'></a> Audit Logs Text File
 
-The Ops Manager `audit_log.txt` file includes metadata about actions taken by users in the Ops Manager app in JSON format.
+The <%= vars.ops_manager %> `audit_log.txt` file includes metadata about actions taken by users in the <%= vars.ops_manager %> app in JSON format.
 
-The following is an example of the content in the `audit_log.txt` file:
+Below is an example of the content in the `audit_log.txt` file:
 
 ```
 {
 	"timestamp":"2019-07-13T00:43:08.783+00:00",
-	"component":"Ops Manager 2.7.0-build.87",
+	"component":"<%= vars.ops_manager %> 2.7.0-build.87",
 	"component_scheme":"https",
 	"component_host":"<%= vars.product_name_lc %>.example.opsmanager.cf-app.com",
 	"component_port":443,
@@ -113,18 +112,18 @@ The following is an example of the content in the `audit_log.txt` file:
 	"origination":"123.456.789",
 	"user_identification":"admin",
 	"uaa_authentication_mechanism":"uaa",
-	"request_body":{ 
+	"request_body":{
 		"authenticity_token":"[FILTERED]",
-		"proxy_settings":{ 
+		"proxy_settings":{
 			"http_proxy":"http://example.com",
 			"https_proxy":"https://example.com",
 			"no_proxy":"1.2.3.4"
-		}	
+		}
 	}
-}	
+}
 ```
 
-The following table describes the properties in the `audit_log.txt` file. It also provides example values for each property. 
+The table below describes the properties in the `audit_log.txt` file and provides example values for each property:
 
 <table>
 	<tr>
@@ -133,66 +132,66 @@ The following table describes the properties in the `audit_log.txt` file. It als
 		<th width="30%">Example Value</th>
 	</tr>
 	<tr>
-		<td>user_identification</td>
+		<td><code>user_identification</code></td>
 		<td>The username or client ID that submitted a request.</td>
 		<td><code>admin</code></td>
 	</tr>
 	<tr>
-		<td>uaa_authentication_mechanism</td>
-		<td>The authentication method used to make the request. 
+		<td><code>uaa_authentication_mechanism</code></td>
+		<td>The authentication method used to make the request.
 		<br/><br/>
 		<code>(unauthenticated)</code> for unauthenticated requests, <code>uaa</code> for a UAA user login, or <code>client_authenticated</code> for an API-only client.</td>
 		<td><code>uaa</code></td>
 	</tr>
 	<tr>
-		<td>origination</td>
+		<td><code>origination</code></td>
 		<td>The IP address that made the request to the server.</td>
 		<td><code>198.10.1.25</code></td>
 	</tr>
 	<tr>
-		<td>timestamp</td>
+		<td><code>timestamp</code></td>
 		<td>The time that the server received the request.</td>
 		<td><code>2019-07-21 08:34:00</code></td>
 	</tr>
 	<tr>
-		<td>target</td>
+		<td><code>target</code></td>
 		<td>The relative URL path associated with the request.</td>
 		<td><code>/infrastructure/director/resource_config/edit</code></td>
 	</tr>
 	<tr>
-		<td>event_type</td>
+		<td><code>event_type</code></td>
 		<td>The HTTP verb associated with the request.</td>
 		<td><code>GET</code></td>
 	</tr>
 	<tr>
-		<td>result</td>
+		<td><code>result</code></td>
 		<td>The HTTP response code associated with the request.
-		<br/><br/> 
+		<br/><br/>
 		Results beginning with <code>2</code> indicate a successful request. Results beginning with <code>4</code> indicate a failed request due to user error. Results beginning with <code>5</code> indicate a server error.</td>
 		<td><code>200</code></td>
 	</tr>
 	<tr>
-		<td>component</td>
-		<td>The version of Ops Manager on which the request was made.</td>
-		<td><code>Ops Manager 2.7.0-build.234</code></td>
+		<td><code>component</code></td>
+		<td>The version of <%= vars.ops_manager %> on which the request was made.</td>
+		<td><code><%= vars.ops_manager %> 2.7.0-build.234</code></td>
 	</tr>
 	<tr>
-		<td>component_scheme</td>
+		<td><code>component_scheme</code></td>
 		<td>The transport protocol used for the request.</td>
 		<td><code>HTTPS</code></td>
 	</tr>
 	<tr>
-		<td>component_host</td>
+		<td><code>component_host</code></td>
 		<td>The domain name used for the request.</td>
-		<td><code><%= vars.product_name_lc %>.my-ops-manager.com</code></td>
+		<td><code><%= vars.product_name_lc %>.ops-manager-domain.com</code></td>
 	</tr>
 	<tr>
-		<td>component_port</td>
+		<td><code>component_port</code></td>
 		<td>The port used for the request.</td>
 		<td><code>443</code></td>
 	</tr>
 	<tr>
-		<td>request_body</td>
+		<td><code>request_body</code></td>
 		<td>A JSON object that contains the contents of the query paramaters, request body, and routing parameters for the request. Any credentials sent within the request are replaced with the value <code>[FILTERED]</code>. Any file uploads are excluded.</td>
 		<td>
 			<code>
@@ -205,29 +204,22 @@ The following table describes the properties in the `audit_log.txt` file. It als
 				    "blobstore_type": "local"
 				  }
 				}
-			</code>	
+			</code>
 		</td>
 	</tr>
-</table>	
+</table>
 
 
 ## <a id='forward-syslog'></a> Forward Logs
 
-You can forward some Ops Manager logs using syslog forwarding. This allows you to forward logs to a syslog server or other third-party destination for storage and analysis. 
+You can forward some <%= vars.ops_manager %> logs using syslog forwarding. This allows you to forward logs to a syslog server or other third-party destination for storage and analysis.
 
-The following logs contain relevant information for auditing user activity and can be forwarded using syslog forwarding:
+These logs contain relevant information for auditing user activity and can be forwarded using syslog forwarding:
 
 * `audit_log.txt`
 * `uaa.log`
 * `uaa_events.logs`
 
-When syslog forwarding is enabled, Ops Manager automatically forwards 
-BOSH Director access events. These events allow you to audit BOSH Director
-access and the execution of BOSH CLI commands. For more information about
-BOSH Director access events, 
-see [Logging API Access](https://bosh.io/docs/director-access-events/) in BOSH Documentation.
+When syslog forwarding is enabled, <%= vars.ops_manager %> automatically forwards BOSH Director access events. These events allow you to audit BOSH Director access and the execution of BOSH CLI commands. For more information about BOSH Director access events,  see [Logging API Access](https://bosh.io/docs/director-access-events/) in the BOSH documentation.
 
-For more information about syslog forwarding in Ops Manager, 
-see the [Syslog](../customizing/pcf-interface.html#syslog) section
-in the _Using the Ops Manager Interface_ topic.
-
+For more information about syslog forwarding in <%= vars.ops_manager %>, see [Syslog](../customizing/pcf-interface.html#syslog) in _Using the <%= vars.ops_manager %> Interface_.
