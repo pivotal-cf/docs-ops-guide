@@ -10,22 +10,22 @@ This topic describes how to globally configure proxy settings for all apps in yo
 
 ## <a id='set-env-variables'></a> Set Environment Variables
 
-To globally configure proxy settings for <%= vars.platform_name %> apps, you must set three environment variables for both the staging environment variable group and the running environment variable group. 
+To globally configure proxy settings for <%= vars.product_name %> apps, you must set three environment variables for both the staging environment variable group and the running environment variable group.
 
 For more information about variable groups, see the [Environment Variable Groups](../devguide/deploy-apps/environment-variable.html#evgroups) section of the _PAS Environment Variables_ topic.
 
 This procedure explains how to set proxy information for both staging and running apps. However, you can set proxy settings for only staging or only running apps.
 
-To globally configure proxy settings for <%= vars.platform_name %> apps: 
+To globally configure proxy settings for <%= vars.product_name %> apps:
 
 1. Target your Cloud Controller with the cf CLI. If you have not installed the cf CLI, see [Installing the cf CLI](../cf-cli/install-go-cli.html). Run:
-    
+
     ```
     cf api api.YOUR-SYSTEM-DOMAIN
     ```
     Where `YOUR-SYSTEM-DOMAIN` is your system domain.
 
-1. Log in with your UAA administrator credentials. To retrieve these credentials, navigate to the Pivotal Application Service (PAS) tile in the Ops Manager Installation Dashboard and click **Credentials**. Under **UAA**, click **Link to Credential** next to **Admin Credentials** and record the password. Run:
+1. Log in with your UAA administrator credentials. To retrieve these credentials, navigate to the Pivotal Application Service (PAS) tile in the <%= vars.ops_manager %> Installation Dashboard and click **Credentials**. Under **UAA**, click **Link to Credential** next to **Admin Credentials** and record the password. Run:
 
     ```
     cf login
@@ -34,7 +34,7 @@ To globally configure proxy settings for <%= vars.platform_name %> apps:
 1. To configure proxy access for apps that are staging, run:
 
     ```
-    cf set-staging-environment-variable-group '{"http\_proxy": "<span>http:</span>//YOUR-PROXY:8080/", "https\_proxy": "<span>http:</span>//YOUR-PROXY:8080/", "no\_proxy": "NO-PROXY.EXAMPLE.COM"}'</pre>
+    cf set-staging-environment-variable-group '{"http\_proxy": "http://YOUR-PROXY:8080/", "https\_proxy": "http://YOUR-PROXY:8080/", "no\_proxy": "NO-PROXY.EXAMPLE.COM"}'
     ```
     Where:
     * `http_proxy`: Set this value to the proxy to use for HTTP requests.
@@ -44,12 +44,12 @@ To globally configure proxy settings for <%= vars.platform_name %> apps:
 1. To configure proxy access for apps that are running, run:
 
     ```
-    cf set-running-environment-variable-group '{"http\_proxy": "<span>http:</span>//YOUR-PROXY:8080/", "https\_proxy": "<span>http:</span>//YOUR-PROXY:8080/", "no\_proxy": "NO-PROXY.EXAMPLE.COM"}'
+    cf set-running-environment-variable-group '{"http\_proxy": "http://YOUR-PROXY:8080/", "https\_proxy": "http://YOUR-PROXY:8080/", "no\_proxy": "NO-PROXY.EXAMPLE.COM"}'
     ```
     <br>
     <br>
     To configure proxy settings for Java-based apps, use the following command instead, replacing the placeholder values. For `http.nonProxyHosts`, use a pipe-separated list rather than a comma-separated list. Run:
-    
+
     ```
     cf set-running-environment-variable-group '{"JAVA\_OPTS": "-Dhttp.proxyHost=YOUR-PROXY -Dhttp.proxyPort=8080 -Dhttp.nonProxyHosts=NO-PROXY.EXAMPLE.COM"}'
     ```
@@ -85,18 +85,18 @@ If your app fails, try instructing the app to ignore the global proxy settings. 
     ```
     cf set-env YOUR-APP no_proxy ''
     ```
-    
+
 ### <a id='change-case'></a> Change Case of HTTP
 
 Your app and language runtime may be case-sensitive. Try performing the steps in [Set Environment Variables](#set-env-variables) using uppercase for `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY` instead of lowercase, as in the following example:
 
 ```
-cf set-staging-environment-variable-group '{"HTTP\_PROXY": "<span>http:</span>//YOUR-PROXY:8080/", "HTTPS\_PROXY": "<span>http:</span>//YOUR-PROXY:8080/"}'.
+cf set-staging-environment-variable-group '{"HTTP\_PROXY": "http://YOUR-PROXY:8080/", "HTTPS\_PROXY": "http://YOUR-PROXY:8080/"}'.
 ```
 
-### <a id='check-proxy-settings'></a> Check Proxy Settings 
+### <a id='check-proxy-settings'></a> Check Proxy Settings
 
-If you have set up your proxy so that it can only send traffic to the Internet, a request to an internal resource like <%= vars.platform_name %> fails. You must set `no_proxy` so that traffic destined for <%= vars.platform_name %> and other internal resources is sent directly and does not go through the proxy. For instance, setting `no_proxy` to include your system and app domains will ensure that requests destined for those domains are sent directly. 
+If you have set up your proxy so that it can only send traffic to the Internet, a request to an internal resource like <%= vars.product_name %> fails. You must set `no_proxy` so that traffic destined for <%= vars.product_name %> and other internal resources is sent directly and does not go through the proxy. For instance, setting `no_proxy` to include your system and app domains will ensure that requests destined for those domains are sent directly.
 
 ### <a id='verify'></a> Verify Interpretation
 

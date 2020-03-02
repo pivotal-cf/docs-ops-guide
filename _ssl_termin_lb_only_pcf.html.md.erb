@@ -1,7 +1,6 @@
 To configure SSL termination on the load balancer only in <%= vars.product_name %>:
 
-1. Create an A record in your DNS that points to your load balancer IP address. The A record associates the **System Domain** and **Apps Domain** that you configure in the **Domains** section of the Pivotal Application Service (PAS) tile with the IP 
-address of your load balancer. For example, with `cf.example.com` as the main subdomain for your <%= vars.product_name %> deployment and a load balancer IP address `198.51.100.1`, you must create an A record in your DNS that serves `example.com` and points `*.cf` to `198.51.100.1`.
+1. Create an A record in your DNS that points to your load balancer IP address. The A record associates the **System Domain** and **Apps Domain** that you configure in the **Domains** pane of the <%= vars.product_runtime %> (<%= vars.product_short %>) tile with the IP address of your load balancer. For example, with `cf.example.com` as the main subdomain for your <%= vars.product_name %> deployment and a load balancer IP address `198.51.100.1`, you must create an A record in your DNS that serves `example.com` and points `*.cf` to `198.51.100.1`.
 
     <table border="1" class="nice" >
       <tr>
@@ -18,35 +17,34 @@ address of your load balancer. For example, with `cf.example.com` as the main su
       </tr>
     </table>
 
-1. Navigate to the Ops Manager Installation Dashboard.
+1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. Click the PAS tile in the Installation Dashboard.
+1. Click the <%= vars.product_short %> tile.
 
 1. Click **Networking**.
 
-1. For <%= vars.product_name %> deployments on OpenStack or vSphere, choose IP addresses for the Gorouters from the subnet configured for Ops Manager and enter them in the **Router IPs** field. Then configure your load balancer to forward requests for the above domains to these IP addresses. For more information, see [Configuring PAS](../customizing/configure-pas.html#networking)  
+1. For <%= vars.product_short %> deployments on OpenStack or vSphere, choose IP addresses for the Gorouters from the subnet configured for <%= vars.ops_manager %> and enter them in the **Router IPs** field. Then configure your load balancer to forward requests for the above domains to these IP addresses. For more information, see [Configuring <%= vars.product_short %>](../customizing/configure-pas.html#networking)
 
-1. In the **Certificates and Private Keys for HAProxy and Router** field, click the **Add** button to define one certificate keypair for HAProxy and Router. Since you have opted for unencrypted traffic behind the load balancer, then you can generate an RSA certificate in PAS.
+1. In the **Certificates and Private Keys for HAProxy and Router** field, click the **Add** button to define one certificate keypair for HAProxy and Router. Since you have opted for unencrypted traffic behind the load balancer, then you can generate an RSA certificate in <%= vars.product_short %>.
 
-1. In the **Minimum version of TLS supported by HAProxy and Router**, select the minimum version of TLS to use in HAProxy communications. HAProxy use TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the HAProxy, see [Cipher Suites](#ciphers). 
+1. In the **Minimum version of TLS supported by HAProxy and Router**, select the minimum version of TLS to use in HAProxy communications. HAProxy use TLS v1.2 by default. If you need to accommodate clients that use an older version of TLS, select a lower minimum version. For a list of TLS ciphers supported by the HAProxy, see [Cipher Suites](#ciphers).
 
 1. Under **HAProxy forwards requests to Router over TLS**, select **Disable**.
 
-1. To use a specific set of TLS ciphers for HAProxy, configure **TLS Cipher Suites for HAProxy**. Enter an ordered, colon-separated list of TLS cipher suites in the OpenSSL format. For example, if you have selected support for an earlier version of TLS, you can enter cipher suites supported by this version. Otherwise, leave the default values in this field. 
+1. To use a specific set of TLS ciphers for HAProxy, configure **TLS Cipher Suites for HAProxy**. Enter an ordered, colon-separated list of TLS cipher suites in the OpenSSL format. For example, if you have selected support for an earlier version of TLS, you can enter cipher suites supported by this version. Otherwise, leave the default values in this field.
 
-1. (Optional) If you are not using SSL encryption or if you are using self-signed certificates, you can select **Disable SSL certificate verification for this environment**. Selecting this checkbox also disables SSL verification for route services. 
-  <p class="note">Use this checkbox only for development and testing environments. Do not select it for production environments.</p> 
-  
-1. (Optional) If you do not want HAProxy or the Gorouter to accept any non-encrypted HTTP traffic, select the **Disable HTTP on HAProxy and Router** checkbox. 
+1. (Optional) If you are not using SSL encryption or if you are using self-signed certificates, you can select the **Disable SSL certificate verification for this environment** checkbox. Selecting this checkbox also disables SSL verification for route services.
+  <p class="note"><strong>Note:</strong>Use this checkbox only for development and testing environments. Do not select it for production environments.</p>
+
+1. (Optional) If you do not want HAProxy or the Gorouter to accept any non-encrypted HTTP traffic, select the **Disable HTTP on HAProxy and Router** checkbox.
 
 1. In the **Configure the CF Router support for the X-Forwarded-Client-Cert header** field, select **Always forward the XFCC header in the request, regardless of the whether the client connection is mTLS**.
 
 1. Click **Save**.
 
-1. After you complete the configuration in <%= vars.product_name %>, add your certificate or certificates to your load balancer, and configure its listening port. The procedures vary depending on your IaaS.
+1. After you complete the configuration in <%= vars.product_name %>, add your certificate or certificates to your load balancer and configure its listening port. The procedures vary depending on your IaaS.
 
 1. Configure your load balancer to append the `X-Forwarded-For` and `X-Forwarded-Proto` headers to client requests.
-
-    <br/>If the load balancer cannot be configured to provide the `X-Forwarded-For` header, the Gorouter will append it in requests forwarded to apps and system components, set to the IP address of the load balancer.
-
-    <p class='note'><strong>Note</strong>: If the load balancer accepts unencrypted requests, it <strong>must</strong> provide the X-Forwarded-Proto header. Conversely, if the load balancer cannot be configured to send the X-Forwarded-Proto header, it should not accept unencrypted requests. Otherwise, apps and platform system components that require encrypted client requests will accept unencrypted requests when they should not accept them.</p>
+    <br/>
+    If the load balancer cannot be configured to provide the `X-Forwarded-For` header, the Gorouter appends it to requests forwarded to apps and system components, set to the IP address of the load balancer.
+    <p class='note'><strong>Note:</strong> If the load balancer accepts unencrypted requests, it <strong>must</strong> provide the X-Forwarded-Proto header. Conversely, if the load balancer cannot be configured to send the X-Forwarded-Proto header, it should not accept unencrypted requests. Otherwise, apps and platform system components that require encrypted client requests accept unencrypted requests when they should not accept them.</p>

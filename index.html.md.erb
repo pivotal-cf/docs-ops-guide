@@ -4,41 +4,54 @@ title: PCF Operator Guide
 owner: PCF Documentation
 ---
 
-##<a id='who'></a>For PCF Operators
+This guide shows you how to run a PCF platform.
 
-This guide shows you how to run a PCF platform. This ongoing responsibility may include but is not limited to:
 
-* Configuring PCF capabilities
-* Integrating PCF with external systems
-* Updating PCF and installed products
-* Monitoring PCF health and performance
-* Adjusting PCF resources and options to fix health or performance issues
-* Diagnosing and troubleshooting PCF problems
-* Managing Pivotal Application Service (PAS) users, resources, and infrastructure
-* Installing software services and otherwise enabling PCF developers
-* Maintaining PCF
-* Keeping PCF secure
+## <a id='overview'></a> Overview
 
-If you do these things, you are a PCF **operator**, and the contents of this guide are for you.
+Running a <%= vars.product_name %> platform may include but is not limited to:
+
+* Configuring <%= vars.product_name %> capabilities
+
+* Integrating <%= vars.product_name %> with external systems
+
+* Updating <%= vars.product_name %> and installed products
+
+* Monitoring <%= vars.product_name %> health and performance
+
+* Adjusting <%= vars.product_name %> resources and options to fix health or performance issues
+
+* Diagnosing and troubleshooting <%= vars.product_name %> problems
+
+* Managing <%= vars.product_runtime %> (<%= vars.product_short %>) users, resources, and infrastructure
+
+* Installing software services and otherwise enabling <%= vars.product_name %> developers
+
+* Maintaining <%= vars.product_name %>
+
+* Keeping <%= vars.product_name %> secure
+
+If you do these things, you are a <%= vars.product_name %> **operator**, and the contents of this guide are for you.
 
 ##<a id='contents'></a>Guide Contents
 
-* <a href="/pivotalcf/customizing/day2.html">Day 2 Configurations</a> - Setting up internal operations and external integrations for PCF.
+## <a id='contents'></a> Contents
 
-* <a href="/pivotalcf/opsguide/ongoing.html">Ongoing Operations</a> - Routine procedures for running and growing the platform, including:
+* [Day 2 Configurations](../customizing/day2.html): Setting up internal operations and external integrations for <%= vars.product_name %>.
 
-  - PCF Upgrades
-  - IaaS Changes
-  - Monitoring, Logging, and Reporting
-  - Platform Tuning
-  - Enabling Developers
-  - Backing Up
-  - Security
+* [Ongoing Operations](ongoing.html): Routine procedures for running and growing the platform, including:
+  * <%= vars.product_name %> Upgrades
+  * IaaS changes
+  * Monitoring, logging, and reporting
+  * Platform tuning
+  * Enabling developers
+  * Backing up
+  * Security
 
-* <a href="/pivotalcf/adminguide/index.html">Managing PAS Runtimes</a> - Procedures performed by people with administrator or manager roles in Pivotal Application Service (PAS), such as managing users, orgs, spaces, and service instances. Operators can perform these actions by [logging in with Admin credentials](../customizing/console-login.html), which grants them the role of Org Manager across all PAS orgs.
+* [Managing <%= vars.product_short %> Runtimes](../adminguide/index.html): Procedures performed by people with administrator or manager roles in <%= vars.product_short %>, such as managing users, orgs, spaces, and service instances. Operators can perform these actions by logging in with admin credentials, which grants them the role of Org Manager across all <%= vars.product_short %> orgs. For more information, see [Logging In to Apps Manager](../customizing/console-login.html).
 
-* <a href="/pivotalcf/customizing/ops-man.html">Using Ops Manager</a> -  Ops Manager's dashboard interface streamlines the installation, configuration, and upgrading of PCF platform services and add-ons.
+* [Using <%= vars.ops_manager %>](../customizing/ops-man.html): The <%= vars.ops_manager_full %> Installation Dashboard interface streamlines the installation, configuration, and upgrading of <%= vars.product_name %> services and add-ons.
 
-* <a href="/pivotalcf/cf-cli/index.html">Using the Cloud Foundry Command Line Interface (cf CLI)</a> - Using the cf CLI to send commands to the Cloud Controller, the executive component of PAS.
+* [Using the Cloud Foundry Command Line Interface (cf CLI)](../cf-cli/index.html): Using the cf CLI to send commands to the Cloud Controller, the executive component of <%= vars.product_short %>.
 
-* <a href="/pivotalcf/customizing/troubleshooting-diagnostics.html">Troubleshooting and Diagnostics</a> - Tools and procedures for troubleshooting PCF.
+* [Troubleshooting and Diagnostics](../customizing/troubleshooting-diagnostics.html): Tools and procedures for troubleshooting <%= vars.product_name %>.

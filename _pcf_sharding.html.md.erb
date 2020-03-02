@@ -1,4 +1,4 @@
-You can configure router sharding for isolation segments depending on your use case:
+You can configure Gorouter sharding for isolation segments depending on your use case:
 
 <table>
 	<tr>
@@ -8,30 +8,23 @@ You can configure router sharding for isolation segments depending on your use c
 	</tr>
 	<tr>
 		<td>Securing apps that run in an isolation segment</td>
-		<td>To provide security guarantees in addition to the firewall rules described above, you can configure sharding of the Gorouter's routing table, resulting in a router dedicated for an isolation segment having knowledge only of routes for applications in the same isolation segment.</td>
+		<td>To provide security guarantees in addition to the firewall rules described above, you can configure sharding of the Gorouter's routing table, resulting in a Gorouter dedicated to an isolation segment that only recognizes routes for apps in the same isolation segment.</td>
 		<td>
 			<ol>
-				<li>
-				In the <b>Networking</b> configuration pane of the Pivotal Application Service (PAS) tile, select the checkbox labeled <b>Routers reject requests for Isolation Segments</b>.
-				</li>
-				<li>
-				Set the <b>Router Sharding Mode</b>  in the isolation segment tile to <b>Isolation Segment Only</b>.
-				</li>
+				<li>In the <strong>Networking</strong> pane of the <%= vars.product_runtime %> (<%= vars.product_short %>) tile, enable the <strong>Routers reject requests for Isolation Segments</strong> checkbox.</li>
+				<li>Set the <strong>Router Sharding Mode</strong> in the <%= vars.segment_runtime_full %> to <strong>Isolation Segment Only</strong>.</li>
 			</ol>
 		</td>
 	</tr>
 	<tr>
-		<td>
-			Deploying additional routers for PAS</td>
-		<td>The flexibility of the configuration also supports deployment of a router that excludes all isolation segments.</td>
+		<td>Deploying additional Gorouters for <%= vars.product_short %></td>
+		<td>The flexibility of the configuration also supports deployment of a Gorouter that excludes all isolation segments.</td>
 		<td>
 			<ol>
-				<li>In the <b>Networking</b> configuration pane of the PAS tile, select the checkbox labeled <b>Routers reject requests for Isolation Segments</b>.</li>
-				<li> 
-  				Set the <b>Router Sharding Mode</b> in the isolation segment tile to <b>No isolation Segment</b>.</li>
+				<li>In the <strong>Networking</strong> pane of the <%= vars.product_short %> tile, enable the <strong>Routers reject requests for Isolation Segments</strong> checkbox.</li>
+				<li>Set the <strong>Router Sharding Mode</strong> in the <%= vars.segment_runtime_full %> tile to <strong>No isolation Segment</strong>.</li>
   		</td>
 	</tr>
 </table>
 
-<p class="note"><strong>Note</strong>: For compute isolation only, you can leave the <b>Routers reject requests for isolation segments</b> checkbox unselected in the PAS <b>Networking</b> pane. This is the default setting, which does not require any additional routers for the Isolation Segment tile. </p>
-  
+<p class="note"><strong>Note:</strong> For compute isolation only, you can leave the <strong>Routers reject requests for isolation segments</strong> checkbox disabled in the <strong>Networking</strong> pane of the <%= vars.product_short %> tile. This is the default setting, which does not require any additional Gorouters for the <%= vars.segment_runtime_full %> tile.</p>
