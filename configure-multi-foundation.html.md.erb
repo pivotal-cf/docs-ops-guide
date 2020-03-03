@@ -43,14 +43,16 @@ To configure multi-foundation support in Apps Manager:
 	- `FOUNDATION_SYSTEM_DOMAIN` is the system domain of the foundation. The system domain is listed in the PAS tile **Domains** pane.
 	- `metricsUrl` is an optional field. If PCF Metrics is installed on the foundation, provide the PCF Metrics URL.
 
-1. For PAS versions 2.5.21 and up, in the **Redirect URIs** field, enter a comma separated list of the URI for each additional foundation on which you enabled multi-foundation support. Use the following format for each URI: 
+1. For PAS v2.5.21 and later, in the **Redirect URIs** field, enter a comma-separated list of the URI for each
+additional foundation on which you enabled multi-foundation support. Use the following format for each URI:
 
-   ```
-   https://apps.FOUNDATION_SYSTEM_DOMAIN.com/**
-   ```
-   Where FOUNDATION_SYSTEM_DOMAIN is the system domain of the foundation on which you enabled multi-foundation support.
+    ```
+    https://apps.FOUNDATION_SYSTEM_DOMAIN.com/**
+    ```
+    Where `FOUNDATION_SYSTEM_DOMAIN` is the system domain of the foundation on which you enabled multi-foundation
+    support.
 
-### <a id="redirects"></a> Add Redirects in UAA (For PAS versions 2.5.20 and earlier)'
+### <a id="redirects"></a> Add Redirects in UAA (For PAS v2.5.20 and earlier)
 
 The Apps Manager UAA clients on each foundation you want to manage must include a redirect to the foundation on which you enabled multi-foundation support. This allows Apps Manager to redirect to the other foundations and back when authenticating with UAA. For more information about UAA clients and configuring valid redirect URIs, see [Client.redirect-uri](../uaa/uaa-concepts.html#redirect-uri) in the _UAA Concepts_ topic. 
 
