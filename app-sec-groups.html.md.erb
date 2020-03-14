@@ -211,10 +211,10 @@ For more information about creating and binding ASGs, see the following:
 Now that you have bound new ASGs to determine outbound traffic rules, you no longer need the default ASG bindings that allow apps to send traffic to any IP address. Do the following:
 
 1. Unbind the default ASG from the staging set:
-    <pre class="terminal">$ cf unbind-staging-security-group default\_security\_group</pre>
+    <pre class="terminal">$ cf unbind-staging-security-group default_security_group</pre>
 
 1. Unbind the default ASG from the running set:
-    <pre class="terminal">$ cf unbind-running-security-group default\_security\_group</pre>
+    <pre class="terminal">$ cf unbind-running-security-group default_security_group</pre>
 
 
 ### <a name='restart'></a> Step 5: Restart your Apps
@@ -226,6 +226,6 @@ To restart all of the apps in your deployment, do the following:
 <p class="note"><strong>Note:</strong> You do not need to restart the apps in the <code>system</code> org.</p>
 
 1. Work with developers to restart a few of their apps individually and test that they still work correctly with the new ASGs in place. If an app does not work as expected, you likely must create another ASG that allows the app to send traffic to a service it requires.
-  <p class="note"><strong>Note:</strong> To quickly roll back to the original overly-permissive state, you can re-bind the <code>default\_security\_group</code> ASG to the <code>default-staging</code> and <code>default-running</code> sets. You must then restart your apps to re-apply the original ASGs.</p>
+  <p class="note"><strong>Note:</strong> To quickly roll back to the original overly-permissive state, you can re-bind the <code>default_security_group</code> ASG to the <code>default-staging</code> and <code>default-running</code> sets. You must then restart your apps to re-apply the original ASGs.</p>
 
 1. Restart the rest of the apps running on your deployment. Optionally, you can use the [app-restarter cf CLI plugin](https://github.com/cloudfoundry-incubator/app-restarter) to restart all apps in a particular space, org, or deployment.
