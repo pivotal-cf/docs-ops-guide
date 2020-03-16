@@ -4,41 +4,41 @@ title: Configuring Authentication and Enterprise SSO for PAS
 owner: Identity
 ---
 
-This topic describes <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) authentication and single sign-on configuration with Lightweight Directory Access Protocol (LDAP) and Security Assertion Markup Language (SAML).
+This topic describes <%= vars.product_runtime %> (<%= vars.product_short %>) authentication and single sign-on configuration with Lightweight Directory Access Protocol (LDAP) and Security Assertion Markup Language (SAML).
 
 
 ## <a id='overview'></a> Overview
 
-Connecting <%= vars.app_runtime_abbr %> to either the LDAP or SAML external user store allows the User Account and Authentication (UAA) server to delegate authentication to existing enterprise user stores.
+Connecting <%= vars.product_short %> to either the LDAP or SAML external user store allows the User Account and Authentication (UAA) server to delegate authentication to existing enterprise user stores.
 
 If your enterprise user store is exposed as a SAML or LDAP identity provider (IDP) for single sign-on (SSO), you can configure SSO to allow users to access Apps Manager and the Cloud Foundry Command Line Interface (cf CLI) without creating a new account or, if using SAML, without re-entering credentials.
 
-For information about managing user identity and pre-provisioning user roles with SAML or LDAP, see [Adding Existing SAML or LDAP Users to an <%= vars.platform_name %> Deployment](external-user-management.html).
+For information about managing user identity and pre-provisioning user roles with SAML or LDAP, see [Adding Existing SAML or LDAP Users to an <%= vars.product_name %> Deployment](external-user-management.html).
 
-For an explanation of the process used by the UAA server when it attempts to authenticate a user through LDAP, see [Configuring LDAP Integration with <%= vars.platform_name %>](https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry) in the Pivotal Knowledge Base.
+For an explanation of the process used by the UAA server when it attempts to authenticate a user through LDAP, see [Configuring LDAP Integration with <%= vars.product_name %>](https://community.pivotal.io/s/article/Configuring-LDAP-Integration-with-Pivotal-Cloud-Foundry) in the Pivotal Knowledge Base.
 
 <p class='note'><strong>Note:</strong> When integrating with an external IDP, such as LDAP, authentication within the UAA becomes chained. An authentication attempt with a user's credentials is first attempted against the UAA user store before the external provider, LDAP. For more information, see <a href="https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-LDAP.md#chained-authentication">Chained Authentication</a> in the <em>User Account and Authentication LDAP Integration</em> documentation on GitHub.</p>
 
 Follow one of the procedures below to configure your deployment with SAML or LDAP.
 
 
-## <a id="configure-saml"></a> Configure <%= vars.app_runtime_abbr %> to Use a SAML Identity Provider
+## <a id="configure-saml"></a> Configure <%= vars.product_short %> to Use a SAML Identity Provider
 
 In SAML terminology, the SAML protocol communicates user data between an IDP and a service provider (SP).
 
-To connect <%= vars.app_runtime_abbr %> with SAML, follow both of these procedures:
+To connect <%= vars.product_short %> with SAML, follow both of these procedures:
 
-* [Configure <%= vars.app_runtime_abbr %> as a Service Provider for SAML](#configure-pcf-for-saml)
+* [Configure <%= vars.product_short %> as a Service Provider for SAML](#configure-pcf-for-saml)
 
-* [Configure SAML as an Identity Provider for <%= vars.app_runtime_abbr %>](#configure-saml-for-pcf)
+* [Configure SAML as an Identity Provider for <%= vars.product_short %>](#configure-saml-for-pcf)
 
-### <a id="configure-pcf-for-saml"></a> Configure <%= vars.app_runtime_abbr %> as a Service Provider for SAML
+### <a id="configure-pcf-for-saml"></a> Configure <%= vars.product_short %> as a Service Provider for SAML
 
-To configure <%= vars.app_runtime_abbr %> to use a SAML IDP:
+To configure <%= vars.product_short %> to use a SAML IDP:
 
-1. Navigate to the <%= vars.ops_manager_full %> Installation Dashboard.
+1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. Click the <%= vars.app_runtime_abbr %> tile.
+1. Click the <%= vars.product_short %> tile.
 
 1. Select **Domains**.
 
@@ -52,16 +52,16 @@ To configure <%= vars.app_runtime_abbr %> to use a SAML IDP:
 
 1. Set the **Provider Name**. This is a unique name you create for the IDP. This name can include only alphanumeric characters, `+`, `_`, and `-`. You should not change this name after deployment because all external users use it to link to the provider.
 
-1. Enter a **Display Name**. Your provider display name appears as a link on your <%= vars.platform_name %> login page. You can access this link at `https://login.SYSTEM-DOMAIN`, where `SYSTEM-DOMAIN` is the system domain you recorded from the **Domains** pane.
+1. Enter a **Display Name**. Your provider display name appears as a link on your <%= vars.product_name_full %> (<%= vars.product_name %>) login page. You can access this link at `https://login.SYSTEM-DOMAIN`, where `SYSTEM-DOMAIN` is the system domain you recorded from the **Domains** pane.
     <%= image_tag("login-page.png") %>
 
-1. Retrieve the metadata from your IDP and copy it into either the **Provider Metadata** or the **Provider Metadata URL** fields, depending on whether your IDP exposes a metadata URL or not. For more information, see [Configure SAML as an Identity Provider for <%= vars.app_runtime_abbr %>](#configure-saml-for-pcf). Pivotal recommends that you use the provider metadata URL rather than provider metadata because the metadata can change. You can do this in either of the following ways:
+1. Retrieve the metadata from your IDP and copy it into either the **Provider Metadata** or the **Provider Metadata URL** fields, depending on whether your IDP exposes a metadata URL or not. For more information, see [Configure SAML as an Identity Provider for <%= vars.product_short %>](#configure-saml-for-pcf). Pivotal recommends that you use the provider metadata URL rather than provider metadata because the metadata can change. You can do this in either of the following ways:
     * If your IDP exposes a metadata URL, provide the metadata URL.
     * Download your IDP metadata and paste this XML into the **Provider Metadata** field.
     <p class='note'><strong>Note:</strong> You only need to select one of the above configurations. If you configure both, your IDP defaults to the <strong>Provider Metadata URL</strong>.</p>
-    <p class="note"><strong>Note:</strong> For information about onboarding SAML users and mapping them to <%= vars.app_runtime_abbr %> user roles, see <a href="external-user-management.html">Adding Existing SAML or LDAP Users to an <%= vars.platform_name %> Deployment</a>.</p>
+    <p class="note"><strong>Note:</strong> For information about onboarding SAML users and mapping them to <%= vars.product_short %> user roles, see <a href="external-user-management.html">Adding Existing SAML or LDAP Users to an <%= vars.product_name %> Deployment</a>.</p>
 
-1. Select the **Name ID Format** for your SAML IDP. This translates to `username` in <%= vars.app_runtime_abbr %>. The default is `Email Address`.
+1. Select the **Name ID Format** for your SAML IDP. This translates to `username` in <%= vars.product_short %>. The default is `Email Address`.
 
 1. For **Email Domain(s)**, enter a comma-separated list of the email domains for external users who are to receive invitations to Apps Manager.
 
@@ -69,9 +69,9 @@ To configure <%= vars.app_runtime_abbr %> to use a SAML IDP:
 
 1. For **Email Attribute**, enter the attribute name in your SAML assertion that corresponds to the email address in each user record. For example, `EmailID`. This field is case-sensitive.
 
-1. For **External Groups Attribute**, enter the attribute name in your SAML database that defines the groups that a user belongs to. For example, `group_memberships`. To map the groups from the SAML assertion to admin roles in <%= vars.app_runtime_abbr %>, see [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) in _Creating and Managing Users with the UAA CLI (UAAC)_. This field is case-sensitive.
+1. For **External Groups Attribute**, enter the attribute name in your SAML database that defines the groups that a user belongs to. For example, `group_memberships`. To map the groups from the SAML assertion to admin roles in <%= vars.product_short %>, see [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) in _Creating and Managing Users with the UAA CLI (UAAC)_. This field is case-sensitive.
 
-1. By default, all SAML authentication requests from <%= vars.app_runtime_abbr %> are signed. To change this, disable the **Sign Authentication Requests** checkbox and configure your IDP to verify SAML authentication requests.
+1. By default, all SAML authentication requests from <%= vars.product_short %> are signed. To change this, disable the **Sign Authentication Requests** checkbox and configure your IDP to verify SAML authentication requests.
 
 1. To validate the signature for the incoming SAML assertions, enable the **Required Signed Assertions** checkbox and configure your IDP to send signed SAML assertions.
 
@@ -85,13 +85,13 @@ To configure <%= vars.app_runtime_abbr %> to use a SAML IDP:
 
     <%=image_tag("uaa/apply-changes.png")%>
 
-### <a id="configure-saml-for-pcf"></a> Configure SAML as an Identity Provider for <%= vars.app_runtime_abbr %>
+### <a id="configure-saml-for-pcf"></a> Configure SAML as an Identity Provider for <%= vars.product_short %>
 
-To configure a SAML IDP to designate <%= vars.app_runtime_abbr %> as an SP:
+To configure a SAML IDP to designate <%= vars.product_short %> as an SP:
 
 1. Download the SP metadata from `https://login.SYSTEM-DOMAIN/saml/metadata`, where `SYSTEM-DOMAIN` is the system domain you recorded from the **Domains** pane. For configuration instructions, see the documentation from your IDP.
 
-1. See the table below for information about certain industry-standard IDPs and how to integrate them with <%= vars.app_runtime_abbr %>:
+1. See the table below for information about certain industry-standard IDPs and how to integrate them with <%= vars.product_short %>:
 <table border="1">
   <tr>
     <th>Solution Name</th>
@@ -114,13 +114,13 @@ To configure a SAML IDP to designate <%= vars.app_runtime_abbr %> as an SP:
 <p class="note"><strong>Note:</strong> Some IDPs allow uploads of SP metadata. Other providers require you to manually enter the SP metadata into a form. If your IDP requires manual entry but is not listed above, see <a href="ca-sso-config.html">Configuring CA as an Identity Provider</a>.</p>
 
 
-## <a id="configure-ldap"></a> Configure LDAP as an Identity Provider for <%= vars.app_runtime_abbr %>
+## <a id="configure-ldap"></a> Configure LDAP as an Identity Provider for <%= vars.product_short %>
 
 To integrate the UAA with one or more LDAP servers:
 
 1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. Click the <%= vars.app_runtime_abbr %> tile.
+1. Click the <%= vars.product_short %> tile.
 
 1. Select **Authentication and Enterprise SSO**.
 
@@ -144,7 +144,7 @@ For example, a domain named "cloud.example.com" typically uses the following LDA
 1. For **User Search Filter**, enter a string that defines LDAP user search criteria. These search criteria allow LDAP to perform more effective and efficient searches. For example, the standard LDAP search filter `cn=Smith` returns all objects with a common name equal to `Smith`.
 <br>
 <br>
-In the LDAP search filter string that you use to configure <%= vars.app_runtime_abbr %>, use `{0}` instead of the username. For example, use `cn={0}` to return all LDAP objects with the same common name as the username.
+In the LDAP search filter string that you use to configure <%= vars.product_short %>, use `{0}` instead of the username. For example, use `cn={0}` to return all LDAP objects with the same common name as the username.
 <br>
 <br>
 In addition to `cn`, other attributes commonly searched for and returned are `mail`, `uid` and, in the case of Active Directory, `sAMAccountName`.
@@ -156,8 +156,8 @@ In addition to `cn`, other attributes commonly searched for and returned are `ma
 For example, a domain named "cloud.example.com" typically uses the following LDAP group search base: `ou=Groups,dc=example,dc=com`
 <br>
 <br>
-This is required if you are mapping LDAP groups to an admin role. To map the groups under this search base to admin roles in <%= vars.app_runtime_abbr %>, see [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) in _Creating and Managing Users with the UAA CLI (UAAC)_.
-    <p class="note"><strong>Note:</strong> To onboard individual LDAP users and map them to <%= vars.app_runtime_abbr %> roles, see <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a <%= vars.platform_name %> Deployment</a>.</p>
+This is required if you are mapping LDAP groups to an admin role. To map the groups under this search base to admin roles in <%= vars.product_short %>, see [Grant Admin Permissions to an External Group (SAML or LDAP)](../uaa/uaa-user-management.html#external-group) in _Creating and Managing Users with the UAA CLI (UAAC)_.
+    <p class="note"><strong>Note:</strong> To onboard individual LDAP users and map them to <%= vars.product_short %> roles, see <a href="../opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a <%= vars.product_name %> Deployment</a>.</p>
 
 1. For **Group Search Filter**, enter a string that defines LDAP group search criteria. The standard value is `member={0}`. This is required if you are mapping LDAP groups to an admin role.
 
