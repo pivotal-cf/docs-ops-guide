@@ -32,11 +32,11 @@ To globally configure proxy settings for <%= vars.product_name %> apps:
 
 1. Log in with your UAA administrator credentials.
   1. To retrieve these credentials:
-    1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
-    1. Click the <%= vars.product_runtime %> (<%= vars.product_short %>) tile.
-    1. Select the **Credentials** tab.
-    1. Under **UAA**, next to **Admin Credentials**, click **Link to Credential**.
-    1. Record the password.
+      1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
+      1. Click the <%= vars.product_runtime %> (<%= vars.product_short %>) tile.
+      1. Select the **Credentials** tab.
+      1. Under **UAA**, next to **Admin Credentials**, click **Link to Credential**.
+      1. Record the password.
   1. Run:
 
       ```
@@ -56,7 +56,7 @@ To globally configure proxy settings for <%= vars.product_name %> apps:
     * `DNS-SUFFIX-OR-IP-ADDRESS` is a DNS suffix or IP address that can be accessed without passing through the proxy.
     <br>
     <br>
-    From now on, the proxy settings are applied to apps during staging.
+  From now on, the proxy settings are applied to apps during staging.
 
 1. To configure proxy access for apps that are running, run:
 
@@ -71,7 +71,7 @@ To globally configure proxy settings for <%= vars.product_name %> apps:
     * `DNS-SUFFIX-OR-IP-ADDRESS` is a DNS suffix or IP address that can be accessed without passing through the proxy.
     <br>
     <br>
-    To configure proxy settings for Java-based apps, run:
+  To configure proxy settings for Java-based apps, run:
 
     ```
     cf set-running-environment-variable-group '{"JAVA_OPTS": "-Dhttp.proxyHost=PROXY -Dhttp.proxyPort=8080 -Dhttp.nonProxyHosts=DNS-SUFFIX-OR-IP-ADDRESS|DNS-SUFFIX-OR-IP-ADDRESS"}'
@@ -84,7 +84,7 @@ To globally configure proxy settings for <%= vars.product_name %> apps:
     * `DNS-SUFFIX-OR-IP-ADDRESS` is a DNS suffix or IP address that can be accessed without passing through the proxy.
     <br>
     <br>
-    For more information about these Java proxy settings, see [Java Networking and Proxies](http://docs.oracle.com/javase/8/docs/technotes/guides/net/proxies.html) in the Oracle documentation.
+  For more information about these Java proxy settings, see [Java Networking and Proxies](http://docs.oracle.com/javase/8/docs/technotes/guides/net/proxies.html) in the Oracle documentation.
 
 1. To apply the proxy configuration for the running environment variable group, restart each app that you want to use the new configuration.
 
@@ -129,6 +129,7 @@ cf set-staging-environment-variable-group '{"HTTP_PROXY": "http://PROXY:8080/", 
 ```
 
 Where:
+
 * `PROXY` is your proxy.
 * `DNS-SUFFIX-OR-IP-ADDRESS` is a DNS suffix or IP address that can be accessed without passing through the proxy.
 
