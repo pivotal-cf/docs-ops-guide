@@ -3,7 +3,7 @@ title: Providing a Certificate for Your TLS Termination Point
 owner: RelEng
 ---
 
-This topic describes how to configure Transport Layer Security (TLS) termination for HTTP traffic in <%= vars.product_runtime %> (<%= vars.product_short %>) with a TLS certificate, as part of the process of configuring <%= vars.product_short %> for deployment. 
+This topic describes how to configure Transport Layer Security (TLS) termination for HTTP traffic in <%= vars.product_runtime %> (<%= vars.product_short %>) with a TLS certificate, as part of the process of configuring <%= vars.product_short %> for deployment.
 
 
 ## <a id="ssl_term"></a> Configure TLS Termination
@@ -34,12 +34,12 @@ For additional IaaS-specific certificate requirements:
 
 This section describes how to create or generate a certificate for your <%= vars.product_short %> environment. If you are deploying to a production environment, you should obtain a certificate from a trusted Certificate Authority (CA).
 
-For internal development or testing environments, you have two options for creating a required TLS certificates: 
+For internal development or testing environments, you have two options for creating a required TLS certificates:
 
-* You can create a self-signed certificate, or 
-* You can have <%= vars.product_short %> generate the certificate for you. 
+* You can create a self-signed certificate, or
+* You can have <%= vars.product_short %> generate the certificate for you.
 
-To create a certificate, you can use a wide variety of tools including OpenSSL, Java's keytool, Adobe Reader, and Apple's Keychain to generate a Certificate Signing Request (CSR). 
+To create a certificate, you can use a wide variety of tools including OpenSSL, Java's keytool, Adobe Reader, and Apple's Keychain to generate a Certificate Signing Request (CSR).
 
 In either case for either self-signed or trusted single certificates, apply these rules when creating the CSR:
 
@@ -54,8 +54,8 @@ In either case for either self-signed or trusted single certificates, apply thes
 * If you are using a single domain configuration, use these values as the `Subject Alternative Name` of the certificate, where `DOMAIN` is your registered wildcard domain:
     * `*.login.sys.DOMAIN.com`
     * `*.uaa.sys.DOMAIN.com`
-    <p class="note"><strong>Note:</strong> TLS certificates generated for wildcard DNS records only work for a single domain name component or component fragment. For example, a certificate generated for <code>*.DOMAIN.com</code> does not work for <code>*.apps.DOMAIN.com</code> and <code>*.sys.DOMAIN.com</code>. The certificate must have both <code>*.apps.DOMAIN.com</code> and <code>*.sys.DOMAIN.com</code> attributed to it.</p>
-    
+    <p class="note"><strong>Note:</strong> TLS certificates generated for wildcard DNS records only work for a single domain name component or component fragment. For example, a certificate generated for <code>&#42;.DOMAIN.com</code> does not work for <code>&#42;.apps.DOMAIN.com</code> and <code>&#42;.sys.DOMAIN.com</code>. The certificate must have both <code>&#42;.apps.DOMAIN.com</code> and <code>&#42;.sys.DOMAIN.com</code> attributed to it.</p>
+
 ### <a id="ert_certgen"></a> Generate an RSA Certificate in <%= vars.product_short %>
 
 To generate an RSA certificate in <%= vars.product_short %>:
@@ -65,11 +65,11 @@ To generate an RSA certificate in <%= vars.product_short %>:
 1. Click the <%= vars.product_short %> tile.
 
 1. Select **Networking**.
- 
+
 1. Under **Certificate and private keys for the Gorouter and HAProxy**:
     1. Under **Certificate and private key**, click **Change**.
     1. Click **Generate RSA Certificate** to populate the **Certificate and private key** fields with RSA certificate and private key information.
-  
+
 1. <%= vars.recommended_by %> recommends using a split domain configuration that separates the domains for `apps` and `sys` components. To use a split domain configuration, enter these following domains for the certificate, where `DOMAIN` is your registered wildcard domain:
     * `*.DOMAIN.com`
     * `*.apps.DOMAIN.com`
