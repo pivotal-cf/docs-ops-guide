@@ -3,39 +3,73 @@ title: Configuring PingFederate as an Identity Provider
 owner: Identity
 ---
 
+This topic explains how to configure single sign-on (SSO) between PingFederate and <%= vars.product_runtime %> (<%= vars.product_short %>).
 
-This topic explains how to configure single sign-on (SSO) between PingFederate and Pivotal Application Service (PAS).
 
-## <a id='pas'></a>Configuring PingFederate as the SAML 2.0 Identity Provider on PAS
+## <a id='overview'></a> Overview
 
-1. Download your Identity Provider Metadata from PingFederate Server. Click **Metadata Export** under **Administrative Functions** on the Main Menu of the PingFederate Administrative Console. If your PingFederate server is configured to act as both an Identity Provider (IdP) and a service provider (SP), indicate which type of configuration you want to export and click **Next**. The Signing key can be exported. You can skip the options related to Encryption Keys and Metadata Attribute Contract because they are not supported at this time.
-1. Follow the steps in [Configuring Authentication and Enterprise SSO for PAS](./auth-sso.html#configure-pcf-for-saml) to set your IdP metadata on PAS.
+Partnership creation between PingFederate and <%= vars.product_short %> involves the following steps:
 
-## <a id='ping-federate'></a>Configuring PAS as the SAML 2.0 Service Provider on PingFederate
+1. Configuring PingFederate as an identity provider (IDP). For more information, see [Configure PingFederate as the SAML Identity Provider for <%= vars.product_short %>](#pas).
 
-1. Download your Service Provider Metadata from `https://login.YOUR-SYSTEM-DOMAIN/saml/metadata`.
-1. Import the Service Provider Metadata to PingFederate. Navigate to **Main Menu** → **IdP Configuration** → **SP Connection** and click **Import**. In the **Import Connection** screen, browse and select the `.xml` file downloaded in the previous step. Click **Import** and **Done**.
-1. PAS expects the NameID format to be an email address (for example, `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress`) and the value to be the email address of the currently logged in user. The SSO does not function without this setting.
-    1. Click the connection name on **Main Menu**. To see a full list of connections, click **Manage All SP**.
-    1. Click **Browser SSO** under the **SP Connection** tab.
+1. Configuring the service provider (SP). For more information, see [Configure <%= vars.product_short %> as the SAML Service Provider for PingFederate](#ping-federate).
+
+
+## <a id='pas'></a> Configure PingFederate as the SAML Identity Provider for <%= vars.product_short %>
+
+To configure PingFederate as the SAML IDP for your <%= vars.product_short %> tile:
+
+1. Download your IDP metadata from PingFederate Server:
+  1. Log in to PingFederate Administrative Console.
+  1. Select **Administrative Functions**.
+  1. Click **Metadata Export**.
+  1. If your PingFederate server is configured to act as both an IDP and an SP, indicate which type of configuration you want to export. The Signing key can be exported. You can skip the options related to encryption keys and metadata attribute contract because they are not supported at this time.
+  1. Click **Next**.
+
+1. Follow the procedure in [Configure <%= vars.product_short %> as a Service Provider for SAML](auth-sso.html#configure-pcf-for-saml) in _Configuring Authentication and Enterprise SSO for <%= vars.product_short %>_ to set the IDP metadata on <%= vars.product_short %>.
+
+
+## <a id='ping-federate'></a> Configure <%= vars.product_short %> as the SAML Service Provider for PingFederate
+
+To configure <%= vars.product_short %> as the SAML SP for PingFederate:
+
+1. Download the SP metadata from https://login.SYSTEM-DOMAIN/saml/metadata, where `SYSTEM-DOMAIN` is the system domain of your <%= vars.platform_name %> installation.
+
+1. Save the SP metadata to an XML file.
+
+1. Import the SP metadata to PingFederate:
+  1. Log in to PingFederate Administrative Console.
+  1. Under **Main Menu**, select **IdP Configuration**.
+  1. Select **SP Connection**.
+  1. Click **Import**.
+  1. In the **Import Connection** screen, browse and select the `.xml` file downloaded in the previous step.
+  1. Click **Import**.
+  1. Click **Done**.
+
+1. <%= vars.product_short %> expects the NameID format to be an email address, such as `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress`, and the value to be the email address of the currently logged-in user. The SSO does not function without this setting.
+    1. Under **Main Menu**, click the connection name. To see a full list of connections, click **Manage All SP**.
+    1. Under the **SP Connection**, select **Browser SSO**.
     1. Click **Configure Browser SSO**.
-    1. Click **Assertion Creation** under the **Browser SSO** tab.
-    1. Click **Configure Assertion Creation**.
-    1. Click **Identity Mapping** on the **Summary** screen.
-    1. Select **Standard** as the option and map the NameID format to be an email address and the value to be the email address of the user.
-1. Select the Authentication Source.
-    1. Click **Browser SSO** under the **SP Connection** tab.
-    1. Click **Configure Browser SSO**.
-    1. Click **Assertion Creation** under the **Browser SSO** tab.
-    1. Click **Configure Assertion Creation**.
-    1. Click **IdP Adapter Mapping** on the **Summary** screen.
-    1. Click **Adapter Instance Name**.
-    1. Click **Adapter Instance** on the **Summary** screen.
-1. Enable the SSO Browser Profiles.
-    1. Click **Browser SSO** under the **SP Connection** tab.
-    1. Click **Configure Browser SSO**.
-    1. Click **SAML Profiles** on the **Summary** screen.
-    1. Ensure that IdP & SP initiated SSO are selected.
+    1. Under **Browser SSO**, select **Assertion Creation**.
+    1. Select **Configure Assertion Creation**.
+    1. On the **Summary** screen, select **Identity Mapping**.
+    1. Select **Standard**.
+    1. For the NameID format, select **Email Address** and enter the email address of the user.
 
-    <p class='note'><strong>Note</strong>: PAS does not support SLO profiles at this time, and you can leave them unchecked.</p>
+1. Select the Authentication Source:
+    1. Under the **SP Connection**, select **Browser SSO**.
+    1. Select **Configure Browser SSO**.
+    1. Under **Browser SSO**, select **Assertion Creation**.
+    1. Select **Configure Assertion Creation**.
+    1. On the **Summary** screen, select **IdP Adapter Mapping**.
+    1. Select **Adapter Instance Name**.
+    1. On the **Summary** screen, select **Adapter Instance**.
+
+1. Enable the SSO Browser Profiles:
+    1. Under **SP Connection**, select **Browser SSO**.
+    1. Select **Configure Browser SSO**.
+    1. On the **Summary** screen, select **SAML Profiles**.
+    1. Ensure that the **IdP-Initiated SSO** and **SP-Initiated SSO** checkboxes are enabled.
+    <p class='note'><strong>Note:</strong> <%= vars.product_short %> does not support SLO profiles at this time. You can leave them disabled.</p>
+
 1. Activate the SP Connection.
