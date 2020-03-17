@@ -3,32 +3,41 @@ title: Configuring SSH Access for PAS
 owner: Diego
 ---
 
+This topic describes how to configure SSH access for <%= vars.product_runtime %> (<%= vars.product_short %>).
 
 
-To help troubleshoot applications hosted by a deployment, [Pivotal Cloud Foundry (PCF)](https://network.pivotal.io/products/pivotal-cf) supports SSH access into running applications. This document describes how to configure a PCF deployment to allow SSH access to application instances, and how to configure load balancing for those application SSH sessions.
+## <a id='overview'></a> Overview
+
+To help troubleshoot apps hosted by a deployment, <%= vars.product_short %> supports SSH access into running apps. This document describes how to configure a <%= vars.product_short %> deployment to allow SSH access to app instances, and how to configure load balancing for those app SSH sessions.
 
 
-## <a id='diego-configuration'></a> Pivotal Application Service Configuration
+## <a id='diego-configuration'></a> Configure <%= vars.product_short %> SSH Access
 
-This section describes how to configure Pivotal Application Service (PAS) to enable or disable deployment-wide SSH access to application instances. In addition to this deployment-wide configuration, Space Managers have SSH access control over their Space, and Space Developers have SSH access control over their to their Applications. For details about SSH access permissions, see the [Application SSH Overview](../devguide/deploy-apps/app-ssh-overview.html) topic.
+This section describes how to configure <%= vars.product_short %> to enable or disable deployment-wide SSH access to app instances. In addition to this deployment-wide configuration, Space Managers have SSH access control over their Space, and Space Developers have SSH access control over their to their apps. For details about SSH access permissions, see [App SSH Overview](../devguide/deploy-apps/app-ssh-overview.html).
 
-To configure PAS SSH access for app instances:
+To configure <%= vars.product_short %> SSH access for app instances:
 
-1. Open the PAS tile in <%= vars.ops_manager %>.
+1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. Under the **Settings** tab, select the **Application Containers** section.
+1. Click the <%= vars.product_short %> tile.
+
+1. Select **App Containers**.
 
 1. Enable or disable the **Allow SSH access to app containers** checkbox.
 
-1. Optionally, select **Enable SSH when an app is created** to enable SSH access for new apps by default in spaces that allow SSH. If you deselect this checkbox, developers can still enable SSH after pushing their apps by running `cf enable-ssh APP-NAME`.
+1. Optionally, select the **Enable SSH when an app is created** checkbox to enable SSH access for new apps by default in spaces that allow SSH. If you deselect this checkbox, developers can still enable SSH after pushing their apps by running `cf enable-ssh APP-NAME`, where `APP-NAME` is the name of the app for which they want to enable SSH.
 
-<%= image_tag("./images/docker-registry-ert.png") %>
+<%= image_tag("ssh-config-ert.png") %>
 
 
-## <a id="ssh-load-balancer-configuration"></a> SSH Load Balancer Configuration
+## <a id="ssh-load-balancer-configuration"></a> Configure an SSH Load Balancer
 
-For IaaSes where load-balancing is available as a service, <%= vars.ops_manager %>provision a load balancer to balance load across SSH proxy instances. Configure this load balancer to forward incoming TCP traffic on port `2222` to a target pool where you deploy `diego_brain` instances.
+For IaaSes where load-balancing is available as a service, you should provision a load balancer to balance load across SSH proxy instances. Configure this load balancer to forward incoming TCP traffic on port 2222 to a target pool where you deploy `diego_brain` instances.
 
-For AWS, Azure, and GCP IaaSes, you configure SSH load balancers in the **Resource Config** pane. To register SSH proxies with a load balancer, enter your load balancer name in the **Load Balancers** field in the **Diego Brain** row.
+For AWS, Azure, and GCP IaaSes, you configure SSH load balancers in the **Resource Config** pane. To register SSH proxies with a load balancer:
+
+1. Select **Resource Config**
+
+1. In the the **Diego Brain**, enter your load balancer name in the **Load Balancers** field.
 
 <%= vars.ops_manager %> supports an API-only `nsx_lbs` field. You can configure load balancers in vSphere using this field.
