@@ -3,58 +3,85 @@ title: Configuring Proxy Settings for All Apps
 owner: Routing
 ---
 
-This topic describes how to globally configure proxy settings for all apps in your Pivotal Cloud Foundry (PCF) deployment. Some environments restrict access to the Internet by requiring traffic to pass through an HTTP or HTTPS proxy. PCF operators can use the Cloud Foundry Command Line Interface (cf CLI) to provide the proxy settings to all apps, including system apps and service brokers.
+This topic describes how to globally configure proxy settings for all apps in your <%= vars.product_name_full %> (<%= vars.product_name %>) deployment.
 
-<p class="note"><strong>Note:</strong> Incorrectly configuring proxy settings can prevent apps from connecting to the Internet or accessing required resources. They can also cause errands to fail and break system apps and service brokers. Although errands, system apps, and service brokers do not need to connect to the Internet, they often need to access other resources on PCF. Incorrect proxy settings can break these connections.</p>
+
+## <a id='overview'></a> Overview
+
+Some environments restrict access to the Internet by requiring traffic to pass through an HTTP or HTTPS proxy. <%= vars.product_name %> operators can use the Cloud Foundry Command Line Interface (cf CLI) to provide the proxy settings to all apps, including system apps and service brokers.
+
+<p class="note"><strong>Note:</strong> Incorrectly configuring proxy settings can prevent apps from connecting to the Internet or accessing required resources. They can also cause errands to fail and break system apps and service brokers. Although errands, system apps, and service brokers do not need to connect to the Internet, they often need to access other resources in <%= vars.product_name %>. Incorrect proxy settings can break these connections.</p>
 
 
 ## <a id='set-env-variables'></a> Set Environment Variables
 
 To globally configure proxy settings for <%= vars.product_name %> apps, you must set three environment variables for both the staging environment variable group and the running environment variable group.
 
-For more information about variable groups, see the [Environment Variable Groups](../devguide/deploy-apps/environment-variable.html#evgroups) section of the _PAS Environment Variables_ topic.
+For more information about variable groups, see [Environment Variable Groups](../devguide/deploy-apps/environment-variable.html#evgroups) in _<%= vars.product_short %> Environment Variables_.
 
-This procedure explains how to set proxy information for both staging and running apps. However, you can set proxy settings for only staging or only running apps.
+This procedure explains how to set proxy information for both staging and running apps. However, you can also set proxy settings for only staging or only running apps.
 
 To globally configure proxy settings for <%= vars.product_name %> apps:
 
 1. Target your Cloud Controller with the cf CLI. If you have not installed the cf CLI, see [Installing the cf CLI](../cf-cli/install-go-cli.html). Run:
 
     ```
-    cf api api.YOUR-SYSTEM-DOMAIN
+    cf api api.SYSTEM-DOMAIN
     ```
-    Where `YOUR-SYSTEM-DOMAIN` is your system domain.
+    Where `SYSTEM-DOMAIN` is your system domain.
 
-1. Log in with your UAA administrator credentials. To retrieve these credentials, navigate to the Pivotal Application Service (PAS) tile in the <%= vars.ops_manager %> Installation Dashboard and click **Credentials**. Under **UAA**, click **Link to Credential** next to **Admin Credentials** and record the password. Run:
+1. Log in with your UAA administrator credentials.
+  1. To retrieve these credentials:
+    1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
+    1. Click the <%= vars.product_runtime %> (<%= vars.product_short %>) tile.
+    1. Select the **Credentials** tab.
+    1. Under **UAA**, next to **Admin Credentials**, click **Link to Credential**.
+    1. Record the password.
+  1. Run:
 
-    ```
-    cf login
-    ```
+      ```
+      cf login
+      ```
 
 1. To configure proxy access for apps that are staging, run:
 
     ```
-    cf set-staging-environment-variable-group '{"http\_proxy": "http://YOUR-PROXY:8080/", "https\_proxy": "http://YOUR-PROXY:8080/", "no\_proxy": "NO-PROXY.EXAMPLE.COM"}'
+    cf set-staging-environment-variable-group '{"http_proxy": "http://PROXY:8080/", "https_proxy": "http://PROXY:8080/", "no_proxy": "DNS-SUFFIX-OR-IP-ADDRESS,DNS-SUFFIX-OR-IP-ADDRESS"}'
     ```
     Where:
-    * `http_proxy`: Set this value to the proxy to use for HTTP requests.
-    * `https_proxy`: Set this value to the proxy to use for HTTPS requests. In most cases, this is the same as `http_proxy`.
-    * `no_proxy`: Set this value to a comma-separated list of DNS suffixes or IP addresses that can be accessed without passing through the proxy. <%= vars.recommended_by %> recommends this value contains the domain `.cf.internal`, which is used by the platform to communicate with CredHub.
-
+    * `http_proxy` is the proxy to use for HTTP requests.
+    * `https_proxy` is the proxy to use for HTTPS requests. In most cases, this is the same as `http_proxy`.
+    * `PROXY` is your proxy.
+    * `no_proxy` is a comma-separated list of DNS suffixes or IP addresses that can be accessed without passing through the proxy. <%= vars.recommended_by %> recommends this value contains the domain `.cf.internal`, which is used by the platform to communicate with CredHub.
+    * `DNS-SUFFIX-OR-IP-ADDRESS` is a DNS suffix or IP address that can be accessed without passing through the proxy.
+    <br>
+    <br>
     From now on, the proxy settings are applied to apps during staging.
 
 1. To configure proxy access for apps that are running, run:
 
     ```
-    cf set-running-environment-variable-group '{"http\_proxy": "http://YOUR-PROXY:8080/", "https\_proxy": "http://YOUR-PROXY:8080/", "no\_proxy": "NO-PROXY.EXAMPLE.COM"}'
+    cf set-running-environment-variable-group '{"http_proxy": "http://PROXY:8080/", "https_proxy": "http://PROXY:8080/", "no_proxy": "DNS-SUFFIX-OR-IP-ADDRESS,DNS-SUFFIX-OR-IP-ADDRESS"}'
     ```
+    Where:
+    * `http_proxy` is the proxy to use for HTTP requests.
+    * `https_proxy` is the proxy to use for HTTPS requests. In most cases, this is the same as `http_proxy`.
+    * `PROXY` is your proxy.
+    * `no_proxy` is a comma-separated list of DNS suffixes or IP addresses that can be accessed without passing through the proxy. <%= vars.recommended_by %> recommends this value contains the domain `.cf.internal`, which is used by the platform to communicate with CredHub.
+    * `DNS-SUFFIX-OR-IP-ADDRESS` is a DNS suffix or IP address that can be accessed without passing through the proxy.
     <br>
     <br>
-    To configure proxy settings for Java-based apps, use the following command instead, replacing the placeholder values. For `http.nonProxyHosts`, use a pipe-separated list rather than a comma-separated list. Run:
+    To configure proxy settings for Java-based apps, run:
 
     ```
-    cf set-running-environment-variable-group '{"JAVA\_OPTS": "-Dhttp.proxyHost=YOUR-PROXY -Dhttp.proxyPort=8080 -Dhttp.nonProxyHosts=NO-PROXY.EXAMPLE.COM"}'
+    cf set-running-environment-variable-group '{"JAVA_OPTS": "-Dhttp.proxyHost=PROXY -Dhttp.proxyPort=8080 -Dhttp.nonProxyHosts=DNS-SUFFIX-OR-IP-ADDRESS|DNS-SUFFIX-OR-IP-ADDRESS"}'
     ```
+    Where:
+    * `-Dhttp.proxyHost` is the proxy to use for HTTP requests.
+    * `PROXY` is your proxy.
+    * `-Dhttp.proxyPort` is the port your proxy uses.
+    * `-Dhttp.nonProxyHosts` is a pipe-separated list of DNS suffixes or IP addresses that can be accessed without passing through the proxy. <%= vars.recommended_by %> recommends this value contains the domain `.cf.internal`, which is used by the platform to communicate with CredHub.
+    * `DNS-SUFFIX-OR-IP-ADDRESS` is a DNS suffix or IP address that can be accessed without passing through the proxy.
     <br>
     <br>
     For more information about these Java proxy settings, see [Java Networking and Proxies](http://docs.oracle.com/javase/8/docs/technotes/guides/net/proxies.html) in the Oracle documentation.
@@ -64,37 +91,46 @@ To globally configure proxy settings for <%= vars.product_name %> apps:
 
 ## <a id='troubleshooting'></a> Troubleshooting
 
-If an app fails after you apply the global proxy settings, try the following solutions.
+This section describes solutions to try if an app fails after you apply the global proxy settings.
 
 ### <a id='exclude-app'></a> Exclude an App From Global Proxy Settings
 
-If your app fails, try instructing the app to ignore the global proxy settings. To manually unset the proxy environment variables for the failing app:
+If your app fails, try instructing the app to ignore the global proxy settings.
+
+To manually unset the proxy environment variables for the failing app:
 
 1. Set the proxy environment variables for `http_proxy` to an empty value by running:
 
     ```
-    cf set-env YOUR-APP http_proxy ''
+    cf set-env APP-NAME http_proxy ''
     ```
+    Where `APP-NAME` is the name of your app.
 
 1. Set the proxy environment variables for `https_proxy` to an empty value by running:
 
     ```
-    cf set-env YOUR-APP https_proxy ''
+    cf set-env APP-NAME https_proxy ''
     ```
+    Where `APP-NAME` is the name of your app.
 
 1. Set the proxy environment variables for `no_proxy` to an empty value by running:
 
     ```
-    cf set-env YOUR-APP no_proxy ''
+    cf set-env APP-NAME no_proxy ''
     ```
+    Where `APP-NAME` is the name of your app.
 
 ### <a id='change-case'></a> Change Case of HTTP
 
 Your app and language runtime may be case-sensitive. Try performing the steps in [Set Environment Variables](#set-env-variables) using uppercase for `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY` instead of lowercase, as in the following example:
 
 ```
-cf set-staging-environment-variable-group '{"HTTP\_PROXY": "http://YOUR-PROXY:8080/", "HTTPS\_PROXY": "http://YOUR-PROXY:8080/"}'.
+cf set-staging-environment-variable-group '{"HTTP_PROXY": "http://PROXY:8080/", "HTTPS_PROXY": "http://PROXY:8080/", "NO_PROXY": "DNS-SUFFIX-OR-IP-ADDRESS,DNS-SUFFIX-OR-IP-ADDRESS"}'.
 ```
+
+Where:
+* `PROXY` is your proxy.
+* `DNS-SUFFIX-OR-IP-ADDRESS` is a DNS suffix or IP address that can be accessed without passing through the proxy.
 
 ### <a id='check-proxy-settings'></a> Check Proxy Settings
 
