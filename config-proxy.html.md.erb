@@ -58,33 +58,32 @@ To globally configure proxy settings for <%= vars.product_name %> apps:
     <br>
   From now on, the proxy settings are applied to apps during staging.
 
-1. To configure proxy access for apps that are running, run:
+1. To configure proxy access for apps that are running:
+    * For non-Java-based apps, run:
 
-    ```
-    cf set-running-environment-variable-group '{"http_proxy": "http://PROXY:8080/", "https_proxy": "http://PROXY:8080/", "no_proxy": "DNS-SUFFIX-OR-IP-ADDRESS,DNS-SUFFIX-OR-IP-ADDRESS"}'
-    ```
-    Where:
-    * `http_proxy` is the proxy to use for HTTP requests.
-    * `https_proxy` is the proxy to use for HTTPS requests. In most cases, this is the same as `http_proxy`.
-    * `PROXY` is your proxy.
-    * `no_proxy` is a comma-separated list of DNS suffixes or IP addresses that can be accessed without passing through the proxy. <%= vars.recommended_by %> recommends this value contains the domain `.cf.internal`, which is used by the platform to communicate with CredHub.
-    * `DNS-SUFFIX-OR-IP-ADDRESS` is a DNS suffix or IP address that can be accessed without passing through the proxy.
-    <br>
-    <br>
-  To configure proxy settings for Java-based apps, run:
+        ```
+        cf set-running-environment-variable-group '{"http_proxy": "http://PROXY:8080/", "https_proxy": "http://PROXY:8080/", "no_proxy": "DNS-SUFFIX-OR-IP-ADDRESS,DNS-SUFFIX-OR-IP-ADDRESS"}'
+        ```
+        Where:
+        * `http_proxy` is the proxy to use for HTTP requests.
+        * `https_proxy` is the proxy to use for HTTPS requests. In most cases, this is the same as `http_proxy`.
+        * `PROXY` is your proxy.
+        * `no_proxy` is a comma-separated list of DNS suffixes or IP addresses that can be accessed without passing through the proxy. <%= vars.recommended_by %> recommends this value contains the domain `.cf.internal`, which is used by the platform to communicate with CredHub.
+        * `DNS-SUFFIX-OR-IP-ADDRESS` is a DNS suffix or IP address that can be accessed without passing through the proxy.
+    * For Java-based apps, run:
 
-    ```
-    cf set-running-environment-variable-group '{"JAVA_OPTS": "-Dhttp.proxyHost=PROXY -Dhttp.proxyPort=8080 -Dhttp.nonProxyHosts=DNS-SUFFIX-OR-IP-ADDRESS|DNS-SUFFIX-OR-IP-ADDRESS"}'
-    ```
-    Where:
-    * `-Dhttp.proxyHost` is the proxy to use for HTTP requests.
-    * `PROXY` is your proxy.
-    * `-Dhttp.proxyPort` is the port your proxy uses.
-    * `-Dhttp.nonProxyHosts` is a pipe-separated list of DNS suffixes or IP addresses that can be accessed without passing through the proxy. <%= vars.recommended_by %> recommends this value contains the domain `.cf.internal`, which is used by the platform to communicate with CredHub.
-    * `DNS-SUFFIX-OR-IP-ADDRESS` is a DNS suffix or IP address that can be accessed without passing through the proxy.
-    <br>
-    <br>
-  For more information about these Java proxy settings, see [Java Networking and Proxies](http://docs.oracle.com/javase/8/docs/technotes/guides/net/proxies.html) in the Oracle documentation.
+        ```
+        cf set-running-environment-variable-group '{"JAVA_OPTS": "-Dhttp.proxyHost=PROXY -Dhttp.proxyPort=8080 -Dhttp.nonProxyHosts=DNS-SUFFIX-OR-IP-ADDRESS|DNS-SUFFIX-OR-IP-ADDRESS"}'
+        ```
+        Where:
+        * `-Dhttp.proxyHost` is the proxy to use for HTTP requests.
+        * `PROXY` is your proxy.
+        * `-Dhttp.proxyPort` is the port your proxy uses.
+        * `-Dhttp.nonProxyHosts` is a pipe-separated list of DNS suffixes or IP addresses that can be accessed without passing through the proxy. <%= vars.recommended_by %> recommends this value contains the domain `.cf.internal`, which is used by the platform to communicate with CredHub.
+        * `DNS-SUFFIX-OR-IP-ADDRESS` is a DNS suffix or IP address that can be accessed without passing through the proxy.
+        <br>
+        <br>
+        For more information about these Java proxy settings, see [Java Networking and Proxies](http://docs.oracle.com/javase/8/docs/technotes/guides/net/proxies.html) in the Oracle documentation.
 
 1. To apply the proxy configuration for the running environment variable group, restart each app that you want to use the new configuration.
 
