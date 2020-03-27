@@ -1,6 +1,6 @@
 <%= vars.product_short %> defines one default ASG, `default_security_group`. This group allows all outbound traffic from app containers on public and private networks except for the link-local range, `169.254.0.0/16`, which is blocked.
 
-<p class="note warning"><strong>Warning:</strong> For security, <%= vars.product_short %> administrators must modify the default ASGs so that outbound network traffic cannot access internal components. For more information, see <a href="../opsguide/app-sec-groups.html">Restricting App Access to Internal <%= vars.product_name %> Components</a>.</p>
+<p class="note warning"><strong>Warning:</strong> For security, <%= vars.product_short %> admins must modify the default ASGs so that outbound network traffic cannot access internal components. For more information, see <a href="../opsguide/app-sec-groups.html">Restricting App Access to Internal <%= vars.product_name %> Components</a>.</p>
 
 The ASG is defined in the Cloud Controller configuration as follows:
 
