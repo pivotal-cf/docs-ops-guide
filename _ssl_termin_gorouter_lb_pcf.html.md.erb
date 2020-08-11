@@ -35,7 +35,7 @@ To configure SSL termination on the Gorouter and load balancer in <%= vars.app_r
 1. If you are using HAProxy:
     1. Under **TLS termination point**, select **Infrastructure load balancer**.
     1. Under **HAProxy forwards requests to the Gorouter over TLS**, select **Enable**.
-    1. In the **Certificate Authority for HAProxy back end** field, specify the Certificate Authority (CA) that signed the certificate you configured in the **Certificate and private key for the Gorouter and HAProxy** field.
+    1. In the **Certificate authority for HAProxy back end** field, specify the certificate authority (CA) that signed the certificate you configured in the **Certificate and private key for the Gorouter and HAProxy** field.
         <p class="note"><strong>Note:</strong> If you used the **Generate RSA Certificate** link to generate a self-signed certificate, then the CA to specify is the <%= vars.ops_manager %> CA, which you can locate using the <code>/api/v0/certificate_authorities</code> endpoint in the <%= vars.ops_manager %> API.</p>
     1. To use a specific set of TLS ciphers for HAProxy, configure **TLS cipher suites for HAProxy**. Enter an ordered, colon-separated list of TLS cipher suites in the OpenSSL format. For example, if you have selected support for an earlier version of TLS, you can enter cipher suites supported by this version. Otherwise, leave the default values in this field.
     1. Proceed to step 11.
