@@ -77,14 +77,14 @@ To change the domain of an existing <%= vars.product_name %> installation:
 	<br>
 	<br>
 	The command returns output similar to the following example:
-	<pre class='terminal'>
-    $ cf map-route yourapp newapps.yourdomain.com -n yourapp
+		<pre class='terminal'>
+		$ cf map-route yourapp newapps.yourdomain.com -n yourapp
 
-    Creating route yourapp.newapps.yourdomain.com for org your-org / space your-space as admin...
-    OK
-    Adding route yourapp.newapps.yourdomain.com to app yourapp in org your-org / space your-space as admin...
-    OK
-	  </pre>
+		Creating route yourapp.newapps.yourdomain.com for org your-org / space your-space as admin...
+		OK
+		Adding route yourapp.newapps.yourdomain.com to app yourapp in org your-org / space your-space as admin...
+		OK
+		</pre>
 	In this example, both the `APP-NAME` and `HOST-NAME` arguments are `yourapp`, since this is both the name of the app to which you are mapping a route and the intended hostname for the URL.
 
 1. Repeat the previous step for each app in this space. Afterward, check Apps Manager to confirm that the route URL has updated correctly for each app:
