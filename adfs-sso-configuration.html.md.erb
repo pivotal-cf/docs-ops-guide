@@ -25,11 +25,11 @@ To configure <%= vars.ops_manager %> to use AD FS as your SAML IDP:
 1. Download your IDP metadata from `https://AD-FS-HOSTNAME/federationmetadata/2007-06/federationmetadata.xml`, where `AD-FS-HOSTNAME` is the hostname of your AD FS deployment.
 
 1. Follow the procedure in _Use an Identity Provider_ in the BOSH Director configuration topic for your IaaS:
-  * [Configuring BOSH Director on AWS](/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/aws/config-manual.html#idp)
-  * [Configuring BOSH Director on Azure Manually](/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/azure/config-manual.html#idp)
-  * [Configuring BOSH Director on GCP](/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/gcp/config-manual.html#idp)
-  * [Configuring BOSH Director on OpenStack](/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/openstack/config.html#idp)
-  * [Configuring BOSH Director on vSphere](/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/vsphere/config.html#idp)
+  * [Configuring BOSH Director on AWS](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/aws/config-manual.html#idp)
+  * [Configuring BOSH Director on Azure Manually](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/azure/config-manual.html#idp)
+  * [Configuring BOSH Director on GCP](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/gcp/config-manual.html#idp)
+  * [Configuring BOSH Director on OpenStack](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/openstack/config.html#idp)
+  * [Configuring BOSH Director on vSphere](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/vsphere/config.html#idp)
 
 <p class="note"><strong>Note:</strong> You can set up SAML access for <%= vars.ops_manager %> during the initial <%= vars.platform_name %> installation or later by navigating to <strong>Settings</strong> in the user menu in the <%= vars.ops_manager %> Installation Dashboard, configuring the <strong>Authentication Method</strong> pane, and then clicking <strong>Review Pending Changes</strong> and <strong>Apply Changes</strong>.</p>
 
