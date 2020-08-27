@@ -7,7 +7,7 @@ owner: CAPI
 This topic describes how and when to scale BOSH jobs in CAPI, and includes details about some key metrics, heuristics, and logs.
 
 
-## <a id='cloud_controller_ng'></a> cloud\_controller\_ng
+## <a id='cloud_controller_ng'></a> cloud_controller_ng
 
 The `cloud_controller_ng` Ruby process is the primary job in CAPI. It, along with `nginx_cc`, powers the Cloud Controller API that all users of Pivotal Application Service (PAS) interact with. In addition to serving external clients, `cloud_controller_ng` also provides APIs for internal components within PAS, such as Loggregator and Networking subsystems.
 
@@ -15,7 +15,7 @@ The `cloud_controller_ng` Ruby process is the primary job in CAPI. It, along wit
 
 ### When to Scale
 
-When determining whether to scale `cloud\_controller\_ng`, look for the following:
+When determining whether to scale `cloud_controller_ng`, look for the following:
 
 #### Key Metrics
 
@@ -52,13 +52,13 @@ Cloud Controller API VMs should primarily be scaled horizontally. Scaling up the
 <p class='note'><strong>Note:</strong> Since Cloud Controller supports both PostgreSQL and MySQL external databases, there is no absolute guidance on what a healthy database looks like. In general, high database CPU utilization is a good indicator of scaling issues, but always defer to the documentation specific to your database.</p>
 
 
-## <a id='cloud_controller_worker_local'></a> cloud\_controller\_worker\_local
+## <a id='cloud_controller_worker_local'></a> cloud_controller_worker_local
 
 Colloquially known as "local workers," this job is primarily responsible for handling files uploaded to the API VMs during `cf push`, such as `packages`, `droplets`, and resource matching.
 
 ### When to Scale
 
-When determining whether to scale `cloud\_controller\_worker\_local`, look for the following:
+When determining whether to scale `cloud_controller_worker_local`, look for the following:
 
 #### Key Metrics
 
@@ -85,13 +85,13 @@ You can find the above heuristic failures in the following log files:
 Because local workers are located with the Cloud Controller API job, they are scaled horizontally along with the API.
 
 
-## <a id='cloud_controller_worker'></a> cloud\_controller\_worker
+## <a id='cloud_controller_worker'></a> cloud_controller_worker
 
 Colloquially known as "generic workers" or just "workers", this job and VM are responsible for handling asynchronous work, batch deletes, and other periodic tasks scheduled by the `cloud_controller_clock`.
 
 ### When to Scale
 
-When determining whether to scale `cloud\_controller\_worker`, look for the following:
+When determining whether to scale `cloud_controller_worker`, look for the following:
 
 #### Key Metrics
 
@@ -119,7 +119,7 @@ You can find the above heuristic failures in the following log files:
 The cc-worker VM can safely scale horizontally in all deployments, but if your worker VMs have CPU/memory headroom, you can also use the `cc.jobs.generic.number_of_workers` BOSH property to increase the number of worker processes on each VM.
 
 
-## <a id='clock_and_updater'></a> cloud\_controller\_clock and cc\_deployment\_updater
+## <a id='clock_and_updater'></a> cloud_controller_clock and cc_deployment_updater
 
 The `cloud_controller_clock` job runs Diego sync process and schedules periodic background jobs. The `cc_deployment_updater` job is responsible for handling v3 rolling app deployments. For more information, see [Rolling App Deployments (Beta)](https://docs.cloudfoundry.org/devguide/deploy-apps/rolling-deploy.html).
 
@@ -127,7 +127,7 @@ The `cloud_controller_clock` job runs Diego sync process and schedules periodic 
 
 ### When to Scale
 
-When determining whether to scale `cloud\_controller\_clock` and `cc\_deployment\_updater`, look for the following:
+When determining whether to scale `cloud_controller_clock` and `cc_deployment_updater`, look for the following:
 
 #### Key Metrics
 
