@@ -1,11 +1,13 @@
 docs-ops-guide
 ==========
 
-Operator docs for Ops Manager and VMware Tanzu Application Service for VMs.
+Operator docs for Ops Manager v2.6 and earlier.
+
+**Note**: For Ops Manager v2.7 and later, these docs are located in [docs-ops-manager/opsguide](https://github.com/pivotal-cf/docs-ops-manager/tree/master/opsguide).
 
 ## Which book repos publish this repo?
 
-Currently only the [docs-book-pivotalcf](https://github.com/pivotal-cf/docs-partials) repo publishes this repo. 
+The [docs-book-pivotalcf](https://github.com/pivotal-cf/docs-partials) repo publishes this repo. 
 
 ## Which branch to use?
 
@@ -13,10 +15,7 @@ Currently only the [docs-book-pivotalcf](https://github.com/pivotal-cf/docs-part
 
 | Branch name | Use for… |
 |-------------| -------|
-| master      | "edge" branch for Ops Manager and TAS for VMs v2.10, publishes to https://docs-pcf-staging.cfapps.io/platform/2-10/customizing/
-| 2.9		  | v2.9.x |
-| 2.8         | v2.8.x |
-| 2.7         | v2.7.x |
+| master      | Not in use |
 | 2.6         | EOGS v2.6.x. |
 | 2.5         | EOGS v2.5.x. |
 | 2.4         | EOGS v2.4.x. |
